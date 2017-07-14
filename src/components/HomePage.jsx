@@ -1,5 +1,5 @@
 import React from "react";
-import Mapping from "./Mapping";
+//import Mapping from "./Mapping";
 
 //type Props = {
 //	name: string

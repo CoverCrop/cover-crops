@@ -2,7 +2,8 @@ var path = require("path");
 
 module.exports = function (config) {
 	config.set({
-		browsers: ["Chrome", "Firefox"], //run in Chrome
+		//browsers: ["Chrome", "Firefox"], //run in Chrome
+		browsers: ["PhantomJS"], //run headless for bamboo 
 		singleRun: true,
 		colors: true,
 		basePath: "",
