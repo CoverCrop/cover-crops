@@ -19,7 +19,7 @@
     "clean-dist": "npm run remove-dist && mkdir dist",
     "remove-dist": "rimraf ./dist",
     "prebuild": "npm run clean-dist && npm run lint && npm run test",
-    "build": "babel-node tools/build.js && npm run open:dist",
+    "build": "babel-node tools/build.js",
     "test": "karma start karma.conf.js",
     "test:watch": "npm run test --watch || exit 0",
     "analyze-bundle": "babel-node ./tools/analyzeBundle.js"
