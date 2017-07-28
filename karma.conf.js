@@ -3,7 +3,7 @@ var path = require("path");
 module.exports = function (config) {
 	config.set({
 		//browsers: ["Chrome", "Firefox"], //run in Chrome
-		browsers: ["PhantomJS", "ChromeHeadless"], //run headless for bamboo
+		browsers: ["PhantomJS"],//, "ChromeHeadless"], //run headless for bamboo
 		customLaunchers: {
   		ChromeHeadless: {
   			base: 'Chrome',
