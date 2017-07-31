@@ -11,11 +11,11 @@ class Header extends Component {
 				<Cell col={10}>
 					<hr/>
 					<Grid>
-						<Cell col={2}>
+						<Cell col={3}>
 							<Title>Cover Crop Project</Title>
 						</Cell>
 
-						<Cell col={6}>
+						<Cell col={4}>
 							<Subheading2><IndexLink to="/">Home</IndexLink>
 								{" | "}
 								<Link to="/analysis">Analysis</Link>
@@ -26,7 +26,7 @@ class Header extends Component {
 								{" | "}</Subheading2>
 						</Cell>
 
-						<Cell col={4}>
+						<Cell col={5}>
 							<span><Textfield floatingLabel="Username"/> </span>
 							<span><Textfield floatingLabel="Password" type="password"/> </span>
 							<span><Button compact>Login</Button></span>
