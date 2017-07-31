@@ -59,7 +59,7 @@ class HomePage extends Component {
 									</CardHeader>
 									<CardMedia
 										style={{
-											backgroundImage: 'url("../../public/ccrop-rep-image-1.png")',
+											backgroundImage: 'url("../images/ccrop-rep-image-1.png")',
 											width: '450px',
 											height: '300px',
 
@@ -118,7 +118,7 @@ class HomePage extends Component {
 									</CardHeader>
 									<CardMedia
 										style={{
-											backgroundImage: 'url("../../public/card_bg.jpg")',
+											backgroundImage: 'url("../images/card_bg.jpg")',
 											height: 'auto',
 											backgroundSize: 'cover',
 										}}
@@ -132,7 +132,7 @@ class HomePage extends Component {
 									</CardHeader>
 									<CardMedia
 										style={{
-											backgroundImage: 'url("../../public/card_bg.jpg")',
+											backgroundImage: 'url("../images/card_bg.jpg")',
 											height: 'auto',
 											backgroundSize: 'cover',
 										}}
@@ -146,7 +146,7 @@ class HomePage extends Component {
 									</CardHeader>
 									<CardMedia
 										style={{
-											backgroundImage: 'url("../../public/card_bg.jpg")',
+											backgroundImage: 'url("../images/card_bg.jpg")',
 											height: 'auto',
 											backgroundSize: 'cover',
 										}}

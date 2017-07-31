@@ -14,6 +14,8 @@ import "./styles/styles.scss";
 import { syncHistoryWithStore } from "react-router-redux";
 
 require("./public/favicon.ico");
+require("./images/card_bg.jpg");
+require("./images/ccrop-rep-image-1.png");
 
 const store = configureStore();
 
