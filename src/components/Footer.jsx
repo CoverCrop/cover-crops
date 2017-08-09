@@ -6,14 +6,12 @@ class Footer extends Component {
 
 	render() {
 		return (
-			<Grid >
-				<Cell col={1}/>
-				<Cell col={10}>
+			<Grid>
+				<Cell col={12}>
 					<hr/>
 					<Grid/>
 					<hr/>
 				</Cell>
-				<Cell col={1}/>
 			</Grid>
 		);
 	}

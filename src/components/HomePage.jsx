@@ -1,20 +1,21 @@
 import React, {Component} from "react";
 import Header from './Header'
 import Footer from './Footer'
+import styles from '../styles/main.css'
 import {Cell, Grid, Title, Textfield, Card, CardHeader, CardMedia, CardTitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
 
 class HomePage extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className={styles.contentcenter}>
 				<Header selected='home'/>
 				<Grid >
-					<Cell col={1}/>
-					<Cell col={10}>
+					<Cell col={12}>
 						<Grid>
 							<Cell col={7}>
 								<h1>Welcome to Cover Crop Project</h1>
+								<br/>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ante eros, hendrerit vel
 									felis vel, sollicitudin condimentum dui. Nullam at consequat dui. Donec laoreet est a elit
 									congue, scelerisque tempus velit pulvinar. Aenean in eleifend ipsum. Quisque lacinia ex non
@@ -155,7 +156,6 @@ class HomePage extends Component {
 							</Cell>
 						</Grid>
 					</Cell>
-					<Cell col={1}/>
 				</Grid>
 				<Footer selected='home'/>
 			</div>

@@ -5,9 +5,8 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { Router, browserHistory } from "react-router";
-import App from "./components/App"
+import App from "./components/App";
 
-import routes from "./routes";
 import configureStore from "./store/configureStore";
 
 import "./styles/styles.scss";
