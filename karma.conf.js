@@ -40,7 +40,7 @@ module.exports = function (config) {
 		webpack: {
 			devtool: "inline-source-map",
 			resolve: {
-				extensions: [".js", ".jsx"]
+				extensions: [".js", ".jsx", ".css"]
 			},
 			module: {
 				exprContextCritical: false,
@@ -57,7 +57,14 @@ module.exports = function (config) {
 						exclude: path.resolve("node_modules"),
 						include: path.resolve("src"),
 						loaders: ["isparta-loader"]
-					}
+					},
+					{
+						enforce: "pre",
+						test: /\.css$/,
+						exclude: [path.resolve("node_modules")],
+						include: path.resolve("src/styles"),
+						loaders: ["css-loader"]
+					},
 				]
 			},
 			externals: {
