@@ -92,7 +92,7 @@ export default {
 				test: /\.svg(\?v=\d+.\d+.\d+)?$/,
 				loader: "url-loader?limit=10000&mimetype=image/svg+xml&name=[name].[ext]"
 			},
-			{test: /\.(jpe?g|png|gif)$/i, loader: "file-loader?name=[name].[ext]"},
+			{test: /\.(jpe?g|png|gif)$/i, loader: "file-loader?name=images/[name].[ext]"},
 			{test: /\.ico$/, loader: "file-loader?name=[name].[ext]"},
 			{
 				test: /(\.css|\.scss)$/,
