@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import Header from './Header'
 import Footer from './Footer'
 import {Cell, Grid, Title, Textfield, Card, Fab, CardHeader, CardMedia, CardActions, Button, CardTitle, CardSubtitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
+import "babel-polyfill";
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
