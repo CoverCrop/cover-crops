@@ -19,7 +19,17 @@ class AnalysisPage extends Component {
 										{/*<CardSubtitle>Subtitle</CardSubtitle>*/}
 									</CardHeader>
 									<CardText>
-										Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+										<select multiple size="3" className="mdc-multi-select mdc-list" >
+											<option className="mdc-list-item">
+												Field 1
+											</option>
+											<option className="mdc-list-item">
+												Field 2
+											</option>
+											<option className="mdc-list-item">
+												Field 3
+											</option>
+										</select>
 									</CardText>
 									<CardActions>
 										<Fab plain mini><Icon name='add'/></Fab>
