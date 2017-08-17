@@ -76,7 +76,7 @@ class AnalysisPage extends Component {
 		console.log("execution id = "+executionGUID);
 
 		// Wait until execution is complete
-		await wait(10000);
+		await wait(4000);
 
 		// Get Execution Result
 		const executionResponse = await fetch(datawolfURL + "/executions/" + executionGUID, {
