@@ -69,3 +69,11 @@ h1, h2, h3, h5, h6, p, ul {
 .noPadding {
 	padding: 0 !important;
 }
+
+.multiple-select-cc {
+	width: 50px;
+}
+
+.cover-crop-card {
+	cursor: pointer;
+}
