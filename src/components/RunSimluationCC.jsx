@@ -35,10 +35,8 @@ class RunSimulationCC extends Component {
 		console.log("hello world");
 		const datawolfURL = 'http://covercrop.ncsa.illinois.edu:8888/datawolf';
 
-		const authorization = 'Basic ' + btoa("cmnavarr@illinois.edu:test1234");
-
 		let headers = {
-			'Authorization': authorization
+			// Add authorization here
 		};
 
 		const executionRequest = {
@@ -56,7 +54,7 @@ class RunSimulationCC extends Component {
 		let createExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
 			headers: {
-				'Authorization': authorization,
+				// Add authorization here
 				'Content-Type': 'application/json',
 				'Access-Control-Origin': 'http://localhost:3000'
 			},
