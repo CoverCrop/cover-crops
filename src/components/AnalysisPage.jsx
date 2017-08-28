@@ -3,6 +3,7 @@ import Header from './Header'
 import Footer from './Footer'
 import SelectFieldsCC from './SelectFieldsCC'
 import RunSimulationCC from './RunSimluationCC'
+import ViewResultsCC from './ViewResultsCC'
 import CoverCropCard from './CoverCropCard'
 import {Cell, Grid, Title, Textfield, Card, Fab, CardHeader, CardMedia, CardActions, Button, CardTitle, CardSubtitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
 
@@ -51,6 +52,10 @@ class AnalysisPage extends Component {
 
 			case "runSimulation":
 				displayComponent = <RunSimulationCC/>;
+				break;
+
+			case "viewResults":
+				displayComponent = <ViewResultsCC/>;
 				break;
 
 			case null:
