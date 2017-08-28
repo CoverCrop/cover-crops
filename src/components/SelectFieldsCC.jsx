@@ -61,10 +61,10 @@ class SelectFieldsCC extends Component {
 					floatingLabel="Latitude"/>
 				<Textfield
 					required
-					helptext="Longitude value must between -90 and 90"
+					helptext="Longitude value must between -180 and 180"
 					helptextValidation
-					min="-90"
-					max="90"
+					min="-180"
+					max="180"
 					type="number"
 					step="0.000001"
 					value={this.state.longitude}
