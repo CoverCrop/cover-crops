@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Textfield, Body1} from "react-mdc-web"
+import {Button, Textfield, Body1, Grid, Cell} from "react-mdc-web"
 
 class SelectFieldsCC extends Component {
 
@@ -48,28 +48,37 @@ class SelectFieldsCC extends Component {
 				</select>
 				{/*End: hidden for the time being*/}
 
-				<Textfield
-					required
-					helptext="Latitude value must between -90 and 90"
-					helptextValidation
-					min="-90"
-					max="90"
-					type="number"
-					step="0.000001"
-					value={this.state.latitude}
-					onChange={this.handleChangeLat}
-					floatingLabel="Latitude"/>
-				<Textfield
-					required
-					helptext="Longitude value must between -180 and 180"
-					helptextValidation
-					min="-180"
-					max="180"
-					type="number"
-					step="0.000001"
-					value={this.state.longitude}
-					onChange={this.handleChangeLong}
-					floatingLabel="Longitude"/>
+				<Grid>
+					<Cell col={12}>
+						<Cell col={2}>
+							<Textfield
+								required
+								helptext="Latitude value must between -90 and 90"
+								helptextValidation
+								min="-90"
+								max="90"
+								type="number"
+								step="0.000001"
+								value={this.state.latitude}
+								onChange={this.handleChangeLat}
+								floatingLabel="Latitude"/>
+							<Textfield
+								required
+								helptext="Longitude value must between -180 and 180"
+								helptextValidation
+								min="-180"
+								max="180"
+								type="number"
+								step="0.000001"
+								value={this.state.longitude}
+								onChange={this.handleChangeLong}
+								floatingLabel="Longitude"/>
+						</Cell>
+						<Cell col={10}>
+							{/*Placeholder for map*/}
+						</Cell>
+					</Cell>
+				</Grid>
 			</div>
 		)
 	}
