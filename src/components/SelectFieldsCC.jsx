@@ -18,6 +18,10 @@ class SelectFieldsCC extends Component {
 		this.props.handleLongFieldChange(e.target.value)
 	}
 
+	handleContinue(){
+
+	}
+
 	render(){
 		return(
 			<div>
@@ -65,6 +69,7 @@ class SelectFieldsCC extends Component {
 								value={this.props.state.longitude}
 								onChange={this.handleLongFieldChange}
 								floatingLabel="Longitude"/>
+							<Button raised primary onClick={this.handleContinue}>Continue</Button>
 						</Cell>
 						<Cell col={10}>
 							{/*Placeholder for map*/}

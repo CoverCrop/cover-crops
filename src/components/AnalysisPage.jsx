@@ -29,10 +29,8 @@ class AnalysisPage extends Component {
 
 		this.state = {
 			activeCardIndex: 0,
-			coordinate: {
-				latitude: "",
-				longitude: ""
-			},
+			latitude: "",
+			longitude: "",
 			startDate: 0,
 			endDate: 0
 		};
@@ -73,6 +71,10 @@ class AnalysisPage extends Component {
 		this.setState({
 			endDate: date
 		});
+	}
+
+	handleContinue() {
+
 	}
 
 	render() {
