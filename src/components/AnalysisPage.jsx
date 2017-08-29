@@ -30,13 +30,17 @@ class AnalysisPage extends Component {
 			}
 		];
 		this.state = {
-			activeCardIndex: 0
+			activeCardIndex: 0,
+			latitude: "",
+			longitude: ""
 		};
 		this.handleClick = this.handleClick.bind(this);
+		this.handleSelectFieldsChange= this.handleSelectFieldsChange.bind(this);
 	}
 
 	renderCard(cardIndex){
 
+		// Active Card
 		if (cardIndex === this.state.activeCardIndex){
 
 			return <CoverCropCard
@@ -46,6 +50,7 @@ class AnalysisPage extends Component {
 				cardTitle={this.cardFields[cardIndex].cardTitle}
 				cardSubtitle={this.cardFields[cardIndex].cardSubtitle}/>;
 		}
+		// Previously visited card
 		else if (cardIndex < this.state.activeCardIndex){
 			return <CoverCropCard
 				className="cover-crop-card-disabled"
@@ -54,6 +59,7 @@ class AnalysisPage extends Component {
 				cardTitle={this.cardFields[cardIndex].cardTitle}
 				cardSubtitle={this.cardFields[cardIndex].cardSubtitle}/>;
 		}
+		// Unvisited card
 		else {
 			return <CoverCropCard
 				className="cover-crop-card"
@@ -71,13 +77,26 @@ class AnalysisPage extends Component {
 		});
 	}
 
+	handleSelectFieldsChange(e) {
+		if (e.target.id === "textfield-Latitude") {
+			this.setState({
+				latitude: e.target.value
+			});
+		}
+		else if (e.target.id === "textfield-Longitude") {
+			this.setState({
+				longitude: e.target.value
+			});
+		}
+	}
+
 	render() {
 
 		let displayComponent = null;
 
 		switch(this.state.activeCardIndex) {
 			case 0:
-				displayComponent = <SelectFieldsCC/>;
+				displayComponent = <SelectFieldsCC state={this.state} onChange={this.handleSelectFieldsChange} />;
 				break;
 
 			case 1:
