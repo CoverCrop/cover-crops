@@ -5,6 +5,7 @@ import SelectFieldsCC from './SelectFieldsCC'
 import RunSimulationCC from './RunSimluationCC'
 import ViewResultsCC from './ViewResultsCC'
 import CoverCropCard from './CoverCropCard'
+import styles from '../styles/main.css'
 import {Cell, Grid, Title, Textfield, Card, Fab, CardHeader, CardMedia, CardActions, Button, CardTitle, CardSubtitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
 
 class AnalysisPage extends Component {
@@ -29,15 +30,44 @@ class AnalysisPage extends Component {
 			}
 		];
 		this.state = {
-			activeCard: this.cardFields[0],
+			activeCardIndex: 0
 		};
 		this.handleClick = this.handleClick.bind(this);
+	}
+
+	renderCard(cardIndex){
+
+		if (cardIndex === this.state.activeCardIndex){
+
+			return <CoverCropCard
+				className="cover-crop-card-active"
+				cardId={this.cardFields[cardIndex].cardId}
+				onClick={this.handleClick.bind(this, cardIndex)}
+				cardTitle={this.cardFields[cardIndex].cardTitle}
+				cardSubtitle={this.cardFields[cardIndex].cardSubtitle}/>;
+		}
+		else if (cardIndex < this.state.activeCardIndex){
+			return <CoverCropCard
+				className="cover-crop-card-disabled"
+				cardId={this.cardFields[cardIndex].cardId}
+				onClick={this.handleClick.bind(this, cardIndex)}
+				cardTitle={this.cardFields[cardIndex].cardTitle}
+				cardSubtitle={this.cardFields[cardIndex].cardSubtitle}/>;
+		}
+		else {
+			return <CoverCropCard
+				className="cover-crop-card"
+				cardId={this.cardFields[cardIndex].cardId}
+				onClick={this.handleClick.bind(this, cardIndex)}
+				cardTitle={this.cardFields[cardIndex].cardTitle}
+				cardSubtitle={this.cardFields[cardIndex].cardSubtitle}/>;
+		}
 	}
 
 	handleClick(selectedCardIndex){
 
 		this.setState({
-			activeCard: this.cardFields[selectedCardIndex]
+			activeCardIndex: selectedCardIndex
 		});
 	}
 
@@ -45,16 +75,16 @@ class AnalysisPage extends Component {
 
 		let displayComponent = null;
 
-		switch(this.state.activeCard.cardId) {
-			case "selectField":
+		switch(this.state.activeCardIndex) {
+			case 0:
 				displayComponent = <SelectFieldsCC/>;
 				break;
 
-			case "runSimulation":
+			case 1:
 				displayComponent = <RunSimulationCC/>;
 				break;
 
-			case "viewResults":
+			case 2:
 				displayComponent = <ViewResultsCC/>;
 				break;
 
@@ -70,25 +100,15 @@ class AnalysisPage extends Component {
 					<Cell col={12}>
 						<Grid>
 							<Cell col={2}>
-								<CoverCropCard
-									cardId={this.cardFields[0].cardId}
-									onClick={this.handleClick.bind(this, 0)}
-									cardTitle={this.cardFields[0].cardTitle}
-									cardSubtitle={this.cardFields[0].cardSubtitle}/>
+								{this.renderCard(0)}
 								<br/>
 								<br/>
-								<CoverCropCard
-									cardId={this.cardFields[1].cardId}
-									onClick={this.handleClick.bind(this, 1)}
-									cardTitle={this.cardFields[1].cardTitle}
-									cardSubtitle={this.cardFields[1].cardSubtitle}/>
+								{this.renderCard(1)}
 								<br/>
 								<br/>
-								<CoverCropCard
-									cardId={this.cardFields[2].cardId}
-									onClick={this.handleClick.bind(this, 2)}
-									cardTitle={this.cardFields[2].cardTitle}
-									cardSubtitle={this.cardFields[2].cardSubtitle}/>
+								{this.renderCard(2)}
+								<br/>
+								<br/>
 							</Cell>
 							<Cell col={10}>
 								{displayComponent}

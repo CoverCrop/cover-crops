@@ -16,7 +16,7 @@ class CoverCropCard extends Component {
 	render() {
 		return (
 			<div>
-				<Card onClick={this.props.onClick} id={this.props.cardId} className="cover-crop-card">
+				<Card onClick={this.props.onClick} id={this.props.cardId} className={this.props.className}>
 					<CardHeader>
 						<CardTitle>{this.props.cardTitle}<Icon className="rightmap" name='edit'/></CardTitle>
 						<CardSubtitle>{this.props.cardSubtitle}</CardSubtitle>

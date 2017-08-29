@@ -77,3 +77,13 @@ h1, h2, h3, h5, h6, p, ul {
 .cover-crop-card {
 	cursor: pointer;
 }
+
+.cover-crop-card-active {
+	background-color: rgba(84, 105, 255, 0.24);
+	cursor: pointer;
+}
+
+.cover-crop-card-disabled {
+	background-color: rgba(28, 29, 65, 0.24);
+	cursor: pointer;
+}
