@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {Button, Textfield, Body1} from "react-mdc-web"
-import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
+import DatePickerCC from "./DatePickerCC";
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -10,25 +10,9 @@ class RunSimulationCC extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			startDate: 0,
-			endDate: 0
-		};
-
-		this.handleChangeStart = this.handleChangeStart.bind(this);
-		this.handleChangeEnd = this.handleChangeEnd.bind(this);
 		this.runSimulation = this.runSimulation.bind(this);
-	}
-
-	handleChangeStart(date) {
-		this.setState({
-			startDate: date
-		});
-	}
-	handleChangeEnd(date) {
-		this.setState({
-			endDate: date
-		});
+		this.handleStartDateChange = this.handleStartDateChange.bind(this);
+		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 	}
 
 	async runSimulation() {
@@ -113,28 +97,29 @@ class RunSimulationCC extends Component {
 		// console.log(datasets);
 	}
 
+	handleStartDateChange(date) {
+		this.props.handleStartDateChange(date)
+	}
+
+	handleEndDateChange(date) {
+		this.props.handleEndDateChange(date)
+	}
+
 	render(){
 		return(
 			<div>
-				<Body1>Start Date: </Body1>
-				<DatePicker className="date-picker-cc" selected={this.state.startDate}
-							selectsStart
-							showYearDropdown
-							scrollableYearDropdown
-							placeholderText="Select a start date"
-							startDate={this.state.startDate}
-							endDate={this.state.endDate}
-							onChange={this.handleChangeStart}/>
-				<Body1>End Date: </Body1>
-				<DatePicker selected={this.state.endDate}
-							selectsEnd
-							showYearDropdown
-							scrollableYearDropdown
-							placeholderText="Select an end date"
-							startDate={this.state.startDate}
-							endDate={this.state.endDate}
-							onChange={this.handleChangeEnd}/>
-
+				<DatePickerCC
+					label="Start Date: "
+					state={this.props.state}
+					startDate
+					placeholderText="Select a start date"
+					onChange={this.handleStartDateChange}/>
+				<DatePickerCC
+					label="End Date: "
+					state={this.props.state}
+					endDate
+					placeholderText="Select an end date"
+					onChange={this.handleEndDateChange}/>
 				<br/>
 				<Button raised primary onClick={this.runSimulation}>Run Simulation</Button>
 			</div>

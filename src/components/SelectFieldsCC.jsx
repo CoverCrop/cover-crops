@@ -1,10 +1,21 @@
 import React, {Component} from "react";
 import {Button, Textfield, Body1, Grid, Cell} from "react-mdc-web"
+import CoordinateFieldCC from "./CoordinateFieldCC";
 
 class SelectFieldsCC extends Component {
 
 	constructor(props) {
 		super(props);
+		this.handleLatFieldChange = this.handleLatFieldChange.bind(this);
+		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
+	}
+
+	handleLatFieldChange(e) {
+		this.props.handleLatFieldChange(e.target.value)
+	}
+
+	handleLongFieldChange(e) {
+		this.props.handleLongFieldChange(e.target.value)
 	}
 
 	render(){
@@ -33,8 +44,7 @@ class SelectFieldsCC extends Component {
 				<Grid>
 					<Cell col={12}>
 						<Cell col={2}>
-							<Textfield
-								required
+							<CoordinateFieldCC
 								helptext="Latitude value must between -90 and 90"
 								helptextValidation
 								min="-90"
@@ -42,9 +52,9 @@ class SelectFieldsCC extends Component {
 								type="number"
 								step="0.000001"
 								value={this.props.state.latitude}
-								onChange={this.props.onChange}
+								onChange={this.handleLatFieldChange}
 								floatingLabel="Latitude"/>
-							<Textfield
+							<CoordinateFieldCC
 								required
 								helptext="Longitude value must between -180 and 180"
 								helptextValidation
@@ -53,7 +63,7 @@ class SelectFieldsCC extends Component {
 								type="number"
 								step="0.000001"
 								value={this.props.state.longitude}
-								onChange={this.props.onChange}
+								onChange={this.handleLongFieldChange}
 								floatingLabel="Longitude"/>
 						</Cell>
 						<Cell col={10}>
