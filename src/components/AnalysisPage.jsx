@@ -43,7 +43,7 @@ class AnalysisPage extends Component {
 	}
 
 	async runAnalysis() {
-		console.log("hello world");
+		
 		const datawolfURL = 'http://covercrop.ncsa.illinois.edu:8888/datawolf';
 
 		const authorization = 'Basic ' + btoa("cmnavarr@illinois.edu:test1234");
@@ -53,14 +53,20 @@ class AnalysisPage extends Component {
 		};
 
 		const executionRequest = {
-			"workflowId" : "105304d1-1fd8-49bc-8d2f-392cf9df7c6a",
+			"workflowId" : "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
-			"title" : "test-dssat-run-2",
-			"parameters" : {"862bcb76-7697-4f6a-df1f-adbebe5d9005": "1"},
+			"title" : "dssat-batch-run",
+			"parameters" : {
+				"99ccbe44-318c-4207-f436-57cc2c72bc93" : "field-latitude",
+				"6c58dacf-0cc9-438b-a8f6-6e8d10a13f5f" : "field-longitude",
+				"64062385-26be-4f79-de58-3892312533b4" : "db-password",
+				"605985ea-2e91-4c16-ac8b-e3e5e67a6e14" : "db-user",
+				"687efc8a-9055-4fab-b91b-25c44f0c6724" : "field-latitude",
+				"23a0962a-0548-4b85-c183-c17ad45326fc" : "field-longitude"
+			},
 			"datasets" : {
-				"07e5ba37-c33d-4a80-a713-744328066cdb" : "9f1e56b0-2e92-4b0b-94b4-c39f4344c509",
-				"9ebd5ee1-8f2f-475a-e559-e4656a3d91fd" : "2b9e4ec5-8328-4179-9b40-d1b5440c86ed",
-				"8736b559-5ca5-4b22-a409-eba0f3f579c4" : "8fa3cc39-51c7-4ecc-879d-d0b7c96d7a42"
+				"323c6613-4037-476c-9b9c-f51ba0940eaf" : "5d1399f9-7068-4bd7-8cf0-aceb52febbf4",
+				"7db036bf-019f-4c01-e58d-14635f6f799d" : "3813396e-5ab0-418c-8e8f-34eda231fadf"
 			}
 		};
 
@@ -86,7 +92,7 @@ class AnalysisPage extends Component {
 		});
 
 		const analysisResult = await executionResponse.json();
-		const datasetResultGUID = analysisResult.datasets["34d4fe3c-47d6-4991-df82-1bdae7534ded"];
+		const datasetResultGUID = analysisResult.datasets["8ba31e5e-f343-4c9b-c41c-656b9f66b417"];
 
 		console.log("result dataset = "+datasetResultGUID);
 
