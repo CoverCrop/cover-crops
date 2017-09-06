@@ -44,7 +44,7 @@ class AnalysisPage extends Component {
 
 	async runAnalysis() {
 		
-		const datawolfURL = 'http://covercrop.ncsa.illinois.edu:8888/datawolf';
+		const datawolfURL = 'https://covercrop.ncsa.illinois.edu/datawolf';
 
 		const authorization = 'Basic ' + btoa("cmnavarr@illinois.edu:test1234");
 
@@ -57,12 +57,10 @@ class AnalysisPage extends Component {
 			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 			"title" : "dssat-batch-run",
 			"parameters" : {
-				"99ccbe44-318c-4207-f436-57cc2c72bc93" : "field-latitude",
-				"6c58dacf-0cc9-438b-a8f6-6e8d10a13f5f" : "field-longitude",
-				"64062385-26be-4f79-de58-3892312533b4" : "db-password",
-				"605985ea-2e91-4c16-ac8b-e3e5e67a6e14" : "db-user",
 				"687efc8a-9055-4fab-b91b-25c44f0c6724" : "field-latitude",
-				"23a0962a-0548-4b85-c183-c17ad45326fc" : "field-longitude"
+				"23a0962a-0548-4b85-c183-c17ad45326fc" : "field-longitude",
+				"76a57476-094f-4331-f59f-0865f1341108" : "field-latitude",
+				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : "field-longitude"
 			},
 			"datasets" : {
 				"323c6613-4037-476c-9b9c-f51ba0940eaf" : "5d1399f9-7068-4bd7-8cf0-aceb52febbf4",
@@ -83,7 +81,7 @@ class AnalysisPage extends Component {
 		console.log("execution id = "+executionGUID);
 
 		// Wait until execution is complete
-		await wait(4000);
+		await wait(6000);
 
 		// Get Execution Result
 		const executionResponse = await fetch(datawolfURL + "/executions/" + executionGUID, {
