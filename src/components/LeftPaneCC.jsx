@@ -39,7 +39,6 @@ class LeftPaneCC extends Component {
 			return <CoverCropCard
 				className="cover-crop-card"
 				cardId={this.props.cards[cardIndex].cardId}
-				onClick={this.handleClick.bind(this, cardIndex)}
 				cardTitle={this.props.cards[cardIndex].cardTitle}
 				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>;
 		}
