@@ -8,6 +8,7 @@ class SelectFieldsCC extends Component {
 		super(props);
 		this.handleLatFieldChange = this.handleLatFieldChange.bind(this);
 		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
 
 	handleLatFieldChange(e) {
@@ -18,13 +19,24 @@ class SelectFieldsCC extends Component {
 		this.props.handleLongFieldChange(e.target.value)
 	}
 
-	handleContinue(){
-
+	handleSubmit(event){
+		event.preventDefault();
+		if (this.props.state.longitude !== "" && this.props.state.latitude !== "") {
+			console.log(this.props.state.longitude + " " + this.props.state.latitude);
+			let cardData = {
+				cardTitle: "Selected Fields",
+				cardSubtitle: "Latitude: " + this.props.state.latitude + "° " + "Longitude: " + this.props.state.longitude + "° "
+			};
+				this.props.handleCardChange(0, 1, cardData);
+		}
+		else {
+			console.log("Choose coordinates.");
+		}
 	}
 
 	render(){
 		return(
-			<div>
+			<form onSubmit={this.handleSubmit}>
 				{/*Start: hidden for the time being*/}
 				<select hidden multiple size="3" className="mdc-multi-select mdc-list multiple-select-cc" >
 					<option className="mdc-list-item">
@@ -50,7 +62,6 @@ class SelectFieldsCC extends Component {
 						<Cell col={2}>
 							<CoordinateFieldCC
 								helptext="Latitude value must between -90 and 90"
-								helptextValidation
 								min="-90"
 								max="90"
 								type="number"
@@ -61,7 +72,6 @@ class SelectFieldsCC extends Component {
 							<CoordinateFieldCC
 								required
 								helptext="Longitude value must between -180 and 180"
-								helptextValidation
 								min="-180"
 								max="180"
 								type="number"
@@ -69,14 +79,14 @@ class SelectFieldsCC extends Component {
 								value={this.props.state.longitude}
 								onChange={this.handleLongFieldChange}
 								floatingLabel="Longitude"/>
-							<Button raised primary onClick={this.handleContinue}>Continue</Button>
+							<Button type="submit" raised primary>Continue</Button>
 						</Cell>
 						<Cell col={10}>
 							{/*Placeholder for map*/}
 						</Cell>
 					</Cell>
 				</Grid>
-			</div>
+			</form>
 		)
 	}
 }

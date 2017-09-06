@@ -9,7 +9,7 @@ class AnalysisPage extends Component {
 
 	constructor(props) {
 		super(props);
-		this.cards = [
+		this.initCards = [
 			{
 				cardId: "selectField",
 				cardTitle: "Select Field",
@@ -32,7 +32,8 @@ class AnalysisPage extends Component {
 			latitude: "",
 			longitude: "",
 			startDate: 0,
-			endDate: 0
+			endDate: 0,
+			cards: this.initCards
 		};
 
 		this.handleCardClick= this.handleCardClick.bind(this);
@@ -40,6 +41,7 @@ class AnalysisPage extends Component {
 		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
+		this.handleCardChange = this.handleCardChange.bind(this);
 	}
 
 	handleCardClick(selectedCardIndex){
@@ -73,8 +75,17 @@ class AnalysisPage extends Component {
 		});
 	}
 
-	handleContinue() {
+	handleCardChange(oldCardIndex, newCardIndex, oldCardData) {
+		let updatedCards = this.initCards;
+		let card = updatedCards[oldCardIndex];
+		card.cardTitle = oldCardData.cardTitle;
+		card.cardSubtitle = oldCardData.cardSubtitle;
+		updatedCards[oldCardIndex] = card;
 
+		this.setState({
+			activeCardIndex: newCardIndex,
+			cards: updatedCards
+		});
 	}
 
 	render() {
@@ -86,7 +97,7 @@ class AnalysisPage extends Component {
 					<Grid >
 						<Cell col={2}>
 							<LeftPaneCC
-								cards={this.cards}
+								cards={this.state.cards}
 								activeCardIndex={this.state.activeCardIndex}
 								handleCardClick={this.handleCardClick}/>
 						</Cell>
@@ -98,6 +109,7 @@ class AnalysisPage extends Component {
 								handleLongFieldChange={this.handleLongFieldChange}
 								handleStartDateChange={this.handleStartDateChange}
 								handleEndDateChange={this.handleEndDateChange}
+								handleCardChange={this.handleCardChange}
 							/>
 						</Cell>
 					</Grid>

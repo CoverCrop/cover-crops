@@ -12,6 +12,7 @@ class RightPaneCC extends Component {
 		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
+		this.handleCardChange = this.handleCardChange.bind(this);
 
 	}
 
@@ -31,6 +32,10 @@ class RightPaneCC extends Component {
 		this.props.handleEndDateChange(date)
 	}
 
+	handleCardChange(oldCardIndex, newCardIndex, oldCardData) {
+		this.props.handleCardChange(oldCardIndex, newCardIndex, oldCardData);
+	}
+
 	render(){
 
 		let displayComponent = null;
@@ -42,7 +47,8 @@ class RightPaneCC extends Component {
 					<SelectFieldsCC
 						state={this.props.state}
 						handleLatFieldChange={this.handleLatFieldChange}
-						handleLongFieldChange={this.handleLongFieldChange}/>;
+						handleLongFieldChange={this.handleLongFieldChange}
+						handleCardChange={this.handleCardChange}/>;
 				break;
 
 			case 1:
