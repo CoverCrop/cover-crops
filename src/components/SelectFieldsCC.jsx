@@ -1,6 +1,7 @@
 import React, {Component} from "react";
-import {Button, Textfield, Body1, Grid, Cell} from "react-mdc-web"
+import {Button, Textfield, Body1, Grid, Cell} from "react-mdc-web";
 import CoordinateFieldCC from "./CoordinateFieldCC";
+import MapCC from "./MapCC";
 
 class SelectFieldsCC extends Component {
 
@@ -58,32 +59,30 @@ class SelectFieldsCC extends Component {
 				{/*End: hidden for the time being*/}
 
 				<Grid>
-					<Cell col={12}>
-						<Cell col={2}>
-							<CoordinateFieldCC
-								helptext="Latitude value must between -90 and 90"
-								min="-90"
-								max="90"
-								type="number"
-								step="0.000001"
-								value={this.props.state.latitude}
-								onChange={this.handleLatFieldChange}
-								floatingLabel="Latitude"/>
-							<CoordinateFieldCC
-								required
-								helptext="Longitude value must between -180 and 180"
-								min="-180"
-								max="180"
-								type="number"
-								step="0.000001"
-								value={this.props.state.longitude}
-								onChange={this.handleLongFieldChange}
-								floatingLabel="Longitude"/>
-							<Button type="submit" raised primary>Continue</Button>
-						</Cell>
-						<Cell col={10}>
-							{/*Placeholder for map*/}
-						</Cell>
+					<Cell col={2}>
+						<CoordinateFieldCC
+							helptext="Latitude value must between -90 and 90"
+							min="-90"
+							max="90"
+							type="number"
+							step="0.000001"
+							value={this.props.state.latitude}
+							onChange={this.handleLatFieldChange}
+							floatingLabel="Latitude"/>
+						<CoordinateFieldCC
+							required
+							helptext="Longitude value must between -180 and 180"
+							min="-180"
+							max="180"
+							type="number"
+							step="0.000001"
+							value={this.props.state.longitude}
+							onChange={this.handleLongFieldChange}
+							floatingLabel="Longitude"/>
+						<Button type="submit" raised primary>Continue</Button>
+					</Cell>
+					<Cell col={10}>
+						<MapCC mapId="map"/>
 					</Cell>
 				</Grid>
 			</form>
