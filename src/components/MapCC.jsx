@@ -40,7 +40,8 @@ class MapCC extends Component {
 							url: 'http://covercrop.ncsa.illinois.edu:9999/geoserver/wms',
 							params: {'LAYERS': 'covercrop:clu', 'TILED': true},
 							serverType: 'geoserver'
-						})
+						}),
+						opacity: 0.7
 					}),
 					this.marker
 				],
@@ -57,7 +58,15 @@ class MapCC extends Component {
 
 	handleClick(e) {
 		this.dropMarker(e.coordinate);
-		console.log(ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+		let lonLatCoordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+		// Format number to a string with 6 digits after decimal point
+		lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
+		lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
+
+		this.props.onMapClick(lonLatCoordinates);
+		console.log(lonLatCoordinates);
 	}
 
 	dropMarker(coordinate) {

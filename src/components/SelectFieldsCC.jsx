@@ -10,6 +10,7 @@ class SelectFieldsCC extends Component {
 		this.handleLatFieldChange = this.handleLatFieldChange.bind(this);
 		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.handleMapClick = this.handleMapClick.bind(this);
 	}
 
 	handleLatFieldChange(e) {
@@ -33,6 +34,11 @@ class SelectFieldsCC extends Component {
 		else {
 			console.log("Choose coordinates.");
 		}
+	}
+
+	handleMapClick(lonLatCoordinates){
+		this.props.handleLatFieldChange(lonLatCoordinates[1]);
+		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 	}
 
 	render(){
@@ -82,7 +88,7 @@ class SelectFieldsCC extends Component {
 						<Button type="submit" raised primary>Continue</Button>
 					</Cell>
 					<Cell col={10}>
-						<MapCC mapId="map"/>
+						<MapCC onMapClick={this.handleMapClick} mapId="map"/>
 					</Cell>
 				</Grid>
 			</form>
