@@ -33,7 +33,9 @@ class AnalysisPage extends Component {
 			longitude: "",
 			startDate: 0,
 			endDate: 0,
-			cards: this.initCards
+			cards: this.initCards,
+			resultText: "",
+			executionId: ""
 		};
 
 		this.handleCardClick= this.handleCardClick.bind(this);
@@ -42,6 +44,7 @@ class AnalysisPage extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCardChange = this.handleCardChange.bind(this);
+		this.handleResults = this.handleResults.bind(this);
 	}
 
 	handleCardClick(selectedCardIndex){
@@ -88,6 +91,13 @@ class AnalysisPage extends Component {
 		});
 	}
 
+	handleResults(executionId, resultText) {
+		this.setState({
+			resultText: resultText,
+			executionId: executionId
+		});
+	}
+
 	render() {
 		return (
 			<div>
@@ -110,6 +120,7 @@ class AnalysisPage extends Component {
 								handleStartDateChange={this.handleStartDateChange}
 								handleEndDateChange={this.handleEndDateChange}
 								handleCardChange={this.handleCardChange}
+								handleResults={this.handleResults}
 							/>
 						</Cell>
 					</Grid>

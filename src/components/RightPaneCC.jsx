@@ -13,6 +13,7 @@ class RightPaneCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCardChange = this.handleCardChange.bind(this);
+		this.handleResults = this.handleResults.bind(this);
 
 	}
 
@@ -36,6 +37,10 @@ class RightPaneCC extends Component {
 		this.props.handleCardChange(oldCardIndex, newCardIndex, oldCardData);
 	}
 
+	handleResults(executionId, resultText) {
+		this.props.handleResults(executionId, resultText);
+	}
+
 	render(){
 
 		let displayComponent = null;
@@ -56,11 +61,13 @@ class RightPaneCC extends Component {
 					<RunSimulationCC
 						state={this.props.state}
 						handleStartDateChange={this.handleStartDateChange}
-						handleEndDateChange={this.handleEndDateChange}/>;
+						handleEndDateChange={this.handleEndDateChange}
+						handleResults={this.handleResults}
+						handleCardChange={this.handleCardChange}/>;
 				break;
 
 			case 2:
-				displayComponent = <ViewResultsCC/>;
+				displayComponent = <ViewResultsCC state={this.props.state}/>;
 				break;
 
 			case null:

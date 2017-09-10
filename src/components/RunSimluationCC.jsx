@@ -13,6 +13,11 @@ class RunSimulationCC extends Component {
 		this.runSimulation = this.runSimulation.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
+
+		this.state = {
+			executionId: "",
+			resultText: ""
+		};
 	}
 
 	async runSimulation() {
@@ -49,7 +54,7 @@ class RunSimulationCC extends Component {
 		});
 
 		const executionGUID = await createExecutionResponse.text();
-		console.log("execution id = "+executionGUID);
+		console.log("execution id = " + executionGUID);
 
 		// Wait until execution is complete
 		await wait(6000);
@@ -72,7 +77,14 @@ class RunSimulationCC extends Component {
 		});
 
 		const resultDataset = await response.json();
-		const fileDescriptorGUID = resultDataset.fileDescriptors[0].id;
+		let fileDescriptorGUID = -1;
+
+		for (let i=0; i < resultDataset.fileDescriptors.length; i++) {
+			if (resultDataset.fileDescriptors[i].filename === "PlantGro.OUT") {
+				fileDescriptorGUID = resultDataset.fileDescriptors[i].id;
+				break;
+			}
+		}
 
 		// Get - Result File Download
 		const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetResultGUID + "/" + fileDescriptorGUID + "/file",
@@ -84,11 +96,24 @@ class RunSimulationCC extends Component {
 		const resultFile = await fileDownloadResponse.text();
 		console.log("result file = " + resultFile);
 
-		// this.setState({
-		// 	text: resultFile,
-		// });
+		this.setState({
+			resultText: resultFile,
+			executionId: executionGUID
+		});
 
 		console.log(analysisResult);
+
+		if (this.state.executionId !== "") {
+			let cardData = {
+				cardTitle: "Completed Simulation",
+				cardSubtitle: "Execution ID: " + this.state.executionId
+			};
+			this.props.handleResults(this.state.executionId, this.state.resultText);
+			this.props.handleCardChange(1, 2, cardData);
+		}
+		else {
+			console.log("Execution ID wasn't generated.");
+		}
 
 		// const datasetGet = await fetch(datawolfURL + '/workflows', {
 		// 	method: 'GET',
