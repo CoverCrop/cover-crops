@@ -25,24 +25,24 @@ class ViewResultsCC extends Component {
 
 	render(){
 
-		let resultParas = [];
-		let splitString = "*DSSAT";
-		let resultArray = this.props.state.resultText.split(splitString);
-
-		for (let i=0; i < resultArray.length; i++) {
-			if (i === 0) {
-				resultParas.push(<p key={i}>{resultArray[i]}<br/><br/></p>);
-			}
-			else {
-				resultParas.push(<p key={i}>{splitString} {resultArray[i]}<br/><br/></p>);
-			}
-		}
+		// let resultParas = [];
+		// let splitString = "*DSSAT";
+		// let resultArray = this.props.state.resultText.split(splitString);
+        //
+		// for (let i=0; i < resultArray.length; i++) {
+		// 	if (i === 0) {
+		// 		resultParas.push(<p key={i}>{resultArray[i]}<br/><br/></p>);
+		// 	}
+		// 	else {
+		// 		resultParas.push(<p key={i}>{splitString} {resultArray[i]}<br/><br/></p>);
+		// 	}
+		// }
 
 		return(
 			<div>
 				<h1>Results</h1>
 				<br/>
-				<div>{resultParas}</div>
+				<pre>{this.props.state.resultText}</pre>
 			</div>
 		)
 	}
