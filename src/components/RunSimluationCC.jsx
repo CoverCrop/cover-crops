@@ -16,11 +16,27 @@ class RunSimulationCC extends Component {
 
 		this.state = {
 			executionId: "",
-			resultText: ""
+			resultText: "",
+			simulationStatus: "",
+			runSimulationButtonDisabled: false
 		};
 	}
 
 	async runSimulation() {
+
+		let status = "STARTED";
+		this.setState({
+			simulationStatus: status,
+			runSimulationButtonDisabled: true
+		});
+
+		// Update status
+		let cardData = {
+			cardTitle: this.props.state.cards[1].cardTitle,
+			cardSubtitle: "Status: " + status
+		};
+		this.props.handleCardChange(1, 1, cardData);
+
 		const datawolfURL = 'https://covercrop.ncsa.illinois.edu/datawolf';
 
 		let headers = {
@@ -103,8 +119,21 @@ class RunSimulationCC extends Component {
 
 		console.log(analysisResult);
 
+		status = "COMPLETED";
+		this.setState({
+			simulationStatus: status,
+			runSimulationButtonDisabled: false
+		});
+
+		// Update status
+		cardData = {
+			cardTitle: this.props.state.cards[1].cardTitle,
+			cardSubtitle: "Status: " + status
+		};
+		this.props.handleCardChange(1, 1, cardData);
+
 		if (this.state.executionId !== "") {
-			let cardData = {
+			cardData = {
 				cardTitle: "Completed Simulation",
 				cardSubtitle: "Execution ID: " + this.state.executionId
 			};
@@ -134,6 +163,7 @@ class RunSimulationCC extends Component {
 	}
 
 	render(){
+		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		return(
 			<div>
 				<DatePickerCC
@@ -149,7 +179,7 @@ class RunSimulationCC extends Component {
 					placeholderText="Select an end date"
 					onChange={this.handleEndDateChange}/>
 				<br/>
-				<Button raised primary onClick={this.runSimulation}>Run Simulation</Button>
+				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
 			</div>
 		)
 	}
