@@ -6,7 +6,7 @@ class MapCC extends Component {
 
 	constructor(props) {
 		super(props);
-		this.defaultCenter = ol.proj.fromLonLat([-88.213511, 40.121686]); //[-9822960.723442, 4882854.694628];
+		this.defaultCenter = ol.proj.fromLonLat([-88.235667, 40.168313]);
 		this.defaultZoom = 16;
 
 		this.iconStyle = new ol.style.Style({
