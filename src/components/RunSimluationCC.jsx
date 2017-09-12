@@ -167,16 +167,16 @@ class RunSimulationCC extends Component {
 		return(
 			<div>
 				<DatePickerCC
-					label="Start Date: "
+					label="Planting Date: "
 					state={this.props.state}
 					startDate
-					placeholderText="Select a start date"
+					placeholderText="Select a planting date"
 					onChange={this.handleStartDateChange}/>
 				<DatePickerCC
-					label="End Date: "
+					label="Termination Date: "
 					state={this.props.state}
 					endDate
-					placeholderText="Select an end date"
+					placeholderText="Select a termination date"
 					onChange={this.handleEndDateChange}/>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
