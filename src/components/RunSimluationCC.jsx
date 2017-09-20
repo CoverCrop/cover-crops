@@ -54,8 +54,12 @@ class RunSimulationCC extends Component {
 				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.state.longitude
 			},
 			"datasets" : {
-				"323c6613-4037-476c-9b9c-f51ba0940eaf" : "5d1399f9-7068-4bd7-8cf0-aceb52febbf4",
-				"7db036bf-019f-4c01-e58d-14635f6f799d" : "3813396e-5ab0-418c-8e8f-34eda231fadf"
+				// Without cover crop
+				// "323c6613-4037-476c-9b9c-f51ba0940eaf" : "5d1399f9-7068-4bd7-8cf0-aceb52febbf4", // ILWO1101.SQX
+				// "7db036bf-019f-4c01-e58d-14635f6f799d" : "3813396e-5ab0-418c-8e8f-34eda231fadf" // DSSBatch-nocover.v46
+				// With cover crop
+				"323c6613-4037-476c-9b9c-f51ba0940eaf" : "d19c89f7-ae89-4d3a-b0de-393fea0b6454", // ILLT1101.SQX
+				"7db036bf-019f-4c01-e58d-14635f6f799d" : "f405c6c1-7180-4f03-be91-42b82550085c" // DSSBatch.v46
 			}
 		};
 
@@ -80,6 +84,8 @@ class RunSimulationCC extends Component {
 			method: 'GET',
 			headers: headers,
 		});
+
+		console.log("Execution response: " + executionResponse);
 
 		const analysisResult = await executionResponse.json();
 		const datasetResultGUID = analysisResult.datasets["8ba31e5e-f343-4c9b-c41c-656b9f66b417"];

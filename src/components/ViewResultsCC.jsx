@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import {Button, Textfield, Body1} from "react-mdc-web"
+import ChartCC from "./ChartCC";
 
 class ViewResultsCC extends Component {
 
@@ -42,7 +43,8 @@ class ViewResultsCC extends Component {
 			<div>
 				<h1>Results</h1>
 				<br/>
-				<pre>{this.props.state.resultText}</pre>
+				<ChartCC/>
+				{/*<pre>{this.props.state.resultText}</pre>*/}
 			</div>
 		)
 	}
