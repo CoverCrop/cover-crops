@@ -22,7 +22,7 @@ class RunSimulationCC extends Component {
 
 		this.state = {
 			executionId: "",
-			resultText: "",
+			resultJson: null,
 			simulationStatus: "",
 			runSimulationButtonDisabled: false
 		};
@@ -124,7 +124,7 @@ class RunSimulationCC extends Component {
 			console.log(resultFile);
 
 			this.setState({
-				resultText: resultFile,
+				resultJson: resultFile,
 				executionId: executionGUID
 			});
 
@@ -148,7 +148,7 @@ class RunSimulationCC extends Component {
 					cardTitle: "Completed Simulation",
 					cardSubtitle: "Execution ID: " + this.state.executionId
 				};
-				this.props.handleResults(this.state.executionId, this.state.resultText);
+				this.props.handleResults(this.state.executionId, this.state.resultJson);
 				this.props.handleCardChange(1, 2, cardData);
 			}
 			else {

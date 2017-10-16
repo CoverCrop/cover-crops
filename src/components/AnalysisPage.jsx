@@ -34,7 +34,7 @@ class AnalysisPage extends Component {
 			startDate: 0,
 			endDate: 0,
 			cards: this.initCards,
-			resultText: "",
+			resultJson: null,
 			executionId: ""
 		};
 
@@ -91,9 +91,9 @@ class AnalysisPage extends Component {
 		});
 	}
 
-	handleResults(executionId, resultText) {
+	handleResults(executionId, resultJson) {
 		this.setState({
-			resultText: resultText,
+			resultJson: resultJson,
 			executionId: executionId
 		});
 	}

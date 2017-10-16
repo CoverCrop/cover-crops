@@ -37,8 +37,8 @@ class RightPaneCC extends Component {
 		this.props.handleCardChange(oldCardIndex, newCardIndex, oldCardData);
 	}
 
-	handleResults(executionId, resultText) {
-		this.props.handleResults(executionId, resultText);
+	handleResults(executionId, resultJson) {
+		this.props.handleResults(executionId, resultJson);
 	}
 
 	render(){

@@ -5,6 +5,129 @@ class ChartCC extends Component {
 
 	constructor(props) {
 		super(props);
+		this.generateCharts = this.generateCharts.bind(this);
+		this.generateColors = this.generateColors.bind(this);
+		this.colorsWithAlpha = [];
+		this.colorsWithoutAlpha = [];
+
+		this.generateColors();
+	}
+
+	generateColors() {
+
+		const colorPalette = require('nice-color-palettes');
+		const hexToRgba = require("hex-to-rgba");
+
+		for (let colorIndex = 0; colorIndex < colorPalette["length"]; colorIndex++) {
+			this.colorsWithAlpha.push(hexToRgba(colorPalette[colorIndex].toString(), 0.4));
+			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorIndex].toString(), 1));
+		}
+	}
+
+	generateCharts() {
+
+		let labelArray = ['2009-07-01', '2010-04-01', '2010-07-01', '2011-04-01', '2011-07-01', '2012-01-01', '2012-07-01', '2013-01-01', '2013-07-01', '2013-12-01'];
+		let resultHtml = [];
+		let colorIndex = 0;
+
+		if (this.props.hasOwnProperty("chartDataArray")) {
+			// Iterate over each chart
+			for (let dataIndex = 0; dataIndex < this.props["chartDataArray"].length; dataIndex++) {
+				let chartRawData = this.props["chartDataArray"][dataIndex];
+
+				// Set chart options
+				let chartOptions = {
+					title: {
+						text: chartRawData.title,
+						display: true
+					},
+					scales: {
+						xAxes: [{
+							scaleLabel: {
+								display: true,
+								labelString: chartRawData.xAxis
+							},
+							gridLines: {
+								lineWidth: 2
+							},
+							type: 'time',
+							time: {
+								unit: chartRawData.xAxisUnit.toLowerCase(),
+								unitStepSize: 4,
+								displayFormats: {
+									month: 'YYYY MMM',
+								},
+								tooltipFormat: 'MM/DD/YYYY'
+							}
+						}],
+						yAxes: [{
+							scaleLabel: {
+								display: true,
+								labelString: chartRawData.yAxis + ' (' + chartRawData.yAxisUnit + ')'
+							}
+						}],
+					}
+				};
+
+				let rawDatasets = chartRawData.datasets;
+				let parsedDatasets = [];
+
+				// Iterate over each dataset in the chart
+				for (let datasetIndex = 0; datasetIndex < rawDatasets.length; datasetIndex++) {
+
+					let rawData = rawDatasets[datasetIndex].data;
+					let parsedData = [];
+
+					// Generate data to be added to the dataset
+					for (let dataIndex = 0; dataIndex < rawData.length; dataIndex++) {
+						// TODO: Remove the if condition. Temporary fix till server-side bug is fixed.
+						if (!(chartRawData.title === "Carbon : Nitrogen" && dataIndex === 0)) {
+							parsedData.push({
+								x: new Date(rawData[dataIndex].YEAR, 0, rawData[dataIndex].DOY),
+								y: rawData[dataIndex].value
+							})
+						}
+					}
+
+					// Create dataset object with appropriate options and data
+					let dataset = {
+						label: rawDatasets[datasetIndex].dataset_label,
+						fill: false,
+						lineTension: 0.1,
+						backgroundColor: this.colorsWithAlpha[colorIndex],
+						borderColor: this.colorsWithoutAlpha[colorIndex],
+						borderCapStyle: 'butt',
+						borderDash: [10, 5],
+						borderDashOffset: 0.0,
+						borderJoinStyle: 'miter',
+						pointBorderColor: this.colorsWithoutAlpha[colorIndex],
+						pointBackgroundColor: '#fff',
+						pointBorderWidth: 1,
+						pointHoverRadius: 5,
+						pointHoverBackgroundColor: this.colorsWithoutAlpha[colorIndex],
+						pointHoverBorderColor: this.colorsWithoutAlpha[colorIndex],
+						pointHoverBorderWidth: 2,
+						pointRadius: 1,
+						pointHitRadius: 10,
+						data: parsedData
+					};
+
+					parsedDatasets.push(dataset);
+					colorIndex++;
+
+				}
+
+				let chartData = {
+					labels: labelArray,
+					datasets: parsedDatasets
+				};
+
+				resultHtml.push(<Line key={"line-" + dataIndex} data={chartData} options={chartOptions}/>);
+				resultHtml.push(<hr key={"hr-" + dataIndex}/>);
+				resultHtml.push(<br key={"br-" + dataIndex}/>);
+			}
+		}
+		return resultHtml;
 	}
 
 	render() {
@@ -1937,12 +2060,7 @@ class ChartCC extends Component {
 		};
 
 		return (
-			<div>
-				<Line data={dataPlantGrowth} options={optionsPlantGrowth} />
-				<hr/>
-				<br/>
-				<Line data={dataNitrogenConsumption} options={optionsNitrogenConsumption} />
-			</div>
+			<div>{this.generateCharts()}</div>
 		)
 	}
 
