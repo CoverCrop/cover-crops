@@ -14,7 +14,7 @@ class ViewResultsCC extends Component {
 			<div>
 				<h1>Results</h1>
 				<br/>
-				<ChartCC chartDataArray={this.props.state.resultJson.charts}/>
+				<ChartCC withCoverCropChartDataArray={this.props.state.withCoverCropResultJson.charts} withoutCoverCropChartDataArray={this.props.state.withoutCoverCropResultJson.charts}/>
 			</div>
 		)
 	}

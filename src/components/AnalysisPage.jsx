@@ -34,8 +34,10 @@ class AnalysisPage extends Component {
 			startDate: 0,
 			endDate: 0,
 			cards: this.initCards,
-			resultJson: null,
-			executionId: ""
+			withCoverCropResultJson: null,
+			withCoverCropExecutionId: "",
+			withoutCoverCropResultJson: null,
+			withoutCoverCropExecutionId: ""
 		};
 
 		this.handleCardClick= this.handleCardClick.bind(this);
@@ -91,10 +93,12 @@ class AnalysisPage extends Component {
 		});
 	}
 
-	handleResults(executionId, resultJson) {
+	handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) {
 		this.setState({
-			resultJson: resultJson,
-			executionId: executionId
+			withCoverCropExecutionId: withCoverCropExecutionId,
+			withCoverCropResultJson: withCoverCropResultJson,
+			withoutCoverCropExecutionId: withoutCoverCropExecutionId,
+			withoutCoverCropResultJson: withoutCoverCropResultJson
 		});
 	}
 

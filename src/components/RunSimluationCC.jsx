@@ -21,8 +21,10 @@ class RunSimulationCC extends Component {
 		};
 
 		this.state = {
-			executionId: "",
-			resultJson: null,
+			withCoverCropExecutionId: "",
+			withCoverCropResultJson: null,
+			withoutCoverCropExecutionId: "",
+			withoutCoverCropResultJson: null,
 			simulationStatus: "",
 			runSimulationButtonDisabled: false
 		};
@@ -49,7 +51,7 @@ class RunSimulationCC extends Component {
 			// Add authorization here
 		};
 
-		const executionRequest = {
+		const withCoverCropExecutionRequest = {
 			"workflowId" : "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 			"title" : "dssat-batch-run",
@@ -66,69 +68,139 @@ class RunSimulationCC extends Component {
 			}
 		};
 
-		let createExecutionResponse = await fetch(datawolfURL + "/executions", {
+		const withoutCoverCropExecutionRequest = {
+			"workflowId" : "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
+			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
+			"title" : "dssat-batch-run",
+			"parameters" : {
+				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.state.latitude,
+				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.state.longitude,
+				"76a57476-094f-4331-f59f-0865f1341108" : this.props.state.latitude,
+				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.state.longitude
+			},
+			"datasets" : {
+				// With cover crop
+				"323c6613-4037-476c-9b9c-f51ba0940eaf" : this.parameters.soilWithoutCoverCrop,
+				"7db036bf-019f-4c01-e58d-14635f6f799d" : this.parameters.modelWithoutCoverCrop
+			}
+		};
+
+		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
 			headers: {
 				// Add authorization here
 				'Content-Type': 'application/json',
 				'Access-Control-Origin': 'http://localhost:3000'
 			},
-			body: JSON.stringify(executionRequest)
+			body: JSON.stringify(withCoverCropExecutionRequest)
 		});
 
-		const executionGUID = await createExecutionResponse.text();
-		console.log("execution id = " + executionGUID);
+		let withoutCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
+			method: 'POST',
+			headers: {
+				// Add authorization here
+				'Content-Type': 'application/json',
+				'Access-Control-Origin': 'http://localhost:3000'
+			},
+			body: JSON.stringify(withoutCoverCropExecutionRequest)
+		});
+
+		const withCoverCropExecutionGUID = await withCoverCropCreateExecutionResponse.text();
+		const withoutCoverCropExecutionGUID = await withoutCoverCropCreateExecutionResponse.text();
+
+		console.log("With cover crop execution id = " + withCoverCropExecutionGUID);
+		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
 		// Wait until execution is complete
 		await wait(6000);
 
 		// Get Execution Result
-		const executionResponse = await fetch(datawolfURL + "/executions/" + executionGUID, {
+		const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
 			method: 'GET',
 			headers: headers,
 		});
 
-		console.log("Execution response: " + executionResponse);
+		const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
+			method: 'GET',
+			headers: headers,
+		});
 
-		const analysisResult = await executionResponse.json();
-		const datasetResultGUID = analysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
+		console.log("With cover crop execution response: " + withCoverCropExecutionResponse.toString());
+		console.log("Without cover crop Execution Response: " + withoutCoverCropExecutionResponse.toString());
 
-		console.log("result dataset = " + datasetResultGUID);
+		const withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
+		const withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
 
-		if (datasetResultGUID !== "ERROR") {
+		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
+		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
+
+		console.log("result dataset = " + withCoverCropDatasetResultGUID);
+		console.log("result dataset = " + withoutCoverCropDatasetResultGUID);
+
+		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
+			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
+
 			// Get - Result Dataset
-			const response = await fetch(datawolfURL + "/datasets/" + datasetResultGUID, {
+			const withCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID, {
+				method: 'GET',
+				headers: headers,
+			});
+			const withoutCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID, {
 				method: 'GET',
 				headers: headers,
 			});
 
-			const resultDataset = await response.json();
-			let fileDescriptorGUID = -1;
+			const withCoverCropResultDataset = await withCoverCropResponse.json();
+			const withoutCoverCropResultDataset = await withoutCoverCropResponse.json();
 
-			for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
-				if (resultDataset.fileDescriptors[i].filename === "output.json") {
-					fileDescriptorGUID = resultDataset.fileDescriptors[i].id;
+			let withCoverCropFileDescriptorGUID = -1;
+			let withoutCoverCropFileDescriptorGUID = -1;
+
+			for (let i = 0; i < withCoverCropResultDataset.fileDescriptors.length; i++) {
+				if (withCoverCropResultDataset.fileDescriptors[i].filename === "output.json") {
+					withCoverCropFileDescriptorGUID = withCoverCropResultDataset.fileDescriptors[i].id;
+					break;
+				}
+			}
+
+			for (let i = 0; i < withoutCoverCropResultDataset.fileDescriptors.length; i++) {
+				if (withoutCoverCropResultDataset.fileDescriptors[i].filename === "output.json") {
+					withoutCoverCropFileDescriptorGUID = withoutCoverCropResultDataset.fileDescriptors[i].id;
 					break;
 				}
 			}
 
 			// Get - Result File Download
-			const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetResultGUID + "/" + fileDescriptorGUID + "/file",
+			const withCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID + "/" + withCoverCropFileDescriptorGUID + "/file",
 				{
 					method: 'GET',
 					headers: headers,
 				});
 
-			const resultFile = await fileDownloadResponse.json();
-			console.log("Result JSON: ");
-			console.log(resultFile);
+			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID + "/" + withoutCoverCropFileDescriptorGUID + "/file",
+				{
+					method: 'GET',
+					headers: headers,
+				});
+
+			const withCoverCropResultFile = await withCoverCropFileDownloadResponse.json();
+			const withoutCoverCropResultFile = await withoutCoverCropFileDownloadResponse.json();
+
+			//console.log("With Cover Crop Result JSON: ");
+			//console.log(withCoverCropResultFile);
+
+			//console.log("Without Cover Crop Result JSON: ");
+			//console.log(withoutCoverCropResultFile);
 
 			this.setState({
-				resultJson: resultFile,
-				executionId: executionGUID
+				withCoverCropResultJson: withCoverCropResultFile,
+				withCoverCropExecutionId: withCoverCropExecutionGUID,
+				withoutCoverCropResultJson: withoutCoverCropResultFile,
+				withoutCoverCropExecutionId: withoutCoverCropExecutionGUID
 			});
 
-			console.log(analysisResult);
+			//console.log(withCoverCropAnalysisResult);
+			//console.log(withoutCoverCropAnalysisResult);
 
 			status = "COMPLETED";
 			this.setState({
@@ -143,12 +215,17 @@ class RunSimulationCC extends Component {
 			};
 			this.props.handleCardChange(1, 1, cardData);
 
-			if (this.state.executionId !== "") {
+			if (this.state.withCoverCropExecutionId !== "" && this.state.withoutCoverCropExecutionId !== "") {
 				cardData = {
 					cardTitle: "Completed Simulation",
-					cardSubtitle: "Execution ID: " + this.state.executionId
+					cardSubtitle: "Execution IDs: " + this.state.withCoverCropExecutionId + " " + this.state.withoutCoverCropExecutionId
 				};
-				this.props.handleResults(this.state.executionId, this.state.resultJson);
+				this.props.handleResults(
+					this.state.withCoverCropExecutionId,
+					this.state.withCoverCropResultJson,
+					this.state.withoutCoverCropExecutionId,
+					this.state.withoutCoverCropResultJson
+				);
 				this.props.handleCardChange(1, 2, cardData);
 			}
 			else {
