@@ -112,7 +112,8 @@ class RunSimulationCC extends Component {
 		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
 		// Wait until execution is complete
-		await wait(6000);
+		// TODO: CCROP-35: Add code to check status of completion rather than waiting for a specified amount of time.
+		await wait(12000);
 
 		// Get Execution Result
 		const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
