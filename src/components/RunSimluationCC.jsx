@@ -125,17 +125,14 @@ class RunSimulationCC extends Component {
 			headers: headers,
 		});
 
-		console.log("With cover crop execution response: " + withCoverCropExecutionResponse.toString());
-		console.log("Without cover crop Execution Response: " + withoutCoverCropExecutionResponse.toString());
-
 		const withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
 		const withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
 
-		console.log("result dataset = " + withCoverCropDatasetResultGUID);
-		console.log("result dataset = " + withoutCoverCropDatasetResultGUID);
+		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
+		console.log("Without cover crop result dataset = " + withoutCoverCropDatasetResultGUID);
 
 		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {

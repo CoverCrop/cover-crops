@@ -21,7 +21,6 @@ class ChartCC extends Component {
 		const colorPaletteIndex = 6; // Specific palette to choose
 
 		for (let colorIndex = 0; colorIndex < colorPalette[colorPaletteIndex]["length"]; colorIndex++) {
-			console.log(colorPalette[colorPaletteIndex][colorIndex]);
 			this.colorsWithAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 0.4));
 			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 1));
 		}
@@ -172,6 +171,7 @@ class ChartCC extends Component {
 		this.generateCharts("withCoverCropChartDataArray", chartDataArray); // generate charts for with cover crop case
 		this.generateCharts("withoutCoverCropChartDataArray", chartDataArray); // generate charts for without cover crop case
 
+		console.log("Charts array: ")
 		console.log(chartDataArray);
 
 		// sort keys

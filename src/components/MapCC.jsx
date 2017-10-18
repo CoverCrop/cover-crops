@@ -66,7 +66,6 @@ class MapCC extends Component {
 		lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
 
 		this.props.onMapClick(lonLatCoordinates);
-		console.log(lonLatCoordinates);
 	}
 
 	dropMarker(coordinate) {
