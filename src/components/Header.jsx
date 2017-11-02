@@ -14,9 +14,11 @@ class Header extends Component {
 					</ToolbarSection>
 					<ToolbarSection>
 						<ToolbarTitle className="menu_items">
-							<Button><h3><Link onlyActiveOnIndex to="/">HOME</Link></h3></Button>
-							<Button><h3><Link onlyActiveOnIndex to="/analysis">ANALYSIS</Link></h3></Button>
-							<Button><h3><Link onlyActiveOnIndex to="/about">ABOUT</Link></h3></Button>
+							<Link onlyActiveOnIndex to="/">HOME</Link>
+							<span style={{fontSize: 25}}> | </span>
+							<Link onlyActiveOnIndex to="/analysis">ANALYSIS</Link>
+							<span style={{fontSize: 25}}> | </span>
+							<Link onlyActiveOnIndex to="/about">ABOUT</Link>
 						</ToolbarTitle>
 
 					</ToolbarSection>
