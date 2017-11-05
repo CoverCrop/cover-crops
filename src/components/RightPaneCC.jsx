@@ -14,6 +14,7 @@ class RightPaneCC extends Component {
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCardChange = this.handleCardChange.bind(this);
 		this.handleResults = this.handleResults.bind(this);
+		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
 
 	}
 
@@ -41,6 +42,10 @@ class RightPaneCC extends Component {
 		this.props.handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson);
 	}
 
+	handleFlexibleDatesChange(checked) {
+		this.props.handleFlexibleDatesChange(checked)
+	}
+
 	render(){
 
 		let displayComponent = null;
@@ -63,7 +68,8 @@ class RightPaneCC extends Component {
 						handleStartDateChange={this.handleStartDateChange}
 						handleEndDateChange={this.handleEndDateChange}
 						handleResults={this.handleResults}
-						handleCardChange={this.handleCardChange}/>;
+						handleCardChange={this.handleCardChange}
+						handleFlexibleDatesChange={this.handleFlexibleDatesChange}/>;
 				break;
 
 			case 2:

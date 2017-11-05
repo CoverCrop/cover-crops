@@ -37,7 +37,8 @@ class AnalysisPage extends Component {
 			withCoverCropResultJson: null,
 			withCoverCropExecutionId: "",
 			withoutCoverCropResultJson: null,
-			withoutCoverCropExecutionId: ""
+			withoutCoverCropExecutionId: "",
+			isFlexibleDatesChecked: false
 		};
 
 		this.handleCardClick= this.handleCardClick.bind(this);
@@ -47,6 +48,7 @@ class AnalysisPage extends Component {
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCardChange = this.handleCardChange.bind(this);
 		this.handleResults = this.handleResults.bind(this);
+		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
 	}
 
 	handleCardClick(selectedCardIndex){
@@ -102,6 +104,10 @@ class AnalysisPage extends Component {
 		});
 	}
 
+	handleFlexibleDatesChange(checked) {
+		this.setState({isFlexibleDatesChecked: checked});
+	}
+
 	render() {
 		return (
 			<div>
@@ -125,6 +131,7 @@ class AnalysisPage extends Component {
 								handleEndDateChange={this.handleEndDateChange}
 								handleCardChange={this.handleCardChange}
 								handleResults={this.handleResults}
+								handleFlexibleDatesChange={this.handleFlexibleDatesChange}
 							/>
 						</Cell>
 					</Grid>
