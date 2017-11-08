@@ -6,21 +6,17 @@ import {Button, Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, Grid, Cell, T
 class Header extends Component {
 
 	render() {
+		const active = {color: "#f13768"};
 		return (
 			<Toolbar>
 				<ToolbarRow>
 					<ToolbarSection className="menu_items" align="start">
 						<ToolbarTitle><h2><Link onlyActiveOnIndex to="/">Cover Crop Project</Link></h2></ToolbarTitle>
 					</ToolbarSection>
-					<ToolbarSection>
-						<ToolbarTitle className="menu_items">
-							<Link onlyActiveOnIndex to="/">HOME</Link>
-							<span style={{fontSize: 25}}> | </span>
-							<Link onlyActiveOnIndex to="/analysis">ANALYSIS</Link>
-							<span style={{fontSize: 25}}> | </span>
-							<Link onlyActiveOnIndex to="/about">ABOUT</Link>
-						</ToolbarTitle>
-
+					<ToolbarSection className="menu_items">
+						<ToolbarTitle><Link activeStyle={active} onlyActiveOnIndex to="/">HOME</Link></ToolbarTitle>
+						<ToolbarTitle><Link activeStyle={active} to="/analysis">ANALYSIS</Link></ToolbarTitle>
+						<ToolbarTitle><Link activeStyle={active} to="/about">ABOUT</Link></ToolbarTitle>
 					</ToolbarSection>
 					<ToolbarSection align="end">
 						{/*<span><Textfield floatingLabel="Username"/> </span>*/}
