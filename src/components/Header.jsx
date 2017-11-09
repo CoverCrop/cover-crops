@@ -6,7 +6,7 @@ import {Button, Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, Grid, Cell, T
 class Header extends Component {
 
 	render() {
-		const active = {color: "#f13768"};
+		const active = {color: "#afb5f3"};
 		return (
 			<Toolbar>
 				<ToolbarRow>
