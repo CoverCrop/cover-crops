@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Textfield, Body1, Body2, Checkbox} from "react-mdc-web"
+import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePickerCC from "./DatePickerCC";
@@ -277,12 +277,12 @@ class RunSimulationCC extends Component {
 					endDate
 					placeholderText="Select a termination date"
 					onChange={this.handleEndDateChange}/>
-				<Body2>
+				<FormField id="checkbox-label">
 					<Checkbox
 						onChange={this.handleFlexibleDatesChange}
 						checked={this.props.state.isFlexibleDatesChecked}/>
 					<label>Flexible termination dates (+/- two weeks)</label>
-				</Body2>
+				</FormField>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
 			</div>
