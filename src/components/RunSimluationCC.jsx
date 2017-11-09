@@ -14,10 +14,10 @@ class RunSimulationCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.parameters = {
-			soilWithCoverCrop: "d19c89f7-ae89-4d3a-b0de-393fea0b6454", // ILLT1101.SQX
-			modelWithCoverCrop: "f405c6c1-7180-4f03-be91-42b82550085c", // DSSBatch.v46
-			soilWithoutCoverCrop: "5d1399f9-7068-4bd7-8cf0-aceb52febbf4", // ILWO1101.SQX
-			modelWithoutCoverCrop: "3813396e-5ab0-418c-8e8f-34eda231fadf" // DSSBatch-nocover.v46
+			soilWithCoverCrop: "26bd9c56-10d5-4669-af6c-f56bc8d0e5d5", // LAW1501.SQX
+			modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
+			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
+			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 		};
 
 		this.state = {
