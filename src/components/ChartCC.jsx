@@ -142,7 +142,8 @@ class ChartCC extends Component {
 				}
 
 				let chartData = {
-					labels: labelArray,
+					// TODO: Check with team on this. Having fixed labels vs dynamic labels selected by chart.js based on input data
+					// labels: labelArray,
 					datasets: parsedDatasets
 				};
 
