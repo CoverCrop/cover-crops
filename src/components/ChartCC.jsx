@@ -116,8 +116,9 @@ class ChartCC extends Component {
 					// Create dataset object with appropriate options and data
 					colorIndex = ChartCC.chooseColorIndexByDatasetLabel(rawDatasets[datasetIndex].dataset_label);
 					let datasetColor = (chartArrayTypeName === "withCoverCropChartDataArray") ? this.colorsWithoutAlpha[colorIndex] : this.colorsWithAlpha[colorIndex];
+					let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
 					let dataset = {
-						label: rawDatasets[datasetIndex].dataset_label,
+						label: datasetLabel,
 						fill: false,
 						lineTension: 0.1,
 						backgroundColor: datasetColor,
