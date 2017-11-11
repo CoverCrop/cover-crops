@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Textfield, Body1} from "react-mdc-web"
+import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePickerCC from "./DatePickerCC";
@@ -13,6 +13,7 @@ class RunSimulationCC extends Component {
 		this.runSimulation = this.runSimulation.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
+		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
 		this.parameters = {
 			soilWithCoverCrop: "26bd9c56-10d5-4669-af6c-f56bc8d0e5d5", // LAW1501.SQX
 			modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
@@ -256,6 +257,10 @@ class RunSimulationCC extends Component {
 		this.props.handleEndDateChange(date)
 	}
 
+	handleFlexibleDatesChange({target: {checked}}) {
+		this.props.handleFlexibleDatesChange(checked)
+	}
+
 	render(){
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		return(
@@ -272,6 +277,12 @@ class RunSimulationCC extends Component {
 					endDate
 					placeholderText="Select a termination date"
 					onChange={this.handleEndDateChange}/>
+				<FormField id="checkbox-label">
+					<Checkbox
+						onChange={this.handleFlexibleDatesChange}
+						checked={this.props.state.isFlexibleDatesChecked}/>
+					<label>Flexible termination dates (+/- two weeks)</label>
+				</FormField>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
 			</div>
