@@ -18,16 +18,16 @@ class ChartCC extends Component {
 
 		const colorPalette = require('nice-color-palettes');
 		const hexToRgba = require("hex-to-rgba");
-		const colorPaletteIndex = 6; // Specific palette to choose
+		const colorPaletteIndex = 42; // Specific palette to choose
 
 		for (let colorIndex = 0; colorIndex < colorPalette[colorPaletteIndex]["length"]; colorIndex++) {
 			this.colorsWithAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 0.4));
-			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 1));
+			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString()));
 		}
 	}
 
-	// Based on the input dataset label, return the color index from the current palette
-	static chooseColorIndexByDatasetLabel(datasetLabel) {
+	// Based on crop name obtained from the dataset label, return the color index from the current palette
+	static chooseColorIndexByCropName(datasetLabel) {
 
 		if (datasetLabel.toLowerCase().indexOf("corn") !== -1) {
 
@@ -47,6 +47,24 @@ class ChartCC extends Component {
 		}
 
 	}
+
+	// Based on crop type obtained from the dataset label, return the color index from the current palette
+	static chooseColorIndexByCropType(datasetLabel) {
+
+		if (datasetLabel.toLowerCase().indexOf("w/ cover crop") !== -1) {
+
+			return 1; // similar to black
+		}
+		else if (datasetLabel.toLowerCase().indexOf("w/o cover crop") !== -1) {
+
+			return 2; // similar to red
+		}
+		else {
+
+			return 0;
+		}
+	}
+
 
 	// Generates charts array object containing individual charts and datasets
 	generateCharts(chartArrayTypeName, chartDataArray) {
@@ -114,8 +132,8 @@ class ChartCC extends Component {
 					}
 
 					// Create dataset object with appropriate options and data
-					colorIndex = ChartCC.chooseColorIndexByDatasetLabel(rawDatasets[datasetIndex].dataset_label);
-					let datasetColor = (chartArrayTypeName === "withCoverCropChartDataArray") ? this.colorsWithoutAlpha[colorIndex] : this.colorsWithAlpha[colorIndex];
+					colorIndex = ChartCC.chooseColorIndexByCropType(rawDatasets[datasetIndex].dataset_label);
+					let datasetColor = this.colorsWithoutAlpha[colorIndex];
 					let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
 					let dataset = {
 						label: datasetLabel,
