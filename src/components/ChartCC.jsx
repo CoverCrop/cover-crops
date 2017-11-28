@@ -145,7 +145,7 @@ class ChartCC extends Component {
 						borderDash: [],
 						borderDashOffset: 0.0,
 						borderJoinStyle: 'miter',
-						borderWidth: 2,
+						borderWidth: 1,
 						pointBorderColor: datasetColor,
 						pointBackgroundColor: '#fff',
 						pointBorderWidth: 1,
@@ -205,7 +205,7 @@ class ChartCC extends Component {
 			let chartOptions = chartDataArray[keys[chartIndex]].chartOptions;
 
 			resultHtml.push(
-				<div key={"div-" + chartIndex} style={{width: 500, float: "left", marginBottom: 20}}>
+				<div key={"div-" + chartIndex} style={{width: 450, float: "left", marginBottom: 20}}>
 					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
 				</div>);
 		}
