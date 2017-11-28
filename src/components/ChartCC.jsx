@@ -70,7 +70,6 @@ class ChartCC extends Component {
 	generateCharts(chartArrayTypeName, chartDataArray) {
 		let labelArray = ['2009-07-01', '2010-04-01', '2010-07-01', '2011-04-01', '2011-07-01', '2012-01-01', '2012-07-01', '2013-01-01', '2013-07-01', '2013-12-01'];
 		let colorIndex = 0;
-		let datasetBorderDash = (chartArrayTypeName === "withCoverCropChartDataArray") ? [] : [10, 5];
 
 		if (this.props.hasOwnProperty(chartArrayTypeName)) {
 			// Iterate over each chart
@@ -143,7 +142,7 @@ class ChartCC extends Component {
 						backgroundColor: datasetColor,
 						borderColor: datasetColor,
 						borderCapStyle: 'butt',
-						borderDash: datasetBorderDash,
+						borderDash: [],
 						borderDashOffset: 0.0,
 						borderJoinStyle: 'miter',
 						borderWidth: 2,
