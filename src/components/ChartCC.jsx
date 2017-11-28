@@ -81,7 +81,8 @@ class ChartCC extends Component {
 				let chartOptions = {
 					title: {
 						text: chartRawData.title,
-						display: true
+						display: true,
+						fontSize: 14
 					},
 					scales: {
 						xAxes: [{
@@ -145,6 +146,7 @@ class ChartCC extends Component {
 						borderDash: datasetBorderDash,
 						borderDashOffset: 0.0,
 						borderJoinStyle: 'miter',
+						borderWidth: 2,
 						pointBorderColor: datasetColor,
 						pointBackgroundColor: '#fff',
 						pointBorderWidth: 1,
@@ -191,7 +193,7 @@ class ChartCC extends Component {
 		this.generateCharts("withCoverCropChartDataArray", chartDataArray); // generate charts for with cover crop case
 		this.generateCharts("withoutCoverCropChartDataArray", chartDataArray); // generate charts for without cover crop case
 
-		console.log("Charts array: ")
+		console.log("Charts array: ");
 		console.log(chartDataArray);
 
 		// sort keys
@@ -203,9 +205,10 @@ class ChartCC extends Component {
 			let chartData = chartDataArray[keys[chartIndex]].chartData;
 			let chartOptions = chartDataArray[keys[chartIndex]].chartOptions;
 
-			resultHtml.push(<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>);
-			resultHtml.push(<hr key={"hr-" + chartIndex}/>);
-			resultHtml.push(<br key={"br-" + chartIndex}/>);
+			resultHtml.push(
+				<div key={"div-" + chartIndex} style={{width: 500, float: "left", marginBottom: 20}}>
+					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
+				</div>);
 		}
 
 		return resultHtml;
@@ -214,7 +217,7 @@ class ChartCC extends Component {
 	render() {
 
 		return (
-			<div>{this.generateChartsHTML()}</div>
+			<div style={{position: "relative"}}>{this.generateChartsHTML()}</div>
 		)
 	}
 
