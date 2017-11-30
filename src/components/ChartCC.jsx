@@ -195,19 +195,18 @@ class ChartCC extends Component {
 		console.log("Charts array: ");
 		console.log(chartDataArray);
 
-		// sort keys
-		for (let key in chartDataArray) keys.push(key);
-		keys.sort();
+		let chartIndex = 0;
+		for (let key in chartDataArray){
 
-		for (let chartIndex = 0; chartIndex < keys.length; chartIndex++){
-
-			let chartData = chartDataArray[keys[chartIndex]].chartData;
-			let chartOptions = chartDataArray[keys[chartIndex]].chartOptions;
+			let chartData = chartDataArray[key].chartData;
+			let chartOptions = chartDataArray[key].chartOptions;
 
 			resultHtml.push(
 				<div key={"div-" + chartIndex} className="line-chart-div">
 					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
 				</div>);
+
+			chartIndex++;
 		}
 
 		return resultHtml;
