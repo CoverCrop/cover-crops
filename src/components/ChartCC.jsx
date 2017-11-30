@@ -205,7 +205,7 @@ class ChartCC extends Component {
 			let chartOptions = chartDataArray[keys[chartIndex]].chartOptions;
 
 			resultHtml.push(
-				<div key={"div-" + chartIndex} style={{width: 450, float: "left", marginBottom: 20}}>
+				<div key={"div-" + chartIndex} className="line-chart-div">
 					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
 				</div>);
 		}
@@ -216,7 +216,7 @@ class ChartCC extends Component {
 	render() {
 
 		return (
-			<div style={{position: "relative"}}>{this.generateChartsHTML()}</div>
+			<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
 		)
 	}
 
