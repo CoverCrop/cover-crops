@@ -70,7 +70,6 @@ class ChartCC extends Component {
 	generateCharts(chartArrayTypeName, chartDataArray) {
 		let labelArray = ['2009-07-01', '2010-04-01', '2010-07-01', '2011-04-01', '2011-07-01', '2012-01-01', '2012-07-01', '2013-01-01', '2013-07-01', '2013-12-01'];
 		let colorIndex = 0;
-		let datasetBorderDash = (chartArrayTypeName === "withCoverCropChartDataArray") ? [] : [10, 5];
 
 		if (this.props.hasOwnProperty(chartArrayTypeName)) {
 			// Iterate over each chart
@@ -81,7 +80,8 @@ class ChartCC extends Component {
 				let chartOptions = {
 					title: {
 						text: chartRawData.title,
-						display: true
+						display: true,
+						fontSize: 14
 					},
 					scales: {
 						xAxes: [{
@@ -142,9 +142,10 @@ class ChartCC extends Component {
 						backgroundColor: datasetColor,
 						borderColor: datasetColor,
 						borderCapStyle: 'butt',
-						borderDash: datasetBorderDash,
+						borderDash: [],
 						borderDashOffset: 0.0,
 						borderJoinStyle: 'miter',
+						borderWidth: 1,
 						pointBorderColor: datasetColor,
 						pointBackgroundColor: '#fff',
 						pointBorderWidth: 1,
@@ -191,21 +192,21 @@ class ChartCC extends Component {
 		this.generateCharts("withCoverCropChartDataArray", chartDataArray); // generate charts for with cover crop case
 		this.generateCharts("withoutCoverCropChartDataArray", chartDataArray); // generate charts for without cover crop case
 
-		console.log("Charts array: ")
+		console.log("Charts array: ");
 		console.log(chartDataArray);
 
-		// sort keys
-		for (let key in chartDataArray) keys.push(key);
-		keys.sort();
+		let chartIndex = 0;
+		for (let key in chartDataArray){
 
-		for (let chartIndex = 0; chartIndex < keys.length; chartIndex++){
+			let chartData = chartDataArray[key].chartData;
+			let chartOptions = chartDataArray[key].chartOptions;
 
-			let chartData = chartDataArray[keys[chartIndex]].chartData;
-			let chartOptions = chartDataArray[keys[chartIndex]].chartOptions;
+			resultHtml.push(
+				<div key={"div-" + chartIndex} className="line-chart-div">
+					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
+				</div>);
 
-			resultHtml.push(<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>);
-			resultHtml.push(<hr key={"hr-" + chartIndex}/>);
-			resultHtml.push(<br key={"br-" + chartIndex}/>);
+			chartIndex++;
 		}
 
 		return resultHtml;
@@ -214,7 +215,7 @@ class ChartCC extends Component {
 	render() {
 
 		return (
-			<div>{this.generateChartsHTML()}</div>
+			<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
 		)
 	}
 
