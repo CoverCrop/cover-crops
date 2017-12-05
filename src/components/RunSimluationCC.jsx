@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-web"
+import {Button, Textfield, List, ListItem, Checkbox, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePickerCC from "./DatePickerCC";
@@ -20,6 +20,12 @@ class RunSimulationCC extends Component {
 			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
 			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 		};
+		this.steps ={
+			step1: "b6ec5d94-39d6-438c-c5fe-23173c5e6ca9",
+			step2: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
+			step3: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
+			step4: "bde73f42-df16-4001-fe25-125cee503d36",
+		}
 
 		this.state = {
 			withCoverCropExecutionId: "",
@@ -27,7 +33,11 @@ class RunSimulationCC extends Component {
 			withoutCoverCropExecutionId: "",
 			withoutCoverCropResultJson: null,
 			simulationStatus: "",
-			runSimulationButtonDisabled: false
+			runSimulationButtonDisabled: false,
+			step1: "",
+			step2: "",
+			step3: "",
+			step4: "",
 		};
 	}
 
@@ -112,23 +122,32 @@ class RunSimulationCC extends Component {
 		console.log("With cover crop execution id = " + withCoverCropExecutionGUID);
 		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
-		// Wait until execution is complete
-		// TODO: CCROP-35: Add code to check status of completion rather than waiting for a specified amount of time.
-		await wait(12000);
 
-		// Get Execution Result
-		const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
-			method: 'GET',
-			headers: headers,
-		});
+		var withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 
-		const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
-			method: 'GET',
-			headers: headers,
-		});
+        while( this.state.step4 === "" || this.state.step4 === "WAITING"){
+			await wait(300);
+			// Get Execution Result
+			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
+				method: 'GET',
+				headers: headers,
+			});
 
-		const withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
-		const withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
+			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
+				method: 'GET',
+				headers: headers,
+			});
+			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
+				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
+				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
+
+				this.setState({step1: withCoverCropAnalysisResult.stepState[this.steps.step1]});
+				this.setState({step4: withCoverCropAnalysisResult.stepState[this.steps.step4]});
+			}
+			console.log("working")
+		}
+
+		console.log(withoutCoverCropAnalysisResult)
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
@@ -285,6 +304,12 @@ class RunSimulationCC extends Component {
 				</FormField>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
+				<List>
+					<div>
+					{this.state.step1 === "" ? null: <ListItem>Step1: {this.state.step1}</ListItem>}
+					{this.state.step4 === "" ? null: <ListItem>Step4: {this.state.step4}</ListItem>}
+				</div>
+				</List>
 			</div>
 		)
 	}
