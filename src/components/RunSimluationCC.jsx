@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Textfield, List, ListItem, Checkbox, FormField} from "react-mdc-web"
+import {Button, Textfield, List, ListItem, ListHeader, Checkbox, FormField, Grid, Cell, } from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePickerCC from "./DatePickerCC";
@@ -22,9 +22,9 @@ class RunSimulationCC extends Component {
 		};
 		this.steps ={
 			step1: "b6ec5d94-39d6-438c-c5fe-23173c5e6ca9",
-			step2: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
-			step3: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
-			step4: "bde73f42-df16-4001-fe25-125cee503d36",
+			step4: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
+			step2: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
+			step3: "bde73f42-df16-4001-fe25-125cee503d36",
 		}
 
 		this.state = {
@@ -34,10 +34,14 @@ class RunSimulationCC extends Component {
 			withoutCoverCropResultJson: null,
 			simulationStatus: "",
 			runSimulationButtonDisabled: false,
-			step1: "",
-			step2: "",
-			step3: "",
-			step4: "",
+			withstep1: "",
+			withstep2: "",
+			withstep3: "",
+			withstep4: "",
+			withoutstep1: "",
+			withoutstep2: "",
+			withoutstep3: "",
+			withoutstep4: ""
 		};
 	}
 
@@ -125,7 +129,8 @@ class RunSimulationCC extends Component {
 
 		var withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 
-        while( this.state.step4 === "" || this.state.step4 === "WAITING"){
+        while( this.state.withstep4 === "" || this.state.withstep4 === "WAITING" || this.state.withstep4 === "RUNNING"
+			|| this.state.withoutstep4 === "" || this.state.withoutstep4 === "WAITING" || this.state.withoutstep4 === "RUNNING" ){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
@@ -141,8 +146,14 @@ class RunSimulationCC extends Component {
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
 				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
 
-				this.setState({step1: withCoverCropAnalysisResult.stepState[this.steps.step1]});
-				this.setState({step4: withCoverCropAnalysisResult.stepState[this.steps.step4]});
+				this.setState({withstep1: withCoverCropAnalysisResult.stepState[this.steps.step1]});
+				this.setState({withstep2: withCoverCropAnalysisResult.stepState[this.steps.step2]});
+				this.setState({withstep3: withCoverCropAnalysisResult.stepState[this.steps.step3]});
+				this.setState({withstep4: withCoverCropAnalysisResult.stepState[this.steps.step4]});
+				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[this.steps.step1]});
+				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[this.steps.step2]});
+				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[this.steps.step3]});
+				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[this.steps.step4]});
 			}
 			console.log("working")
 		}
@@ -304,12 +315,31 @@ class RunSimulationCC extends Component {
 				</FormField>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
-				<List>
-					<div>
-					{this.state.step1 === "" ? null: <ListItem>Step1: {this.state.step1}</ListItem>}
-					{this.state.step4 === "" ? null: <ListItem>Step4: {this.state.step4}</ListItem>}
-				</div>
-				</List>
+				<Grid>
+					<Cell col={6}>
+					<ListHeader>With Cover Crop</ListHeader>
+					<List>
+						<div>
+							{this.state.withstep1 === "" ? null: <ListItem>Step1: {this.state.withstep1}</ListItem>}
+							{this.state.withstep2 === "" ? null: <ListItem>Step2: {this.state.withstep2}</ListItem>}
+							{this.state.withstep3 === "" ? null: <ListItem>Step3: {this.state.withstep3}</ListItem>}
+							{this.state.withstep4 === "" ? null: <ListItem>Step4: {this.state.withstep4}</ListItem>}
+						</div>
+					</List>
+					</Cell>
+					<Cell col={6}>
+						<ListHeader>Without Cover Crop</ListHeader>
+						<List>
+							<div>
+								{this.state.withoutstep1 === "" ? null: <ListItem>Step1: {this.state.withoutstep1}</ListItem>}
+								{this.state.withoutstep2 === "" ? null: <ListItem>Step2: {this.state.withoutstep2}</ListItem>}
+								{this.state.withoutstep3 === "" ? null: <ListItem>Step3: {this.state.withoutstep3}</ListItem>}
+								{this.state.withoutstep4 === "" ? null: <ListItem>Step4: {this.state.withoutstep4}</ListItem>}
+							</div>
+						</List>
+
+					</Cell>
+				</Grid>
 			</div>
 		)
 	}
