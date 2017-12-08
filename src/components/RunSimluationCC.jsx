@@ -157,8 +157,8 @@ class RunSimulationCC extends Component {
 			}
 			console.log("working")
 		}
-
-		console.log(withoutCoverCropAnalysisResult)
+		// for debug
+		// console.log(withoutCoverCropAnalysisResult)
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
