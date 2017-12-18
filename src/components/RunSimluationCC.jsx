@@ -155,7 +155,6 @@ class RunSimulationCC extends Component {
 				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[this.steps.step3]});
 				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[this.steps.step4]});
 			}
-			console.log("working")
 		}
 		// for debug
 		// console.log(withoutCoverCropAnalysisResult)
@@ -317,7 +316,7 @@ class RunSimulationCC extends Component {
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
 				<Grid>
 					<Cell col={6}>
-					<ListHeader>With Cover Crop</ListHeader>
+						{this.state.withstep1 === "" ? null: <ListHeader>With Cover Crop</ListHeader> }
 					<List>
 						<div>
 							{this.state.withstep1 === "" ? null: <ListItem>Step1: {this.state.withstep1}</ListItem>}
@@ -328,13 +327,13 @@ class RunSimulationCC extends Component {
 					</List>
 					</Cell>
 					<Cell col={6}>
-						<ListHeader>Without Cover Crop</ListHeader>
+						{this.state.withoutstep1 === "" ? null: <ListHeader>Without Cover Crop</ListHeader> }
 						<List>
 							<div>
-								{this.state.withoutstep1 === "" ? null: <ListItem>Step1: {this.state.withoutstep1}</ListItem>}
-								{this.state.withoutstep2 === "" ? null: <ListItem>Step2: {this.state.withoutstep2}</ListItem>}
-								{this.state.withoutstep3 === "" ? null: <ListItem>Step3: {this.state.withoutstep3}</ListItem>}
-								{this.state.withoutstep4 === "" ? null: <ListItem>Step4: {this.state.withoutstep4}</ListItem>}
+								{this.state.withoutstep1 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withoutstep1}</ListItem>}
+								{this.state.withoutstep2 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withoutstep2}</ListItem>}
+								{this.state.withoutstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withoutstep3}</ListItem>}
+								{this.state.withoutstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withoutstep4}</ListItem>}
 							</div>
 						</List>
 
