@@ -24,7 +24,7 @@ export const handleEndDateChange = (date) => ({
 });
 
 export const handleFlexibleDatesChange = (checked) => ({
-	type: "SET_FlexibleDates",
+	type: "SET_FLEXIBLEDATES",
 	checked
 });
 

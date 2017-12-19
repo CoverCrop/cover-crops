@@ -53,7 +53,7 @@ const analysis = (state = defaultState, action) => {
 			return Object.assign({}, state, {
 				endDate: action.date
 			});
-		case "SET_FlexibleDates":
+		case "SET_FLEXIBLEDATES":
 			return Object.assign({}, state, {
 				isFlexibleDatesChecked: action.checked
 			});
