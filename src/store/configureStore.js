@@ -2,7 +2,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
-import createLogger from 'redux-logger';
+import createLogger from "redux-logger";
 
 function configureStoreProd(initialState) {
 	const middlewares = [

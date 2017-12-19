@@ -33,34 +33,38 @@ const defaultState = {
 
 const analysis = (state = defaultState, action) => {
 	switch(action.type) {
-		case 'SWITCH_CARD':
+		case "SWITCH_CARD":
 			return Object.assign({}, state, {
 				activeCardIndex: action.selectedCardIndex
 			});
-		case 'CHANGE_LAT':
+		case "CHANGE_LAT":
 			return Object.assign({}, state, {
 				latitude: action.lat
 			});
-		case 'CHANGE_LONG':
+		case "CHANGE_LONG":
 			return Object.assign({}, state, {
 				longitude: action.long
 			});
-		case 'CHANGE_START_DATE':
+		case "CHANGE_START_DATE":
 			return Object.assign({}, state, {
 				startDate: action.date
 			});
-		case 'CHANGE_END_DATE':
+		case "CHANGE_END_DATE":
 			return Object.assign({}, state, {
 				endDate: action.date
 			});
-		case 'ADD_RESULT':
+		case "SET_FlexibleDates":
 			return Object.assign({}, state, {
-				withCoverCropExecutionId: withCoverCropExecutionId,
-				withCoverCropResultJson: withCoverCropResultJson,
-				withoutCoverCropExecutionId: withoutCoverCropExecutionId,
-				withoutCoverCropResultJson: withoutCoverCropResultJson
+				isFlexibleDatesChecked: action.checked
 			});
-		case 'CHANGE_CARD': {
+		case "ADD_RESULT":
+			return Object.assign({}, state, {
+				withCoverCropExecutionId: action.withCoverCropExecutionId,
+				withCoverCropResultJson: action.withCoverCropResultJson,
+				withoutCoverCropExecutionId: action.withoutCoverCropExecutionId,
+				withoutCoverCropResultJson: action.withoutCoverCropResultJson
+			});
+		case "CHANGE_CARD": {
 			// let newState =
 			let newCards = state.cards.map((card, index) => {
 				if (index === action.oldCardIndex) {
@@ -68,7 +72,7 @@ const analysis = (state = defaultState, action) => {
 					return {
 						cardTitle: action.oldCardData.cardTitle,
 						cardSubtitle: action.oldCardData.cardSubtitle,
-					}
+					};
 				} else{
 					return card;
 				}
@@ -79,7 +83,7 @@ const analysis = (state = defaultState, action) => {
 			});
 		}
 		default:
-			return state
+			return state;
 	}
 };
 

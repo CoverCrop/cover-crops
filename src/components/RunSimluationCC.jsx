@@ -5,7 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL} from "../datawolf.config";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults} from '../actions/analysis'
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange} from '../actions/analysis'
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -320,6 +320,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleEndDateChange: (date) => {
 			dispatch(handleEndDateChange(date));
+		},
+		handleFlexibleDatesChange: (checked) =>{
+			dispatch(handleFlexibleDatesChange(checked))
 		},
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
 			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
