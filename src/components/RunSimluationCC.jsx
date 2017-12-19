@@ -1,8 +1,11 @@
 import React, {Component} from "react";
+import { connect } from 'react-redux';
 import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
-import DatePickerCC from "./DatePickerCC";
+import DatePicker from "react-datepicker";
+import {datawolfURL} from "../datawolf.config";
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults} from '../actions/analysis'
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -41,12 +44,10 @@ class RunSimulationCC extends Component {
 
 		// Update status
 		let cardData = {
-			cardTitle: this.props.state.cards[1].cardTitle,
+			cardTitle: this.props.cards[1].cardTitle,
 			cardSubtitle: "Status: " + status
 		};
 		this.props.handleCardChange(1, 1, cardData);
-
-		const datawolfURL = 'https://covercrop.ncsa.illinois.edu/datawolf';
 
 		let headers = {
 			// Add authorization here
@@ -57,10 +58,10 @@ class RunSimulationCC extends Component {
 			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 			"title" : "dssat-batch-run",
 			"parameters" : {
-				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.state.latitude,
-				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.state.longitude,
-				"76a57476-094f-4331-f59f-0865f1341108" : this.props.state.latitude,
-				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.state.longitude
+				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.latitude,
+				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.longitude,
+				"76a57476-094f-4331-f59f-0865f1341108" : this.props.latitude,
+				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.longitude
 			},
 			"datasets" : {
 				// With cover crop
@@ -74,10 +75,10 @@ class RunSimulationCC extends Component {
 			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 			"title" : "dssat-batch-run",
 			"parameters" : {
-				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.state.latitude,
-				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.state.longitude,
-				"76a57476-094f-4331-f59f-0865f1341108" : this.props.state.latitude,
-				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.state.longitude
+				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.latitude,
+				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.longitude,
+				"76a57476-094f-4331-f59f-0865f1341108" : this.props.latitude,
+				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.longitude
 			},
 			"datasets" : {
 				// With cover crop
@@ -209,7 +210,7 @@ class RunSimulationCC extends Component {
 
 			// Update status
 			cardData = {
-				cardTitle: this.props.state.cards[1].cardTitle,
+				cardTitle: this.props.cards[1].cardTitle,
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
@@ -241,7 +242,7 @@ class RunSimulationCC extends Component {
 
 			// Update status
 			cardData = {
-				cardTitle: this.props.state.cards[1].cardTitle,
+				cardTitle: this.props.cards[1].cardTitle,
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
@@ -265,22 +266,33 @@ class RunSimulationCC extends Component {
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		return(
 			<div>
-				<DatePickerCC
-					label="Establishment Date: "
-					state={this.props.state}
-					startDate
-					placeholderText="Select an establishment date"
-					onChange={this.handleStartDateChange}/>
-				<DatePickerCC
-					label="Termination Date: "
-					state={this.props.state}
-					endDate
-					placeholderText="Select a termination date"
-					onChange={this.handleEndDateChange}/>
+				<div>
+					<Body1>Establishment Date: </Body1>
+					<DatePicker className="date-picker-cc" selected={this.props.startDate}
+								selectsStart
+								showYearDropdown
+								scrollableYearDropdown
+								placeholderText="Select an establishment date"
+								startDate={this.props.startDate}
+								endDate={this.props.endDate}
+								onSelect={this.handleStartDateChange}/>
+				</div>
+				<div>
+					<Body1>Termination Date: </Body1>
+					<DatePicker className="date-picker-cc" selected={this.props.endDate}
+								selectsStart
+								showYearDropdown
+								scrollableYearDropdown
+								placeholderText="Select an establishment date"
+								startDate={this.props.startDate}
+								endDate={this.props.endDate}
+								onChange={this.handleEndDateChange}/>
+				</div>
+
 				<FormField id="checkbox-label">
 					<Checkbox
 						onChange={this.handleFlexibleDatesChange}
-						checked={this.props.state.isFlexibleDatesChecked}/>
+						checked={this.props.isFlexibleDatesChecked}/>
 					<label>Flexible termination dates (+/- two weeks)</label>
 				</FormField>
 				<br/>
@@ -289,4 +301,33 @@ class RunSimulationCC extends Component {
 		)
 	}
 }
-export default RunSimulationCC;
+
+const mapStateToProps = (state) => {
+	return {
+		startDate: state.analysis.startDate,
+		endDate: state.analysis.endDate,
+		longitude: state.analysis.longitude,
+		latitude: state.analysis.latitude,
+		cards: state.analysis.cards,
+		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleStartDateChange: (date) => {
+			dispatch(handleStartDateChange(date));
+		},
+		handleEndDateChange: (date) => {
+			dispatch(handleEndDateChange(date));
+		},
+		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
+			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
+		},
+		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RunSimulationCC);

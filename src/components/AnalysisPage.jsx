@@ -7,107 +7,6 @@ import RightPaneCC from "./RightPaneCC";
 
 class AnalysisPage extends Component {
 
-	constructor(props) {
-		super(props);
-		this.initCards = [
-			{
-				cardId: "selectField",
-				cardTitle: "Select Field",
-				cardSubtitle: "Choose field(s) on which you want to perform simulation."
-			},
-			{
-				cardId: "runSimulation",
-				cardTitle: "Run Simulation",
-				cardSubtitle: "Choose appropriate parameters and run simulation of selected fields."
-			},
-			{
-				cardId: "viewResults",
-				cardTitle: "View Results",
-				cardSubtitle: "View results and visualizations of running simulation."
-			}
-		];
-
-		this.state = {
-			activeCardIndex: 0,
-			latitude: "",
-			longitude: "",
-			startDate: 0,
-			endDate: 0,
-			cards: this.initCards,
-			withCoverCropResultJson: null,
-			withCoverCropExecutionId: "",
-			withoutCoverCropResultJson: null,
-			withoutCoverCropExecutionId: "",
-			isFlexibleDatesChecked: false
-		};
-
-		this.handleCardClick= this.handleCardClick.bind(this);
-		this.handleLatFieldChange = this.handleLatFieldChange.bind(this);
-		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
-		this.handleStartDateChange = this.handleStartDateChange.bind(this);
-		this.handleEndDateChange = this.handleEndDateChange.bind(this);
-		this.handleCardChange = this.handleCardChange.bind(this);
-		this.handleResults = this.handleResults.bind(this);
-		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
-	}
-
-	handleCardClick(selectedCardIndex){
-
-		this.setState({
-			activeCardIndex: selectedCardIndex
-		});
-	}
-
-	handleLatFieldChange(value) {
-		this.setState({
-			latitude: value
-		});
-	}
-
-	handleLongFieldChange(value) {
-		this.setState({
-			longitude: value
-		});
-	}
-
-	handleStartDateChange(date) {
-		this.setState({
-			startDate: date
-		});
-	}
-
-	handleEndDateChange(date) {
-		this.setState({
-			endDate: date
-		});
-	}
-
-	handleCardChange(oldCardIndex, newCardIndex, oldCardData) {
-		let updatedCards = this.initCards;
-		let card = updatedCards[oldCardIndex];
-		card.cardTitle = oldCardData.cardTitle;
-		card.cardSubtitle = oldCardData.cardSubtitle;
-		updatedCards[oldCardIndex] = card;
-
-		this.setState({
-			activeCardIndex: newCardIndex,
-			cards: updatedCards
-		});
-	}
-
-	handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) {
-		this.setState({
-			withCoverCropExecutionId: withCoverCropExecutionId,
-			withCoverCropResultJson: withCoverCropResultJson,
-			withoutCoverCropExecutionId: withoutCoverCropExecutionId,
-			withoutCoverCropResultJson: withoutCoverCropResultJson
-		});
-	}
-
-	handleFlexibleDatesChange(checked) {
-		this.setState({isFlexibleDatesChecked: checked});
-	}
-
 	render() {
 		return (
 			<div>
@@ -116,23 +15,10 @@ class AnalysisPage extends Component {
 					<Cell col={12}>
 					<Grid >
 						<Cell col={2}>
-							<LeftPaneCC
-								cards={this.state.cards}
-								activeCardIndex={this.state.activeCardIndex}
-								handleCardClick={this.handleCardClick}/>
+							<LeftPaneCC />
 						</Cell>
 						<Cell col={10}>
-							<RightPaneCC
-								activeCardIndex={this.state.activeCardIndex}
-								state={this.state}
-								handleLatFieldChange={this.handleLatFieldChange}
-								handleLongFieldChange={this.handleLongFieldChange}
-								handleStartDateChange={this.handleStartDateChange}
-								handleEndDateChange={this.handleEndDateChange}
-								handleCardChange={this.handleCardChange}
-								handleResults={this.handleResults}
-								handleFlexibleDatesChange={this.handleFlexibleDatesChange}
-							/>
+							<RightPaneCC />
 						</Cell>
 					</Grid>
 					</Cell>

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Router, Route, hashHistory} from 'react-router'
 import AnalysisPage from './AnalysisPage'
 import HomePage from './HomePage'
-import ChartCC from './ChartCC'
+import ViewResultsCC from './ViewResultsCC'
 import "material-components-web/dist/material-components-web.min.css";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'material-components-web/dist/material-components-web.min.css';
@@ -20,7 +20,7 @@ class App extends Component {
 				<Router history={hashHistory}>
 					<Route path="/" component={HomePage}/>
 					<Route path="/analysis" component={AnalysisPage}/>
-					<Route path="/chart" component={ChartCC}/>
+					<Route path="/chart" component={ViewResultsCC}/>
 				</Router>
 			</MuiThemeProvider>
 		)

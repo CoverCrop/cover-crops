@@ -2,6 +2,7 @@ import { createStore, compose, applyMiddleware } from "redux";
 import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
+import createLogger from 'redux-logger';
 
 function configureStoreProd(initialState) {
 	const middlewares = [
@@ -33,7 +34,7 @@ function configureStoreDev(initialState) {
 	// adds support for Redux dev tools
 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 	const store = createStore(rootReducer, initialState, composeEnhancers(
-		applyMiddleware(...middlewares)
+		applyMiddleware(...middlewares, createLogger())
 		)
 	);
 
