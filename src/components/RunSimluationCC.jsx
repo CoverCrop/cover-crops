@@ -4,7 +4,7 @@ import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-we
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL} from "../datawolf.config";
+import {datawolfURL, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange} from '../actions/analysis'
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -17,12 +17,6 @@ class RunSimulationCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
-		this.parameters = {
-			soilWithCoverCrop: "26bd9c56-10d5-4669-af6c-f56bc8d0e5d5", // LAW1501.SQX
-			modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
-			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
-			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
-		};
 
 		this.state = {
 			withCoverCropExecutionId: "",
@@ -53,39 +47,8 @@ class RunSimulationCC extends Component {
 			// Add authorization here
 		};
 
-		const withCoverCropExecutionRequest = {
-			"workflowId" : "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
-			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
-			"title" : "dssat-batch-run",
-			"parameters" : {
-				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.latitude,
-				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.longitude,
-				"76a57476-094f-4331-f59f-0865f1341108" : this.props.latitude,
-				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.longitude
-			},
-			"datasets" : {
-				// With cover crop
-				"323c6613-4037-476c-9b9c-f51ba0940eaf" : this.parameters.soilWithCoverCrop,
-				"7db036bf-019f-4c01-e58d-14635f6f799d" : this.parameters.modelWithCoverCrop
-			}
-		};
-
-		const withoutCoverCropExecutionRequest = {
-			"workflowId" : "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
-			"creatorId" : "f864b8d7-8dce-4ed3-a083-dd73e8291181",
-			"title" : "dssat-batch-run",
-			"parameters" : {
-				"687efc8a-9055-4fab-b91b-25c44f0c6724" : this.props.latitude,
-				"23a0962a-0548-4b85-c183-c17ad45326fc" : this.props.longitude,
-				"76a57476-094f-4331-f59f-0865f1341108" : this.props.latitude,
-				"dcceaa12-2bc6-4591-8e14-026c3bad64fd" : this.props.longitude
-			},
-			"datasets" : {
-				// With cover crop
-				"323c6613-4037-476c-9b9c-f51ba0940eaf" : this.parameters.soilWithoutCoverCrop,
-				"7db036bf-019f-4c01-e58d-14635f6f799d" : this.parameters.modelWithoutCoverCrop
-			}
-		};
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
