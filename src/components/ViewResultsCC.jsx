@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {Line} from 'react-chartjs-2';
-import {ChartCC} from "./ChartCC"
+import ChartCC from "./ChartCC"
 
 class ViewResultsCC extends Component {
 
@@ -9,7 +8,7 @@ class ViewResultsCC extends Component {
 			<div>
 				<h1>Results</h1>
 				<br/>
-				<ChartCC/>
+				<ChartCC />
 			</div>
 		)
 	}

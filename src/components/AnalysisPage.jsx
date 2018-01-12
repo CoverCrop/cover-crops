@@ -11,8 +11,7 @@ class AnalysisPage extends Component {
 		return (
 			<div>
 				<Header selected='analysis'/>
-				<Grid >
-					<Cell col={12}>
+				<div className="content">
 					<Grid >
 						<Cell col={2}>
 							<LeftPaneCC />
@@ -21,8 +20,7 @@ class AnalysisPage extends Component {
 							<RightPaneCC />
 						</Cell>
 					</Grid>
-					</Cell>
-				</Grid>
+					</div>
 				<Footer selected='analysis'/>
 			</div>
 		);

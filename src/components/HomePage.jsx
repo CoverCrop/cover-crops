@@ -8,10 +8,9 @@ class HomePage extends Component {
 
 	render() {
 		return (
-			<div className={styles.contentcenter}>
+			<div>
 				<Header selected='home'/>
-				<Grid >
-					<Cell col={12}>
+				<div className="content">
 						<Grid>
 							<Cell col={7}>
 								<h1>Welcome to Cover Crop Project</h1>
@@ -155,8 +154,7 @@ class HomePage extends Component {
 								</Card>
 							</Cell>
 						</Grid>
-					</Cell>
-				</Grid>
+					</div>
 				<Footer selected='home'/>
 			</div>
 		);

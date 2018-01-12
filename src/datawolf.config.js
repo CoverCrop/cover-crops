@@ -4,7 +4,7 @@ const parameters = {
 	modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
 	soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
-}
+};
 
 export function getWithCoverCropExecutionRequest(lat, long) {
 	return {
@@ -22,8 +22,8 @@ export function getWithCoverCropExecutionRequest(lat, long) {
 			"323c6613-4037-476c-9b9c-f51ba0940eaf": parameters.soilWithCoverCrop,
 			"7db036bf-019f-4c01-e58d-14635f6f799d": parameters.modelWithCoverCrop
 		}
-	}
-};
+	};
+}
 
 export function getWithoutCoverCropExecutionRequest (lat, long) {
 	return {
@@ -41,5 +41,5 @@ export function getWithoutCoverCropExecutionRequest (lat, long) {
 			"323c6613-4037-476c-9b9c-f51ba0940eaf": parameters.soilWithoutCoverCrop,
 			"7db036bf-019f-4c01-e58d-14635f6f799d": parameters.modelWithoutCoverCrop
 		}
-	}
-};
+	};
+}
