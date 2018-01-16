@@ -17,6 +17,19 @@ class RunSimulationCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
+		this.parameters = {
+			soilWithCoverCrop: "26bd9c56-10d5-4669-af6c-f56bc8d0e5d5", // LAW1501.SQX
+			modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
+			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
+			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
+		};
+		// TODO: move to config.
+		this.steps ={
+			Weather_Converter: "b6ec5d94-39d6-438c-c5fe-23173c5e6ca9",
+			Output_Parser: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
+			Soil_Converter: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
+			DSSAT_Batch: "bde73f42-df16-4001-fe25-125cee503d36",
+		}
 
 		this.state = {
 			withCoverCropExecutionId: "",
@@ -24,7 +37,15 @@ class RunSimulationCC extends Component {
 			withoutCoverCropExecutionId: "",
 			withoutCoverCropResultJson: null,
 			simulationStatus: "",
-			runSimulationButtonDisabled: false
+			runSimulationButtonDisabled: false,
+			withstep1: "",
+			withstep2: "",
+			withstep3: "",
+			withstep4: "",
+			withoutstep1: "",
+			withoutstep2: "",
+			withoutstep3: "",
+			withoutstep4: ""
 		};
 	}
 
@@ -76,23 +97,38 @@ class RunSimulationCC extends Component {
 		console.log("With cover crop execution id = " + withCoverCropExecutionGUID);
 		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
-		// Wait until execution is complete
-		// TODO: CCROP-35: Add code to check status of completion rather than waiting for a specified amount of time.
-		await wait(12000);
 
-		// Get Execution Result
-		const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
-			method: 'GET',
-			headers: headers,
-		});
+		var withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 
-		const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
-			method: 'GET',
-			headers: headers,
-		});
+        while( this.state.withstep4 === "" || this.state.withstep4 === "WAITING" || this.state.withstep4 === "RUNNING"
+			|| this.state.withoutstep4 === "" || this.state.withoutstep4 === "WAITING" || this.state.withoutstep4 === "RUNNING" ){
+			await wait(300);
+			// Get Execution Result
+			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
+				method: 'GET',
+				headers: headers,
+			});
 
-		const withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
-		const withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
+			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
+				method: 'GET',
+				headers: headers,
+			});
+			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
+				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
+				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
+
+				this.setState({withstep1: withCoverCropAnalysisResult.stepState[this.steps.Weather_Converter]});
+				this.setState({withstep2: withCoverCropAnalysisResult.stepState[this.steps.Soil_Converter]});
+				this.setState({withstep3: withCoverCropAnalysisResult.stepState[this.steps.DSSAT_Batch]});
+				this.setState({withstep4: withCoverCropAnalysisResult.stepState[this.steps.Output_Parser]});
+				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[this.steps.Weather_Converter]});
+				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[this.steps.Soil_Converter]});
+				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[this.steps.DSSAT_Batch]});
+				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[this.steps.Output_Parser]});
+			}
+		}
+		// for debug
+		// console.log(withoutCoverCropAnalysisResult)
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
@@ -260,6 +296,31 @@ class RunSimulationCC extends Component {
 				</FormField>
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
+				<Grid>
+					<Cell col={6}>
+						{this.state.withstep1 === "" ? null: <ListHeader>With Cover Crop</ListHeader> }
+					<List>
+						<div>
+							{this.state.withstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withstep1}</ListItem>}
+							{this.state.withstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withstep2}</ListItem>}
+							{this.state.withstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withstep3}</ListItem>}
+							{this.state.withstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withstep4}</ListItem>}
+						</div>
+					</List>
+					</Cell>
+					<Cell col={6}>
+						{this.state.withoutstep1 === "" ? null: <ListHeader>Without Cover Crop</ListHeader> }
+						<List>
+							<div>
+								{this.state.withoutstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withoutstep1}</ListItem>}
+								{this.state.withoutstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withoutstep2}</ListItem>}
+								{this.state.withoutstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withoutstep3}</ListItem>}
+								{this.state.withoutstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withoutstep4}</ListItem>}
+							</div>
+						</List>
+
+					</Cell>
+				</Grid>
 			</div>
 		)
 	}
