@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import {Button, Textfield, Body1, Body2, Checkbox, FormField} from "react-mdc-web"
+import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange} from '../actions/analysis'
+import {datawolfURL, steps, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange}
+from '../actions/analysis'
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -23,13 +24,6 @@ class RunSimulationCC extends Component {
 			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
 			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 		};
-		// TODO: move to config.
-		this.steps ={
-			Weather_Converter: "b6ec5d94-39d6-438c-c5fe-23173c5e6ca9",
-			Output_Parser: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
-			Soil_Converter: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
-			DSSAT_Batch: "bde73f42-df16-4001-fe25-125cee503d36",
-		}
 
 		this.state = {
 			withCoverCropExecutionId: "",
@@ -117,14 +111,14 @@ class RunSimulationCC extends Component {
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
 				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
 
-				this.setState({withstep1: withCoverCropAnalysisResult.stepState[this.steps.Weather_Converter]});
-				this.setState({withstep2: withCoverCropAnalysisResult.stepState[this.steps.Soil_Converter]});
-				this.setState({withstep3: withCoverCropAnalysisResult.stepState[this.steps.DSSAT_Batch]});
-				this.setState({withstep4: withCoverCropAnalysisResult.stepState[this.steps.Output_Parser]});
-				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[this.steps.Weather_Converter]});
-				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[this.steps.Soil_Converter]});
-				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[this.steps.DSSAT_Batch]});
-				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[this.steps.Output_Parser]});
+				this.setState({withstep1: withCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
+				this.setState({withstep2: withCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
+				this.setState({withstep3: withCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
+				this.setState({withstep4: withCoverCropAnalysisResult.stepState[steps.Output_Parser]});
+				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
+				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
+				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
+				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[steps.Output_Parser]});
 			}
 		}
 		// for debug
@@ -170,13 +164,15 @@ class RunSimulationCC extends Component {
 			}
 
 			// Get - Result File Download
-			const withCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID + "/" + withCoverCropFileDescriptorGUID + "/file",
+			const withCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
+				+ withCoverCropDatasetResultGUID + "/" + withCoverCropFileDescriptorGUID + "/file",
 				{
 					method: 'GET',
 					headers: headers,
 				});
 
-			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID + "/" + withoutCoverCropFileDescriptorGUID + "/file",
+			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
+				+ withoutCoverCropDatasetResultGUID + "/" + withoutCoverCropFileDescriptorGUID + "/file",
 				{
 					method: 'GET',
 					headers: headers,
