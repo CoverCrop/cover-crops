@@ -1,6 +1,9 @@
 import React, {Component} from "react";
+import { connect } from 'react-redux';
 let ol = require('openlayers');
 require("openlayers/css/ol.css");
+import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis"
+
 
 class MapCC extends Component {
 
@@ -65,7 +68,8 @@ class MapCC extends Component {
 		lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
 		lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
 
-		this.props.onMapClick(lonLatCoordinates);
+		this.props.handleLatFieldChange(lonLatCoordinates[1]);
+		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 	}
 
 	dropMarker(coordinate) {
@@ -101,4 +105,15 @@ class MapCC extends Component {
 
 }
 
-export default MapCC;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleLatFieldChange: (lat) => {
+			dispatch(handleLatFieldChange(lat));
+		},
+		handleLongFieldChange: (lon) => {
+			dispatch(handleLongFieldChange(lon));
+		}
+	}
+};
+
+export default connect(null, mapDispatchToProps)(MapCC);
