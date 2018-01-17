@@ -50,6 +50,11 @@ class MapCC extends Component {
 					zoom: this.defaultZoom,
 					maxZoom: 19
 				})
+			}),
+			areaPolygonSource: new ol.source.Vector({
+				features: [
+					new ol.Feature({})
+				]
 			})
 		};
 
@@ -66,6 +71,43 @@ class MapCC extends Component {
 		lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
 
 		this.props.onMapClick(lonLatCoordinates);
+		//TODO: move to config.
+		const CLUapi = "http://localhost:5000/api/CLUs?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
+
+		let areaPolygonSource = this.state.areaPolygonSource;
+		fetch(CLUapi).then(response => {
+			let geojson = response.json();
+			return geojson;
+		}).then(geojson => {
+			let coordinates = JSON.parse(geojson.features[0].geometry).coordinates[0][0];
+
+			var polyCoords = [];
+
+			for (var i in coordinates) {
+				polyCoords.push(ol.proj.fromLonLat(coordinates[i]));
+			}
+
+
+			let feature = new ol.Feature({geometry: new ol.geom.Polygon([polyCoords])});
+			feature.setStyle(
+				new ol.style.Style({
+					stroke: new ol.style.Stroke({
+						color: 'rgba(0, 152, 254, 1)',
+						width: 2
+					}),
+					fill: new ol.style.Fill({
+						color: 'rgba(0, 0, 255, 0.1)'
+					})
+				})
+			);
+
+			areaPolygonSource.clear();
+			areaPolygonSource.addFeatures([feature]);
+
+		}).catch(function(e) {
+			console.log("Get CLU failed: " + e );
+			areaPolygonSource.clear();
+		});
 	}
 
 	dropMarker(coordinate) {
@@ -83,6 +125,14 @@ class MapCC extends Component {
 		this.state.map.setTarget(this.props.mapId); // Set target for map
 		this.state.map.on("click", this.handleClick); // Set on click event handler
 		this.dropMarker(this.defaultCenter); // Drop default marker
+		let areaPolygonLayer = new ol.layer.Vector({
+			id: "areaPolygon",
+			source: this.state.areaPolygonSource,
+			visible: true
+		});
+
+		this.state.map.addLayer(areaPolygonLayer);
+		areaPolygonLayer.setZIndex(1001);
 	}
 
 	render(){
@@ -98,7 +148,6 @@ class MapCC extends Component {
 			</div>
 		)
 	}
-
 }
 
 export default MapCC;
