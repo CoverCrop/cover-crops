@@ -79,30 +79,13 @@ class MapCC extends Component {
 			let geojson = response.json();
 			return geojson;
 		}).then(geojson => {
-			let coordinates = JSON.parse(geojson.features[0].geometry).coordinates[0][0];
 
-			var polyCoords = [];
-
-			for (var i in coordinates) {
-				polyCoords.push(ol.proj.fromLonLat(coordinates[i]));
-			}
-
-
-			let feature = new ol.Feature({geometry: new ol.geom.Polygon([polyCoords])});
-			feature.setStyle(
-				new ol.style.Style({
-					stroke: new ol.style.Stroke({
-						color: 'rgba(0, 152, 254, 1)',
-						width: 2
-					}),
-					fill: new ol.style.Fill({
-						color: 'rgba(0, 0, 255, 0.1)'
-					})
-				})
-			);
+			let feature = (new ol.format.GeoJSON()).readFeatures(geojson, {
+				dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+			});
 
 			areaPolygonSource.clear();
-			areaPolygonSource.addFeatures([feature]);
+			areaPolygonSource.addFeatures(feature);
 
 		}).catch(function(e) {
 			console.log("Get CLU failed: " + e );
@@ -128,6 +111,17 @@ class MapCC extends Component {
 		let areaPolygonLayer = new ol.layer.Vector({
 			id: "areaPolygon",
 			source: this.state.areaPolygonSource,
+			style:
+				new ol.style.Style({
+					stroke: new ol.style.Stroke({
+						color: 'rgba(0, 152, 254, 1)',
+						width: 2
+					}),
+					fill: new ol.style.Fill({
+						color: 'rgba(0, 0, 255, 0.1)'
+					})
+				})
+			,
 			visible: true
 		});
 
