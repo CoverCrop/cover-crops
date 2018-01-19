@@ -51,11 +51,27 @@ class MapCC extends Component {
 					maxZoom: 19
 				})
 			}),
-			areaPolygonSource: new ol.source.Vector({
-				features: [
-					new ol.Feature({})
-				]
+			areaPolygonLayer: new ol.layer.Vector({
+				id: "areaPolygon",
+				source: new ol.source.Vector({
+					features: [
+						new ol.Feature({})
+					]
+				}),
+				style:
+					new ol.style.Style({
+						stroke: new ol.style.Stroke({
+							color: 'rgba(0, 152, 254, 1)',
+							width: 2
+						}),
+						fill: new ol.style.Fill({
+							color: 'rgba(0, 0, 255, 0.1)'
+						})
+					})
+				,
+				visible: true
 			})
+
 		};
 
 		this.handleClick = this.handleClick.bind(this);
@@ -74,7 +90,7 @@ class MapCC extends Component {
 		//TODO: move to config.
 		const CLUapi = "http://localhost:5000/api/CLUs?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
-		let areaPolygonSource = this.state.areaPolygonSource;
+		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 		fetch(CLUapi).then(response => {
 			let geojson = response.json();
 			return geojson;
@@ -108,23 +124,7 @@ class MapCC extends Component {
 		this.state.map.setTarget(this.props.mapId); // Set target for map
 		this.state.map.on("click", this.handleClick); // Set on click event handler
 		this.dropMarker(this.defaultCenter); // Drop default marker
-		let areaPolygonLayer = new ol.layer.Vector({
-			id: "areaPolygon",
-			source: this.state.areaPolygonSource,
-			style:
-				new ol.style.Style({
-					stroke: new ol.style.Stroke({
-						color: 'rgba(0, 152, 254, 1)',
-						width: 2
-					}),
-					fill: new ol.style.Fill({
-						color: 'rgba(0, 0, 255, 0.1)'
-					})
-				})
-			,
-			visible: true
-		});
-
+		let areaPolygonLayer = this.state.areaPolygonLayer;
 		this.state.map.addLayer(areaPolygonLayer);
 		areaPolygonLayer.setZIndex(1001);
 	}
