@@ -96,12 +96,12 @@ class MapCC extends Component {
 			return geojson;
 		}).then(geojson => {
 
-			let feature = (new ol.format.GeoJSON()).readFeatures(geojson, {
+			let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
 				dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
 			});
 
 			areaPolygonSource.clear();
-			areaPolygonSource.addFeatures(feature);
+			areaPolygonSource.addFeatures(features);
 
 		}).catch(function(e) {
 			console.log("Get CLU failed: " + e );
