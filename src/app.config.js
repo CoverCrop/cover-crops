@@ -2,14 +2,16 @@ const devConfig = {
 	basePath: "/",
 	fragilityServer: "",
 	fragilityMappingServer: "",
-	semanticServer: ""
+	semanticServer: "",
+	CLUapi: "https://covercrop.ncsa.illinois.edu/api/CLUs"
 };
 
 const prodConfig = {
 	basePath: "/covercrops/",
 	fragilityServer: "",
 	fragilityMappingServer: "",
-	semanticServer: ""
+	semanticServer: "",
+	CLUapi:"http://localhost:5000/api/CLUs"
 };
 
 const config = getConfig();

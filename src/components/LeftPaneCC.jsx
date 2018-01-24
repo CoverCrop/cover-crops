@@ -1,5 +1,7 @@
 import React, {Component} from "react";
+import {connect} from 'react-redux';
 import CoverCropCard from "./CoverCropCard";
+import {handleCardClick} from "../actions/analysis"
 
 class LeftPaneCC extends Component {
 
@@ -64,4 +66,19 @@ class LeftPaneCC extends Component {
 	}
 }
 
-export default LeftPaneCC;
+const mapStateToProps = (state) => {
+	return {
+		activeCardIndex: state.analysis.activeCardIndex,
+		cards: state.analysis.cards,
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleCardClick: (selectedCardIndex) => {
+			dispatch(handleCardClick(selectedCardIndex));
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftPaneCC);

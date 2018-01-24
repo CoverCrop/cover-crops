@@ -1,7 +1,9 @@
 import React, {Component} from "react";
+import { connect } from 'react-redux';
 import {Button, Textfield, Body1, Grid, Cell} from "react-mdc-web";
 import CoordinateFieldCC from "./CoordinateFieldCC";
 import MapCC from "./MapCC";
+import {handleLatFieldChange, handleLongFieldChange, handleCardChange} from "../actions/analysis"
 
 class SelectFieldsCC extends Component {
 
@@ -10,7 +12,6 @@ class SelectFieldsCC extends Component {
 		this.handleLatFieldChange = this.handleLatFieldChange.bind(this);
 		this.handleLongFieldChange = this.handleLongFieldChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.handleMapClick = this.handleMapClick.bind(this);
 	}
 
 	handleLatFieldChange(e) {
@@ -23,22 +24,17 @@ class SelectFieldsCC extends Component {
 
 	handleSubmit(event){
 		event.preventDefault();
-		if (this.props.state.longitude !== "" && this.props.state.latitude !== "") {
-			console.log(this.props.state.longitude + " " + this.props.state.latitude);
+		if (this.props.longitude !== "" && this.props.latitude !== "") {
+			console.log(this.props.longitude + " " + this.props.latitude);
 			let cardData = {
 				cardTitle: "Selected Fields",
-				cardSubtitle: "Latitude: " + this.props.state.latitude + "° " + "Longitude: " + this.props.state.longitude + "° "
+				cardSubtitle: "Latitude: " + this.props.latitude + "° \n" + "Longitude: " + this.props.longitude + "° "
 			};
 				this.props.handleCardChange(0, 1, cardData);
 		}
 		else {
 			console.log("Choose coordinates.");
 		}
-	}
-
-	handleMapClick(lonLatCoordinates){
-		this.props.handleLatFieldChange(lonLatCoordinates[1]);
-		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 	}
 
 	render(){
@@ -72,7 +68,7 @@ class SelectFieldsCC extends Component {
 							max="90"
 							type="number"
 							step="0.000001"
-							value={this.props.state.latitude}
+							value={this.props.latitude}
 							onChange={this.handleLatFieldChange}
 							floatingLabel="Latitude"/>
 						<CoordinateFieldCC
@@ -82,13 +78,13 @@ class SelectFieldsCC extends Component {
 							max="180"
 							type="number"
 							step="0.000001"
-							value={this.props.state.longitude}
+							value={this.props.longitude}
 							onChange={this.handleLongFieldChange}
 							floatingLabel="Longitude"/>
 						<Button type="submit" raised primary>Continue</Button>
 					</Cell>
 					<Cell col={10}>
-						<MapCC onMapClick={this.handleMapClick} mapId="map"/>
+						<MapCC mapId="map"/>
 					</Cell>
 				</Grid>
 			</form>
@@ -96,4 +92,25 @@ class SelectFieldsCC extends Component {
 	}
 }
 
-export default SelectFieldsCC;
+const mapStateToProps = (state) => {
+	return {
+		longitude: state.analysis.longitude,
+		latitude: state.analysis.latitude
+	}
+};
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleLatFieldChange: (lat) => {
+			dispatch(handleLatFieldChange(lat));
+		},
+		handleLongFieldChange: (lon) => {
+			dispatch(handleLongFieldChange(lon));
+		},
+		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
+			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SelectFieldsCC);

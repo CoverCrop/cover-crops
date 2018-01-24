@@ -13,7 +13,7 @@ export default {
 		"whatwg-fetch",
 		"./src/webpack-public-path",
 		"webpack-hot-middleware/client?reload=true",
-		path.resolve(__dirname, "src/index.js")
+		path.resolve(__dirname, "src/index.jsx")
 	],
 	target: "web",
 	output: {

@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { connect } from 'react-redux';
 import {Line} from 'react-chartjs-2';
 
 class ChartCC extends Component {
@@ -213,12 +214,17 @@ class ChartCC extends Component {
 	}
 
 	render() {
-
 		return (
-			<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
+				<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
 		)
 	}
-
 }
 
-export default ChartCC;
+const mapStateToProps = (state) => {
+	return {
+		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson.charts,
+		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson.charts
+	}
+};
+
+export default connect(null, mapStateToProps)(ChartCC);
