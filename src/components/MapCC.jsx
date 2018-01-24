@@ -91,7 +91,6 @@ class MapCC extends Component {
 		this.props.handleLatFieldChange(lonLatCoordinates[1]);
 		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 
-		//TODO: move to config.
 		const CLUapi = config.CLUapi + "?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
