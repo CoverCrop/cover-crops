@@ -227,4 +227,4 @@ const mapStateToProps = (state) => {
 	}
 };
 
-export default connect(null, mapStateToProps)(ChartCC);
+export default connect(mapStateToProps, null)(ChartCC);
