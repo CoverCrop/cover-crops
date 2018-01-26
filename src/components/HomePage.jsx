@@ -3,6 +3,7 @@ import Header from './Header'
 import Footer from './Footer'
 import styles from '../styles/main.css'
 import {Cell, Grid, Title, Textfield, Card, CardHeader, CardMedia, CardTitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
+import Login from "./Login";
 
 class HomePage extends Component {
 
@@ -12,7 +13,7 @@ class HomePage extends Component {
 				<Header selected='home'/>
 				<div className="content">
 						<Grid>
-							<Cell col={7}>
+							<Cell col={8}>
 								<h1>Welcome to Cover Crop Project</h1>
 								<br/>
 								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ante eros, hendrerit vel
@@ -52,23 +53,8 @@ class HomePage extends Component {
 									eros. Maecenas congue, nibh in porttitor fermentum, libero nulla mollis enim, vitae ornare
 									enim leo vel lacus.</p>
 							</Cell>
-							<Cell col={5}>
-								<Card>
-									<CardHeader>
-										<CardTitle>Representative User Interface</CardTitle>
-									</CardHeader>
-									<CardMedia
-										style={{
-											backgroundImage: 'url("../images/ccrop-rep-image-1.png")',
-											width: '450px',
-											height: '300px',
-
-										}}
-									/>
-									<CardText>
-										Source: <a target="_blank" href="https://www.ag-analytics.org">ag-analytics.org</a>
-									</CardText>
-								</Card>
+							<Cell col={4}>
+								<Login/>
 							</Cell>
 						</Grid>
 
