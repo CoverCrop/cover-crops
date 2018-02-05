@@ -1,3 +1,4 @@
+import {weatherPatterns}  from '../datawolf.config'
 const initCards = [
 	{
 		cardId: "selectField",
@@ -16,13 +17,13 @@ const initCards = [
 	}
 ];
 
-
 const defaultState = {
 	activeCardIndex: 0,
 	latitude: "",
 	longitude: "",
 	startDate: 0,
 	endDate: 0,
+	weatherPattern: weatherPatterns[0],
 	cards: initCards,
 	withCoverCropResultJson: null,
 	withCoverCropExecutionId: "",
@@ -52,6 +53,10 @@ const analysis = (state = defaultState, action) => {
 		case "CHANGE_END_DATE":
 			return Object.assign({}, state, {
 				endDate: action.date
+			});
+		case "CHANGE_WEATHER":
+			return Object.assign({}, state, {
+				weatherPattern: action.weatherPattern
 			});
 		case "SET_FLEXIBLEDATES":
 			return Object.assign({}, state, {
