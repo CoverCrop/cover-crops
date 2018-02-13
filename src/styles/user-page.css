@@ -1,0 +1,10 @@
+.event-list{
+	width: 450px;
+	float: left;
+	margin-bottom: 20px;
+	margin-right: 20px;
+}
+
+.event-list-parent{
+	position: relative;
+}
