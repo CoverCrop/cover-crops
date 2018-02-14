@@ -4,7 +4,7 @@ const defaultState = {
 };
 
 
-const login = (state = defaultState, action) => {
+const user = (state = defaultState, action) => {
 	switch (action.type) {
 
 		case "LOGIN":
@@ -22,4 +22,4 @@ const login = (state = defaultState, action) => {
 	}
 };
 
-export default login;
+export default user;

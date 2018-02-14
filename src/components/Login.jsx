@@ -5,7 +5,7 @@ import styles from '../styles/main.css'
 import { connect } from 'react-redux';
 import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitle, CardSubtitle, CardActions, CardText, Body2} from "react-mdc-web";
 import {datawolfURL} from "../datawolf.config";
-import {handleUserLogin} from "../actions/login";
+import {handleUserLogin} from "../actions/user";
 
 class Login extends Component {
 
@@ -111,7 +111,7 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		email: state.login.email
+		email: state.user.email
 	}
 };
 
