@@ -99,7 +99,7 @@ class Login extends Component {
 								</Button>
 							</span>
 							<span><Caption><a className="not-active" href="">Register</a></Caption></span>
-							<span><Caption><a className="not-active" href="">Forgot your details?</a></Caption></span>
+							<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
 						</form>
 					</CardActions>
 				</Card>
