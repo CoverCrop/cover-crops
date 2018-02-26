@@ -15,11 +15,11 @@ const parameters = {
 };
 
 // TODO: pass in creatorId
-export function getWithCoverCropExecutionRequest(lat, long) {
+export function getWithCoverCropExecutionRequest(id, lat, long) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
-		"title": "dssat-batch-run",
+		"title": id,
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
@@ -34,11 +34,11 @@ export function getWithCoverCropExecutionRequest(lat, long) {
 	};
 }
 
-export function getWithoutCoverCropExecutionRequest (lat, long) {
+export function getWithoutCoverCropExecutionRequest (id, lat, long) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
-		"title": "dssat-batch-run",
+		"title": id,
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
@@ -55,3 +55,6 @@ export function getWithoutCoverCropExecutionRequest (lat, long) {
 
 export const latId = "76a57476-094f-4331-f59f-0865f1341108";
 export const lonId = "dcceaa12-2bc6-4591-8e14-026c3bad64fd";
+export const resultDatasetId = "2623a440-1f16-4110-83c4-5ebf39cb0e35";
+export const workloadId = "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2";
+

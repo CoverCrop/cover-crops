@@ -4,6 +4,7 @@ import Footer from './Footer';
 import {Button, Textfield, Card, CardText, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
 import UserEvents from './UserEvents';
+import ViewResultsCC from "./ViewResultsCC";
 
 class UserPage extends Component {
 
@@ -16,8 +17,11 @@ class UserPage extends Component {
 						<Cell col={2}>
 							place holder for tabs
 						</Cell>
-						<Cell col={10}>
+						<Cell col={5}>
 							<UserEvents />
+						</Cell>
+						<Cell col={5}>
+							<ViewResultsCC />
 						</Cell>
 					</Grid>
 

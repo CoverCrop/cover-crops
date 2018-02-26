@@ -4,6 +4,7 @@ import AnalysisPage from './AnalysisPage';
 import HomePage from './HomePage';
 import AboutPage from './AboutPage';
 import UserPage from './UserPage';
+import RouteMismatch from './RouteMismatch'
 import "material-components-web/dist/material-components-web.min.css";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'material-components-web/dist/material-components-web.min.css';
@@ -21,7 +22,8 @@ class App extends Component {
 					<Route path="/" component={HomePage}/>
 					<Route path="/analysis" component={AnalysisPage}/>
 					<Route path="/about" component={AboutPage}/>
-					<Route path="/user" component={UserPage}/>
+					<Route path="/history" component={UserPage}/>
+					<Route path="*" component={RouteMismatch}/>
 				</Router>
 			</MuiThemeProvider>
 		)

@@ -4,7 +4,8 @@ import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2, Checkbox, F
 import 'react-datepicker/dist/react-datepicker.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL, steps, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
+import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
+import {ID} from "../utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange}
 from '../actions/analysis'
 
@@ -62,8 +63,9 @@ class RunSimulationCC extends Component {
 			// Add authorization here
 		};
 
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
+		let id = ID();
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -124,8 +126,8 @@ class RunSimulationCC extends Component {
 		// for debug
 		// console.log(withoutCoverCropAnalysisResult)
 
-		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
-		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
+		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
+		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
 
 		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
 		console.log("Without cover crop result dataset = " + withoutCoverCropDatasetResultGUID);
