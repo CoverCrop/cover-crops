@@ -27,7 +27,7 @@ class Login extends Component {
 			//let loginResponse = await this.loginTest(this.state.email, this.state.password);
 			const token = this.state.email + ":" + this.state.password;
 			const hash = btoa(token);
-			let loginResponse = await fetch(datawolfURL + "/login?email=", {
+			let loginResponse = await fetch(datawolfURL + "/login?email=" + this.state.email, {
 				method: 'GET',
 				headers: {
 					"Authorization": "Basic " + hash,
