@@ -1,6 +1,8 @@
 
 const defaultState = {
 	email: "",
+	isAuthenticated: false,
+	userId: ""
 };
 
 
@@ -9,7 +11,9 @@ const user = (state = defaultState, action) => {
 
 		case "LOGIN":
 			return Object.assign({}, state, {
-				email: action.email
+				email: action.email,
+				isAuthenticated: action.isAuthenticated,
+				userId: action.userId
 			});
 
 		case "LOGOUT":
