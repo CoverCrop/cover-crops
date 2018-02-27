@@ -2,10 +2,10 @@ import React, {Component} from "react";
 import { connect } from 'react-redux';
 import {Button, Textfield, Card, CardText, Body1, Body2, CardActions, FormField, Grid, Cell} from "react-mdc-web";
 import "babel-polyfill";
-import {datawolfURL, latId, lonId, workloadId, withoutCoverCropDatasetResultGUID, resultDatasetId} from "../datawolf.config";
+import {datawolfURL, latId, lonId, workloadId, resultDatasetId} from "../datawolf.config";
 import styles from '../styles/user-page.css';
-import { handleResults} from '../actions/analysis'
-import {groupBy} from '../utils'
+import { handleResults} from '../actions/analysis';
+import {groupBy} from '../utils';
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 

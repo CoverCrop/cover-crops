@@ -6,10 +6,11 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
+import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
+	weatherPatterns} from "../datawolf.config";
 import {ID} from "../utils";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange}
-from '../actions/analysis'
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
+	handleWeatherPatternChange} from '../actions/analysis'
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
