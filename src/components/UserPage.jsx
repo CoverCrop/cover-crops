@@ -15,7 +15,7 @@ class UserPage extends Component {
 				<div className="content">
 					<Grid>
 						<Cell col={2}>
-							place holder for tabs
+							{/*TODO: add tabs*/}
 						</Cell>
 						<Cell col={5}>
 							<UserEvents />

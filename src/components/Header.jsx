@@ -16,6 +16,7 @@ class Header extends Component {
 					<ToolbarSection className="menu_items">
 						<ToolbarTitle><Link activeStyle={active} onlyActiveOnIndex to="/">HOME</Link></ToolbarTitle>
 						<ToolbarTitle><Link activeStyle={active} to="/analysis">ANALYSIS</Link></ToolbarTitle>
+						<ToolbarTitle><Link activeStyle={active} to="/history">HISTORY</Link></ToolbarTitle>
 						<ToolbarTitle><Link activeStyle={active} to="/about">ABOUT</Link></ToolbarTitle>
 					</ToolbarSection>
 					<ToolbarSection align="end">
