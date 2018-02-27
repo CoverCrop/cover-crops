@@ -53,6 +53,9 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long) {
 	};
 }
 
+// the fist weather pattern is the Default.
+export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
+
 export const latId = "76a57476-094f-4331-f59f-0865f1341108";
 export const lonId = "dcceaa12-2bc6-4591-8e14-026c3bad64fd";
 export const resultDatasetId = "2623a440-1f16-4110-83c4-5ebf39cb0e35";

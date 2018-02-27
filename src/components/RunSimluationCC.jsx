@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import { connect } from 'react-redux';
 import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest} from "../datawolf.config";
@@ -95,7 +97,7 @@ class RunSimulationCC extends Component {
 
 
 		var withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
-
+        // check the status until two progresses are finished
         while( this.state.withstep4 === "" || this.state.withstep4 === "WAITING" || this.state.withstep4 === "RUNNING"
 			|| this.state.withoutstep4 === "" || this.state.withoutstep4 === "WAITING" || this.state.withoutstep4 === "RUNNING" ){
 			await wait(300);
@@ -259,11 +261,21 @@ class RunSimulationCC extends Component {
 		this.props.handleFlexibleDatesChange(checked)
 	}
 
+	handleWeatherPatternChange = (weatherPattern) => {
+		this.props.handleWeatherPatternChange(weatherPattern.value);
+	}
+
+	toggleDropdown(e) {
+		this.setState({ open: !this.state.open })
+	}
+
+
+
 	render(){
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
+	    let options = weatherPatterns.map(w => Object.assign({ value: w, label: w }))
 		return(
 			<div>
-				<div>
 					<Body1>Establishment Date: </Body1>
 					<DatePicker className="date-picker-cc" selected={this.props.startDate}
 								selectsStart
@@ -273,8 +285,7 @@ class RunSimulationCC extends Component {
 								startDate={this.props.startDate}
 								endDate={this.props.endDate}
 								onSelect={this.handleStartDateChange}/>
-				</div>
-				<div>
+
 					<Body1>Termination Date: </Body1>
 					<DatePicker className="date-picker-cc" selected={this.props.endDate}
 								selectsStart
@@ -284,7 +295,6 @@ class RunSimulationCC extends Component {
 								startDate={this.props.startDate}
 								endDate={this.props.endDate}
 								onChange={this.handleEndDateChange}/>
-				</div>
 
 				<FormField id="checkbox-label">
 					<Checkbox
@@ -292,6 +302,17 @@ class RunSimulationCC extends Component {
 						checked={this.props.isFlexibleDatesChecked}/>
 					<label>Flexible termination dates (+/- two weeks)</label>
 				</FormField>
+
+				<Body1> Weather Pattern:</Body1>
+
+				<Select
+					className="weather-pattern"
+					name="weatherPattern"
+					value={this.props.weatherPattern}
+					onChange={this.handleWeatherPatternChange}
+					options={options}
+				/>
+
 				<br/>
 				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
 				<Grid>
@@ -330,6 +351,7 @@ const mapStateToProps = (state) => {
 		endDate: state.analysis.endDate,
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
+		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked
 	}
@@ -342,6 +364,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleEndDateChange: (date) => {
 			dispatch(handleEndDateChange(date));
+		},
+		handleWeatherPatternChange: (weatherPattern) => {
+			dispatch(handleWeatherPatternChange(weatherPattern));
 		},
 		handleFlexibleDatesChange: (checked) =>{
 			dispatch(handleFlexibleDatesChange(checked))
