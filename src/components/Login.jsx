@@ -37,10 +37,13 @@ class Login extends Component {
 			});
 
 			console.log(loginResponse);
-			if (loginResponse.status >= 200 && loginResponse.status < 300) {
+			if (loginResponse.status === 200) {
 
-				this.props.handleUserLogin(this.state.email);
+				let jsonData = await loginResponse.json().then(function(data) {
+					return data;
+				});
 
+				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
 				alert("Logged in");
 
 			}
@@ -75,20 +78,25 @@ class Login extends Component {
 							height: '250px',
 							padding: '10px'
 						}}/>
-					<CardText>
-						<Body2>Sign In</Body2>
-						<span><Textfield autoFocus floatingLabel="Username" value={this.state.email}
-										 onChange={({target : {value : email}}) => {
-											 this.setState({ email: email })
-										 }} /> </span>
-						<span><Textfield floatingLabel="Password" type="password"
-										 value={this.state.password}
-										 onChange={({target : {value : password}}) => {
-											 this.setState({ password })
-										 }} /> </span>
-					</CardText>
-					<CardActions>
-						<form>
+				</Card>
+				<br/>
+				{/*Display login card only when user is not authenticated*/}
+				{this.props.isAuthenticated === true ? null :
+					<Card className="login">
+						<CardText>
+							<Body2>Sign In</Body2>
+							<span><Textfield autoFocus floatingLabel="Username" value={this.state.email}
+											 onChange={({target: {value: email}}) => {
+												 this.setState({email: email})
+											 }}/> </span>
+							<span><Textfield floatingLabel="Password" type="password"
+											 value={this.state.password}
+											 onChange={({target: {value: password}}) => {
+												 this.setState({password})
+											 }}/> </span>
+						</CardText>
+						<CardActions>
+							<form>
 							<span>
 								<Button
 									type="submit"
@@ -98,11 +106,12 @@ class Login extends Component {
 									disabled={!this.validateLoginForm()}>Login
 								</Button>
 							</span>
-							<span><Caption><a className="not-active" href="">Register</a></Caption></span>
-							<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
-						</form>
-					</CardActions>
-				</Card>
+								<span><Caption><a className="not-active" href="">Register</a></Caption></span>
+								<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
+							</form>
+						</CardActions>
+					</Card>
+				}
 			</div>
 		)
 	}
@@ -111,15 +120,16 @@ class Login extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		email: state.user.email
+		email: state.user.email,
+		isAuthenticated: state.user.isAuthenticated
 	}
 };
 
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleUserLogin: (email) => {
-			dispatch(handleUserLogin(email));
+		handleUserLogin: (email, userId, isAuthenticated) => {
+			dispatch(handleUserLogin(email, userId, isAuthenticated));
 		}
 	}
 };
