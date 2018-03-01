@@ -1,9 +1,18 @@
 import React, {Component} from "react";
 import {Link} from "react-router";
 import styles from "../styles/header.css";
-import {Button, Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, Grid, Cell, Textfield, Caption} from 'react-mdc-web';
+import {Button, Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, Grid, Cell, Textfield, Caption, Icon, MenuAnchor, Menu, MenuItem, MenuDivider} from 'react-mdc-web';
+import {connect} from "react-redux";
 
 class Header extends Component {
+
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			open: false
+		};
+	}
 
 	render() {
 		const active = {color: "#afb5f3"};
@@ -18,11 +27,29 @@ class Header extends Component {
 						<ToolbarTitle><Link activeStyle={active} to="/analysis">ANALYSIS</Link></ToolbarTitle>
 						<ToolbarTitle><Link activeStyle={active} to="/about">ABOUT</Link></ToolbarTitle>
 					</ToolbarSection>
-					<ToolbarSection align="end">
-						{/*<span><Textfield floatingLabel="Username"/> </span>*/}
-						{/*<span><Textfield floatingLabel="Password" type="password"/> </span>*/}
-						{/*<span><Button compact>Login</Button></span>*/}
-						{/*<div><Caption><a href="">Forgot username or password?</a></Caption></div>*/}
+					<ToolbarSection className="menu_items" align="end">
+						{this.props.isAuthenticated === false ? null :
+							<span>
+								<Icon
+									name="person"
+									className="user-account-icon"
+									onClick={() => {
+										this.setState({open: true})
+									}}/>
+								<MenuAnchor>
+									<Menu
+										right
+										open={this.state.open}
+										onClose={() => {
+											this.setState({open: false})
+										}}>
+										<MenuItem>Profile</MenuItem>
+										<MenuItem>History</MenuItem>
+										<MenuDivider/>
+										<MenuItem>Logout</MenuItem>
+									</Menu>
+								</MenuAnchor>
+							</span>}
 					</ToolbarSection>
 				</ToolbarRow>
 			</Toolbar>
@@ -30,4 +57,11 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+	return {
+		email: state.user.email,
+		isAuthenticated: state.user.isAuthenticated
+	}
+};
+
+export default connect(mapStateToProps, null)(Header);
