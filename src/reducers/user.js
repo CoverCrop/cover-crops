@@ -17,9 +17,7 @@ const user = (state = defaultState, action) => {
 			});
 
 		case "LOGOUT":
-			return Object.assign({}, state, {
-				email: ""
-			});
+			return Object.assign({}, state, defaultState);
 
 		default:
 			return state;

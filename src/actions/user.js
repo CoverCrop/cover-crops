@@ -1,6 +1,10 @@
 export const handleUserLogin = (email, userId, isAuthenticated) => ({
 	type: "LOGIN",
-	email: email,
-	userId: userId,
-	isAuthenticated: isAuthenticated
+	email,
+	userId,
+	isAuthenticated
+});
+
+export const handleUserLogout = () => ({
+	type: "LOGOUT"
 });
