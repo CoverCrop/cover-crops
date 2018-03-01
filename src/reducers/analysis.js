@@ -1,4 +1,4 @@
-import {weatherPatterns}  from '../datawolf.config'
+import {weatherPatterns}  from "../datawolf.config";
 const initCards = [
 	{
 		cardId: "selectField",
