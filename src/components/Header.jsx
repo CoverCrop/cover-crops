@@ -25,7 +25,8 @@ class Header extends Component {
 					</ToolbarSection>
 					<ToolbarSection className="menu_items">
 						<ToolbarTitle><Link activeStyle={active} onlyActiveOnIndex to="/">HOME</Link></ToolbarTitle>
-						<ToolbarTitle><Link activeStyle={active} to="/analysis">ANALYSIS</Link></ToolbarTitle>
+						{this.props.isAuthenticated === false ? null :
+							<ToolbarTitle><Link activeStyle={active} to="/analysis">ANALYSIS</Link></ToolbarTitle>}
 						<ToolbarTitle><Link activeStyle={active} to="/about">ABOUT</Link></ToolbarTitle>
 					</ToolbarSection>
 					<ToolbarSection className="menu_items" align="end">
