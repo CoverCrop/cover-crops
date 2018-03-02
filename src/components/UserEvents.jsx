@@ -30,12 +30,18 @@ class UserEvents extends Component {
 
 		const events = await eventRequest.json();
 		const eventGroups = groupBy(events, event => event.title);
+		// the list with both executions,  each array is [WithCoverCrop, WithoutCoverCrop]
 		const eventfilteredGroup = [];
 		eventGroups.forEach(function(v, k){
-			if(v.length === 2){
-				eventfilteredGroup.push(v);
+			if(v.length === 2 && v[0]["description"] !== ""){
+				if(v[0]["description"] === "WithCoverCrop"){
+					eventfilteredGroup.push(v);
+				} else if(v[0]["description"] === "WithoutCoverCrop"){
+					let tmpv = [v[1], v[0]];
+					eventfilteredGroup.push(tmpv);
+				}
 			}
-		})
+		});
         this.setState({events: eventfilteredGroup});
 	}
 

@@ -20,6 +20,7 @@ export function getWithCoverCropExecutionRequest(id, lat, long) {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 		"title": id,
+		"description":"WithCoverCrop",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
@@ -39,6 +40,7 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long) {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
 		"title": id,
+		"description":"WithoutCoverCrop",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
