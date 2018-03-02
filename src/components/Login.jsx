@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitle, CardSubtitle, CardActions, CardText, Body2} from "react-mdc-web";
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
+import {checkAuthentication} from "../public/utils"
 
 class Login extends Component {
 
@@ -33,7 +34,8 @@ class Login extends Component {
 					"Authorization": "Basic " + hash,
 					"Content-Type": "application/json",
 					"Access-Control-Origin": "http://localhost:3000"
-				}
+				},
+				credentials: 'include'
 			});
 
 			console.log(loginResponse);
@@ -44,9 +46,23 @@ class Login extends Component {
 				});
 
 				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
+				localStorage.setItem("personId", jsonData["id"]); // Store person ID in local storage for future use
 				alert("Logged in");
 
+				// Check for authentication
+				checkAuthentication().then(function (checkAuthResponse) {
+					if (checkAuthResponse.status === 200) {
+						console.log("Person Valid");
+					}
+					else if (checkAuthResponse.status === 401) {
+						console.log("Unauthorized");
+					}
+					else {
+						console.log("Unknown");
+					}
+				});
 			}
+
 			else if (loginResponse.status === 401) {
 
 				alert("Unauthorized");
