@@ -193,8 +193,8 @@ class ChartCC extends Component {
 		let keys = [];
 		let chartDataArray = {}; // Associative array to store chart data
 
-		this.generateCharts("withCoverCropChartData", chartDataArray); // generate charts for with cover crop case
-		this.generateCharts("withoutCoverCropChartData", chartDataArray); // generate charts for without cover crop case
+		this.generateCharts("withCoverCropChartDataArray", chartDataArray); // generate charts for with cover crop case
+		this.generateCharts("withoutCoverCropChartDataArray", chartDataArray); // generate charts for without cover crop case
 
 		console.log("Charts array: ");
 		console.log(chartDataArray);
@@ -225,8 +225,8 @@ class ChartCC extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		withCoverCropChartData: state.analysis.withCoverCropResultJson,
-		withoutCoverCropChartData: state.analysis.withoutCoverCropResultJson
+		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson,
+		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson
 	}
 };
 
