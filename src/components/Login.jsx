@@ -46,7 +46,7 @@ class Login extends Component {
 				});
 
 				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
-				localStorage.setItem("personId", jsonData["id"]); // Store person ID in local storage for future use
+				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
 				alert("Logged in");
 
 				// Check for authentication

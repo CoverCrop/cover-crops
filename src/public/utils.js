@@ -6,7 +6,7 @@ import {datawolfURL} from "../datawolf.config";
  */
 export async function checkAuthentication() {
 
-	let personId = localStorage.getItem("personId");
+	let personId = sessionStorage.getItem("personId");
 
 	return await fetch(datawolfURL + "/persons/" + personId, {
 		method: 'GET',
@@ -18,3 +18,11 @@ export async function checkAuthentication() {
 	});
 }
 
+
+export function isUserAuthenticated() {
+
+	// Return true if the user is authenticated, else return false.
+	checkAuthentication().then(function (checkAuthResponse) {
+		return checkAuthResponse.status === 200;
+	});
+}
