@@ -13,6 +13,14 @@ class Header extends Component {
 		this.state = {
 			open: false
 		};
+
+		this.handleLogout = this.handleLogout.bind(this);
+	}
+
+	handleLogout() {
+		sessionStorage.removeItem("personId");
+		this.props.handleUserLogout();
+		alert("Logout successful!");
 	}
 
 	render() {
@@ -49,8 +57,7 @@ class Header extends Component {
 										<MenuItem>History</MenuItem>
 										<MenuDivider/>
 										<MenuItem onClick={() => {
-											this.props.handleUserLogout();
-											alert("Logout successful!");
+											this.handleLogout();
 										}}>Logout</MenuItem>
 									</Menu>
 								</MenuAnchor>
