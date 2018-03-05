@@ -47,6 +47,7 @@ class Login extends Component {
 
 				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
 				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
+				sessionStorage.setItem("email", jsonData["email"]); // Store email ID in session storage for future use
 
 				// Check for authentication
 				checkAuthentication().then(function (checkAuthResponse) {

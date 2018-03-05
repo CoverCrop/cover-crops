@@ -19,6 +19,7 @@ class Header extends Component {
 
 	handleLogout() {
 		sessionStorage.removeItem("personId");
+		sessionStorage.removeItem("email");
 		this.props.handleUserLogout();
 	}
 
