@@ -14,6 +14,7 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
+// TODO: pass in creatorId
 export function getWithCoverCropExecutionRequest(lat, long) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
@@ -51,3 +52,9 @@ export function getWithoutCoverCropExecutionRequest (lat, long) {
 		}
 	};
 }
+
+// the fist weather pattern is the Default.
+export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
+
+export const latId = "76a57476-094f-4331-f59f-0865f1341108";
+export const lonId = "dcceaa12-2bc6-4591-8e14-026c3bad64fd";

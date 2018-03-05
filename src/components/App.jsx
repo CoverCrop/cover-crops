@@ -3,14 +3,13 @@ import {Router, Route, hashHistory, Redirect} from 'react-router'
 import AnalysisPage from './AnalysisPage'
 import HomePage from './HomePage'
 import AboutPage from './AboutPage'
-import ViewResultsCC from './ViewResultsCC'
+import UserPage from './UserPage';
 import "material-components-web/dist/material-components-web.min.css";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import 'material-components-web/dist/material-components-web.min.css';
 import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {isUserAuthenticated} from "../public/utils";
-
 
 global.__base = __dirname + "/";
 injectTapEventPlugin();
@@ -42,6 +41,7 @@ class App extends Component {
 					<Route path="/" component={HomePage}/>
 					<PrivateRoute path="/analysis" component={AnalysisPage}/>
 					<Route path="/about" component={AboutPage}/>
+					<Route path="/user" component={UserPage}/>
 				</Router>
 			</MuiThemeProvider>
 		)

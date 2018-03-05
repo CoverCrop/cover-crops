@@ -23,6 +23,11 @@ export const handleEndDateChange = (date) => ({
 	date
 });
 
+export const handleWeatherPatternChange = (weatherPattern) => ({
+	type: "CHANGE_WEATHER",
+	weatherPattern
+});
+
 export const handleFlexibleDatesChange = (checked) => ({
 	type: "SET_FLEXIBLEDATES",
 	checked
