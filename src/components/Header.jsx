@@ -20,7 +20,6 @@ class Header extends Component {
 	handleLogout() {
 		sessionStorage.removeItem("personId");
 		this.props.handleUserLogout();
-		alert("Logout successful!");
 	}
 
 	render() {
