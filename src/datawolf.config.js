@@ -14,11 +14,10 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
-// TODO: pass in creatorId
-export function getWithCoverCropExecutionRequest(lat, long) {
+export function getWithCoverCropExecutionRequest(lat, long, personId) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
-		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
+		"creatorId": personId,
 		"title": "dssat-batch-run",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
@@ -34,10 +33,10 @@ export function getWithCoverCropExecutionRequest(lat, long) {
 	};
 }
 
-export function getWithoutCoverCropExecutionRequest (lat, long) {
+export function getWithoutCoverCropExecutionRequest (lat, long, personId) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
-		"creatorId": "f864b8d7-8dce-4ed3-a083-dd73e8291181",
+		"creatorId": personId,
 		"title": "dssat-batch-run",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
