@@ -14,12 +14,13 @@ class UserEvents extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			events: []
+			events: [],
+			email: sessionStorage.getItem("email")
 		}
 	}
 
 	async getEvents() {
-		let eventRequest = await fetch(datawolfURL + "/executions?workloadId="+workloadId, {
+		let eventRequest = await fetch(datawolfURL + "/executions?email=" + this.state.email, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -54,7 +55,8 @@ class UserEvents extends Component {
 	async getResult(withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID) {
         //TODO: combine this code with ChartCC.js
 		let headers = {
-			// Add authorization here
+			'Content-Type': 'application/json',
+			'Access-Control-Origin': 'http://localhost:3000'
 		};
 
 		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
@@ -67,10 +69,12 @@ class UserEvents extends Component {
 			const withCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 			const withoutCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 
 			const withCoverCropResultDataset = await withCoverCropResponse.json();
@@ -99,6 +103,7 @@ class UserEvents extends Component {
 				{
 					method: 'GET',
 					headers: headers,
+					credentials: "include"
 				});
 
 			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
@@ -106,6 +111,7 @@ class UserEvents extends Component {
 				{
 					method: 'GET',
 					headers: headers,
+					credentials: "include"
 				});
 
 			const withCoverCropResultFile = await withCoverCropFileDownloadResponse.json();
