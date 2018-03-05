@@ -49,6 +49,7 @@ class RunSimulationCC extends Component {
 	async runSimulation() {
 
 		let status = "STARTED";
+		let personId = sessionStorage.getItem("personId"); // Read person Id from session storage
 		this.setState({
 			simulationStatus: status,
 			runSimulationButtonDisabled: true
@@ -62,29 +63,24 @@ class RunSimulationCC extends Component {
 		this.props.handleCardChange(1, 1, cardData);
 
 		let headers = {
-			// Add authorization here
+			'Content-Type': 'application/json',
+			'Access-Control-Origin': 'http://localhost:3000'
 		};
 
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(this.props.latitude, this.props.longitude);
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(this.props.latitude, this.props.longitude, personId);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(this.props.latitude, this.props.longitude, personId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
-			headers: {
-				// Add authorization here
-				'Content-Type': 'application/json',
-				'Access-Control-Origin': 'http://localhost:3000'
-			},
+			headers: headers,
+			credentials: "include",
 			body: JSON.stringify(withCoverCropExecutionRequest)
 		});
 
 		let withoutCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
-			headers: {
-				// Add authorization here
-				'Content-Type': 'application/json',
-				'Access-Control-Origin': 'http://localhost:3000'
-			},
+			headers: headers,
+			credentials: "include",
 			body: JSON.stringify(withoutCoverCropExecutionRequest)
 		});
 
@@ -95,7 +91,7 @@ class RunSimulationCC extends Component {
 		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
 
-		var withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
+		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
         // check the status until two progresses are finished
         while( this.state.withstep4 === "" || this.state.withstep4 === "WAITING" || this.state.withstep4 === "RUNNING"
 			|| this.state.withoutstep4 === "" || this.state.withoutstep4 === "WAITING" || this.state.withoutstep4 === "RUNNING" ){
@@ -104,11 +100,13 @@ class RunSimulationCC extends Component {
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 
 			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
@@ -140,10 +138,12 @@ class RunSimulationCC extends Component {
 			const withCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 			const withoutCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID, {
 				method: 'GET',
 				headers: headers,
+				credentials: "include"
 			});
 
 			const withCoverCropResultDataset = await withCoverCropResponse.json();
@@ -172,6 +172,7 @@ class RunSimulationCC extends Component {
 				{
 					method: 'GET',
 					headers: headers,
+					credentials: "include"
 				});
 
 			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
@@ -179,6 +180,7 @@ class RunSimulationCC extends Component {
 				{
 					method: 'GET',
 					headers: headers,
+					credentials: "include"
 				});
 
 			const withCoverCropResultFile = await withCoverCropFileDownloadResponse.json();
