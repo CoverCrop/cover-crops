@@ -47,7 +47,6 @@ class Login extends Component {
 
 				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
 				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
-				alert("Logged in");
 
 				// Check for authentication
 				checkAuthentication().then(function (checkAuthResponse) {
@@ -64,8 +63,6 @@ class Login extends Component {
 			}
 
 			else if (loginResponse.status === 401) {
-
-				alert("Unauthorized");
 
 			}
 			else {
