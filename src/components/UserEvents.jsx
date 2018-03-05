@@ -20,10 +20,11 @@ class UserEvents extends Component {
 		let eventRequest = await fetch(datawolfURL + "/executions?size=10&page=0", {
 			method: 'GET',
 			headers: {
-				// Add authorization here
 				'Content-Type': 'application/json',
 				'Access-Control-Origin': 'http://localhost:3000'
-			}
+			},
+			credentials: "include"
+
 		});
 
 		const events = await eventRequest.json();
