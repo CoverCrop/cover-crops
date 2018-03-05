@@ -1,7 +1,7 @@
 
 const defaultState = {
 	email: "",
-	isAuthenticated: false,
+	isAuthenticated: sessionStorage.getItem("personId") !== null,
 	userId: ""
 };
 
@@ -17,7 +17,11 @@ const user = (state = defaultState, action) => {
 			});
 
 		case "LOGOUT":
-			return Object.assign({}, state, defaultState);
+			return Object.assign({}, state, {
+				email: "",
+				isAuthenticated: false,
+				userId: ""
+			});
 
 		default:
 			return state;
