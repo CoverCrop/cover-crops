@@ -6,8 +6,9 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL, steps, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
+import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
+import {ID} from "../utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis'
 
@@ -42,7 +43,7 @@ class RunSimulationCC extends Component {
 			withoutstep1: "",
 			withoutstep2: "",
 			withoutstep3: "",
-			withoutstep4: "",
+			withoutstep4: ""
 		};
 	}
 
@@ -67,8 +68,9 @@ class RunSimulationCC extends Component {
 			'Access-Control-Origin': 'http://localhost:3000'
 		};
 
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(this.props.latitude, this.props.longitude, personId);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(this.props.latitude, this.props.longitude, personId);
+		let id = ID();
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude, personId);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude, personId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -125,8 +127,8 @@ class RunSimulationCC extends Component {
 		// for debug
 		// console.log(withoutCoverCropAnalysisResult)
 
-		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
-		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets["2623a440-1f16-4110-83c4-5ebf39cb0e35"];
+		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
+		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
 
 		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
 		console.log("Without cover crop result dataset = " + withoutCoverCropDatasetResultGUID);

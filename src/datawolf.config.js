@@ -14,11 +14,12 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
-export function getWithCoverCropExecutionRequest(lat, long, personId) {
+export function getWithCoverCropExecutionRequest(id, lat, long, personId) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": personId,
-		"title": "dssat-batch-run",
+        "title": id,
+		"description":"WithCoverCrop",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
@@ -33,11 +34,12 @@ export function getWithCoverCropExecutionRequest(lat, long, personId) {
 	};
 }
 
-export function getWithoutCoverCropExecutionRequest (lat, long, personId) {
+export function getWithoutCoverCropExecutionRequest (id, lat, long, personId) {
 	return {
 		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
 		"creatorId": personId,
-		"title": "dssat-batch-run",
+		"title": id,
+		"description":"WithoutCoverCrop",
 		"parameters": {
 			"687efc8a-9055-4fab-b91b-25c44f0c6724": lat,
 			"23a0962a-0548-4b85-c183-c17ad45326fc": long,
@@ -57,3 +59,6 @@ export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
 
 export const latId = "76a57476-094f-4331-f59f-0865f1341108";
 export const lonId = "dcceaa12-2bc6-4591-8e14-026c3bad64fd";
+export const resultDatasetId = "2623a440-1f16-4110-83c4-5ebf39cb0e35";
+export const workloadId = "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2";
+

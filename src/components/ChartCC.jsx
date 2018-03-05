@@ -72,112 +72,115 @@ class ChartCC extends Component {
 		let labelArray = ['2009-07-01', '2010-04-01', '2010-07-01', '2011-04-01', '2011-07-01', '2012-01-01', '2012-07-01', '2013-01-01', '2013-07-01', '2013-12-01'];
 		let colorIndex = 0;
 
-		if (this.props.hasOwnProperty(chartArrayTypeName)) {
-			// Iterate over each chart
-			for (let dataIndex = 0; dataIndex < this.props[chartArrayTypeName].length; dataIndex++) {
-				let chartRawData = this.props[chartArrayTypeName][dataIndex];
+		if (this.props.hasOwnProperty(chartArrayTypeName) && this.props[chartArrayTypeName] !== null) {
+			if(this.props[chartArrayTypeName].hasOwnProperty('charts')){
+				// Iterate over each chart
+				let charts =  this.props[chartArrayTypeName].charts;
+				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
+					let chartRawData = charts[dataIndex];
 
-				// Set chart options
-				let chartOptions = {
-					title: {
-						text: chartRawData.title,
-						display: true,
-						fontSize: 14
-					},
-					scales: {
-						xAxes: [{
-							scaleLabel: {
-								display: true,
-								labelString: chartRawData.xAxis
-							},
-							gridLines: {
-								lineWidth: 2
-							},
-							type: 'time',
-							time: {
-								unit: chartRawData.xAxisUnit.toLowerCase(),
-								unitStepSize: 4,
-								displayFormats: {
-									month: 'YYYY MMM',
+					// Set chart options
+					let chartOptions = {
+						title: {
+							text: chartRawData.title,
+							display: true,
+							fontSize: 14
+						},
+						scales: {
+							xAxes: [{
+								scaleLabel: {
+									display: true,
+									labelString: chartRawData.xAxis
 								},
-								tooltipFormat: 'MM/DD/YYYY'
-							}
-						}],
-						yAxes: [{
-							scaleLabel: {
-								display: true,
-								labelString: chartRawData.yAxis + ' (' + chartRawData.yAxisUnit + ')'
-							}
-						}],
-					}
-				};
-
-				let rawDatasets = chartRawData.datasets;
-				let parsedDatasets = [];
-
-				// Iterate over each dataset in the chart
-				for (let datasetIndex = 0; datasetIndex < rawDatasets.length; datasetIndex++) {
-
-					let rawData = rawDatasets[datasetIndex].data;
-					let parsedData = [];
-
-					// Generate data to be added to the dataset
-					for (let dataIndex = 0; dataIndex < rawData.length; dataIndex++) {
-						// TODO: Remove the if condition. Temporary fix till server-side bug is fixed.
-						if (!(chartRawData.title === "Carbon : Nitrogen" && dataIndex === 0)) {
-							parsedData.push({
-								x: new Date(rawData[dataIndex].YEAR, 0, rawData[dataIndex].DOY),
-								y: rawData[dataIndex].value
-							})
+								gridLines: {
+									lineWidth: 2
+								},
+								type: 'time',
+								time: {
+									unit: chartRawData.xAxisUnit.toLowerCase(),
+									unitStepSize: 4,
+									displayFormats: {
+										month: 'YYYY MMM',
+									},
+									tooltipFormat: 'MM/DD/YYYY'
+								}
+							}],
+							yAxes: [{
+								scaleLabel: {
+									display: true,
+									labelString: chartRawData.yAxis + ' (' + chartRawData.yAxisUnit + ')'
+								}
+							}],
 						}
+					};
+
+					let rawDatasets = chartRawData.datasets;
+					let parsedDatasets = [];
+
+					// Iterate over each dataset in the chart
+					for (let datasetIndex = 0; datasetIndex < rawDatasets.length; datasetIndex++) {
+
+						let rawData = rawDatasets[datasetIndex].data;
+						let parsedData = [];
+
+						// Generate data to be added to the dataset
+						for (let dataIndex = 0; dataIndex < rawData.length; dataIndex++) {
+							// TODO: Remove the if condition. Temporary fix till server-side bug is fixed.
+							if (!(chartRawData.title === "Carbon : Nitrogen" && dataIndex === 0)) {
+								parsedData.push({
+									x: new Date(rawData[dataIndex].YEAR, 0, rawData[dataIndex].DOY),
+									y: rawData[dataIndex].value
+								})
+							}
+						}
+
+						// Create dataset object with appropriate options and data
+						colorIndex = ChartCC.chooseColorIndexByCropType(rawDatasets[datasetIndex].dataset_label);
+						let datasetColor = this.colorsWithoutAlpha[colorIndex];
+						let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
+						let dataset = {
+							label: datasetLabel,
+							fill: false,
+							lineTension: 0.1,
+							backgroundColor: datasetColor,
+							borderColor: datasetColor,
+							borderCapStyle: 'butt',
+							borderDash: [],
+							borderDashOffset: 0.0,
+							borderJoinStyle: 'miter',
+							borderWidth: 1,
+							pointBorderColor: datasetColor,
+							pointBackgroundColor: '#fff',
+							pointBorderWidth: 1,
+							pointHoverRadius: 5,
+							pointHoverBackgroundColor: datasetColor,
+							pointHoverBorderColor: datasetColor,
+							pointHoverBorderWidth: 2,
+							pointRadius: 1,
+							pointHitRadius: 10,
+							data: parsedData
+						};
+
+						parsedDatasets.push(dataset);
 					}
 
-					// Create dataset object with appropriate options and data
-					colorIndex = ChartCC.chooseColorIndexByCropType(rawDatasets[datasetIndex].dataset_label);
-					let datasetColor = this.colorsWithoutAlpha[colorIndex];
-					let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
-					let dataset = {
-						label: datasetLabel,
-						fill: false,
-						lineTension: 0.1,
-						backgroundColor: datasetColor,
-						borderColor: datasetColor,
-						borderCapStyle: 'butt',
-						borderDash: [],
-						borderDashOffset: 0.0,
-						borderJoinStyle: 'miter',
-						borderWidth: 1,
-						pointBorderColor: datasetColor,
-						pointBackgroundColor: '#fff',
-						pointBorderWidth: 1,
-						pointHoverRadius: 5,
-						pointHoverBackgroundColor: datasetColor,
-						pointHoverBorderColor: datasetColor,
-						pointHoverBorderWidth: 2,
-						pointRadius: 1,
-						pointHitRadius: 10,
-						data: parsedData
+					let chartData = {
+						// TODO: Check with team on this. Having fixed labels vs dynamic labels selected by chart.js based on input data
+						// labels: labelArray,
+						datasets: parsedDatasets
 					};
 
-					parsedDatasets.push(dataset);
-				}
-
-				let chartData = {
-					// TODO: Check with team on this. Having fixed labels vs dynamic labels selected by chart.js based on input data
-					// labels: labelArray,
-					datasets: parsedDatasets
-				};
-
-				// Chart for this variable has been already created
-				if (chartDataArray.hasOwnProperty(chartRawData.variable)) {
-					chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(parsedDatasets)
-				}
-				// Chart for this variable has to be created
-				else {
-					chartDataArray[chartRawData.variable] = {
-						chartData: chartData,
-						chartOptions: chartOptions
-					};
+					// Chart for this variable has been already created
+					if (chartDataArray.hasOwnProperty(chartRawData.variable)) {
+						chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(parsedDatasets)
+					}
+					// Chart for this variable has to be created
+					else {
+						chartDataArray[chartRawData.variable] = {
+							chartData: chartData,
+							chartOptions: chartOptions
+						};
+					}
 				}
 			}
 		}
@@ -222,8 +225,8 @@ class ChartCC extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson.charts,
-		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson.charts
+		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson,
+		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson
 	}
 };
 
