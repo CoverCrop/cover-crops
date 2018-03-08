@@ -136,16 +136,6 @@ class RunSimulationCC extends Component {
 			getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile){
 				getResult(withoutCoverCropDatasetResultGUID).then(function (withoutCoverCropResultFile) {
 
-					// that.setState({
-					// 	withCoverCropResultJson: withCoverCropResultFile,
-					// 	withCoverCropExecutionId: withCoverCropExecutionGUID,
-					// 	withoutCoverCropResultJson: withoutCoverCropResultFile,
-					// 	withoutCoverCropExecutionId: withoutCoverCropExecutionGUID
-					// });
-
-					//console.log(withCoverCropAnalysisResult);
-					//console.log(withoutCoverCropAnalysisResult);
-
 					status = "COMPLETED";
 					that.setState({
 						simulationStatus: status,
@@ -193,7 +183,6 @@ class RunSimulationCC extends Component {
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
-
 		}
 	}
 
