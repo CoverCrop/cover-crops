@@ -4,6 +4,7 @@ import Footer from './Footer'
 import {Cell, Grid} from "react-mdc-web";
 import LeftPaneCC from "./LeftPaneCC";
 import RightPaneCC from "./RightPaneCC";
+import AuthorizedWarp from "./AuthorizedWarp"
 
 class AnalysisPage extends Component {
 
@@ -11,16 +12,18 @@ class AnalysisPage extends Component {
 		return (
 			<div>
 				<Header selected='analysis'/>
-				<div className="content">
-					<Grid >
-						<Cell col={2}>
-							<LeftPaneCC />
-						</Cell>
-						<Cell col={10}>
-							<RightPaneCC />
-						</Cell>
-					</Grid>
+				<AuthorizedWarp>
+					<div className="content">
+						<Grid >
+							<Cell col={2}>
+								<LeftPaneCC />
+							</Cell>
+							<Cell col={10}>
+								<RightPaneCC />
+							</Cell>
+						</Grid>
 					</div>
+				</AuthorizedWarp>
 				<Footer selected='analysis'/>
 			</div>
 		);

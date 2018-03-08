@@ -8,7 +8,7 @@ import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
-import {ID} from "../utils";
+import {ID, getResult} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis'
 
@@ -30,10 +30,6 @@ class RunSimulationCC extends Component {
 		};
 
 		this.state = {
-			withCoverCropExecutionId: "",
-			withCoverCropResultJson: null,
-			withoutCoverCropExecutionId: "",
-			withoutCoverCropResultJson: null,
 			simulationStatus: "",
 			runSimulationButtonDisabled: false,
 			withstep1: "",
@@ -48,7 +44,7 @@ class RunSimulationCC extends Component {
 	}
 
 	async runSimulation() {
-
+        let that = this;
 		let status = "STARTED";
 		let personId = sessionStorage.getItem("personId"); // Read person Id from session storage
 		this.setState({
@@ -69,8 +65,9 @@ class RunSimulationCC extends Component {
 		};
 
 		let id = ID();
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude, personId);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, this.props.latitude, this.props.longitude, personId);
+		let { latitude, longitude, weatherPattern} = this.props;
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -136,103 +133,51 @@ class RunSimulationCC extends Component {
 		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
 
-			// Get - Result Dataset
-			const withCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withCoverCropDatasetResultGUID, {
-				method: 'GET',
-				headers: headers,
-				credentials: "include"
-			});
-			const withoutCoverCropResponse = await fetch(datawolfURL + "/datasets/" + withoutCoverCropDatasetResultGUID, {
-				method: 'GET',
-				headers: headers,
-				credentials: "include"
-			});
+			getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile){
+				getResult(withoutCoverCropDatasetResultGUID).then(function (withoutCoverCropResultFile) {
 
-			const withCoverCropResultDataset = await withCoverCropResponse.json();
-			const withoutCoverCropResultDataset = await withoutCoverCropResponse.json();
+					// that.setState({
+					// 	withCoverCropResultJson: withCoverCropResultFile,
+					// 	withCoverCropExecutionId: withCoverCropExecutionGUID,
+					// 	withoutCoverCropResultJson: withoutCoverCropResultFile,
+					// 	withoutCoverCropExecutionId: withoutCoverCropExecutionGUID
+					// });
 
-			let withCoverCropFileDescriptorGUID = -1;
-			let withoutCoverCropFileDescriptorGUID = -1;
+					//console.log(withCoverCropAnalysisResult);
+					//console.log(withoutCoverCropAnalysisResult);
 
-			for (let i = 0; i < withCoverCropResultDataset.fileDescriptors.length; i++) {
-				if (withCoverCropResultDataset.fileDescriptors[i].filename === "output.json") {
-					withCoverCropFileDescriptorGUID = withCoverCropResultDataset.fileDescriptors[i].id;
-					break;
-				}
-			}
+					status = "COMPLETED";
+					that.setState({
+						simulationStatus: status,
+						runSimulationButtonDisabled: false
+					});
 
-			for (let i = 0; i < withoutCoverCropResultDataset.fileDescriptors.length; i++) {
-				if (withoutCoverCropResultDataset.fileDescriptors[i].filename === "output.json") {
-					withoutCoverCropFileDescriptorGUID = withoutCoverCropResultDataset.fileDescriptors[i].id;
-					break;
-				}
-			}
+					// Update status
+					cardData = {
+						cardTitle: that.props.cards[1].cardTitle,
+						cardSubtitle: "Status: " + status
+					};
+					that.props.handleCardChange(1, 1, cardData);
 
-			// Get - Result File Download
-			const withCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
-				+ withCoverCropDatasetResultGUID + "/" + withCoverCropFileDescriptorGUID + "/file",
-				{
-					method: 'GET',
-					headers: headers,
-					credentials: "include"
-				});
+					if (withCoverCropExecutionGUID !== "" && withoutCoverCropExecutionGUID !== "") {
+						cardData = {
+							cardTitle: "Completed Simulation",
+							cardSubtitle: "Execution IDs: " + withCoverCropExecutionGUID + " " + withoutCoverCropExecutionGUID
+						};
+						that.props.handleResults(
+							withCoverCropExecutionGUID,
+							withCoverCropResultFile,
+							withoutCoverCropExecutionGUID,
+							withoutCoverCropResultFile
+						);
+						that.props.handleCardChange(1, 2, cardData);
+					}
+					else {
+						console.log("Execution ID wasn't generated.");
+					}
+				})
+			})
 
-			const withoutCoverCropFileDownloadResponse = await fetch(datawolfURL + "/datasets/"
-				+ withoutCoverCropDatasetResultGUID + "/" + withoutCoverCropFileDescriptorGUID + "/file",
-				{
-					method: 'GET',
-					headers: headers,
-					credentials: "include"
-				});
-
-			const withCoverCropResultFile = await withCoverCropFileDownloadResponse.json();
-			const withoutCoverCropResultFile = await withoutCoverCropFileDownloadResponse.json();
-
-			//console.log("With Cover Crop Result JSON: ");
-			//console.log(withCoverCropResultFile);
-
-			//console.log("Without Cover Crop Result JSON: ");
-			//console.log(withoutCoverCropResultFile);
-
-			this.setState({
-				withCoverCropResultJson: withCoverCropResultFile,
-				withCoverCropExecutionId: withCoverCropExecutionGUID,
-				withoutCoverCropResultJson: withoutCoverCropResultFile,
-				withoutCoverCropExecutionId: withoutCoverCropExecutionGUID
-			});
-
-			//console.log(withCoverCropAnalysisResult);
-			//console.log(withoutCoverCropAnalysisResult);
-
-			status = "COMPLETED";
-			this.setState({
-				simulationStatus: status,
-				runSimulationButtonDisabled: false
-			});
-
-			// Update status
-			cardData = {
-				cardTitle: this.props.cards[1].cardTitle,
-				cardSubtitle: "Status: " + status
-			};
-			this.props.handleCardChange(1, 1, cardData);
-
-			if (this.state.withCoverCropExecutionId !== "" && this.state.withoutCoverCropExecutionId !== "") {
-				cardData = {
-					cardTitle: "Completed Simulation",
-					cardSubtitle: "Execution IDs: " + this.state.withCoverCropExecutionId + " " + this.state.withoutCoverCropExecutionId
-				};
-				this.props.handleResults(
-					this.state.withCoverCropExecutionId,
-					this.state.withCoverCropResultJson,
-					this.state.withoutCoverCropExecutionId,
-					this.state.withoutCoverCropResultJson
-				);
-				this.props.handleCardChange(1, 2, cardData);
-			}
-			else {
-				console.log("Execution ID wasn't generated.");
-			}
 		}
 		else {
 			status = "ERROR";

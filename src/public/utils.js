@@ -1,4 +1,4 @@
-import {datawolfURL} from "../datawolf.config";
+import {datawolfURL, weatherPatterns} from "../datawolf.config";
 
 /***
  * Checks if user
@@ -25,4 +25,76 @@ export function isUserAuthenticated() {
 	checkAuthentication().then(function (checkAuthResponse) {
 		return checkAuthResponse.status === 200;
 	});
+}
+
+export function groupBy(list, keyGetter) {
+	const map = new Map();
+	list.forEach((item) => {
+		const key = keyGetter(item);
+		const collection = map.get(key);
+		if (!collection) {
+			map.set(key, [item]);
+		} else {
+			collection.push(item);
+		}
+	});
+	return map;
+}
+
+export const ID = function () {
+	// Math.random should be unique because of its seeding algorithm.
+	// Convert it to base 36 (numbers + letters), and grab the first 9 characters
+	// after the decimal.
+	return '_' + Math.random().toString(36).substr(2, 9);
+};
+
+// check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
+// function
+export async function getResult(DatasetResultGUID) {
+	let headers = {
+		'Content-Type': 'application/json',
+		'Access-Control-Origin': 'http://localhost:3000'
+	};
+
+		// Get - Result Dataset
+		const Response = await
+			fetch(datawolfURL + "/datasets/" + DatasetResultGUID, {
+				method: 'GET',
+				headers: headers,
+				credentials: "include"
+			});
+
+
+		const ResultDataset = await
+			Response.json();
+
+
+		let FileDescriptorGUID = -1;
+
+		for (let i = 0; i < ResultDataset.fileDescriptors.length; i++) {
+			if (ResultDataset.fileDescriptors[i].filename === "output.json") {
+				FileDescriptorGUID = ResultDataset.fileDescriptors[i].id;
+				break;
+			}
+		}
+
+		// Get - Result File Download
+		const FileDownloadResponse = await fetch(datawolfURL + "/datasets/"
+			+ DatasetResultGUID + "/" + FileDescriptorGUID + "/file",
+			{
+				method: 'GET',
+				headers: headers,
+				credentials: "include"
+			});
+
+		return await FileDownloadResponse.json();
+}
+
+export function getWeatherName(w) {
+	if(w){
+		return weatherPatterns.find(function (weather){
+			return weather.charAt(0) === w;
+		});
+	}
+	return w;
 }
