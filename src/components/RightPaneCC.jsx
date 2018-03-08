@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import SelectFieldsCC from "./SelectFieldsCC";
-import RunSimulationCC from "./RunSimluationCC";
+import RunSimulationCC from "./RunSimulationCC";
 import ViewResultsCC from "./ViewResultsCC";
 import { connect } from 'react-redux';
 
