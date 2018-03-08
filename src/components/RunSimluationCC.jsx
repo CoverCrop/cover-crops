@@ -22,12 +22,6 @@ class RunSimulationCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
-		this.parameters = {
-			soilWithCoverCrop: "26bd9c56-10d5-4669-af6c-f56bc8d0e5d5", // LAW1501.SQX
-			modelWithCoverCrop: "e96ec549-031f-4cef-8328-f4d8051773ec", // CH441169-cover.v46
-			soilWithoutCoverCrop: "3690d7fb-eba5-48c7-bfbe-a792ff379fb4", // ILAO1501.SQX
-			modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
-		};
 
 		this.state = {
 			simulationStatus: "",
