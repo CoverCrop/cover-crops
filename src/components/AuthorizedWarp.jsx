@@ -5,7 +5,7 @@ class AuthorizedWarp extends Component {
 	render() {
 		let unauthorizedDiv =
 			<div className="contentcenter">
-				<h3>401 Unauthorized.</h3>
+				<h3>401 Unauthorized. Please click Home and login first.</h3>
 			</div>;
 		return (
 			<div>
