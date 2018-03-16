@@ -14,7 +14,7 @@ import { syncHistoryWithStore } from "react-router-redux";
 
 require("./public/favicon.ico");
 require("./images/card_bg.jpg");
-require("./images/ccrop-rep-image-1.png");
+require("./images/cover-crop-rep-image.png");
 require("./images/map-marker.png");
 
 const store = configureStore();
