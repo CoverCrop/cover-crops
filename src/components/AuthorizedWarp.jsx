@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 class AuthorizedWarp extends Component {
 	render() {
 		let unauthorizedDiv =
-			<div className="contentcenter">
-				<h3>401 Unauthorized. Please click Home and login first.</h3>
-			</div>;
+			<script type="text/javascript">
+				window.onload = function(e){
+					window.location.assign("/")
+				}
+			</script>;
 		return (
 			<div>
 			{this.props.isAuthenticated ? this.props.children : unauthorizedDiv}
