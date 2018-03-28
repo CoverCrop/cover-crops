@@ -120,6 +120,14 @@ h1, h2, h3, h5, h6, p, ul {
 	cursor: default;
 }
 
+.registration {
+
+}
+
+.registration button{
+	width: 160px;
+}
+
 .user-account-icon {
 	margin-right: 20px;
 	cursor: pointer;
