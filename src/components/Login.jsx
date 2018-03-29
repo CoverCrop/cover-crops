@@ -114,7 +114,6 @@ class Login extends Component {
 							<span>
 								<Button
 									type="submit"
-									primary
 									raised
 									onClick={this.handleLogin}
 									disabled={!this.validateLoginForm()}>Login

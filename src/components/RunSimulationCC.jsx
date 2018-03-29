@@ -245,7 +245,7 @@ class RunSimulationCC extends Component {
 				/>
 
 				<br/>
-				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
+				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation}>Run Simulation</Button>
 				<Grid>
 					<Cell col={6}>
 						{this.state.withstep1 === "" ? null: <ListHeader>With Cover Crop</ListHeader> }
