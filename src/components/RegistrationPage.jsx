@@ -26,11 +26,15 @@ class RegistrationPage extends Component {
 			lastName: "",
 			email: "",
 			password: "",
-			passwordRepeat: ""
+			passwordConfirm: "",
+			arePasswordsMatching: false,
+			hasMinimumPasswordLength: false
 		};
 
 		this.handleRegistration = this.handleRegistration.bind(this);
 		this.handleReset = this.handleReset.bind(this);
+		this.verifyPasswordMatch = this.verifyPasswordMatch.bind(this);
+		this.verifyPasswordLength = this.verifyPasswordLength.bind(this);
 	}
 
 	handleRegistration = async event => {
@@ -42,16 +46,40 @@ class RegistrationPage extends Component {
 			lastName: "",
 			email: "",
 			password: "",
-			passwordRepeat: ""
-
+			passwordConfirm: "",
+			arePasswordsMatching: false,
+			hasMinimumPasswordLength: false
 		});
+	};
+
+	verifyPasswordMatch = () => {
+		if (this.state.password !== this.state.passwordConfirm) {
+			this.setState({arePasswordsMatching: false});
+		}
+		else {
+			this.setState({arePasswordsMatching: true});
+		}
+	};
+
+	verifyPasswordLength = () => {
+		console.log(this.state.password.length);
+		if (this.state.password.length >= 6 ) {
+			this.setState({hasMinimumPasswordLength: true});
+		}
+		else {
+			this.setState({hasMinimumPasswordLength: false});
+		}
+		console.log(this.state.hasMinimumPasswordLength);
 	};
 
 	validateRegistrationForm() {
 
-		return this.state.email.length > 0 &&
+		// Return true if all fields are successfully validated. Else, return false.
+		return this.state.firstName.length > 0 &&
+			this.state.lastName.length > 0 &&
+			this.state.email.length > 0 &&
 			this.state.password.length > 0 &&
-			this.state.password === this.state.passwordRepeat;
+			this.state.password === this.state.passwordConfirm;
 	}
 
 	render() {
@@ -91,36 +119,38 @@ class RegistrationPage extends Component {
 															this.setState({email: email})
 														}}/></div>
 										<div><Textfield floatingLabel="Password" type="password"
-														required
 														value={this.state.password}
+														required
 														size="40"
-														minLength={6}
+														useInvalidProp
+														invalid={!this.state.hasMinimumPasswordLength}
 														helptext="Your password must be contain at least 6 letters."
 														helptextValidation
 														onChange={({target: {value: password}}) => {
-															this.setState({password})
-														}}/></div>
-										<div><Textfield floatingLabel="Repeat Password" type="password"
+															this.setState({password: password})
+														}}
+														onKeyUp={this.verifyPasswordLength}/></div>
+										<div><Textfield floatingLabel="Confirm Password" type="password"
 														required
-														value={this.state.passwordRepeat}
+														value={this.state.passwordConfirm}
 														size="40"
-														minLength={6}
-														helptext="Your password must be contain at least 6 letters."
+														useInvalidProp
+														invalid={!this.state.arePasswordsMatching}
+														helptext={"Passwords do not match."}
 														helptextValidation
-														onChange={({target: {value: passwordRepeat}}) => {
-															this.setState({passwordRepeat})
-														}}/></div>
+														onChange={({target: {value: passwordConfirm}}) => {
+															this.setState({passwordConfirm: passwordConfirm})
+														}}
+														onKeyUp={this.verifyPasswordMatch}/></div>
 									</CardText>
 									<CardActions>
 										<Button
 											type="submit"
-											primary
 											raised
 											onClick={this.handleRegistration}
 											disabled={!this.validateRegistrationForm()}>Register
 										</Button>
 										<Button
-											primary
 											raised
 											onClick={this.handleReset}>Clear
 										</Button>
