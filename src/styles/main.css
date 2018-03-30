@@ -124,7 +124,7 @@ h1, h2, h3, h5, h6, p, ul {
 	width: 160px;
 }
 
-.registration-error-message {
+.error-message {
 	color: #d50000;
 	margin-left: 8px;
 	font-family: Roboto, sans-serif;

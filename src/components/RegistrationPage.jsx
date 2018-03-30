@@ -227,7 +227,7 @@ class RegistrationPage extends Component {
 												onClick={this.handleReset}>Clear
 											</Button>
 										</CardActions>
-										<p className="registration-error-message">{this.state.statusText}</p>
+										<p className="error-message">{this.state.statusText}</p>
 									</Card>
 								</form>
 							</div>
