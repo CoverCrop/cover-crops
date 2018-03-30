@@ -123,16 +123,15 @@ class RegistrationPage extends Component {
 		});
 	};
 
-	verifyPasswordMatch = () => {
+	verifyPasswords  = () => {
+
 		if (this.state.password !== this.state.passwordConfirm) {
 			this.setState({arePasswordsMatching: false});
 		}
 		else {
 			this.setState({arePasswordsMatching: true});
 		}
-	};
 
-	verifyPasswordLength = () => {
 		if (this.state.password.length >= 6 ) {
 			this.setState({hasMinimumPasswordLength: true});
 		}
@@ -199,7 +198,7 @@ class RegistrationPage extends Component {
 															onChange={({target: {value: password}}) => {
 																this.setState({password: password})
 															}}
-															onKeyUp={this.verifyPasswordLength}/></div>
+															onKeyUp={this.verifyPasswords}/></div>
 											<div><Textfield floatingLabel="Confirm Password" type="password"
 															required
 															value={this.state.passwordConfirm}
@@ -211,7 +210,7 @@ class RegistrationPage extends Component {
 															onChange={({target: {value: passwordConfirm}}) => {
 																this.setState({passwordConfirm: passwordConfirm})
 															}}
-															onKeyUp={this.verifyPasswordMatch}/></div>
+															onKeyUp={this.verifyPasswords}/></div>
 										</CardText>
 										<CardActions>
 											<Button
