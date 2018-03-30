@@ -16,6 +16,7 @@ import {
 import Header from "./Header";
 import Footer from "./Footer";
 import {datawolfURL} from "../datawolf.config";
+import {genericRegistrationErrorMessage, userNotActiveMessage} from "../app.messages";
 
 class RegistrationPage extends Component {
 
@@ -42,9 +43,6 @@ class RegistrationPage extends Component {
 	handleRegistration = async event => {
 		event.preventDefault();
 		this.setState({statusText: ""});
-		let genericErrorMessage = "An error occurred while trying to register your account. Please try again later.";
-		let userNotActiveMessage = "Registration is successful, but your account is not active yet. " +
-			"Please contact an administrator.";
 
 		try {
 			let createPersonResponse = await fetch(datawolfURL + "/persons?" +
@@ -98,17 +96,17 @@ class RegistrationPage extends Component {
 				else {
 					console.log("Registration Step 2 Status: " + createAccountResponse.status);
 					let responseText = await createAccountResponse.text();
-					this.setState({statusText: genericErrorMessage});
+					this.setState({statusText: genericRegistrationErrorMessage});
 				}
 			}
 			else {
 				console.log("Registration Step 1 Status: " + createPersonResponse.status);
-				this.setState({statusText: genericErrorMessage});
+				this.setState({statusText: genericRegistrationErrorMessage});
 			}
 		}
 		catch (error) {
 			console.error("Error: " + error);
-			this.setState({statusText: genericErrorMessage});
+			this.setState({statusText: genericRegistrationErrorMessage});
 		}
 	};
 
