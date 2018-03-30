@@ -33,11 +33,6 @@ class RegistrationPage extends Component {
 			hasMinimumPasswordLength: false,
 			statusText: ""
 		};
-
-		this.handleRegistration = this.handleRegistration.bind(this);
-		this.handleReset = this.handleReset.bind(this);
-		this.verifyPasswordMatch = this.verifyPasswordMatch.bind(this);
-		this.verifyPasswordLength = this.verifyPasswordLength.bind(this);
 	}
 
 	handleRegistration = async event => {
