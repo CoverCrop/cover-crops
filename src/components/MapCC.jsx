@@ -91,7 +91,7 @@ class MapCC extends Component {
 		this.props.handleLatFieldChange(lonLatCoordinates[1]);
 		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 
-		const CLUapi = config.CLUapi + "?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
+		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 		fetch(CLUapi).then(response => {
@@ -105,6 +105,7 @@ class MapCC extends Component {
 
 			areaPolygonSource.clear();
 			areaPolygonSource.addFeatures(features);
+			this.props.handleCLUChange(geojson.features.properties["clu_id"]);
 
 		}).catch(function(e) {
 			console.log("Get CLU failed: " + e );

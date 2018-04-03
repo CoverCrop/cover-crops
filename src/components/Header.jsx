@@ -55,7 +55,7 @@ class Header extends Component {
 										onClose={() => {
 											this.setState({open: false})
 										}}>
-										<MenuItem>Profile</MenuItem>
+										<MenuItem><Link activeStyle={active} to="/profile">Profile</Link></MenuItem>
 										<MenuItem>History</MenuItem>
 										<MenuDivider/>
 										<MenuItem onClick={() => {

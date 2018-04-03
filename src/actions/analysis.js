@@ -23,6 +23,11 @@ export const handleEndDateChange = (date) => ({
 	date
 });
 
+export const handleCLUChange = (clu) => ({
+	type: "CHANGE_CLU",
+	clu
+});
+
 export const handleWeatherPatternChange = (weatherPattern) => ({
 	type: "CHANGE_WEATHER",
 	weatherPattern

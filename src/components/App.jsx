@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Router, Route, hashHistory, Redirect} from 'react-router'
 import AnalysisPage from './AnalysisPage'
+import ProfilePage from './ProfilePage'
 import HomePage from './HomePage'
 import AboutPage from './AboutPage'
 import UserPage from './UserPage';
@@ -41,6 +42,7 @@ class App extends Component {
 				<Router history={hashHistory}>
 					<Route path="/" component={HomePage}/>
 					<PrivateRoute path="/analysis" component={AnalysisPage}/>
+					<Route path="/profile" component={ProfilePage}/>
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>
 					<Route path="*" component={RouteMismatch}/>

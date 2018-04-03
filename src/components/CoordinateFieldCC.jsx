@@ -7,16 +7,10 @@ class CoordinateFieldCC extends Component {
 		return (
 			<div>
 				<Textfield
+					{...this.props}
 					required
-					helptext={this.props.helptext}
 					helptextValidation
-					min={this.props.min}
-					max={this.props.max}
-					type={this.props.type}
-					step={this.props.step}
-					value={this.props.value}
-					onChange={this.props.onChange}
-					floatingLabel={this.props.floatingLabel}/>
+					/>
 			</div>
 		);
 	}
