@@ -7,6 +7,7 @@ import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitl
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils"
+import {Link} from "react-router";
 
 class Login extends Component {
 
@@ -114,13 +115,12 @@ class Login extends Component {
 							<span>
 								<Button
 									type="submit"
-									primary
 									raised
 									onClick={this.handleLogin}
 									disabled={!this.validateLoginForm()}>Login
 								</Button>
 							</span>
-								<span><Caption><a className="not-active" href="">Register</a></Caption></span>
+								<span><Caption><Link to="/register">Register</Link></Caption></span>
 								<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
 							</form>
 						</CardActions>

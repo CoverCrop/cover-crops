@@ -120,6 +120,19 @@ h1, h2, h3, h5, h6, p, ul {
 	cursor: default;
 }
 
+.registration button{
+	width: 160px;
+}
+
+.error-message {
+	color: #d50000;
+	margin-left: 8px;
+	font-family: Roboto, sans-serif;
+	font-weight: 400;
+	letter-spacing: 1px;
+	padding: 5px;
+}
+
 .user-account-icon {
 	margin-right: 20px;
 	cursor: pointer;
