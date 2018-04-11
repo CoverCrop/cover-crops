@@ -5,7 +5,9 @@ import {Button, Textfield, Card, CardText, Body1, Body2, Checkbox, FormField, Gr
 import styles from '../styles/main.css';
 import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
-import AuthorizedWarp from "./AuthorizedWarp"
+import AuthorizedWarp from "./AuthorizedWarp";
+import AnalyzerWrap from "./AnalyzerWrap";
+import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 
@@ -51,21 +53,13 @@ class ProfilePage extends Component {
 		return (
 			<div>
 				<Header />
+				<AnalyzerWrap activeTab={3}/>
 				<AuthorizedWarp>
-					<div className="content">
-						<Grid>
-							<Cell col={2}>
-								<p>Select CLU Id: {this.props.clu}</p>
-								<Button onClick={this.handleAddCLU(this.props.clu)}>Save</Button>
-								{cluList}
-							</Cell>
-							<Cell col={10}>
-								<MapCC mapId="chooseclu"/>
-							</Cell>
-						</Grid>
+					<div className="choose-clu-div">
+						<MapCC mapId="choose-clu"/>
+						<AddFieldBox />
 					</div>
 				</AuthorizedWarp>
-				<Footer selected='user'/>
 			</div>
 		);
 	}

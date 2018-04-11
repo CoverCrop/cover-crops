@@ -50,10 +50,93 @@
 
 .menu_items a:link{
 	text-decoration: none;
-	color: white;
+	color: orange; /*not working*/
 }
 
 .menu_items a:visited{
 	text-decoration: none;
 	color: white;
+}
+
+.banner{
+	height: 60px; /*not working*/
+	/*--mdc-theme-primary: #455A64;*/
+	/*--mdc-theme-background: #455A64;*/
+	background-color: #455A64;
+}
+
+.logo {
+	height: 53px;
+	width: 53px;
+}
+
+.cover-crop {
+	color: #FFFFFF;
+	font-family: Roboto;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+.cover-crop-analyzer {
+	height: 38px;
+	width: 281px;
+	color: #FFFFFF;
+	font-family: Roboto;
+	font-size: 32px;
+	line-height: 38px;
+}
+
+.about-the-project {
+	height: 35px;
+	width: 232px;
+	color: #FFFFFF;
+	font-family: Roboto;
+	font-size: 30px;
+	line-height: 35px;
+	text-align: right;
+}
+
+.rectangle-2 {
+	/*margin-left: 24px;*/
+	height: 48px;
+	width: 411px;
+	background-color: #1AB146;
+}
+
+.rectangle-3 {
+	/*margin-right: 55px;*/
+	height: 48px;
+	width: 411px;
+	background-color: #455A64;
+}
+
+.analyzer-line {
+	/*box-sizing: border-box;*/
+	display: block;
+	height: 3px;
+	border: 5px solid #1AB146;
+}
+
+.analyzer-tab {
+	margin-left: 24px;
+	align-content: left;
+	width:100px;
+}
+
+.analyzer-tab .mdc-tab {
+	height: 28px;
+	width: 118px;
+	color: #455A64;
+	font-family: Roboto;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 28px;
+	text-align: center;
+}
+
+.analyzer-tab .mdc-tab-bar__indicator{
+	background-color: #1AB146;
+	border: 6px solid #1AB146;
+	height: 3px;
 }

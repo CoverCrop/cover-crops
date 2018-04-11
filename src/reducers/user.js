@@ -5,7 +5,6 @@ const defaultState = {
 	userId: ""
 };
 
-
 const user = (state = defaultState, action) => {
 	switch (action.type) {
 

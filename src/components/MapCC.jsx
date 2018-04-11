@@ -134,16 +134,8 @@ class MapCC extends Component {
 	}
 
 	render(){
-		const mapStyle = {
-			width: 900,
-			height: 675,
-			backgroundColor: '#ebebeb'
-		};
-
 		return(
-			<div>
-				<div style={mapStyle} id={this.props.mapId}/>
-			</div>
+				<div id={this.props.mapId}/>
 		)
 	}
 }

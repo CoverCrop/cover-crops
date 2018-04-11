@@ -5,6 +5,7 @@ import {Cell, Grid} from "react-mdc-web";
 import LeftPaneCC from "./LeftPaneCC";
 import RightPaneCC from "./RightPaneCC";
 import AuthorizedWarp from "./AuthorizedWarp"
+import AnalyzerWrap from "./AnalyzerWrap";
 
 class AnalysisPage extends Component {
 
@@ -12,7 +13,7 @@ class AnalysisPage extends Component {
 		return (
 			<div>
 				<Header selected='analysis'/>
-				<AuthorizedWarp>
+				<AnalyzerWrap activeTab={1}/>
 					<div className="content">
 						<Grid >
 							<Cell col={2}>
@@ -23,7 +24,6 @@ class AnalysisPage extends Component {
 							</Cell>
 						</Grid>
 					</div>
-				</AuthorizedWarp>
 				<Footer selected='analysis'/>
 			</div>
 		);

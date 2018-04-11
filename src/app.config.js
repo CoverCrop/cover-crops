@@ -3,7 +3,7 @@ const devConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
-	CLUapi: "http://localhost:5000"
+	CLUapi: "https://covercrop.ncsa.illinois.edu"
 };
 
 const prodConfig = {
@@ -11,7 +11,7 @@ const prodConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
-	CLUapi:"https://covercrop.ncsa.illinois.edu"
+	CLUapi: "https://covercrop.ncsa.illinois.edu"
 };
 
 const config = getConfig();
