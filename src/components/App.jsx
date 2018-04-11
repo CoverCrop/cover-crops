@@ -12,6 +12,7 @@ import 'material-components-web/dist/material-components-web.min.css';
 import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {isUserAuthenticated} from "../public/utils";
+import RegistrationPage from "./RegistrationPage";
 
 global.__base = __dirname + "/";
 injectTapEventPlugin();
@@ -45,6 +46,7 @@ class App extends Component {
 					<Route path="/profile" component={ProfilePage}/>
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>
+					<Route path="/register" component={RegistrationPage}/>
 					<Route path="*" component={RouteMismatch}/>
 				</Router>
 			</MuiThemeProvider>

@@ -81,7 +81,7 @@ class SelectFieldsCC extends Component {
 							value={this.props.longitude}
 							onChange={this.handleLongFieldChange}
 							floatingLabel="Longitude"/>
-						<Button type="submit" raised primary>Continue</Button>
+						<Button type="submit" raised>Continue</Button>
 					</Cell>
 					<Cell col={10}>
 						<MapCC mapId="map"/>
