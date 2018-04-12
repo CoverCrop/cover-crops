@@ -13,30 +13,35 @@ class AnalyzerWrap extends Component {
 
 	render() {
 		const {activeTab} = this.props;
+		// Cannot use Link within Tab
 		return(
 			<div>
 				<span className="analyzer-line"> </span>
-<div className="analyzer-tab">
-				<Tabbar>
-					<Tab className="analyzer-tab-content"
-						active={activeTab===1}
-					>
-						<Link to="/analysis" >Start a Job</Link>
-					</Tab>
-					<Tab
-						active={activeTab===2}
-					>
-						<Link to="/history">Job History</Link>
+				<div className="analyzer-tab">
+					<Tabbar>
+						<Tab
+							active={activeTab===1}
+							href="#/analysis"
+						>
+							Start a Job
+						</Tab>
+						<Tab
+							active={activeTab===2}
+							href="#/history"
+						>
+							Job History
 
-					</Tab>
-					<Tab
-						active={activeTab===3}
-					>
-						<Link  to="/profile">My Fields</Link>
-					</Tab>
+						</Tab>
+						<Tab
+							active={activeTab===3}
+							href="#/profile"
+						>
+							My Fields
+						</Tab>
 
-				</Tabbar>
-</div>
+					</Tabbar>
+
+				</div>
 			</div>
 		);
 	}

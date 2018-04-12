@@ -12,6 +12,7 @@
 .choose-clu-div {
 	height: 600px;
 	/*TODO: fix this*/
+	position: relative;
 }
 
 #choose-clu {
@@ -20,15 +21,71 @@
 
 .add-field-box {
 	position: absolute;
-	top: 236px;
+	top: 22px;
 	left: 46px;
-	height: 170px;
-	width: 407px;
+	height: 270px;
+	width: 405px;
 	background-color: #FFFFFF;
+	padding-left: 22px;
+	padding-right: 22px;
+	padding-top: 12px;
+	/*padding-bottom: 25px;*/
 }
 
-.add-field-box .mdc-fab{
+.add-field-title .mdc-fab{
 	height:32px;
 	width:32px;
 	background-color: #1AB146;
 }
+
+.add-field-title h2 {
+	display: inline;
+	color: #455A64;
+	font-family: Roboto;
+	font-size: 24px;
+	font-weight: bold;
+	line-height: 28px;
+	margin-left: 12px;
+}
+
+.coordinate-field > div{
+	display: inline; /*not working*/
+}
+
+.add-field-bottom {
+	background-color: #DEE4E8;
+	position: absolute;
+	top: 270px;
+	left: 46px;
+	height: 50px;
+	width: 405px;
+}
+
+.add-field-bottom .add-button{
+	height: 33px;
+	width: 128px;
+	color: #FFFFFF;
+	background-color: #34515E;
+	font-family: Roboto;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 21px;
+	text-align: center;
+	top: 8px;
+	right: 5px;
+	position: absolute;
+}
+
+.add-field-bottom .cancel-button {
+	height: 28px;
+	width: 70px;
+	color: #1AB146;
+	font-family: Roboto;
+	font-size: 14px;
+	line-height: 28px;
+	text-align: center;
+	top: 8px;
+	right: 140px;
+	position: absolute;
+}
+

@@ -72,7 +72,6 @@ class SelectFieldsCC extends Component {
 							onChange={this.handleLatFieldChange}
 							floatingLabel="Latitude"/>
 						<CoordinateFieldCC
-							required
 							helptext="Longitude value must between -180 and 180"
 							min="-180"
 							max="180"

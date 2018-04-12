@@ -6,6 +6,7 @@ import styles from '../styles/main.css';
 import UserEvents from './UserEvents';
 import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWarp from "./AuthorizedWarp"
+import AnalyzerWrap from "./AnalyzerWrap";
 
 class UserPage extends Component {
 
@@ -13,6 +14,7 @@ class UserPage extends Component {
 		return (
 			<div>
 				<Header selected='user'/>
+				<AnalyzerWrap activeTab={2}/>
 				<AuthorizedWarp>
 					<div className="content">
 						<Grid>

@@ -60,8 +60,6 @@
 
 .banner{
 	height: 60px; /*not working*/
-	/*--mdc-theme-primary: #455A64;*/
-	/*--mdc-theme-background: #455A64;*/
 	background-color: #455A64;
 }
 
@@ -76,6 +74,14 @@
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 28px;
+	text-align: center;
+}
+
+.cover-crop img {
+	width: 40px;
+	height: 40px;
+	margin-left: 28px;
+	margin-right: 28px;
 }
 
 .cover-crop-analyzer {
@@ -85,6 +91,7 @@
 	font-family: Roboto;
 	font-size: 32px;
 	line-height: 38px;
+	margin-left: 24px;
 }
 
 .about-the-project {
@@ -95,6 +102,7 @@
 	font-size: 30px;
 	line-height: 35px;
 	text-align: right;
+	margin-left: 24px;
 }
 
 .rectangle-2 {
@@ -127,7 +135,7 @@
 .analyzer-tab .mdc-tab {
 	height: 28px;
 	width: 118px;
-	color: #455A64;
+	/*color: #455A64;*/
 	font-family: Roboto;
 	font-size: 24px;
 	font-weight: bold;

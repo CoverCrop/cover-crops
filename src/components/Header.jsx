@@ -25,31 +25,33 @@ class Header extends Component {
 	}
 
 	render() {
-		const active = {color: "#afb5f3"};
 		return(
 			<div>
 			<Toolbar>
 				<ToolbarRow className="banner">
 					<ToolbarSection className="cover-crop" align="start">
+						<img src={require("../images/logo.png")}/>
 						CoverCrop
 					</ToolbarSection>
 				</ToolbarRow>
 			</Toolbar>
-				<Grid className="no-bottom-grid">
+				<div className="no-bottom-grid">
+				<Grid>
 
 				<Cell col={5} className="rectangle-2">
 					<div>
-				<p className="cover-crop-analyzer" >CoverCrop Analyzer</p>
+				<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
 
 					</div>
 				</Cell>
 					<Cell col={2}></Cell>
 				<Cell col={5} className="rectangle-3">
 					<div>
-						<Link activeStyle={active} to="/about" className="about-the-project">About the Project</Link>
+						<Link to="/about" className="about-the-project">About the Project</Link>
 					</div>
 				</Cell>
 					</Grid>
+				</div>
 				</div>
 
 			);

@@ -139,6 +139,12 @@ h1, h2, h3, h5, h6, p, ul {
 	font-size: 32px;
 }
 
-.mdc-layout-grid .no-bottom-grid {
-	padding-bottom: 24px; /*not working*/
+.no-bottom-grid .mdc-layout-grid {
+	padding-bottom: 0px;
 }
+
+/*not working*/
+/*.ol-zoom {*/
+	/*left: unset;*/
+	/*right: 8px;*/
+/*}*/

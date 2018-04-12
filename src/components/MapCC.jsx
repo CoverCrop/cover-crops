@@ -1,9 +1,11 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 let ol = require('openlayers');
+import styles from "../styles/main.css";
 require("openlayers/css/ol.css");
 import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis"
-import config from '../app.config'
+import config from '../app.config';
+
 
 class MapCC extends Component {
 
@@ -91,7 +93,7 @@ class MapCC extends Component {
 		this.props.handleLatFieldChange(lonLatCoordinates[1]);
 		this.props.handleLongFieldChange(lonLatCoordinates[0]);
 
-		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
+		const CLUapi = "https://covercrop.ncsa.illinois.edu/api/CLUs?lat=" + lonLatCoordinates[1]+ "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 		fetch(CLUapi).then(response => {
