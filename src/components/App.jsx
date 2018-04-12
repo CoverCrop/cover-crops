@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Router, Route, hashHistory, Redirect} from 'react-router'
 import AnalysisPage from './AnalysisPage'
-import ProfilePage from './ProfilePage'
+import AddFieldPage from './AddFieldPage'
 import HomePage from './HomePage'
 import AboutPage from './AboutPage'
 import UserPage from './UserPage';
@@ -26,7 +26,7 @@ class App extends Component {
 			<Route
 				{...rest}
 				render={props =>
-					true ? (
+					isUserAuthenticated()  ? (
 						<Component {...props} />
 					) : (
 						<Redirect
@@ -44,7 +44,7 @@ class App extends Component {
 				<Router history={hashHistory}>
 					<Route path="/" component={HomePage}/>
 					<PrivateRoute path="/analysis" component={AnalysisPage}/>
-					<Route path="/addfield" component={ProfilePage}/>
+					<Route path="/addfield" component={AddFieldPage}/>
 					<Route path="/profile" component={MyFarmPage}/>
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>
