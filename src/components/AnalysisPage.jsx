@@ -14,6 +14,7 @@ class AnalysisPage extends Component {
 			<div>
 				<Header selected='analysis'/>
 				<AnalyzerWrap activeTab={1}/>
+				<AuthorizedWarp>
 					<div className="content">
 						<Grid >
 							<Cell col={2}>
@@ -24,6 +25,7 @@ class AnalysisPage extends Component {
 							</Cell>
 						</Grid>
 					</div>
+				</AuthorizedWarp>
 				<Footer selected='analysis'/>
 			</div>
 		);

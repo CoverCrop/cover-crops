@@ -10,8 +10,7 @@
 }
 
 .choose-clu-div {
-	height: 600px;
-	/*TODO: fix this*/
+	height: calc(100vh - 200px);
 	position: relative;
 }
 

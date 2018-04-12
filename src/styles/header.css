@@ -106,24 +106,21 @@
 }
 
 .rectangle-2 {
-	/*margin-left: 24px;*/
 	height: 48px;
 	width: 411px;
 	background-color: #1AB146;
 }
 
 .rectangle-3 {
-	/*margin-right: 55px;*/
 	height: 48px;
 	width: 411px;
 	background-color: #455A64;
 }
 
 .analyzer-line {
-	/*box-sizing: border-box;*/
 	display: block;
 	height: 3px;
-	border: 5px solid #1AB146;
+	border: 3px solid #1AB146;
 }
 
 .analyzer-tab {
@@ -144,6 +141,7 @@
 }
 
 .analyzer-tab .mdc-tab-bar__indicator{
+	/*not working*/
 	background-color: #1AB146;
 	border: 6px solid #1AB146;
 	height: 3px;

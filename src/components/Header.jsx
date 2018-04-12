@@ -27,32 +27,32 @@ class Header extends Component {
 	render() {
 		return(
 			<div>
-			<Toolbar>
-				<ToolbarRow className="banner">
-					<ToolbarSection className="cover-crop" align="start">
-						<img src={require("../images/logo.png")}/>
-						CoverCrop
-					</ToolbarSection>
-				</ToolbarRow>
-			</Toolbar>
+				<Toolbar>
+					<ToolbarRow className="banner">
+						<ToolbarSection className="cover-crop" align="start">
+							<img src={require("../images/logo.png")}/>
+							CoverCrop
+						</ToolbarSection>
+					</ToolbarRow>
+				</Toolbar>
 				<div className="no-bottom-grid">
-				<Grid>
+					<Grid>
 
-				<Cell col={5} className="rectangle-2">
-					<div>
-				<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
+						<Cell col={5} className="rectangle-2">
+							<div>
+								<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
 
-					</div>
-				</Cell>
-					<Cell col={2}></Cell>
-				<Cell col={5} className="rectangle-3">
-					<div>
-						<Link to="/about" className="about-the-project">About the Project</Link>
-					</div>
-				</Cell>
+							</div>
+						</Cell>
+						<Cell col={2}></Cell>
+						<Cell col={5} className="rectangle-3">
+							<div>
+								<Link to="/about" className="about-the-project">About the Project</Link>
+							</div>
+						</Cell>
 					</Grid>
 				</div>
-				</div>
+			</div>
 
 			);
 	}

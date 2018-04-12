@@ -39,19 +39,21 @@ class MyFarmPage extends Component {
 				<Header />
 				<AnalyzerWrap activeTab={3}/>
 				<AuthorizedWarp>
-		<Grid>
-			<Cell col={5} className="add-field-title">
-				<Fab >
-					{/*<Link to="/" />*/}
-					<Icon name="add" />
-				</Fab>
-				<Title>Add a Field</Title>
+					<Grid>
+						<Cell col={5} className="add-field-title">
+							<Link to="/addfield" >
+							<Fab >
+								{/*<Link to="/" />*/}
+								<Icon name="add" />
+							</Fab>
+							</Link>
+							<Title>Add a Field</Title>
 
-			</Cell>
-			<Cell col={7}>
+						</Cell>
+						<Cell col={7}>
 
-			</Cell>
-		</Grid>
+						</Cell>
+					</Grid>
 				</AuthorizedWarp>
 			</div>
 		);

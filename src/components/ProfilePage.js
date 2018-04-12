@@ -20,8 +20,6 @@ class ProfilePage extends Component {
 		}
 	}
 
-
-
 	handleAddCLU =(clu) =>{
 		const CLUapi = config.CLUapi + "/api/userfield";
 		let headers = {
@@ -39,6 +37,7 @@ class ProfilePage extends Component {
 			console.log("Add CLU failed: " + e );
 		});
 	}
+
 	render() {
 		return (
 			<div>

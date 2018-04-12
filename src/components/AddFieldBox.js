@@ -31,37 +31,37 @@ class AddFieldBox extends Component {
 	render() {
 		return(
 			<div>
-			<div className="add-field-box add-field-title">
+				<div className="add-field-box add-field-title">
 
-				<Fab >
-				<Icon name="add"/>
-				</Fab>
+					<Fab >
+						<Icon name="add"/>
+					</Fab>
 					<Title>Add a Field</Title>
-				<p>Locate the field by typing an address or click on the map</p>
-				<CoordinateFieldCC
-					helptext="Latitude value must between -90 and 90"
-					min="-90"
-					max="90"
-					type="number"
-					step="0.000001"
-					value={this.props.latitude}
-					onChange={this.handleLatFieldChange}
-					floatingLabel="Latitude"/>
-				<CoordinateFieldCC
-					helptext="Longitude value must between -180 and 180"
-					min="-180"
-					max="180"
-					type="number"
-					step="0.000001"
-					value={this.props.longitude}
-					onChange={this.handleLongFieldChange}
-					floatingLabel="Longitude"/>
+					<p>Locate the field by typing an address or click on the map</p>
+					<CoordinateFieldCC
+						helptext="Latitude value must between -90 and 90"
+						min="-90"
+						max="90"
+						type="number"
+						step="0.000001"
+						value={this.props.latitude}
+						onChange={this.handleLatFieldChange}
+						floatingLabel="Latitude"/>
+					<CoordinateFieldCC
+						helptext="Longitude value must between -180 and 180"
+						min="-180"
+						max="180"
+						type="number"
+						step="0.000001"
+						value={this.props.longitude}
+						onChange={this.handleLongFieldChange}
+						floatingLabel="Longitude"/>
 
-			</div>
-			<div className="add-field-bottom">
-			<Link type="submit" className="cancel-button">Cancel</Link>
-			<button type="submit" className="add-button">ADD FILED</button>
-			</div>
+				</div>
+				<div className="add-field-bottom">
+					<Link type="submit" className="cancel-button">Cancel</Link>
+					<button type="submit" className="add-button">ADD FILED</button>
+				</div>
 			</div>
 		);
 	}
