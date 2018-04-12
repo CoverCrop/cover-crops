@@ -66,11 +66,11 @@ class MapCC extends Component {
 				style:
 					new ol.style.Style({
 						stroke: new ol.style.Stroke({
-							color: 'rgba(0, 152, 254, 1)',
-							width: 2
+							color: '#1AB146',
+							width: 4
 						}),
 						fill: new ol.style.Fill({
-							color: 'rgba(0, 0, 255, 0.1)'
+							color: 'rgba(225, 225, 255, 0.4)'
 						})
 					})
 				,
@@ -107,7 +107,7 @@ class MapCC extends Component {
 
 			areaPolygonSource.clear();
 			areaPolygonSource.addFeatures(features);
-			this.props.handleCLUChange(geojson.features.properties["clu_id"]);
+			// this.props.handleCLUChange(geojson.features.properties["clu_id"]);
 
 		}).catch(function(e) {
 			console.log("Get CLU failed: " + e );
