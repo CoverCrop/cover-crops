@@ -9,7 +9,6 @@ import MyFarmPage from "./MyFarmPage";
 import RouteMismatch from './RouteMismatch'
 import "material-components-web/dist/material-components-web.min.css";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import 'material-components-web/dist/material-components-web.min.css';
 import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {isUserAuthenticated} from "../public/utils";

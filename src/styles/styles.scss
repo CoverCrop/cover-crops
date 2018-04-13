@@ -18,13 +18,16 @@ $vin-red: #ff0000;
 
 /* Styles */
 body {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font: 14px Roboto, sans-serif;
   line-height: 1.4em;
   color: #4d4d4d;
   min-width: 230px;
   margin: 0 auto;
   -webkit-font-smoothing: antialiased;
   -moz-font-smoothing: antialiased;
+  --mdc-theme-primary: #1AB146;
+  --mdc-theme-primary-light: #CDF1D8;
+  --mdc-theme-primary-dark:  #1AB146;
   font-smoothing: antialiased;
   font-weight: 300;
 }

@@ -35,8 +35,7 @@ class Header extends Component {
 						</ToolbarSection>
 					</ToolbarRow>
 				</Toolbar>
-				<div className="no-bottom-grid">
-					<Grid>
+					<Grid className="no-bottom-grid">
 
 						<Cell col={5} className="rectangle-2">
 							<div>
@@ -51,7 +50,6 @@ class Header extends Component {
 							</div>
 						</Cell>
 					</Grid>
-				</div>
 			</div>
 
 			);

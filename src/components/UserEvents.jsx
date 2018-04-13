@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import {Button, Textfield, Card, CardText, Body1, Body2, CardActions, FormField, Grid, Cell} from "react-mdc-web";
+import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, CardText, Body1, Body2, CardActions,
+	Fab, Icon, Grid, Cell} from "react-mdc-web";
 import "babel-polyfill";
 import {datawolfURL, latId, lonId, weatherId, workloadId, resultDatasetId} from "../datawolf.config";
 import styles from '../styles/user-page.css';
 import { handleResults} from '../actions/analysis';
-import { groupBy, getResult, getWeatherName} from '../public/utils';
+import { groupBy, getResult, getWeatherName, ConvertDDToDMS} from '../public/utils';
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -14,7 +15,9 @@ class UserEvents extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			sortopen: false,
 			events: [],
+			selectevent: null,
 			email: sessionStorage.getItem("email")
 		}
 	}
@@ -37,9 +40,14 @@ class UserEvents extends Component {
 		eventGroups.forEach(function(v, k){
 			if(v.length === 2 && v[0]["description"] !== ""){
 				if(v[0]["description"] === "WithCoverCrop"){
+					v.status= v[0].datasets[resultDatasetId] === 'ERROR' || v[1].datasets[resultDatasetId] === 'ERROR' ? 'execution-error' : 'execution-success';
+					v.id= k;
 					eventfilteredGroup.push(v);
 				} else if(v[0]["description"] === "WithoutCoverCrop"){
+					// the first event is WithoutCoverCrop, swap it before add to event list
 					let tmpv = [v[1], v[0]];
+					tmpv.status= v[0].datasets[resultDatasetId] === 'ERROR' || v[1].datasets[resultDatasetId] === 'ERROR' ? 'execution-error' : 'execution-success';
+					tmpv.id=k;
 					eventfilteredGroup.push(tmpv);
 				}
 			}
@@ -52,11 +60,13 @@ class UserEvents extends Component {
 		this.getEvents();
 	}
 
-	viewResult = (withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID) => {
-		let that = this;
-		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
-			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
-			getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile){
+	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID) => {
+		if(status ==='execution-success') {
+			this.setState({selectevent:id});
+			let that = this;
+			if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
+				(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
+				getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile) {
 					getResult(withoutCoverCropDatasetResultGUID).then(function (withoutCoverCropResultFile) {
 						that.props.handleResults(
 							withCoverCropDatasetResultGUID,
@@ -65,39 +75,66 @@ class UserEvents extends Component {
 							withoutCoverCropResultFile
 						);
 					})
-			})
+				})
+			}
 		}
 	}
 
 
 	render(){
         let eventsList =  this.state.events.map( event =>
+			<Card
+				className={(event.id === this.state.selectevent? 'choose-card':'') + " event-list " +(event.status)}
+				  key={event[0].id}
+				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId])}
+			>
+				<CardText >
+					<h2>{ConvertDDToDMS(event[0].parameters[latId]) + 'N'}</h2>
+					<div className="event-list-text">
+						<p className="text1 label">In</p>
+						<p className="text2 label">Out</p>
+						<p className="text3 label">Weather</p>
+						<p className="text4 label">Status</p>
+						<p className="text5 label">Time</p>
 
-			<Card className="event-list" key={event[0].id}>
-				<CardText>
-				<Body1>Latitude: {event[0].parameters[latId]}</Body1>
-				<Body1>Longitude: {event[0].parameters[lonId]}</Body1>
-				<Body1>Weather Pattern: {getWeatherName(event[0].parameters[weatherId])}</Body1>
-				<Body1>Date: {event[0].date}</Body1>
+						<p className="text3 experiment-value bold-text">{getWeatherName(event[0].parameters[weatherId])}</p>
+						<p className="text4 experiment-value">{event.status.slice(10)}</p>
+						<p className="text5 experiment-value">{event[0].date}</p>
+					</div>
+					{ event.status === 'execution-error'?
+
+							<Icon name="warning" />
+
+						:
+							<Icon name="check_circle"/>
+
+					}
 
 				</CardText>
-				{event[0].datasets[resultDatasetId] === 'ERROR' || event[1].datasets[resultDatasetId] === 'ERROR' ?
-					<CardText>
-					<Body1>Execution Error</Body1>
-					</CardText> :
-
-					<CardActions>
-						<Button compact
-								onClick={() => this.viewResult(event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId])}>View
-							Result</Button>
-					</CardActions>
-				}
 			</Card>
 		);
 		return(
 			<div>
-				<h1>User Events</h1>
-				<br />
+				<div className="event-list-header">
+					<Button className="bold-text"
+						onClick={() => {
+						this.setState({sortopen: true})
+					}}>Sort By</Button>
+					<MenuAnchor>
+						<Menu
+							open={this.state.sortopen}
+							onClose={()=>{this.setState({sortopen:false})}}
+						>
+							<MenuItem>
+								Runtime
+							</MenuItem>
+							<MenuItem>
+								Runtime2
+							</MenuItem>
+						</Menu>
+					</MenuAnchor>
+					<Button className="event-more-options">More Options</Button>
+				</div>
 				<div className="event-list-parent">
 					{eventsList}
 				</div>

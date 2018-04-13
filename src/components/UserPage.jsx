@@ -16,21 +16,17 @@ class UserPage extends Component {
 				<Header selected='user'/>
 				<AnalyzerWrap activeTab={2}/>
 				<AuthorizedWarp>
-					<div className="content">
-						<Grid>
-							<Cell col={2}>
-								{/*TODO: add tabs*/}
-							</Cell>
-							<Cell col={5}>
+
+						<Grid className="no-padding-grid">
+							<Cell col={4}>
 								<UserEvents />
 							</Cell>
-							<Cell col={5}>
+							<Cell col={8}>
 								<ViewResultsCC />
 							</Cell>
 						</Grid>
-					</div>
+
 				</AuthorizedWarp>
-				<Footer selected='user'/>
 			</div>
 		);
 	}
