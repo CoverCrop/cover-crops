@@ -13,7 +13,7 @@ class SelectFieldsCC extends Component {
 			cluname: ""
 		}
 	}
-
+    //TODO: use the real data
 	handleLatFieldChange = () => {
 		this.props.handleLatFieldChange(40.029428)
 	}

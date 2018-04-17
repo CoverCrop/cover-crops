@@ -74,21 +74,21 @@ class MyFarmPage extends Component {
 				<AnalyzerWrap activeTab={3}/>
 				<AuthorizedWarp>
 					<Grid>
-						<Cell col={5} >
+						<Cell col={4} >
 							<div  className="add-field-title">
-							<Link to="/addfield" >
-							<Fab >
-								<Icon name="add" />
-							</Fab>
-							</Link>
-							<Title>Add a Field</Title>
+								<Link to="/addfield" >
+									<Fab >
+										<Icon name="add" />
+									</Fab>
+								</Link>
+								<Title>Add a Field</Title>
 							</div>
 							<div className="myfield-list">
-							<Title>My Fields</Title>
-							{cluList}
+								<Title>My Fields</Title>
+								{cluList}
 							</div>
 						</Cell>
-						<Cell col={7} className="border-left">
+						<Cell col={8} className="border-left">
 							Field Profile Holder
 						</Cell>
 					</Grid>

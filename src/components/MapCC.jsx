@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-let ol = require('openlayers');
+import ol from 'openlayers';
 import styles from "../styles/main.css";
 require("openlayers/css/ol.css");
-import {handleLatFieldChange, handleLongFieldChange, handleCLUChange} from "../actions/analysis"
+import {handleLatFieldChange, handleLongFieldChange, handleCLUChange} from "../actions/analysis";
 import config from '../app.config';
 
 
@@ -128,6 +128,7 @@ class MapCC extends Component {
 	}
 
 	componentDidMount(e) {
+		this.marker.setZIndex(100);
 		this.state.map.setTarget(this.props.mapId); // Set target for map
 		this.state.map.on("click", this.handleClick); // Set on click event handler
 		this.dropMarker(this.defaultCenter); // Drop default marker

@@ -46,7 +46,7 @@ class Header extends Component {
 						<Cell col={2}></Cell>
 						<Cell col={5} className="rectangle-3">
 							<div>
-								<Link to="/about" className="about-the-project">About the Project</Link>
+								<Link to="/" className="about-the-project">About the Project</Link>
 							</div>
 						</Cell>
 					</Grid>
