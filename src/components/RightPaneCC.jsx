@@ -2,7 +2,9 @@ import React, {Component} from "react";
 import SelectFieldsCC from "./SelectFieldsCC";
 import RunSimulationCC from "./RunSimulationCC";
 import ViewResultsCC from "./ViewResultsCC";
+import MapCC from "./MapCC"
 import { connect } from 'react-redux';
+import styles from "../styles/analysis-page.css"
 
 class RightPaneCC extends Component {
 
@@ -36,13 +38,19 @@ class RightPaneCC extends Component {
 		}
 
 		return(
-			<div>{displayComponent}</div>
+			<div className="analysis-map-div">
+				<MapCC mapId="analysis-clu"/>
+				<SelectFieldsCC />
+				{this.props.longitude === "" ? null : <RunSimulationCC />}
+			</div>
 		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
+		longitude: state.analysis.longitude,
+		latitude: state.analysis.latitude,
 		activeCardIndex: state.analysis.activeCardIndex
 	}
 };

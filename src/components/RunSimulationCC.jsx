@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web"
+import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2,
+	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -10,7 +11,9 @@ import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, g
 	weatherPatterns} from "../datawolf.config";
 import {ID, getResult} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
-	handleWeatherPatternChange} from '../actions/analysis'
+	handleWeatherPatternChange} from '../actions/analysis';
+import styles from "../styles/analysis-page.css"
+
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -206,7 +209,20 @@ class RunSimulationCC extends Component {
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 	    let options = weatherPatterns.map(w => Object.assign({ value: w, label: w }))
 		return(
-			<div>
+			<div className="run-simulate">
+				<div className="black-bottom">
+				<Title>Field</Title>
+				<Card>
+					<CardText>
+						<CardTitle>South field</CardTitle>
+
+
+						this need to be add.
+					</CardText>
+				</Card>
+				</div>
+				<div className="black-bottom">
+					<Title>Select Cover Crop Date</Title>
 					<Body1>Establishment Date: </Body1>
 					<DatePicker className="date-picker-cc" selected={this.props.startDate}
 								selectsStart
@@ -217,15 +233,7 @@ class RunSimulationCC extends Component {
 								endDate={this.props.endDate}
 								onSelect={this.handleStartDateChange}/>
 
-					<Body1>Termination Date: </Body1>
-					<DatePicker className="date-picker-cc" selected={this.props.endDate}
-								selectsStart
-								showYearDropdown
-								scrollableYearDropdown
-								placeholderText="Select an establishment date"
-								startDate={this.props.startDate}
-								endDate={this.props.endDate}
-								onChange={this.handleEndDateChange}/>
+		
 
 				<FormField id="checkbox-label">
 					<Checkbox
@@ -233,7 +241,7 @@ class RunSimulationCC extends Component {
 						checked={this.props.isFlexibleDatesChecked}/>
 					<label>Flexible termination dates (+/- two weeks)</label>
 				</FormField>
-
+				</div>
 				<Body1> Weather Pattern:</Body1>
 
 				<Select
@@ -246,31 +254,6 @@ class RunSimulationCC extends Component {
 
 				<br/>
 				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation}>Run Simulation</Button>
-				<Grid>
-					<Cell col={6}>
-						{this.state.withstep1 === "" ? null: <ListHeader>With Cover Crop</ListHeader> }
-					<List>
-						<div>
-							{this.state.withstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withstep1}</ListItem>}
-							{this.state.withstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withstep2}</ListItem>}
-							{this.state.withstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withstep3}</ListItem>}
-							{this.state.withstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withstep4}</ListItem>}
-						</div>
-					</List>
-					</Cell>
-					<Cell col={6}>
-						{this.state.withoutstep1 === "" ? null: <ListHeader>Without Cover Crop</ListHeader> }
-						<List>
-							<div>
-								{this.state.withoutstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withoutstep1}</ListItem>}
-								{this.state.withoutstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withoutstep2}</ListItem>}
-								{this.state.withoutstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withoutstep3}</ListItem>}
-								{this.state.withoutstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withoutstep4}</ListItem>}
-							</div>
-						</List>
-
-					</Cell>
-				</Grid>
 			</div>
 		)
 	}

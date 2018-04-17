@@ -15,18 +15,10 @@ class AnalysisPage extends Component {
 				<Header selected='analysis'/>
 				<AnalyzerWrap activeTab={1}/>
 				<AuthorizedWarp>
-					<div className="content">
-						<Grid >
-							<Cell col={2}>
-								<LeftPaneCC />
-							</Cell>
-							<Cell col={10}>
-								<RightPaneCC />
-							</Cell>
-						</Grid>
-					</div>
+
+		               <RightPaneCC/>
+
 				</AuthorizedWarp>
-				<Footer selected='analysis'/>
 			</div>
 		);
 	}
