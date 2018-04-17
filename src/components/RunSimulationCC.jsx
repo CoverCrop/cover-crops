@@ -157,7 +157,8 @@ class RunSimulationCC extends Component {
 							withoutCoverCropExecutionGUID,
 							withoutCoverCropResultFile
 						);
-						that.props.handleCardChange(1, 2, cardData);
+						// that.props.handleCardChange(1, 2, cardData);
+						window.location = '/#/history';
 					}
 					else {
 						console.log("Execution ID wasn't generated.");
@@ -195,8 +196,9 @@ class RunSimulationCC extends Component {
 		this.props.handleFlexibleDatesChange(checked)
 	}
 
-	handleWeatherPatternChange = (weatherPattern) => {
-		this.props.handleWeatherPatternChange(weatherPattern.value);
+	handleWeatherPatternChange(weatherPattern){
+		// this.props.handleWeatherPatternChange(weatherPattern);
+		console.log(weatherPattern)
 	}
 
 	toggleDropdown(e) {
@@ -206,8 +208,13 @@ class RunSimulationCC extends Component {
 
 
 	render(){
-		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
-	    let options = weatherPatterns.map(w => Object.assign({ value: w, label: w }))
+ 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
+		let weatherbuttons = weatherPatterns.map(w =>
+			<Button dense raised={this.props.weatherPattern === w}
+					onClick={()=>{ this.props.handleWeatherPatternChange(w) }}
+					key={w}
+			>{w}</Button>);
+
 		return(
 			<div className="run-simulate">
 				<div className="black-bottom">
@@ -215,46 +222,51 @@ class RunSimulationCC extends Component {
 				<Card>
 					<CardText>
 						<CardTitle>South field</CardTitle>
-
-
 						this need to be add.
 					</CardText>
 				</Card>
 				</div>
-				<div className="black-bottom">
+				<div className="black-bottom select-date">
 					<Title>Select Cover Crop Date</Title>
-					<Body1>Establishment Date: </Body1>
-					<DatePicker className="date-picker-cc" selected={this.props.startDate}
-								selectsStart
-								showYearDropdown
-								scrollableYearDropdown
-								placeholderText="Select an establishment date"
-								startDate={this.props.startDate}
-								endDate={this.props.endDate}
-								onSelect={this.handleStartDateChange}/>
+					<div className="select-date-div">
+						<Body1>Establishment </Body1>
+						<DatePicker className="date-picker-cc" selected={this.props.startDate}
+									selectsStart
+									showYearDropdown
+									scrollableYearDropdown
+									placeholderText="Select an establishment date"
+									startDate={this.props.startDate}
+									endDate={this.props.endDate}
+									onSelect={this.handleStartDateChange}/>
+					</div>
+					<div className="select-date-div">
+						<Body1 >Termination </Body1>
+						<DatePicker className="date-picker-cc" selected={this.props.endDate}
+									selectsStart
+									showYearDropdown
+									scrollableYearDropdown
+									placeholderText="Select a termination date"
+									startDate={this.props.startDate}
+									endDate={this.props.endDate}
+									onChange={this.handleEndDateChange}/>
 
-		
-
-				<FormField id="checkbox-label">
-					<Checkbox
-						onChange={this.handleFlexibleDatesChange}
-						checked={this.props.isFlexibleDatesChecked}/>
-					<label>Flexible termination dates (+/- two weeks)</label>
-				</FormField>
+					</div>
+					<FormField id="checkbox-label">
+						<Checkbox
+							onChange={this.handleFlexibleDatesChange}
+							checked={this.props.isFlexibleDatesChecked}/>
+						<label>Flexible termination dates (+/- two weeks)</label>
+					</FormField>
 				</div>
-				<Body1> Weather Pattern:</Body1>
+				<div className="black-bottom weather-pattern-div">
+				<Title> Weather Pattern</Title>
 
-				<Select
-					className="weather-pattern"
-					name="weatherPattern"
-					value={this.props.weatherPattern}
-					onChange={this.handleWeatherPatternChange}
-					options={options}
-				/>
+					{weatherbuttons}
+				</div>
+<div className="run-button">
+				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
-				<br/>
-				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation}>Run Simulation</Button>
-			</div>
+</div></div>
 		)
 	}
 }

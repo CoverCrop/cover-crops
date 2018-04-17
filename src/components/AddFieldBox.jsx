@@ -2,7 +2,8 @@ import React, {Component} from "react";
 import {Link} from "react-router";
 import styles from "../styles/header.css";
 import styles2 from "../styles/main.css";
-import {Button, Fab, Grid, Cell, Title, Caption, Icon, MenuAnchor, Menu, MenuItem, MenuDivider} from 'react-mdc-web';
+import {Textfield, Button, Fab, Grid, Cell, Title, Caption, Icon, MenuAnchor, Menu,
+	MenuItem, MenuDivider} from 'react-mdc-web';
 import {connect} from "react-redux";
 import SelectFieldsCC from "./SelectFieldsCC";
 import CoordinateFieldCC from "./CoordinateFieldCC";
@@ -57,9 +58,14 @@ class AddFieldBox extends Component {
 						onChange={this.handleLongFieldChange}
 						floatingLabel="Longitude"/>
 
+					<Textfield
+						required
+						floatingLabel="CLU name"
+					/>
+
 				</div>
 				<div className="add-field-bottom">
-					<Link type="submit" className="cancel-button">Cancel</Link>
+					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
 					<button type="submit" className="add-button">ADD FILED</button>
 				</div>
 			</div>

@@ -29,7 +29,7 @@
 	/*padding-left: 22px;*/
 	/*padding-right: 22px;*/
 	padding-top: 12px;
-	height: 523px;
+	height: 390px;
 	width: 411px;
 	background-color: #FFFFFF;
 }
@@ -55,8 +55,31 @@
 	color: white;
 }
 
-
+.select-date .select-date-div  {
+	float: left;
+	padding-right: 12px;
+}
 
 .run-simulate .mdc-card__supporting-text:last-child{
 	padding-bottom: 0px
+}
+
+.weather-pattern-div .mdc-button:not(:disabled):not(.mdc-button--raised) {
+	background-color: rgba(153, 153, 153, 0.2);
+}
+
+.weather-pattern-div .mdc-button{
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.run-button {
+	padding-top: 20px;
+	text-align: center;
+	font-weight: bold;
+}
+
+.run-button .mdc-button:not(:disabled) {
+	height: 54px;
+	background-color: #34515E;
 }
