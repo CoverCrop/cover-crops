@@ -222,7 +222,7 @@ class RunSimulationCC extends Component {
 				<Card>
 					<CardText>
 						<CardTitle>South field</CardTitle>
-						this need to be add.
+						this need to be add. use decimal or degree?
 					</CardText>
 				</Card>
 				</div>

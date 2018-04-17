@@ -131,17 +131,64 @@
 
 .add-field-title h2 {
 	display: inline;
-	color: #455A64;
-	font-family: Roboto;
+	color: #1AB146;
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 28px;
 	margin-left: 12px;
 }
 
-.coordinate-field > div{
-	display: inline; /*not working*/
+.myfield-list {
+	padding-top: 20px;
 }
+.myfield-list h2 {
+	height: 28px;
+	/*width: 86px;*/
+	color: #455A64;
+	font-size: 20px;
+	font-weight: 500;
+	/*line-height: 28px;*/
+}
+
+.select-my-field {
+	/*height: 53px;*/
+	width: 304px;
+	border-radius: 2px 2px 0 0;
+	background-color: #455A64;
+}
+
+.unselect-my-field{
+	/*height: 53px;*/
+	width: 304px;
+	border-radius: 2px 2px 0 0;
+	background-color: #DEE4E8;
+}
+.myfield-list .mdc-card{
+	margin-top: 5px;
+}
+
+.myfield-list .mdc-card__supporting-text:last-child {
+	padding-bottom: 5px;
+}
+.select-my-field .mdc-card__supporting-text{
+	color: white;
+}
+
+.select-my-field h1{
+	color: white;
+}
+.myfield-list h1{
+	font-size: 18px;
+}
+
+
+
+
+
+
+
+
+
 
 .add-field-bottom {
 	background-color: #DEE4E8;
@@ -166,6 +213,10 @@
 	right: 5px;
 	position: absolute;
 }
+.add-field-bottom .add-button:disabled {
+	background-color: #c7cdd0;
+}
+
 
 .add-field-bottom .cancel-button {
 	height: 28px;

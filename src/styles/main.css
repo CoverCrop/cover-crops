@@ -147,6 +147,14 @@ h1, h2, h3, h5, h6, p, ul {
 	padding: 0px;
 }
 
+.border-left.mdc-layout-grid__cell{
+	border-left: 1px solid #D8D8D8;
+}
+
+.border-top.mdc-layout-grid__cell{
+	border-top: 1px solid #D8D8D8;
+}
+
 /*not working*/
 /*.ol-zoom {*/
 	/*left: unset;*/

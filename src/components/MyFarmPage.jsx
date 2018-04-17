@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router";
 import Header from './Header';
 import Footer from './Footer';
-import {Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
+import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
 import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
@@ -17,22 +17,56 @@ class MyFarmPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			clus: []
+			clus: [],
+			openclu: 0
 		}
 	}
-	componentDidMount() {
+
+	async getMyFieldList() {
 		const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
 		let headers = {
-			// 'Content-Type': 'application/json',
+			'Content-Type': 'application/json',
 			'Access-Control-Origin': 'http://localhost:3000'
 		};
-		// fetch(CLUapi, {headers: headers}).then(response => {
-		// 	this.setState({clus: response})
-		// })
+		const Response = await fetch(CLUapi, {headers: headers});
+		return await Response.json();
+	}
+
+	componentDidMount() {
+		let that = this;
+		this.getMyFieldList().then(function(clus){
+			// console.log(clus)
+			that.setState({clus})
+		})
 	}
 
 	render() {
-		let cluList = this.state.clus.map(c => <p>{c}</p>);
+		const {openclu} = this.state;
+		const that = this;
+		//TODO: add map for openclu
+		let cluList = this.state.clus.map((c, i) => {
+			if (openclu === i){
+				return <div className="select-my-field" key={c.clu}>
+					<Card onClick={() => {that.setState({openclu: i})}}>
+						<CardText>
+							<CardTitle>{c.cluname}</CardTitle>
+							{c.lat + " " + c.lon}
+						</CardText>
+					</Card>
+				</div>
+
+			} else {
+				return <div className="unselect-my-field" key={c.clu}>
+					<Card onClick={() => {that.setState({openclu: i})}}>
+						<CardText>
+							<CardTitle>{c.cluname}</CardTitle>
+							{c.lat + " " + c.lon}
+						</CardText>
+					</Card>
+				</div>
+			}
+		}
+	)
 
 		return (
 			<div>
@@ -40,18 +74,22 @@ class MyFarmPage extends Component {
 				<AnalyzerWrap activeTab={3}/>
 				<AuthorizedWarp>
 					<Grid>
-						<Cell col={5} className="add-field-title">
+						<Cell col={5} >
+							<div  className="add-field-title">
 							<Link to="/addfield" >
 							<Fab >
-								{/*<Link to="/" />*/}
 								<Icon name="add" />
 							</Fab>
 							</Link>
 							<Title>Add a Field</Title>
-
+							</div>
+							<div className="myfield-list">
+							<Title>My Fields</Title>
+							{cluList}
+							</div>
 						</Cell>
-						<Cell col={7}>
-
+						<Cell col={7} className="border-left">
+							Field Profile Holder
 						</Cell>
 					</Grid>
 				</AuthorizedWarp>

@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 import {Button, Textfield, Body1, Grid, Cell, Icon} from "react-mdc-web";
-import RunSimulationBox from "./RunSimulationBox";
 import MapCC from "./MapCC";
 import {handleLatFieldChange, handleLongFieldChange, handleCardChange} from "../actions/analysis"
 import styles from '../styles/analysis-page.css';
@@ -14,7 +13,7 @@ class SelectFieldsCC extends Component {
 			cluname: ""
 		}
 	}
-	//TODO: add search function.
+
 	handleLatFieldChange = () => {
 		this.props.handleLatFieldChange(40.029428)
 	}
@@ -38,6 +37,7 @@ class SelectFieldsCC extends Component {
 		}
 	}
 
+	//TODO: add search function.
     //TODO: div is pop up, text is too bottom.
     //TODO: the click on Icon is not working.
     //TODO: add polygon.
@@ -47,6 +47,7 @@ class SelectFieldsCC extends Component {
 				<Textfield
 					box
 					trailingIcon
+					floatingLabel="Not Implemented, type >5 for testing"
 					value={this.state.cluname}
 					onChange={({target : {value : cluname}}) => {
 						this.setState({ cluname })

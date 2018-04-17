@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 let ol = require('openlayers');
 import styles from "../styles/main.css";
 require("openlayers/css/ol.css");
-import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis"
+import {handleLatFieldChange, handleLongFieldChange, handleCLUChange} from "../actions/analysis"
 import config from '../app.config';
 
 
@@ -107,7 +107,8 @@ class MapCC extends Component {
 
 			areaPolygonSource.clear();
 			areaPolygonSource.addFeatures(features);
-			// this.props.handleCLUChange(geojson.features.properties["clu_id"]);
+			// console.log(geojson)
+			this.props.handleCLUChange(geojson.features[0].properties["clu_id"]);
 
 		}).catch(function(e) {
 			console.log("Get CLU failed: " + e );
@@ -149,6 +150,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleLongFieldChange: (lon) => {
 			dispatch(handleLongFieldChange(lon));
+		},
+		handleCLUChange: (clu) => {
+			dispatch(handleCLUChange(clu));
 		}
 	}
 };

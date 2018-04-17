@@ -23,7 +23,7 @@ class Header extends Component {
 		sessionStorage.removeItem("email");
 		this.props.handleUserLogout();
 	}
-
+    //TODO: add fixed for Toolbar
 	render() {
 		return(
 			<div>

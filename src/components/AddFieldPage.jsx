@@ -20,24 +20,6 @@ class ProfilePage extends Component {
 		}
 	}
 
-	handleAddCLU =(clu) =>{
-		const CLUapi = config.CLUapi + "/api/userfield";
-		let headers = {
-			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
-		};
-		fetch(CLUapi,{
-			method: 'POST',
-			headers: headers,
-			credentials: "include",
-			body: '{"userid":"'+ sessionStorage.getItem("email") +'", "clu":' + clu + ', "expfile": ""}'
-		}).then(response => {
-			this.setState({clus: this.state.clus.concat([clu])})
-		}).catch(function(e) {
-			console.log("Add CLU failed: " + e );
-		});
-	}
-
 	render() {
 		return (
 			<div>
