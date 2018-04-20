@@ -197,8 +197,7 @@ class RunSimulationCC extends Component {
 	}
 
 	handleWeatherPatternChange(weatherPattern){
-		// this.props.handleWeatherPatternChange(weatherPattern);
-		console.log(weatherPattern)
+		this.props.handleWeatherPatternChange(weatherPattern);
 	}
 
 	toggleDropdown(e) {
