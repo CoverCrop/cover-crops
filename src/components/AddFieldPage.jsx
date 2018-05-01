@@ -27,7 +27,7 @@ class ProfilePage extends Component {
 				<AnalyzerWrap activeTab={3}/>
 				<AuthorizedWarp>
 					<div className="choose-clu-div">
-						<MapCC mapId="choose-clu"/>
+						<MapCC mapId="choose-clu" selectCLU/>
 						<AddFieldBox />
 					</div>
 				</AuthorizedWarp>

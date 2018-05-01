@@ -102,12 +102,14 @@
 }
 
 .choose-clu-div {
-	height: calc(100vh - 200px);
 	position: relative;
 }
 
-#choose-clu {
-	height: 100%;
+.fullmap {
+	margin: 0px;
+	padding: 0px;
+	height: calc(100vh - 190px);
+	width: 100%;
 }
 
 .add-field-box {

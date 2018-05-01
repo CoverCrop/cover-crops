@@ -114,7 +114,7 @@ const mapStateToProps = (state) => {
 	return {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
-		clu: state.analysis.clu
+		clu: state.user.clu
 	}
 };
 

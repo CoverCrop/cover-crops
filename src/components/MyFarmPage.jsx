@@ -11,6 +11,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
+import {getMyFieldList} from "../public/utils";
 
 class MyFarmPage extends Component {
 
@@ -22,21 +23,15 @@ class MyFarmPage extends Component {
 		}
 	}
 
-	async getMyFieldList() {
-		const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
-		let headers = {
-			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
-		};
-		const Response = await fetch(CLUapi, {headers: headers});
-		return await Response.json();
-	}
+
 
 	componentDidMount() {
 		let that = this;
-		this.getMyFieldList().then(function(clus){
+		getMyFieldList().then(function(clus){
 			// console.log(clus)
 			that.setState({clus})
+		}, function(err) {
+			console.log(err);
 		})
 	}
 

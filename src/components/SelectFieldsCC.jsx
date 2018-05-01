@@ -1,28 +1,50 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 import {Button, Textfield, Body1, Grid, Cell, Icon} from "react-mdc-web";
-import MapCC from "./MapCC";
-import {handleLatFieldChange, handleLongFieldChange, handleCardChange} from "../actions/analysis"
+import Select from 'react-select';
+import {handleLatFieldChange, handleLongFieldChange, handleCardChange, handleCLUChange} from "../actions/analysis"
 import styles from '../styles/analysis-page.css';
+import {getMyFieldList} from "../public/utils";
 
 class SelectFieldsCC extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
+			clus: [],
 			cluname: ""
 		}
 	}
+
+	componentDidMount() {
+		let that = this;
+		handleCLUChange(0, "")
+		getMyFieldList().then(function(clus){
+			// console.log(clus)
+			that.setState({clus})
+		}, function(err) {
+			console.log(err);
+		})
+	}
+
+	handleChange = (selectedOption) => {
+		console.log(selectedOption);
+		this.setState({ cluname: selectedOption.label });
+		this.handleLatFieldChange(selectedOption.value.lat);
+		this.handleLongFieldChange(selectedOption.value.lon);
+		this.props.handleCLUChange(selectedOption.value.clu, selectedOption.value.cluname);
+	}
+
     //TODO: use the real data
-	handleLatFieldChange = () => {
-		this.props.handleLatFieldChange(40.029428)
+	handleLatFieldChange = (lat) => {
+		this.props.handleLatFieldChange(lat)
 	}
 
-	handleLongFieldChange = () =>  {
-		this.props.handleLongFieldChange(-88.259290)
+	handleLongFieldChange = (lon) =>  {
+		this.props.handleLongFieldChange(lon)
 	}
 
-	handleSubmit = (event) =>{
+	handleSubmit = () =>{
 		// event.preventDefault();
 		if (this.props.longitude !== "" && this.props.latitude !== "") {
 			console.log(this.props.longitude + " " + this.props.latitude);
@@ -42,24 +64,18 @@ class SelectFieldsCC extends Component {
     //TODO: the click on Icon is not working.
     //TODO: add polygon.
 	render() {
+
+		let options = this.state.clus.map(w => Object.assign({ value: w, label: w.cluname }))
+		const {cluname} = this.state;
 		return(
 			<div className="search-bg">
-				<Textfield
-					box
-					trailingIcon
-					floatingLabel="Not Implemented, type >5 for testing"
-					value={this.state.cluname}
-					onChange={({target : {value : cluname}}) => {
-						this.setState({ cluname })
-						if(cluname.length === 5){
-							this.handleLatFieldChange();
-							this.handleLongFieldChange();
-							this.handleSubmit();
-						}
-					}}
-				>
-					<Icon name="search" />
-				</Textfield>
+				<Select
+					className=""
+					name="selectclu"
+					value={cluname}
+					onChange={this.handleChange}
+					options={options}
+				/>
 			</div>
 		);
 	}
@@ -82,7 +98,11 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
 			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
+		},
+		handleCLUChange: (clu, cluname) => {
+			dispatch(handleCLUChange(clu, cluname));
 		}
+
 	}
 };
 

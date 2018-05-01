@@ -181,6 +181,7 @@ class RunSimulationCC extends Component {
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
+			window.location = '/#/history';
 		}
 	}
 
@@ -220,7 +221,7 @@ class RunSimulationCC extends Component {
 				<Title>Field</Title>
 				<Card>
 					<CardText>
-						<CardTitle>South field</CardTitle>
+						<CardTitle>{this.props.cluname}</CardTitle>
 						this need to be add. use decimal or degree?
 					</CardText>
 				</Card>
@@ -276,6 +277,7 @@ const mapStateToProps = (state) => {
 		endDate: state.analysis.endDate,
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
+		cluname: state.analysis.cluname,
 		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked

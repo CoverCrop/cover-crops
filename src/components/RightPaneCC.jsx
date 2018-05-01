@@ -41,7 +41,7 @@ class RightPaneCC extends Component {
 			<div className="analysis-map-div">
 				<MapCC mapId="analysis-clu"/>
 				<SelectFieldsCC />
-				{this.props.longitude === "" ? null : <RunSimulationCC />}
+				{this.props.clu === 0 ? null : <RunSimulationCC />}
 			</div>
 		);
 	}
@@ -51,6 +51,7 @@ const mapStateToProps = (state) => {
 	return {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
+		clu: state.analysis.clu,
 		activeCardIndex: state.analysis.activeCardIndex
 	}
 };

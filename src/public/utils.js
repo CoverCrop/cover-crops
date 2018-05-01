@@ -1,4 +1,5 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
+import config from "../app.config";
 
 /***
  * Checks if user
@@ -107,4 +108,14 @@ export function ConvertDDToDMS(dd)
 	var sec = frac * 3600 - min * 60;
 	sec = sec.toFixed(2);
 	return deg + "d " + min + "' " + sec + "\"";
+}
+
+export async function getMyFieldList() {
+	const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
+	let headers = {
+		'Content-Type': 'application/json',
+		'Access-Control-Origin': 'http://localhost:3000'
+	};
+	const Response = await fetch(CLUapi, {headers: headers});
+	return await Response.json();
 }
