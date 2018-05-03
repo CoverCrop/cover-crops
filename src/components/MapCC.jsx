@@ -7,7 +7,6 @@ require("openlayers/css/ol.css");
 import {handleLatFieldChange, handleLongFieldChange, handleCLUChange, handleUserCLUChange} from "../actions/analysis";
 import config from '../app.config';
 
-
 class MapCC extends Component {
 
 	constructor(props) {
@@ -84,10 +83,9 @@ class MapCC extends Component {
 	}
 
 	handleClick(e) {
-		//TODO: remove this line when updateSize is fixed.
-		this.state.map.updateSize();
+		// function for add user field page
 		if(this.props.selectCLU) {
-			console.log(e.coordinate)
+			// console.log(e.coordinate)
 			this.dropMarker(e.coordinate);
 
 			let lonLatCoordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
@@ -142,25 +140,30 @@ class MapCC extends Component {
 		this.state.map.on("click", this.handleClick); // Set on click event handler
 
 		this.dropMarker(this.defaultCenter); // Drop default marker
-		let areaPolygonLayer = this.state.areaPolygonLayer;
+		let {areaPolygonLayer} = this.state;
 		this.state.map.addLayer(areaPolygonLayer);
 		areaPolygonLayer.setZIndex(1001);
-		//TODO: this line doesn't work, need to fix
-		this.state.map.updateSize();
+		let that = this
+		new Promise(resolve => setTimeout(resolve, 200)).then(function (){
+			that.state.map.updateSize();
+		})
 	}
 
 	componentDidUpdate() {
+		// function for analysis page
 		if(!this.props.selectCLU){
 			const {
 				analysis_longitude,
 				analysis_latitude
 			} = this.props;
-
+            // add marker
 			let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], 'EPSG:4326', 'EPSG:3857' );
 			// console.log(coordinate)
 			this.dropMarker(coordinate);
+			this.state.map.getView().setCenter(coordinate)
 			let lonLatCoordinates = [analysis_longitude, analysis_latitude];
             //TODO use "api/CLUs/id"
+            //add CLU polygon
 			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 			let areaPolygonSource = this.state.areaPolygonLayer.getSource();

@@ -8,8 +8,6 @@ import styles from '../styles/user-page.css';
 import { handleResults} from '../actions/analysis';
 import { groupBy, getResult, getWeatherName, ConvertDDToDMS} from '../public/utils';
 
-let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
 class UserEvents extends Component {
 
 	constructor(props) {
