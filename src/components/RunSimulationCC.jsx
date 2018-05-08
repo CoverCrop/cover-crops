@@ -222,7 +222,7 @@ class RunSimulationCC extends Component {
 				<Card>
 					<CardText>
 						<CardTitle>{this.props.cluname}</CardTitle>
-						this need to be add. use decimal or degree?
+						{this.props.latitude} {this.props.longitude}
 					</CardText>
 				</Card>
 				</div>

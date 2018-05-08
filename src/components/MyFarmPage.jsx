@@ -25,7 +25,7 @@ class MyFarmPage extends Component {
 
 
 
-	componentDidMount() {
+	componentWillMount() {
 		let that = this;
 		getMyFieldList().then(function(clus){
 			// console.log(clus)

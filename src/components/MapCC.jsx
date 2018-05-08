@@ -143,7 +143,7 @@ class MapCC extends Component {
 		let {areaPolygonLayer} = this.state;
 		this.state.map.addLayer(areaPolygonLayer);
 		areaPolygonLayer.setZIndex(1001);
-		let that = this
+		let that = this;
 		new Promise(resolve => setTimeout(resolve, 200)).then(function (){
 			that.state.map.updateSize();
 		})
@@ -160,7 +160,7 @@ class MapCC extends Component {
 			let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], 'EPSG:4326', 'EPSG:3857' );
 			// console.log(coordinate)
 			this.dropMarker(coordinate);
-			this.state.map.getView().setCenter(coordinate)
+			this.state.map.getView().setCenter(coordinate);
 			let lonLatCoordinates = [analysis_longitude, analysis_latitude];
             //TODO use "api/CLUs/id"
             //add CLU polygon

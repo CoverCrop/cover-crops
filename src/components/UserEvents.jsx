@@ -87,7 +87,7 @@ class UserEvents extends Component {
 				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId])}
 			>
 				<CardText >
-					<h2>{ConvertDDToDMS(event[0].parameters[latId]) + 'N'}</h2>
+					<h2>{event[0].parameters[latId] + ' ' +event[0].parameters[lonId]}</h2>
 					<div className="event-list-text">
 						<p className="text1 label">In</p>
 						<p className="text2 label">Out</p>
