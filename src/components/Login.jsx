@@ -117,6 +117,7 @@ class Login extends Component {
 					<Card className="login">
 						<CardText>
 							<Body2>Sign In</Body2>
+							<p className="error-message">{this.props.message}</p>
 							<span><Textfield autoFocus floatingLabel="Username" value={this.state.email}
 											 onChange={({target: {value: email}}) => {
 												 this.setState({email: email})

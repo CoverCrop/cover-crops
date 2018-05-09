@@ -16,7 +16,7 @@ class SelectFieldsCC extends Component {
 		}
 	}
 
-	componentDidMount() {
+	componentWillMount() {
 		let that = this;
 		handleCLUChange(0, "")
 		getMyFieldList().then(function(clus){

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
 
-class AuthorizedWarp extends Component {
+class AuthorizedWrap extends Component {
 	render() {
 		let unauthorizedDiv =
 			<script type="text/javascript">
@@ -17,12 +17,11 @@ class AuthorizedWarp extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.user.isAuthenticated
 	}
 };
 
-export default connect(mapStateToProps, null)(AuthorizedWarp);
+export default connect(mapStateToProps, null)(AuthorizedWrap);
 

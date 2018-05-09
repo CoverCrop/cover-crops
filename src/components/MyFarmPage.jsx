@@ -6,7 +6,7 @@ import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Check
 import styles from '../styles/main.css';
 import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
-import AuthorizedWarp from "./AuthorizedWarp";
+import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
@@ -67,7 +67,7 @@ class MyFarmPage extends Component {
 			<div>
 				<Header />
 				<AnalyzerWrap activeTab={3}/>
-				<AuthorizedWarp>
+				<AuthorizedWrap>
 					<Grid>
 						<Cell col={4} >
 							<div  className="add-field-title">
@@ -87,7 +87,7 @@ class MyFarmPage extends Component {
 							Field Profile Holder
 						</Cell>
 					</Grid>
-				</AuthorizedWarp>
+				</AuthorizedWrap>
 			</div>
 		);
 	}

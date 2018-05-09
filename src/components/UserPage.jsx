@@ -5,7 +5,7 @@ import {Button, Content, Textfield, Card, CardText, Body1, Body2, Checkbox, Form
 import styles from '../styles/main.css';
 import UserEvents from './UserEvents';
 import ViewResultsCC from "./ViewResultsCC";
-import AuthorizedWarp from "./AuthorizedWarp"
+import AuthorizedWrap from "./AuthorizedWrap"
 import AnalyzerWrap from "./AnalyzerWrap";
 
 class UserPage extends Component {
@@ -15,7 +15,7 @@ class UserPage extends Component {
 			<div>
 				<Header selected='user'/>
 				<AnalyzerWrap activeTab={2}/>
-				<AuthorizedWarp>
+				<AuthorizedWrap>
 
 						<Grid className="no-padding-grid">
 							<Cell col={4}>
@@ -26,7 +26,7 @@ class UserPage extends Component {
 							</Cell>
 						</Grid>
 
-				</AuthorizedWarp>
+				</AuthorizedWrap>
 			</div>
 		);
 	}
