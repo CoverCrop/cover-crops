@@ -1,22 +1,17 @@
 import React, {Component} from "react";
-import {Textfield} from "react-mdc-web"
+import {Textfield} from "react-mdc-web";
+import styles from "../styles/user-page.css";
 
 class CoordinateFieldCC extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="coordinate-fieldCC">
 				<Textfield
+					{...this.props}
 					required
-					helptext={this.props.helptext}
 					helptextValidation
-					min={this.props.min}
-					max={this.props.max}
-					type={this.props.type}
-					step={this.props.step}
-					value={this.props.value}
-					onChange={this.props.onChange}
-					floatingLabel={this.props.floatingLabel}/>
+					/>
 			</div>
 		);
 	}

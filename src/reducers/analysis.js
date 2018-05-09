@@ -21,6 +21,8 @@ const defaultState = {
 	activeCardIndex: 0,
 	latitude: "",
 	longitude: "",
+	clu: 0,
+	cluname: "",
 	startDate: 0,
 	endDate: 0,
 	weatherPattern: weatherPatterns[0],
@@ -45,6 +47,11 @@ const analysis = (state = defaultState, action) => {
 		case "CHANGE_LONG":
 			return Object.assign({}, state, {
 				longitude: action.long
+			});
+		case "CHANGE_CLU":
+			return Object.assign({}, state, {
+				clu: action.clu,
+				cluname: action.cluname
 			});
 		case "CHANGE_START_DATE":
 			return Object.assign({}, state, {

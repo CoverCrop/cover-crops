@@ -7,6 +7,9 @@ import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitl
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils"
+import {Link} from "react-router";
+import config from "../app.config";
+
 
 class Login extends Component {
 
@@ -49,7 +52,22 @@ class Login extends Component {
 				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
 				sessionStorage.setItem("email", jsonData["email"]); // Store email ID in session storage for future use
 
+
+				const CLUapi = config.CLUapi + "/api/user";
+				let serviceLoginResponse = await fetch(CLUapi, {
+					method: 'POST',
+					headers: {
+						"Authorization": "Basic " + hash,
+						"Content-Type": "application/json",
+						"Access-Control-Origin": "http://localhost:3000"
+					},
+					// credentials: 'include'
+				});
+
+				console.log(serviceLoginResponse);
+
 				// Check for authentication
+				// TODO: should we do something when status is not 200?
 				checkAuthentication().then(function (checkAuthResponse) {
 					if (checkAuthResponse.status === 200) {
 						console.log("Person Valid");
@@ -114,13 +132,12 @@ class Login extends Component {
 							<span>
 								<Button
 									type="submit"
-									primary
 									raised
 									onClick={this.handleLogin}
 									disabled={!this.validateLoginForm()}>Login
 								</Button>
 							</span>
-								<span><Caption><a className="not-active" href="">Register</a></Caption></span>
+								<span><Caption><Link to="/register">Register</Link></Caption></span>
 								<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
 							</form>
 						</CardActions>

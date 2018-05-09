@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
-import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web"
+import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2,
+	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
@@ -10,7 +11,9 @@ import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, g
 	weatherPatterns} from "../datawolf.config";
 import {ID, getResult} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
-	handleWeatherPatternChange} from '../actions/analysis'
+	handleWeatherPatternChange} from '../actions/analysis';
+import styles from "../styles/analysis-page.css"
+
 
 let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -154,7 +157,8 @@ class RunSimulationCC extends Component {
 							withoutCoverCropExecutionGUID,
 							withoutCoverCropResultFile
 						);
-						that.props.handleCardChange(1, 2, cardData);
+						// that.props.handleCardChange(1, 2, cardData);
+						window.location = '/#/history';
 					}
 					else {
 						console.log("Execution ID wasn't generated.");
@@ -177,6 +181,7 @@ class RunSimulationCC extends Component {
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
+			window.location = '/#/history';
 		}
 	}
 
@@ -192,8 +197,8 @@ class RunSimulationCC extends Component {
 		this.props.handleFlexibleDatesChange(checked)
 	}
 
-	handleWeatherPatternChange = (weatherPattern) => {
-		this.props.handleWeatherPatternChange(weatherPattern.value);
+	handleWeatherPatternChange(weatherPattern){
+		this.props.handleWeatherPatternChange(weatherPattern);
 	}
 
 	toggleDropdown(e) {
@@ -203,75 +208,65 @@ class RunSimulationCC extends Component {
 
 
 	render(){
-		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
-	    let options = weatherPatterns.map(w => Object.assign({ value: w, label: w }))
+ 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
+		let weatherbuttons = weatherPatterns.map(w =>
+			<Button dense raised={this.props.weatherPattern === w}
+					onClick={()=>{ this.props.handleWeatherPatternChange(w) }}
+					key={w}
+			>{w}</Button>);
+
 		return(
-			<div>
-					<Body1>Establishment Date: </Body1>
-					<DatePicker className="date-picker-cc" selected={this.props.startDate}
-								selectsStart
-								showYearDropdown
-								scrollableYearDropdown
-								placeholderText="Select an establishment date"
-								startDate={this.props.startDate}
-								endDate={this.props.endDate}
-								onSelect={this.handleStartDateChange}/>
+			<div className="run-simulate">
+				<div className="black-bottom">
+				<Title>Field</Title>
+				<Card>
+					<CardText>
+						<CardTitle>{this.props.cluname}</CardTitle>
+						{this.props.latitude} {this.props.longitude}
+					</CardText>
+				</Card>
+				</div>
+				<div className="black-bottom select-date">
+					<Title>Select Cover Crop Date</Title>
+					<div className="select-date-div">
+						<Body1>Establishment </Body1>
+						<DatePicker className="date-picker-cc" selected={this.props.startDate}
+									selectsStart
+									showYearDropdown
+									scrollableYearDropdown
+									placeholderText="Select an establishment date"
+									startDate={this.props.startDate}
+									endDate={this.props.endDate}
+									onSelect={this.handleStartDateChange}/>
+					</div>
+					<div className="select-date-div">
+						<Body1 >Termination </Body1>
+						<DatePicker className="date-picker-cc" selected={this.props.endDate}
+									selectsStart
+									showYearDropdown
+									scrollableYearDropdown
+									placeholderText="Select a termination date"
+									startDate={this.props.startDate}
+									endDate={this.props.endDate}
+									onChange={this.handleEndDateChange}/>
 
-					<Body1>Termination Date: </Body1>
-					<DatePicker className="date-picker-cc" selected={this.props.endDate}
-								selectsStart
-								showYearDropdown
-								scrollableYearDropdown
-								placeholderText="Select an establishment date"
-								startDate={this.props.startDate}
-								endDate={this.props.endDate}
-								onChange={this.handleEndDateChange}/>
+					</div>
+					<FormField id="checkbox-label">
+						<Checkbox
+							onChange={this.handleFlexibleDatesChange}
+							checked={this.props.isFlexibleDatesChecked}/>
+						<label>Flexible termination dates (+/- two weeks)</label>
+					</FormField>
+				</div>
+				<div className="black-bottom weather-pattern-div">
+				<Title> Weather Pattern</Title>
 
-				<FormField id="checkbox-label">
-					<Checkbox
-						onChange={this.handleFlexibleDatesChange}
-						checked={this.props.isFlexibleDatesChecked}/>
-					<label>Flexible termination dates (+/- two weeks)</label>
-				</FormField>
+					{weatherbuttons}
+				</div>
+<div className="run-button">
+				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
-				<Body1> Weather Pattern:</Body1>
-
-				<Select
-					className="weather-pattern"
-					name="weatherPattern"
-					value={this.props.weatherPattern}
-					onChange={this.handleWeatherPatternChange}
-					options={options}
-				/>
-
-				<br/>
-				<Button disabled={isButtonDisabled} raised primary onClick={this.runSimulation}>Run Simulation</Button>
-				<Grid>
-					<Cell col={6}>
-						{this.state.withstep1 === "" ? null: <ListHeader>With Cover Crop</ListHeader> }
-					<List>
-						<div>
-							{this.state.withstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withstep1}</ListItem>}
-							{this.state.withstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withstep2}</ListItem>}
-							{this.state.withstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withstep3}</ListItem>}
-							{this.state.withstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withstep4}</ListItem>}
-						</div>
-					</List>
-					</Cell>
-					<Cell col={6}>
-						{this.state.withoutstep1 === "" ? null: <ListHeader>Without Cover Crop</ListHeader> }
-						<List>
-							<div>
-								{this.state.withoutstep1 === "" ? null: <ListItem>Prepare Weather Data: {this.state.withoutstep1}</ListItem>}
-								{this.state.withoutstep2 === "" ? null: <ListItem>Prepare Soil Data: {this.state.withoutstep2}</ListItem>}
-								{this.state.withoutstep3 === "" ? null: <ListItem>Run DSSAT Model: {this.state.withoutstep3}</ListItem>}
-								{this.state.withoutstep4 === "" ? null: <ListItem>Generate Graphs: {this.state.withoutstep4}</ListItem>}
-							</div>
-						</List>
-
-					</Cell>
-				</Grid>
-			</div>
+</div></div>
 		)
 	}
 }
@@ -282,6 +277,7 @@ const mapStateToProps = (state) => {
 		endDate: state.analysis.endDate,
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
+		cluname: state.analysis.cluname,
 		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked

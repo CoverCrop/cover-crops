@@ -9,7 +9,7 @@ html {
 }
 
 body {
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: Roboto, sans-serif;
 	margin: 0;
 	padding: 0;
 }
@@ -120,8 +120,43 @@ h1, h2, h3, h5, h6, p, ul {
 	cursor: default;
 }
 
+.registration button{
+	width: 160px;
+}
+
+.error-message {
+	color: #d50000;
+	margin-left: 8px;
+	font-family: Roboto, sans-serif;
+	font-weight: 400;
+	letter-spacing: 1px;
+	padding: 5px;
+}
+
 .user-account-icon {
 	margin-right: 20px;
 	cursor: pointer;
 	font-size: 32px;
 }
+
+.no-bottom-grid.mdc-layout-grid {
+	padding-bottom: 0px;
+}
+
+.no-padding-grid.mdc-layout-grid {
+	padding: 0px;
+}
+
+.border-left.mdc-layout-grid__cell{
+	border-left: 1px solid #D8D8D8;
+}
+
+.border-top.mdc-layout-grid__cell{
+	border-top: 1px solid #D8D8D8;
+}
+
+/*not working*/
+/*.ol-zoom {*/
+	/*left: unset;*/
+	/*right: 8px;*/
+/*}*/

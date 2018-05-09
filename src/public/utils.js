@@ -1,4 +1,5 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
+import config from "../app.config";
 
 /***
  * Checks if user
@@ -97,4 +98,24 @@ export function getWeatherName(w) {
 		});
 	}
 	return w;
+}
+
+export function ConvertDDToDMS(dd)
+{
+	var deg = dd | 0; // truncate dd to get degrees
+	var frac = Math.abs(dd - deg); // get fractional part
+	var min = (frac * 60) | 0; // multiply fraction by 60 and truncate
+	var sec = frac * 3600 - min * 60;
+	sec = sec.toFixed(2);
+	return deg + "d " + min + "' " + sec + "\"";
+}
+
+export async function getMyFieldList() {
+	const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
+	let headers = {
+		'Content-Type': 'application/json',
+		'Access-Control-Origin': 'http://localhost:3000'
+	};
+	const Response = await fetch(CLUapi, {headers: headers});
+	return await Response.json();
 }
