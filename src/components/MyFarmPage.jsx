@@ -4,14 +4,13 @@ import Header from './Header';
 import Footer from './Footer';
 import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
-import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList, wait} from "../public/utils";
+import {getMyFieldList} from "../public/utils";
 
 class MyFarmPage extends Component {
 
