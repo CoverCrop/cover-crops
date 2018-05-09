@@ -100,14 +100,58 @@ export function getWeatherName(w) {
 	return w;
 }
 
+/**
+ * @return {string}
+ */
 export function ConvertDDToDMS(dd)
 {
-	var deg = dd | 0; // truncate dd to get degrees
-	var frac = Math.abs(dd - deg); // get fractional part
-	var min = (frac * 60) | 0; // multiply fraction by 60 and truncate
-	var sec = frac * 3600 - min * 60;
+	let deg = dd | 0; // truncate dd to get degrees
+	let frac = Math.abs(dd - deg); // get fractional part
+	let min = (frac * 60) | 0; // multiply fraction by 60 and truncate
+	let sec = frac * 3600 - min * 60;
 	sec = sec.toFixed(2);
 	return deg + "d " + min + "' " + sec + "\"";
+}
+
+export function calculateDayOfYear(date) {
+	let timeStamp = new Date().setFullYear(date.getFullYear(), 0, 1);
+	let yearFirstDay = Math.floor(timeStamp / 86400000);
+	let today = Math.ceil((date.getTime()) / 86400000);
+	return today - yearFirstDay;
+}
+
+export async function uploadDatasetToDataWolf(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
+	let headers = {
+		'Access-Control-Origin': 'http://localhost:3000'
+	};
+
+	let userInputFile = new File([
+		"{\"with_cover_crop\": " + isWithCoverCrop + "," +
+		"\"year_planting\": " + yearPlanting + "," +
+		"\"doy_planting\": " + doyPlanting + "," +
+		"\"doy_harvest\": " + doyHarvest +
+		"}"],
+		"user_input.json",
+		{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+
+	let data = new FormData();
+	data.append("useremail", sessionStorage.getItem("email"));
+	data.append("uploadedFile", userInputFile);
+
+	let uploadDatasetResponse = await fetch(
+		datawolfURL + "/datasets",
+		{
+			method: "POST",
+			headers: headers,
+			body: data,
+			credentials: "include",
+			contentType: false,
+			processData: false
+		});
+
+	return uploadDatasetResponse.text().then(function (data) {
+		return data;
+	});
 }
 
 export async function getMyFieldList() {

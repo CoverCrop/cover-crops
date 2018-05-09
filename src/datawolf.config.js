@@ -1,10 +1,11 @@
 export const datawolfURL = "https://covercrop.ncsa.illinois.edu/datawolf";
 
 export const steps ={
-	Weather_Converter: "8b37a10e-59cb-47c9-a9eb-3eb846094f9d",
-	Output_Parser: "bc582ce7-6279-4b5a-feaf-73fd9538ff28",
-	Soil_Converter: "a40f102e-2930-46f8-e916-4dfa82cd36d1",
-	DSSAT_Batch: "bde73f42-df16-4001-fe25-125cee503d36",
+	Weather_Converter: "456edbfe-74ee-4a56-ba31-3b2750c8e5fe",
+	Output_Parser: "0e962d1d-f7fe-4b03-c868-a4658ee01cf8",
+	Soil_Converter: "85e2930c-3a43-4de7-cd36-1996388cd6ad",
+	DSSAT_Batch: "25122874-e3b4-4397-d684-1d02af096181",
+	Generate_Exp: "29f2d544-6cee-4897-8b9a-318c70ca784a",
 };
 
 const parameters = {
@@ -14,44 +15,46 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
-export function getWithCoverCropExecutionRequest(id, lat, long, personId, weatherPattern) {
+export function getWithCoverCropExecutionRequest(id, lat, long, personId, weatherPattern, json_dataset_id) {
 	return {
-		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
+		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
 		"creatorId": personId,
 		"title": id,
 		"description":"WithCoverCrop",
 		"parameters": {
-			"d23f88b5-5e2e-42ca-d524-d9a9822d2d2f": lat,
-			"4dad32a9-cc4d-4508-8d71-66c622a40cda": long,
-			"76a57476-094f-4331-f59f-0865f1341108": lat,
-			"dcceaa12-2bc6-4591-8e14-026c3bad64fd": long,
-			"a4752f34-ed85-404f-89c4-917f52bca992": weatherPattern.charAt(0)
+			"584c8752-f818-4d02-8361-5af959342a94": lat,
+			"e43cd911-2da8-4c95-a5e5-207583be9ce3": long,
+			"b78a76f0-982b-4e37-cae4-6acfc753184a": lat,
+			"be161213-0bf9-4377-809e-1c46c93c93dd": long,
+			"b20babe8-1ce1-4d1c-8d1d-adca68262f7e": weatherPattern.charAt(0)
 		},
 		"datasets": {
 			// With cover crop
-			"323c6613-4037-476c-9b9c-f51ba0940eaf": parameters.soilWithCoverCrop,
-			"7db036bf-019f-4c01-e58d-14635f6f799d": parameters.modelWithCoverCrop
+			"97f2896a-fc67-4bd7-960b-d0308f5a2494": parameters.modelWithCoverCrop,
+			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec", // experiment file template
+			"d03b2aa2-7156-42b5-f03a-522306f1ac5c": json_dataset_id
 		}
 	};
 }
 
-export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, weatherPattern) {
+export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, weatherPattern, json_dataset_id) {
 	return {
-		"workflowId": "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2",
+		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
 		"creatorId": personId,
 		"title": id,
 		"description":"WithoutCoverCrop",
 		"parameters": {
-			"d23f88b5-5e2e-42ca-d524-d9a9822d2d2f": lat,
-			"4dad32a9-cc4d-4508-8d71-66c622a40cda": long,
-			"76a57476-094f-4331-f59f-0865f1341108": lat,
-			"dcceaa12-2bc6-4591-8e14-026c3bad64fd": long,
-			"a4752f34-ed85-404f-89c4-917f52bca992": weatherPattern.charAt(0)
+			"584c8752-f818-4d02-8361-5af959342a94": lat,
+			"e43cd911-2da8-4c95-a5e5-207583be9ce3": long,
+			"b78a76f0-982b-4e37-cae4-6acfc753184a": lat,
+			"be161213-0bf9-4377-809e-1c46c93c93dd": long,
+			"b20babe8-1ce1-4d1c-8d1d-adca68262f7e": weatherPattern.charAt(0)
 		},
 		"datasets": {
 			// Without cover crop
-			"323c6613-4037-476c-9b9c-f51ba0940eaf": parameters.soilWithoutCoverCrop,
-			"7db036bf-019f-4c01-e58d-14635f6f799d": parameters.modelWithoutCoverCrop
+			"97f2896a-fc67-4bd7-960b-d0308f5a2494": parameters.modelWithoutCoverCrop,
+			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec", // experiment file template
+			"d03b2aa2-7156-42b5-f03a-522306f1ac5c": json_dataset_id
 		}
 	};
 }
@@ -59,8 +62,8 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, we
 // the fist weather pattern is the Default.
 export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
 
-export const latId = "76a57476-094f-4331-f59f-0865f1341108";
-export const lonId = "dcceaa12-2bc6-4591-8e14-026c3bad64fd";
-export const weatherId = "a4752f34-ed85-404f-89c4-917f52bca992";
-export const resultDatasetId = "2623a440-1f16-4110-83c4-5ebf39cb0e35";
-export const workloadId = "e9bdff07-e5f7-4f14-8afc-4abb87c7d5a2";
+export const latId = "b78a76f0-982b-4e37-cae4-6acfc753184a";
+export const lonId = "be161213-0bf9-4377-809e-1c46c93c93dd";
+export const weatherId = "b20babe8-1ce1-4d1c-8d1d-adca68262f7e";
+export const resultDatasetId = "8884b4be-07d8-4a70-a624-efcafd58ffb2";
+export const workloadId = "12101e88-4f50-4b3c-add7-930444fc6ba1";
