@@ -61,6 +61,7 @@
 .banner{
 	height: 60px; /*not working*/
 	background-color: #455A64;
+	padding-right: 38px;
 }
 
 .logo {
@@ -68,13 +69,23 @@
 	width: 53px;
 }
 
-.cover-crop {
+.cover-crop a{
+	/*height: 40px; !*not working*!*/
 	color: #FFFFFF;
 	font-family: Roboto;
-	font-size: 24px;
+	font-size: 30px;
 	font-weight: bold;
-	line-height: 28px;
 	text-align: center;
+	vertical-align: middle;
+	line-height: 40px;
+}
+
+.email-address {
+	margin-top: 10px;
+}
+
+.banner .mdc-button:not(:disabled){
+	color: #FFFFFF;
 }
 
 .cover-crop img {

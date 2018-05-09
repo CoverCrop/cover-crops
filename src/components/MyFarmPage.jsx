@@ -11,7 +11,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList} from "../public/utils";
+import {getMyFieldList, wait} from "../public/utils";
 
 class MyFarmPage extends Component {
 
@@ -27,7 +27,8 @@ class MyFarmPage extends Component {
 
 	componentWillMount() {
 		let that = this;
-		getMyFieldList().then(function(clus){
+
+		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
 			that.setState({clus})
 		}, function(err) {
@@ -64,10 +65,11 @@ class MyFarmPage extends Component {
 	)
 
 		return (
-			<div>
-				<Header />
-				<AnalyzerWrap activeTab={3}/>
-				<AuthorizedWrap>
+			<AuthorizedWrap>
+				<div>
+					<Header />
+					<AnalyzerWrap activeTab={3}/>
+
 					<Grid>
 						<Cell col={4} >
 							<div  className="add-field-title">
@@ -87,8 +89,9 @@ class MyFarmPage extends Component {
 							Field Profile Holder
 						</Cell>
 					</Grid>
-				</AuthorizedWrap>
-			</div>
+
+				</div>
+			</AuthorizedWrap>
 		);
 	}
 }
@@ -96,7 +99,8 @@ class MyFarmPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		clu: state.analysis.clu
+		clu: state.analysis.clu,
+		email: state.user.email
 	}
 };
 

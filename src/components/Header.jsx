@@ -23,15 +23,24 @@ class Header extends Component {
 		sessionStorage.removeItem("email");
 		this.props.handleUserLogout();
 	}
-    //TODO: add fixed for Toolbar
+
 	render() {
 		return(
 			<div>
 				<Toolbar>
 					<ToolbarRow className="banner">
 						<ToolbarSection className="cover-crop" align="start">
+							<Link to="/">
 							<img src={require("../images/logo.png")}/>
 							CoverCrop
+							</Link>
+						</ToolbarSection>
+						<ToolbarSection align="end" >
+							<span className="email-address">{this.props.email}</span>
+
+							{this.props.email === "" ? null :
+								<Button onClick={this.handleLogout}>Logout</Button>}
+
 						</ToolbarSection>
 					</ToolbarRow>
 				</Toolbar>
@@ -40,7 +49,6 @@ class Header extends Component {
 						<Cell col={5} className="rectangle-2">
 							<div>
 								<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
-
 							</div>
 						</Cell>
 						<Cell col={2}></Cell>

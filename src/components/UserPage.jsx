@@ -12,22 +12,24 @@ class UserPage extends Component {
 
 	render() {
 		return (
-			<div>
-				<Header selected='user'/>
-				<AnalyzerWrap activeTab={2}/>
-				<AuthorizedWrap>
+			<AuthorizedWrap>
+				<div>
+					<Header selected='user'/>
+					<AnalyzerWrap activeTab={2}/>
 
-						<Grid className="no-padding-grid">
-							<Cell col={4}>
-								<UserEvents />
-							</Cell>
-							<Cell col={8}>
-								<ViewResultsCC />
-							</Cell>
-						</Grid>
 
-				</AuthorizedWrap>
-			</div>
+					<Grid className="no-padding-grid">
+						<Cell col={4}>
+							<UserEvents />
+						</Cell>
+						<Cell col={8}>
+							<ViewResultsCC />
+						</Cell>
+					</Grid>
+
+
+				</div>
+			</AuthorizedWrap>
 		);
 	}
 }

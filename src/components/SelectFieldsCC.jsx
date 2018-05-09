@@ -4,7 +4,7 @@ import {Button, Textfield, Body1, Grid, Cell, Icon} from "react-mdc-web";
 import Select from 'react-select';
 import {handleLatFieldChange, handleLongFieldChange, handleCardChange, handleCLUChange} from "../actions/analysis"
 import styles from '../styles/analysis-page.css';
-import {getMyFieldList} from "../public/utils";
+import {getMyFieldList, wait} from "../public/utils";
 
 class SelectFieldsCC extends Component {
 
@@ -18,8 +18,8 @@ class SelectFieldsCC extends Component {
 
 	componentWillMount() {
 		let that = this;
-		handleCLUChange(0, "")
-		getMyFieldList().then(function(clus){
+		handleCLUChange(0, "");
+		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
 			that.setState({clus})
 		}, function(err) {
@@ -84,7 +84,8 @@ class SelectFieldsCC extends Component {
 const mapStateToProps = (state) => {
 	return {
 		longitude: state.analysis.longitude,
-		latitude: state.analysis.latitude
+		latitude: state.analysis.latitude,
+		email: state.user.email
 	}
 };
 

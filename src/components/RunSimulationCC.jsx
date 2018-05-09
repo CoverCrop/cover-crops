@@ -9,13 +9,10 @@ import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
-import {ID, getResult} from "../public/utils";
+import {ID, getResult, wait} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
 import styles from "../styles/analysis-page.css"
-
-
-let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 class RunSimulationCC extends Component {
 

@@ -1,14 +1,11 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
+import HomePage from "./HomePage";
 
 class AuthorizedWrap extends Component {
 	render() {
 		let unauthorizedDiv =
-			<script type="text/javascript">
-				window.onload = function(e){
-					window.location.assign("/")
-				}
-			</script>;
+			<HomePage message="Please login."/>;
 		return (
 			<div>
 			{this.props.isAuthenticated ? this.props.children : unauthorizedDiv}

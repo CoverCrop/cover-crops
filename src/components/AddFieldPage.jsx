@@ -22,16 +22,18 @@ class ProfilePage extends Component {
 
 	render() {
 		return (
+			<AuthorizedWrap>
 			<div>
 				<Header />
 				<AnalyzerWrap activeTab={3}/>
-				<AuthorizedWrap>
+
 					<div className="choose-clu-div">
 						<MapCC mapId="choose-clu" selectCLU/>
 						<AddFieldBox />
 					</div>
-				</AuthorizedWrap>
+
 			</div>
+			</AuthorizedWrap>
 		);
 	}
 }

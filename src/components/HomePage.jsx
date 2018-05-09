@@ -54,7 +54,7 @@ class HomePage extends Component {
 									enim leo vel lacus.</p>
 							</Cell>
 							<Cell col={4}>
-								<Login message={this.props.location.query.message}/>
+								<Login message={this.props.message}/>
 							</Cell>
 						</Grid>
 

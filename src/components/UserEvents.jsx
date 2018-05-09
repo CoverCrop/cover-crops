@@ -6,7 +6,7 @@ import "babel-polyfill";
 import {datawolfURL, latId, lonId, weatherId, workloadId, resultDatasetId} from "../datawolf.config";
 import styles from '../styles/user-page.css';
 import { handleResults} from '../actions/analysis';
-import { groupBy, getResult, getWeatherName, ConvertDDToDMS} from '../public/utils';
+import {groupBy, getResult, getWeatherName, ConvertDDToDMS, wait} from '../public/utils';
 
 class UserEvents extends Component {
 
@@ -15,13 +15,12 @@ class UserEvents extends Component {
 		this.state = {
 			sortopen: false,
 			events: [],
-			selectevent: null,
-			email: sessionStorage.getItem("email")
+			selectevent: null
 		}
 	}
 
 	async getEvents() {
-		let eventRequest = await fetch(datawolfURL + "/executions?email=" + this.state.email, {
+		let eventRequest = await fetch(datawolfURL + "/executions?email=" + this.props.email, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -141,6 +140,13 @@ class UserEvents extends Component {
 	}
 }
 
+const mapStateToProps = (state) => {
+	return {
+		email: state.user.email
+	}
+};
+
+
 const mapDispatchToProps = (dispatch) => {
 	return {
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
@@ -149,4 +155,4 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(null, mapDispatchToProps)(UserEvents);
+export default connect(mapStateToProps, mapDispatchToProps)(UserEvents);

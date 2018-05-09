@@ -110,8 +110,8 @@ export function ConvertDDToDMS(dd)
 	return deg + "d " + min + "' " + sec + "\"";
 }
 
-export async function getMyFieldList() {
-	const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
+export async function getMyFieldList(email) {
+	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
 	let headers = {
 		'Content-Type': 'application/json',
 		'Access-Control-Origin': 'http://localhost:3000'
@@ -119,3 +119,6 @@ export async function getMyFieldList() {
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
 }
+
+
+export async function wait(ms) {new Promise(resolve => setTimeout(resolve, ms))};

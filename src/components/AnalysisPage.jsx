@@ -11,15 +11,13 @@ class AnalysisPage extends Component {
 
 	render() {
 		return (
-			<div>
-				<Header selected='analysis'/>
-				<AnalyzerWrap activeTab={1}/>
-				<AuthorizedWrap>
-
-		               <RightPaneCC/>
-
-				</AuthorizedWrap>
-			</div>
+			<AuthorizedWrap>
+				<div>
+					<Header selected='analysis'/>
+					<AnalyzerWrap activeTab={1}/>
+					<RightPaneCC/>
+				</div>
+			</AuthorizedWrap>
 		);
 	}
 }
