@@ -54,7 +54,7 @@ class UserEvents extends Component {
 	}
 
 	componentWillMount(){
-		this.props.handleResults("", null, "", null);
+		// this.props.handleResults("", null, "", null);
 		this.getEvents();
 	}
 
