@@ -10,7 +10,7 @@ export async function checkAuthentication() {
 	let personId = sessionStorage.getItem("personId");
 
 	return await fetch(datawolfURL + "/persons/" + personId, {
-		method: 'GET',
+		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
 			"Access-Control-Origin": "http://localhost:3000"
@@ -46,21 +46,21 @@ export const ID = function () {
 	// Math.random should be unique because of its seeding algorithm.
 	// Convert it to base 36 (numbers + letters), and grab the first 9 characters
 	// after the decimal.
-	return '_' + Math.random().toString(36).substr(2, 9);
+	return "_" + Math.random().toString(36).substr(2, 9);
 };
 
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
 export async function getResult(DatasetResultGUID) {
 	let headers = {
-		'Content-Type': 'application/json',
-		'Access-Control-Origin': 'http://localhost:3000'
+		"Content-Type": "application/json",
+		"Access-Control-Origin": "http://localhost:3000"
 	};
 
 		// Get - Result Dataset
 		const Response = await
 			fetch(datawolfURL + "/datasets/" + DatasetResultGUID, {
-				method: 'GET',
+				method: "GET",
 				headers: headers,
 				credentials: "include"
 			});
@@ -83,7 +83,7 @@ export async function getResult(DatasetResultGUID) {
 		const FileDownloadResponse = await fetch(datawolfURL + "/datasets/"
 			+ DatasetResultGUID + "/" + FileDescriptorGUID + "/file",
 			{
-				method: 'GET',
+				method: "GET",
 				headers: headers,
 				credentials: "include"
 			});
@@ -122,7 +122,7 @@ export function calculateDayOfYear(date) {
 
 export async function uploadDatasetToDataWolf(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
 	let headers = {
-		'Access-Control-Origin': 'http://localhost:3000'
+		"Access-Control-Origin": "http://localhost:3000"
 	};
 
 	let userInputFile = new File([
@@ -157,12 +157,14 @@ export async function uploadDatasetToDataWolf(yearPlanting, doyPlanting, doyHarv
 export async function getMyFieldList(email) {
 	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
 	let headers = {
-		'Content-Type': 'application/json',
-		'Access-Control-Origin': 'http://localhost:3000'
+		"Content-Type": "application/json",
+		"Access-Control-Origin": "http://localhost:3000"
 	};
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
 }
 
 
-export async function wait(ms) {new Promise(resolve => setTimeout(resolve, ms))};
+export async function wait(ms) {
+	new Promise(resolve => setTimeout(resolve, ms));
+}
