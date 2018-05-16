@@ -30,10 +30,12 @@ class RunSimulationCC extends Component {
 			withstep2: "",
 			withstep3: "",
 			withstep4: "",
+			withstep5: "",
 			withoutstep1: "",
 			withoutstep2: "",
 			withoutstep3: "",
-			withoutstep4: ""
+			withoutstep4: "",
+			withoutstep5: ""
 		};
 	}
 
@@ -59,9 +61,18 @@ class RunSimulationCC extends Component {
 		};
 
 		let id = ID();
-		let { latitude, longitude, weatherPattern} = this.props;
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern);
+		let { latitude, longitude, weatherPattern, startDate, endDate} = this.props;
+		let objStartDate = startDate.toDate();
+		let objEndDate = endDate.toDate();
+		let plantingYear = objStartDate.getFullYear();
+		let plantingDoy = calculateDayOfYear(objStartDate);
+		let harvestDoy = calculateDayOfYear(objEndDate);
+
+		let withCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, true);
+		let withoutCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, false);
+
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withCoverCropDatasetId);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withoutCoverCropDatasetId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -86,8 +97,8 @@ class RunSimulationCC extends Component {
 
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
         // check the status until two progresses are finished
-        while( this.state.withstep4 === "" || this.state.withstep4 === "WAITING" || this.state.withstep4 === "RUNNING"
-			|| this.state.withoutstep4 === "" || this.state.withoutstep4 === "WAITING" || this.state.withoutstep4 === "RUNNING" ){
+        while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
+			|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
@@ -107,16 +118,19 @@ class RunSimulationCC extends Component {
 
 				this.setState({withstep1: withCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
 				this.setState({withstep2: withCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
-				this.setState({withstep3: withCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
-				this.setState({withstep4: withCoverCropAnalysisResult.stepState[steps.Output_Parser]});
+				this.setState({withstep3: withCoverCropAnalysisResult.stepState[steps.Generate_Exp]});
+				this.setState({withstep4: withCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
+				this.setState({withstep5: withCoverCropAnalysisResult.stepState[steps.Output_Parser]});
 				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
 				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
-				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
-				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[steps.Output_Parser]});
+				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[steps.Generate_Exp]});
+				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
+				this.setState({withoutstep5: withoutCoverCropAnalysisResult.stepState[steps.Output_Parser]});
 			}
 		}
 		// for debug
-		// console.log(withoutCoverCropAnalysisResult)
+		// console.log(withCoverCropAnalysisResult);
+		// console.log(withoutCoverCropAnalysisResult);
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
@@ -201,8 +215,6 @@ class RunSimulationCC extends Component {
 	toggleDropdown(e) {
 		this.setState({ open: !this.state.open })
 	}
-
-
 
 	render(){
  		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
