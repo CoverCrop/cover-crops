@@ -83,7 +83,8 @@ class UserEvents extends Component {
 			<Card
 				className={(event.id === this.state.selectevent? 'choose-card':'') + " event-list " +(event.status)}
 				  key={event[0].id}
-				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId])}
+				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
+					  event[1].datasets[resultDatasetId])}
 			>
 				<CardText >
 					<h2>{event[0].parameters[latId] + ' ' +event[0].parameters[lonId]}</h2>
@@ -149,8 +150,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson))
+		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId,
+						withoutCoverCropResultJson) => {
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId,
+				withoutCoverCropResultJson))
 		}
 	}
 };

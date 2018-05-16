@@ -154,8 +154,8 @@ export async function uploadDatasetToDataWolf(yearPlanting, doyPlanting, doyHarv
 	});
 }
 
-export async function getMyFieldList() {
-	const CLUapi = config.CLUapi + "/api/userfield?userid=" + sessionStorage.getItem("email");
+export async function getMyFieldList(email) {
+	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
 	let headers = {
 		'Content-Type': 'application/json',
 		'Access-Control-Origin': 'http://localhost:3000'
