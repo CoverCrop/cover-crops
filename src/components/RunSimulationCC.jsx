@@ -9,6 +9,7 @@ import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
+import latestWeatherDate from "../app.config";
 import {ID, getResult, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
@@ -239,7 +240,7 @@ class RunSimulationCC extends Component {
 				</Card>
 				</div>
 				<div className="black-bottom select-date">
-					<Title>Select Cover Crop Date</Title>
+					<Title>Select Cover Crop Dates</Title>
 					<div className="select-date-div">
 						<Body1>Establishment </Body1>
 						<DatePicker className="date-picker-cc" selected={this.props.startDate}
@@ -254,7 +255,7 @@ class RunSimulationCC extends Component {
 					<div className="select-date-div">
 						<Body1 >Termination </Body1>
 						<DatePicker className="date-picker-cc" selected={this.props.endDate}
-									selectsStart
+									selectsEnd
 									showYearDropdown
 									scrollableYearDropdown
 									placeholderText="Select a termination date"
