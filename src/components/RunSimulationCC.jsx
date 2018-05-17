@@ -9,7 +9,7 @@ import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
-import latestWeatherDate from "../app.config";
+import config from "../app.config";
 import {ID, getResult, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
@@ -39,7 +39,8 @@ class RunSimulationCC extends Component {
 			withoutstep2: "",
 			withoutstep3: "",
 			withoutstep4: "",
-			withoutstep5: ""
+			withoutstep5: "",
+			selectedFutureWeatherEndDate: false // true, if user selects end date for which we do not have weather data
 		};
 	}
 
@@ -205,6 +206,12 @@ class RunSimulationCC extends Component {
 	}
 
 	handleEndDateChange(date) {
+
+		// Set selectedFutureWeatherEndDate to true if selected termination date if greater than the latest date for
+		// which we have weather data
+		let endDateString = date.toDate().toISOString().split("T")[0]; // Get YYYY-MM-DD format date string
+		this.setState({selectedFutureWeatherEndDate: new Date(endDateString) > new Date(config.latestWeatherDate)});
+
 		this.props.handleEndDateChange(date)
 	}
 
@@ -271,11 +278,11 @@ class RunSimulationCC extends Component {
 						<label>Flexible termination dates (+/- two weeks)</label>
 					</FormField>
 				</div>
-				<div className="black-bottom weather-pattern-div">
-				<Title> Weather Pattern</Title>
+				{this.state.selectedFutureWeatherEndDate === false ? null : <div className="black-bottom weather-pattern-div">
+					<Title> Weather Pattern</Title>
 
 					{weatherbuttons}
-				</div>
+				</div>}
 <div className="run-button">
 				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
