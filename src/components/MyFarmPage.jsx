@@ -4,9 +4,8 @@ import Header from './Header';
 import Footer from './Footer';
 import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
-import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
-import AuthorizedWarp from "./AuthorizedWarp";
+import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
@@ -27,7 +26,8 @@ class MyFarmPage extends Component {
 
 	componentWillMount() {
 		let that = this;
-		getMyFieldList().then(function(clus){
+
+		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
 			that.setState({clus})
 		}, function(err) {
@@ -64,10 +64,11 @@ class MyFarmPage extends Component {
 	)
 
 		return (
-			<div>
-				<Header />
-				<AnalyzerWrap activeTab={3}/>
-				<AuthorizedWarp>
+			<AuthorizedWrap>
+				<div>
+					<Header />
+					<AnalyzerWrap activeTab={3}/>
+
 					<Grid>
 						<Cell col={4} >
 							<div  className="add-field-title">
@@ -87,8 +88,9 @@ class MyFarmPage extends Component {
 							Field Profile Holder
 						</Cell>
 					</Grid>
-				</AuthorizedWarp>
-			</div>
+
+				</div>
+			</AuthorizedWrap>
 		);
 	}
 }
@@ -96,7 +98,8 @@ class MyFarmPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		clu: state.analysis.clu
+		clu: state.analysis.clu,
+		email: state.user.email
 	}
 };
 

@@ -23,36 +23,44 @@ class Header extends Component {
 		sessionStorage.removeItem("email");
 		this.props.handleUserLogout();
 	}
-    //TODO: add fixed for Toolbar
+
 	render() {
 		return(
 			<div>
 				<Toolbar>
 					<ToolbarRow className="banner">
 						<ToolbarSection className="cover-crop" align="start">
-							<img src={require("../images/logo.png")}/>
-							CoverCrop
+							<Link to="/">
+								<img src={require("../images/logo.png")}/>
+								CoverCrop
+							</Link>
+						</ToolbarSection>
+						<ToolbarSection align="end" >
+							<span className="email-address">{this.props.email}</span>
+
+							{this.props.isAuthenticated === false ? null :
+								<Button onClick={this.handleLogout}>Logout</Button>}
+
 						</ToolbarSection>
 					</ToolbarRow>
 				</Toolbar>
-					<Grid className="no-bottom-grid">
+				<Grid className="no-bottom-grid">
 
-						<Cell col={5} className="rectangle-2">
-							<div>
-								<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
-
-							</div>
-						</Cell>
-						<Cell col={2}></Cell>
-						<Cell col={5} className="rectangle-3">
-							<div>
-								<Link to="/" className="about-the-project">About the Project</Link>
-							</div>
-						</Cell>
-					</Grid>
+					<Cell col={5} className="rectangle-2">
+						<div>
+							<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
+						</div>
+					</Cell>
+					<Cell col={2}></Cell>
+					<Cell col={5} className="rectangle-3">
+						<div>
+							<Link to="/" className="about-the-project">About the Project</Link>
+						</div>
+					</Cell>
+				</Grid>
 			</div>
 
-			);
+		);
 	}
 }
 

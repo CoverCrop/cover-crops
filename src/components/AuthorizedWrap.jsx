@@ -1,12 +1,11 @@
 import React, {Component} from "react";
 import { connect } from 'react-redux';
+import HomePage from "./HomePage";
 
-class AuthorizedWarp extends Component {
+class AuthorizedWrap extends Component {
 	render() {
 		let unauthorizedDiv =
-			<div className="contentcenter">
-				<h3>401 Unauthorized. Please click Home and login first.</h3>
-			</div>;
+			<HomePage message="Please login."/>;
 		return (
 			<div>
 			{this.props.isAuthenticated ? this.props.children : unauthorizedDiv}
@@ -15,12 +14,11 @@ class AuthorizedWarp extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.user.isAuthenticated
 	}
 };
 
-export default connect(mapStateToProps, null)(AuthorizedWarp);
+export default connect(mapStateToProps, null)(AuthorizedWrap);
 

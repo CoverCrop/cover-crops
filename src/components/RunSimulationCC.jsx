@@ -3,20 +3,16 @@ import { connect } from 'react-redux';
 import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2,
 	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web"
 import 'react-datepicker/dist/react-datepicker.css';
-import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
-import {ID, getResult, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
+import {ID, getResult, wait, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
 import styles from "../styles/analysis-page.css"
-
-
-let wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 class RunSimulationCC extends Component {
 

@@ -13,36 +13,27 @@ import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from 
 import injectTapEventPlugin from 'react-tap-event-plugin'
 import {isUserAuthenticated} from "../public/utils";
 import RegistrationPage from "./RegistrationPage";
+import {handleUserLogin} from "../actions/user";
+import {connect} from "react-redux";
 
 global.__base = __dirname + "/";
 injectTapEventPlugin();
 
 class App extends Component {
+
+	componentWillMount() {
+		console.log('App did mount');
+		this.props.handleUserLogin(sessionStorage.getItem("email"),
+			sessionStorage.getItem("personId"), sessionStorage.getItem("email") !== null)
+	}
+
 	render() {
-
-		const PrivateRoute = ({component: Component, ...rest}) => (
-
-			<Route
-				{...rest}
-				render={props =>
-					isUserAuthenticated()  ? (
-						<Component {...props} />
-					) : (
-						<Redirect
-							to={{
-								pathname: "/home"
-							}}
-						/>
-					)
-				}
-			/>
-		);
 
 		return (
 			<MuiThemeProvider>
 				<Router history={hashHistory}>
 					<Route path="/" component={HomePage}/>
-					<PrivateRoute path="/analysis" component={AnalysisPage}/>
+					<Route path="/analysis" component={AnalysisPage}/>
 					<Route path="/addfield" component={AddFieldPage}/>
 					<Route path="/profile" component={MyFarmPage}/>
 					<Route path="/about" component={AboutPage}/>
@@ -55,4 +46,13 @@ class App extends Component {
 	}
 }
 
-export default App;
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleUserLogin: (email, userId, isAuthenticated) => {
+			dispatch(handleUserLogin(email, userId, isAuthenticated));
+		}
+	}
+};
+
+export default connect(null, mapDispatchToProps)(App);
