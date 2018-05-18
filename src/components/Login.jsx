@@ -9,6 +9,7 @@ import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils"
 import {Link} from "react-router";
 import config from "../app.config";
+import {invalidLoginCredentials} from "../app.messages";
 
 
 class Login extends Component {
@@ -18,7 +19,8 @@ class Login extends Component {
 
 		this.state = {
 			email: "",
-			password: ""
+			password: "",
+			statusText: ""
 		};
 
 		this.handleLogin = this.handleLogin.bind(this);
@@ -43,6 +45,7 @@ class Login extends Component {
 
 			console.log(loginResponse);
 			if (loginResponse.status === 200) {
+				this.setState({statusText: ""});
 
 				let jsonData = await loginResponse.json().then(function(data) {
 					return data;
@@ -82,7 +85,7 @@ class Login extends Component {
 			}
 
 			else if (loginResponse.status === 401) {
-
+				this.setState({statusText: invalidLoginCredentials});
 			}
 			else {
 
@@ -142,6 +145,7 @@ class Login extends Component {
 								<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
 							</form>
 						</CardActions>
+						<p className="error-message">{this.state.statusText}</p>
 					</Card>
 				}
 			</div>
