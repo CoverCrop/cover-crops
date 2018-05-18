@@ -45,6 +45,7 @@ class Login extends Component {
 
 			console.log(loginResponse);
 			if (loginResponse.status === 200) {
+				this.setState({statusText: ""});
 
 				let jsonData = await loginResponse.json().then(function(data) {
 					return data;
