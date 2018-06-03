@@ -71,7 +71,7 @@ class RunSimulationCC extends Component {
 
 		let withCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, true);
 		let withoutCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, false);
-
+		console.log(withCoverCropDatasetId)
 		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withCoverCropDatasetId);
 		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withoutCoverCropDatasetId);
 

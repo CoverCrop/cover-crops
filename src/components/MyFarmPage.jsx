@@ -11,6 +11,7 @@ import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getMyFieldList} from "../public/utils";
+import MyFarmSummary from "./MyFarmSummary";
 
 class MyFarmPage extends Component {
 
@@ -21,8 +22,6 @@ class MyFarmPage extends Component {
 			openclu: 0
 		}
 	}
-
-
 
 	componentWillMount() {
 		let that = this;
@@ -36,7 +35,8 @@ class MyFarmPage extends Component {
 	}
 
 	render() {
-		const {openclu} = this.state;
+		const {clus, openclu} = this.state;
+		let selectedclu = clus[openclu];
 		const that = this;
 		//TODO: add map for openclu
 		let cluList = this.state.clus.map((c, i) => {
@@ -69,8 +69,8 @@ class MyFarmPage extends Component {
 					<Header />
 					<AnalyzerWrap activeTab={3}/>
 
-					<Grid>
-						<Cell col={4} >
+					<div className="position-relative border-top">
+						<div className="myfarm-left" >
 							<div  className="add-field-title">
 								<Link to="/addfield" >
 									<Fab >
@@ -83,18 +83,20 @@ class MyFarmPage extends Component {
 								<Title>My Fields</Title>
 								{cluList}
 							</div>
-						</Cell>
-						<Cell col={8} className="border-left">
-							Field Profile Holder
-						</Cell>
-					</Grid>
+						</div>
+						<div className="border-left myfarm-right">
+							{clus.length > 0 ?
+							<MyFarmSummary cluname={selectedclu ?  selectedclu.cluname : ""}/>:
+								<img src={require("../images/my-farm-blur.png")}/>
+							}
+						</div>
+					</div>
 
 				</div>
 			</AuthorizedWrap>
 		);
 	}
 }
-
 
 const mapStateToProps = (state) => {
 	return {

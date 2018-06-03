@@ -168,3 +168,12 @@ export async function getMyFieldList(email) {
 export async function wait(ms) {
 	new Promise(resolve => setTimeout(resolve, ms));
 }
+
+export function findFirstSubstring(textArray, s) {
+	for(var i = 0; i < textArray.length;i++)
+	{
+		if(textArray[i].indexOf(s) !== -1)
+			return i;
+	}
+	return -1;
+};
