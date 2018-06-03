@@ -3,7 +3,7 @@ const devConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
-	CLUapi: "https://covercrop.ncsa.illinois.edu",
+	CLUapi: "https://fd-geoserver.ncsa.illinois.edu",
 	latestWeatherDate: "2018-01-31"
 };
 
@@ -12,7 +12,7 @@ const prodConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
-	CLUapi: "https://covercrop.ncsa.illinois.edu",
+	CLUapi: "https://fd-geoserver.ncsa.illinois.edu",
 	latestWeatherDate: "2018-01-31"
 };
 
