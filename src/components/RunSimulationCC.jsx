@@ -41,7 +41,7 @@ class RunSimulationCC extends Component {
 	}
 
 	async runSimulation() {
-        let that = this;
+		let that = this;
 		let status = "STARTED";
 		let personId = sessionStorage.getItem("personId"); // Read person Id from session storage
 		this.setState({
@@ -97,9 +97,9 @@ class RunSimulationCC extends Component {
 
 
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
-        // check the status until two progresses are finished
-        while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
-			|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
+		// check the status until two progresses are finished
+		while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
+		|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
@@ -224,7 +224,7 @@ class RunSimulationCC extends Component {
 	}
 
 	render(){
- 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
+		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		let weatherbuttons = weatherPatterns.map(w =>
 			<Button dense raised={this.props.weatherPattern === w}
 					onClick={()=>{ this.props.handleWeatherPatternChange(w) }}
@@ -234,13 +234,13 @@ class RunSimulationCC extends Component {
 		return(
 			<div className="run-simulate">
 				<div className="black-bottom">
-				<Title>Field</Title>
-				<Card>
-					<CardText>
-						<CardTitle>{this.props.cluname}</CardTitle>
-						{this.props.latitude} {this.props.longitude}
-					</CardText>
-				</Card>
+					<Title>Field</Title>
+					<Card>
+						<CardText>
+							<CardTitle>{this.props.cluname}</CardTitle>
+							{this.props.latitude} {this.props.longitude}
+						</CardText>
+					</Card>
 				</div>
 				<div className="black-bottom select-date">
 					<Title>Select Cover Crop Dates</Title>
@@ -279,10 +279,10 @@ class RunSimulationCC extends Component {
 
 					{weatherbuttons}
 				</div>}
-<div className="run-button">
-				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
+				<div className="run-button">
+					<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
-</div></div>
+				</div></div>
 		)
 	}
 }

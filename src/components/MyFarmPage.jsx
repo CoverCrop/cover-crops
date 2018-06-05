@@ -18,7 +18,8 @@ class MyFarmPage extends Component {
 		super(props);
 		this.state = {
 			clus: [],
-			openclu: 0
+			openclu: 0,
+			fetchError: false
 		}
 	}
 
@@ -29,39 +30,42 @@ class MyFarmPage extends Component {
 
 		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
-			that.setState({clus})
+			that.setState({clus, fetchError: false});
 		}, function(err) {
 			console.log(err);
+			that.setState({fetchError: true});
 		})
 	}
 
 	render() {
-		const {openclu} = this.state;
+		const {openclu, clus, fetchError} = this.state;
 		const that = this;
 		//TODO: add map for openclu
-		let cluList = this.state.clus.map((c, i) => {
-			if (openclu === i){
-				return <div className="select-my-field" key={c.clu}>
-					<Card onClick={() => {that.setState({openclu: i})}}>
-						<CardText>
-							<CardTitle>{c.cluname}</CardTitle>
-							{c.lat + " " + c.lon}
-						</CardText>
-					</Card>
-				</div>
+		let cluList = clus.map((c, i) => {
+						if (openclu === i){
+							return <div className="select-my-field" key={c.clu}>
+								<Card onClick={() => {that.setState({openclu: i})}}>
+									<CardText>
+										<CardTitle>{c.cluname}</CardTitle>
+										{c.lat + " " + c.lon}
+									</CardText>
+								</Card>
+							</div>
 
-			} else {
-				return <div className="unselect-my-field" key={c.clu}>
-					<Card onClick={() => {that.setState({openclu: i})}}>
-						<CardText>
-							<CardTitle>{c.cluname}</CardTitle>
-							{c.lat + " " + c.lon}
-						</CardText>
-					</Card>
-				</div>
-			}
-		}
-	)
+						} else {
+							return <div className="unselect-my-field" key={c.clu}>
+								<Card onClick={() => {that.setState({openclu: i})}}>
+									<CardText>
+										<CardTitle>{c.cluname}</CardTitle>
+										{c.lat + " " + c.lon}
+									</CardText>
+								</Card>
+							</div>
+						}
+					}
+				)
+
+
 
 		return (
 			<AuthorizedWrap>
@@ -81,7 +85,11 @@ class MyFarmPage extends Component {
 							</div>
 							<div className="myfield-list">
 								<Title>My Fields</Title>
-								{cluList}
+
+								{this.state.fetchError?
+									<div>
+										<p className="error-message">Failed to get your farm list.</p>
+									</div> : cluList}
 							</div>
 						</Cell>
 						<Cell col={8} className="border-left">

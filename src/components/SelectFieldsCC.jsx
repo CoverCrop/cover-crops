@@ -12,7 +12,8 @@ class SelectFieldsCC extends Component {
 		super(props);
 		this.state = {
 			clus: [],
-			cluname: ""
+			cluname: "",
+			fetchError: false,
 		}
 	}
 
@@ -21,9 +22,10 @@ class SelectFieldsCC extends Component {
 		handleCLUChange(0, "");
 		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
-			that.setState({clus})
+			that.setState({clus, fetchError: false});
 		}, function(err) {
 			console.log(err);
+			that.setState({fetchError: true});
 		})
 	}
 
@@ -33,16 +35,16 @@ class SelectFieldsCC extends Component {
 		this.handleLatFieldChange(selectedOption.value.lat);
 		this.handleLongFieldChange(selectedOption.value.lon);
 		this.props.handleCLUChange(selectedOption.value.clu, selectedOption.value.cluname);
-	}
+	};
 
     //TODO: use the real data
 	handleLatFieldChange = (lat) => {
 		this.props.handleLatFieldChange(lat)
-	}
+	};
 
 	handleLongFieldChange = (lon) =>  {
 		this.props.handleLongFieldChange(lon)
-	}
+	};
 
 	handleSubmit = () =>{
 		// event.preventDefault();
@@ -57,7 +59,7 @@ class SelectFieldsCC extends Component {
 		else {
 			console.log("Choose coordinates.");
 		}
-	}
+	};
 
 	//TODO: add search function.
     //TODO: div is pop up, text is too bottom.
@@ -67,7 +69,16 @@ class SelectFieldsCC extends Component {
 
 		let options = this.state.clus.map(w => Object.assign({ value: w, label: w.cluname }))
 		const {cluname} = this.state;
+		if(this.state.fetchError) {
+			return (
+				<div className="search-bg-error" >
+					<p className="error-message">Failed to get your farm list.</p>
+				</div>
+			)
+		}
+
 		return(
+
 			<div className="search-bg">
 				<Select
 					className=""
