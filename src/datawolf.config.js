@@ -67,3 +67,4 @@ export const lonId = "be161213-0bf9-4377-809e-1c46c93c93dd";
 export const weatherId = "b20babe8-1ce1-4d1c-8d1d-adca68262f7e";
 export const resultDatasetId = "8884b4be-07d8-4a70-a624-efcafd58ffb2";
 export const workloadId = "12101e88-4f50-4b3c-add7-930444fc6ba1";
+export const userInputJSONDatasetID = "d03b2aa2-7156-42b5-f03a-522306f1ac5c";

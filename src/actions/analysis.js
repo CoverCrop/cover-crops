@@ -53,12 +53,13 @@ export const handleCardChange = (oldCardIndex, newCardIndex, oldCardData) => ({
 
 });
 
-export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => ({
+export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => ({
 	type: "ADD_RESULT",
 	withCoverCropExecutionId,
 	withCoverCropResultJson,
 	withoutCoverCropExecutionId,
-	withoutCoverCropResultJson
+	withoutCoverCropResultJson,
+	userInputJson
 });
 
 

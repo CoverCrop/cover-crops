@@ -31,7 +31,8 @@ const defaultState = {
 	withCoverCropExecutionId: "",
 	withoutCoverCropResultJson: null,
 	withoutCoverCropExecutionId: "",
-	isFlexibleDatesChecked: false
+	isFlexibleDatesChecked: false,
+	userInputJson: null
 };
 
 const analysis = (state = defaultState, action) => {
@@ -74,7 +75,8 @@ const analysis = (state = defaultState, action) => {
 				withCoverCropExecutionId: action.withCoverCropExecutionId,
 				withCoverCropResultJson: action.withCoverCropResultJson,
 				withoutCoverCropExecutionId: action.withoutCoverCropExecutionId,
-				withoutCoverCropResultJson: action.withoutCoverCropResultJson
+				withoutCoverCropResultJson: action.withoutCoverCropResultJson,
+				userInputJson: action.userInputJson
 			});
 		case "CHANGE_CARD": {
 			// let newState =
