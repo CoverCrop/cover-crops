@@ -42,6 +42,10 @@ export function groupBy(list, keyGetter) {
 	return map;
 }
 
+export function sortByDateInDescendingOrder(a, b) {
+	return new Date(b.date).getTime() - new Date(a.date).getTime();
+}
+
 export const ID = function () {
 	// Math.random should be unique because of its seeding algorithm.
 	// Convert it to base 36 (numbers + letters), and grab the first 9 characters
@@ -51,44 +55,54 @@ export const ID = function () {
 
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
-export async function getResult(DatasetResultGUID) {
+export async function getOutputFileJson(datasetId, outputFileName = null) {
 	let headers = {
 		"Content-Type": "application/json",
 		"Access-Control-Origin": "http://localhost:3000"
 	};
 
-		// Get - Result Dataset
-		const Response = await
-			fetch(datawolfURL + "/datasets/" + DatasetResultGUID, {
-				method: "GET",
-				headers: headers,
-				credentials: "include"
-			});
+	// Get - Result Dataset
+	const datasetResponse = await
+		fetch(datawolfURL + "/datasets/" + datasetId, {
+			method: "GET",
+			headers: headers,
+			credentials: "include"
+		});
 
+	const resultDataset = await datasetResponse.json();
+	let fileId = -1;
 
-		const ResultDataset = await
-			Response.json();
-
-
-		let FileDescriptorGUID = -1;
-
-		for (let i = 0; i < ResultDataset.fileDescriptors.length; i++) {
-			if (ResultDataset.fileDescriptors[i].filename === "output.json") {
-				FileDescriptorGUID = ResultDataset.fileDescriptors[i].id;
+	// If output filename is already provided as input, use that to figure out the exact file that needs to be downloaded
+	if (outputFileName !== null) {
+		for (let i = 0; i < resultDataset.fileDescriptors.length; i++) {
+			if (resultDataset.fileDescriptors[i].filename === outputFileName) {
+				fileId = resultDataset.fileDescriptors[i].id;
 				break;
 			}
 		}
+	}
+	// If no output filename is provided, get the first file in the dataset
+	else {
 
+		if (resultDataset.fileDescriptors.length > 0) {
+			fileId = resultDataset.fileDescriptors[0].id;
+		}
+	}
+
+	if (fileId !== -1) {
 		// Get - Result File Download
-		const FileDownloadResponse = await fetch(datawolfURL + "/datasets/"
-			+ DatasetResultGUID + "/" + FileDescriptorGUID + "/file",
+		const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetId + "/" + fileId + "/file",
 			{
 				method: "GET",
 				headers: headers,
 				credentials: "include"
 			});
 
-		return await FileDownloadResponse.json();
+		return await fileDownloadResponse.json();
+	}
+	else {
+		return null;
+	}
 }
 
 export function getWeatherName(w) {
@@ -163,7 +177,6 @@ export async function getMyFieldList(email) {
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
 }
-
 
 export async function wait(ms) {
 	new Promise(resolve => setTimeout(resolve, ms));
