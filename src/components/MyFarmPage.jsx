@@ -11,6 +11,7 @@ import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getMyFieldList} from "../public/utils";
+import FieldSummary from "./FieldSummary";
 
 class MyFarmPage extends Component {
 
@@ -92,8 +93,8 @@ class MyFarmPage extends Component {
 									</div> : cluList}
 							</div>
 						</Cell>
-						<Cell col={8} className="border-left">
-							Field Profile Holder
+						<Cell col={8} >
+							<FieldSummary />
 						</Cell>
 					</Grid>
 

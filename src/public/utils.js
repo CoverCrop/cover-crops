@@ -134,23 +134,28 @@ export function calculateDayOfYear(date) {
 	return today - yearFirstDay;
 }
 
-export async function uploadDatasetToDataWolf(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
+export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
+	let userInputFile = new File([
+			"{\"with_cover_crop\": " + isWithCoverCrop + "," +
+			"\"year_planting\": " + yearPlanting + "," +
+			"\"doy_planting\": " + doyPlanting + "," +
+			"\"doy_harvest\": " + doyHarvest +
+			"}"],
+		"user_input.json",
+		{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+
+
+	return uploadDatasetToDataWolf(userInputFile);
+}
+
+export async function uploadDatasetToDataWolf(filedata) {
 	let headers = {
 		"Access-Control-Origin": "http://localhost:3000"
 	};
 
-	let userInputFile = new File([
-		"{\"with_cover_crop\": " + isWithCoverCrop + "," +
-		"\"year_planting\": " + yearPlanting + "," +
-		"\"doy_planting\": " + doyPlanting + "," +
-		"\"doy_harvest\": " + doyHarvest +
-		"}"],
-		"user_input.json",
-		{type: "text/plain;charset=utf-8", lastModified: Date.now()});
-
 	let data = new FormData();
 	data.append("useremail", sessionStorage.getItem("email"));
-	data.append("uploadedFile", userInputFile);
+	data.append("uploadedFile", filedata);
 
 	let uploadDatasetResponse = await fetch(
 		datawolfURL + "/datasets",

@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
-import {ID, getOutputFileJson, wait, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
+import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
 import styles from "../styles/analysis-page.css"
@@ -69,8 +69,8 @@ class RunSimulationCC extends Component {
 		let plantingDoy = calculateDayOfYear(objStartDate);
 		let harvestDoy = calculateDayOfYear(objEndDate);
 
-		let withCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, true);
-		let withoutCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, false);
+		let withCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, true);
+		let withoutCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, false);
 
 		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withCoverCropDatasetId);
 		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withoutCoverCropDatasetId);
