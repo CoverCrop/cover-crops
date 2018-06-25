@@ -23,6 +23,7 @@ const defaultState = {
 	longitude: "",
 	clu: 0,
 	cluname: "",
+	expfile:"",
 	startDate: 0,
 	endDate: 0,
 	weatherPattern: weatherPatterns[0],
@@ -52,7 +53,8 @@ const analysis = (state = defaultState, action) => {
 		case "CHANGE_CLU":
 			return Object.assign({}, state, {
 				clu: action.clu,
-				cluname: action.cluname
+				cluname: action.cluname,
+				expfile: action.expfile
 			});
 		case "CHANGE_START_DATE":
 			return Object.assign({}, state, {

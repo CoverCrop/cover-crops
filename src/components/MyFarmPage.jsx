@@ -41,9 +41,11 @@ class MyFarmPage extends Component {
 	render() {
 		const {openclu, clus, fetchError} = this.state;
 		const that = this;
+		let selectCLU = clus[0];
 		//TODO: add map for openclu
 		let cluList = clus.map((c, i) => {
 						if (openclu === i){
+							selectCLU = c;
 							return <div className="select-my-field" key={c.clu}>
 								<Card onClick={() => {that.setState({openclu: i})}}>
 									<CardText>
@@ -94,7 +96,10 @@ class MyFarmPage extends Component {
 							</div>
 						</Cell>
 						<Cell col={8} >
-							<FieldSummary />
+							<FieldSummary
+								selectedCLU={selectCLU}
+								selectedCLUName={selectCLU? selectCLU.cluname: ""}
+							/>
 						</Cell>
 					</Grid>
 

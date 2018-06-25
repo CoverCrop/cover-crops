@@ -62,7 +62,7 @@ class RunSimulationCC extends Component {
 		};
 
 		let id = ID();
-		let { latitude, longitude, weatherPattern, startDate, endDate} = this.props;
+		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
 		let objStartDate = startDate.toDate();
 		let objEndDate = endDate.toDate();
 		let plantingYear = objStartDate.getFullYear();
@@ -72,8 +72,8 @@ class RunSimulationCC extends Component {
 		let withCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, true);
 		let withoutCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, false);
 
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withCoverCropDatasetId);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withoutCoverCropDatasetId);
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withCoverCropDatasetId);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withoutCoverCropDatasetId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -295,6 +295,7 @@ const mapStateToProps = (state) => {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
 		cluname: state.analysis.cluname,
+		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked

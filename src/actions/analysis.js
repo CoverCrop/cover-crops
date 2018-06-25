@@ -23,10 +23,11 @@ export const handleEndDateChange = (date) => ({
 	date
 });
 
-export const handleCLUChange = (clu, cluname) => ({
+export const handleCLUChange = (clu, cluname, expfile) => ({
 	type: "CHANGE_CLU",
 	clu,
-	cluname
+	cluname,
+	expfile
 });
 
 export const handleUserCLUChange = (clu, cluname) => ({

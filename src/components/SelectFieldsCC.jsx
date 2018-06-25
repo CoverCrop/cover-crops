@@ -5,6 +5,7 @@ import Select from 'react-select';
 import {handleLatFieldChange, handleLongFieldChange, handleCardChange, handleCLUChange} from "../actions/analysis"
 import styles from '../styles/analysis-page.css';
 import {getMyFieldList, wait} from "../public/utils";
+import {defaultExpDatasetID} from "../datawolf.config";
 
 class SelectFieldsCC extends Component {
 
@@ -19,7 +20,7 @@ class SelectFieldsCC extends Component {
 
 	componentWillMount() {
 		let that = this;
-		handleCLUChange(0, "");
+		handleCLUChange(0, "", "");
 		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
 			that.setState({clus, fetchError: false});
@@ -34,7 +35,9 @@ class SelectFieldsCC extends Component {
 		this.setState({ cluname: selectedOption.label });
 		this.handleLatFieldChange(selectedOption.value.lat);
 		this.handleLongFieldChange(selectedOption.value.lon);
-		this.props.handleCLUChange(selectedOption.value.clu, selectedOption.value.cluname);
+		this.props.handleCLUChange(selectedOption.value.clu, selectedOption.value.cluname,
+			selectedOption.value.expfile !== "" ? selectedOption.value.expfile: defaultExpDatasetID
+		);
 	};
 
     //TODO: use the real data
@@ -111,8 +114,8 @@ const mapDispatchToProps = (dispatch) => {
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
 			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
 		},
-		handleCLUChange: (clu, cluname) => {
-			dispatch(handleCLUChange(clu, cluname));
+		handleCLUChange: (clu, cluname, expfile) => {
+			dispatch(handleCLUChange(clu, cluname, expfile));
 		}
 
 	}

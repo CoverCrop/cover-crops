@@ -15,7 +15,7 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
-export function getWithCoverCropExecutionRequest(id, lat, long, personId, weatherPattern, json_dataset_id) {
+export function getWithCoverCropExecutionRequest(id, lat, long, personId, weatherPattern, exp_dataset_id, json_dataset_id) {
 	return {
 		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
 		"creatorId": personId,
@@ -31,13 +31,13 @@ export function getWithCoverCropExecutionRequest(id, lat, long, personId, weathe
 		"datasets": {
 			// With cover crop
 			"97f2896a-fc67-4bd7-960b-d0308f5a2494": parameters.modelWithCoverCrop,
-			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec", // experiment file template
+			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": exp_dataset_id, // experiment file template
 			"d03b2aa2-7156-42b5-f03a-522306f1ac5c": json_dataset_id
 		}
 	};
 }
 
-export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, weatherPattern, json_dataset_id) {
+export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, weatherPattern, exp_dataset_id, json_dataset_id) {
 	return {
 		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
 		"creatorId": personId,
@@ -53,7 +53,7 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, we
 		"datasets": {
 			// Without cover crop
 			"97f2896a-fc67-4bd7-960b-d0308f5a2494": parameters.modelWithoutCoverCrop,
-			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec", // experiment file template
+			"8ed7ba56-5145-4bd3-aec0-f5721b8e28b7": exp_dataset_id, // experiment file template
 			"d03b2aa2-7156-42b5-f03a-522306f1ac5c": json_dataset_id
 		}
 	};
@@ -68,3 +68,7 @@ export const weatherId = "b20babe8-1ce1-4d1c-8d1d-adca68262f7e";
 export const resultDatasetId = "8884b4be-07d8-4a70-a624-efcafd58ffb2";
 export const workloadId = "12101e88-4f50-4b3c-add7-930444fc6ba1";
 export const userInputJSONDatasetID = "d03b2aa2-7156-42b5-f03a-522306f1ac5c";
+
+export const defaultExpDatasetID = "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec";
+
+
