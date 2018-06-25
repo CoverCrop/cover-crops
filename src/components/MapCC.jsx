@@ -1,11 +1,10 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
 import ol from 'openlayers';
+import PropTypes from 'prop-types';
 import styles from "../styles/main.css";
 import styles2 from "../styles/user-page.css";
-require("openlayers/css/ol.css");
 import {handleLatFieldChange, handleLongFieldChange, handleCLUChange, handleUserCLUChange} from "../actions/analysis";
-import config from '../app.config';
+require("openlayers/css/ol.css");
 
 class MapCC extends Component {
 
@@ -78,48 +77,6 @@ class MapCC extends Component {
 			})
 
 		};
-
-		this.handleClick = this.handleClick.bind(this);
-	}
-
-	handleClick(e) {
-		// function for add user field page
-		if(this.props.selectCLU) {
-			// console.log(e.coordinate)
-			this.dropMarker(e.coordinate);
-
-			let lonLatCoordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
-
-			// Format number to a string with 6 digits after decimal point
-			lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
-			lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
-			this.props.handleLatFieldChange(lonLatCoordinates[1]);
-			this.props.handleLongFieldChange(lonLatCoordinates[0]);
-
-			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
-
-			let areaPolygonSource = this.state.areaPolygonLayer.getSource();
-			let that = this;
-			fetch(CLUapi).then(response => {
-				let geojson = response.json();
-				return geojson;
-			}).then(geojson => {
-
-				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
-				});
-
-				areaPolygonSource.clear();
-				areaPolygonSource.addFeatures(features);
-				// console.log(geojson)
-				that.props.handleUserCLUChange(geojson.features[0].properties["clu_id"], "");
-
-			}).catch(function (e) {
-				console.log("Get CLU failed: " + e);
-				areaPolygonSource.clear();
-				that.props.handleUserCLUChange(0, "");
-			});
-		}
 	}
 
 	dropMarker(coordinate) {
@@ -133,16 +90,19 @@ class MapCC extends Component {
 		this.markerSource.addFeature(iconFeature);
 	}
 
-	componentDidMount(e) {
+	componentDidMount() {
+		let {handleClick} = this.props;
+		let {areaPolygonLayer} = this.state;
 		this.marker.setZIndex(100);
 
 		this.state.map.setTarget(this.props.mapId); // Set target for map
-		this.state.map.on("click", this.handleClick); // Set on click event handler
-
+		if(handleClick){
+			this.state.map.on("click", handleClick); // Set on click event handler
+		}
 		this.dropMarker(this.defaultCenter); // Drop default marker
-		let {areaPolygonLayer} = this.state;
 		this.state.map.addLayer(areaPolygonLayer);
-		areaPolygonLayer.setZIndex(1001);
+
+		// wait until the map is loaded and update the size.
 		let that = this;
 		new Promise(resolve => setTimeout(resolve, 200)).then(function (){
 			that.state.map.updateSize();
@@ -150,76 +110,42 @@ class MapCC extends Component {
 	}
 
 	componentDidUpdate() {
-		// function for analysis page
-		if(!this.props.selectCLU){
-			const {
-				analysis_longitude,
-				analysis_latitude
-			} = this.props;
-            // add marker
-			let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], 'EPSG:4326', 'EPSG:3857' );
-			// console.log(coordinate)
-			this.dropMarker(coordinate);
-			this.state.map.getView().setCenter(coordinate);
-			let lonLatCoordinates = [analysis_longitude, analysis_latitude];
-            //TODO use "api/CLUs/id"
-            //add CLU polygon
-			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
-			let areaPolygonSource = this.state.areaPolygonLayer.getSource();
-			fetch(CLUapi).then(response => {
-				let geojson = response.json();
-				return geojson;
-			}).then(geojson => {
-
-				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
-				});
-
-				areaPolygonSource.clear();
-				areaPolygonSource.addFeatures(features);
-				// console.log(geojson)
-            //TODO: change center
-			}).catch(function (e) {
-				console.log("Get CLU failed: " + e);
-				areaPolygonSource.clear();
-			});
+		//keep this console for testing infinite loop.
+		console.log("drop marker at: " + this.props.markercoordinate);
+		this.dropMarker(this.props.markercoordinate);
+        // not used currently
+		// if(this.props.zoomlevel){
+		// 	this.state.map.getView().setZoom(this.props.zoomlevel);
+		// }
+		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
+		areaPolygonSource.clear();
+		areaPolygonSource.addFeatures(this.props.areafeatures);
+		if(this.props.recenter ){
+			this.state.map.getView().setCenter(this.props.markercoordinate);
+		} else if(this.props.fitmap && isFinite(areaPolygonSource.getExtent()[1])) {
+			// console.log(areaPolygonSource.getExtent());
+			this.state.map.getView().fit(areaPolygonSource.getExtent(), this.state.map.getSize());
 		}
 	}
 
 	render(){
-		const mapStyle = {
-			width: 900,
-			height: 675,
-			backgroundColor: '#ebebeb'
-		};
-
 		return(
 				<div id={this.props.mapId} className="fullmap"/>
 		)
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		analysis_longitude: state.analysis.longitude,
-		analysis_latitude: state.analysis.latitude,
-	}
+MapCC.propTypes = {
+	mapId: PropTypes.string.isRequired,
+	// the area polygon
+	areafeatures: PropTypes.array,
+	// the marker coordinate, need to transfrom from lat & lon
+	markercoordinate: PropTypes.array,
+	// to fit the map based area polygon on whenever map is update
+	fitmap: PropTypes.bool,
+	// to rencenter the map based on marker whenever map is update, but keep the default zoom level.
+	recenter: PropTypes.bool
 };
 
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		handleLatFieldChange: (lat) => {
-			dispatch(handleLatFieldChange(lat));
-		},
-		handleLongFieldChange: (lon) => {
-			dispatch(handleLongFieldChange(lon));
-		},
-		handleUserCLUChange: (clu, cluname) => {
-			dispatch(handleUserCLUChange(clu, cluname));
-		}
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MapCC);
+export default MapCC;

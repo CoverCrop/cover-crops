@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Header from './Header';
-import Footer from './Footer';
+import ol from 'openlayers';
 import {Button, Textfield, Card, CardText, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
 import MapCC from './MapCC';
@@ -10,15 +10,59 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
+import {handleLatFieldChange, handleLongFieldChange, handleUserCLUChange} from "../actions/analysis";
 
-class ProfilePage extends Component {
+
+class AddFieldPage extends Component {
 
 	constructor(props) {
 		super(props);
 		this.state = {
-			clus: []
+			clus: [],
+			markercoordinate: [],
+			areafeatures: [
+				new ol.Feature({})
+			]
 		}
 	}
+
+	handleClick = (e) => {
+            this.setState({markercoordinate: e.coordinate});
+			let lonLatCoordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+
+			// Format number to a string with 6 digits after decimal point
+			lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
+			lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
+			this.props.handleLatFieldChange(lonLatCoordinates[1]);
+			this.props.handleLongFieldChange(lonLatCoordinates[0]);
+
+			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
+
+			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
+			let that = this;
+			fetch(CLUapi).then(response => {
+				let geojson = response.json();
+				return geojson;
+			}).then(geojson => {
+
+				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+				});
+
+				this.setState({areafeatures:features});
+				// console.log(geojson)
+				that.props.handleUserCLUChange(geojson.features[0].properties["clu_id"], "");
+
+			}).catch(function (e) {
+				console.log("Get CLU failed: " + e);
+				this.setState({areafeatures:[
+						new ol.Feature({})
+					]});
+				that.props.handleUserCLUChange(0, "");
+			});
+
+	}
+
 
 	render() {
 		return (
@@ -28,7 +72,11 @@ class ProfilePage extends Component {
 				<AnalyzerWrap activeTab={3}/>
 
 					<div className="choose-clu-div">
-						<MapCC mapId="choose-clu" selectCLU/>
+						<MapCC mapId="choose-clu"
+							   markercoordinate={this.state.markercoordinate}
+							   areafeatures={this.state.areafeatures}
+							   handleClick={this.handleClick}
+						/>
 						<AddFieldBox />
 					</div>
 
@@ -45,5 +93,19 @@ const mapStateToProps = (state) => {
 	}
 };
 
-export default connect(mapStateToProps, null)(ProfilePage);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleLatFieldChange: (lat) => {
+			dispatch(handleLatFieldChange(lat));
+		},
+		handleLongFieldChange: (lon) => {
+			dispatch(handleLongFieldChange(lon));
+		},
+		handleUserCLUChange: (clu, cluname) => {
+			dispatch(handleUserCLUChange(clu, cluname));
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddFieldPage);
 

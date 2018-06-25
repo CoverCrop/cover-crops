@@ -2,15 +2,16 @@ import React, {Component} from "react";
 import Header from './Header'
 import Footer from './Footer'
 import styles from '../styles/main.css'
+import styles2 from '../styles/home-page.css'
 import { connect } from 'react-redux';
-import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitle, CardSubtitle, CardActions, CardText, Body2} from "react-mdc-web";
+import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitle, CardSubtitle, CardActions, CardText,
+	Body2, Icon, Dialog, DialogBody, DialogFooter} from "react-mdc-web";
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils"
 import {Link} from "react-router";
 import config from "../app.config";
-import {invalidLoginCredentials} from "../app.messages";
-
+import {invalidLoginCredentials, register, unlogin} from "../app.messages";
 
 class Login extends Component {
 
@@ -20,7 +21,8 @@ class Login extends Component {
 		this.state = {
 			email: "",
 			password: "",
-			statusText: ""
+			statusText: "",
+			isOpen: this.props.message === "Please login."
 		};
 
 		this.handleLogin = this.handleLogin.bind(this);
@@ -103,51 +105,72 @@ class Login extends Component {
 	render() {
 		return (
 			<div>
-				<Card className="login">
-					<CardHeader>
-						<CardTitle>A Web-based Decision Support System for Cover Crop Management</CardTitle>
-					</CardHeader>
-					<CardMedia
-						style={{
-							backgroundImage: 'url("../images/cover-crop-rep-image.png")',
-							height: '250px',
-							padding: '10px'
-						}}/>
-				</Card>
+
 				<br/>
 				{/*Display login card only when user is not authenticated*/}
 				{this.props.isAuthenticated === true ? null :
 					<Card className="login">
+						<h2>Login</h2>
 						<CardText>
-							<Body2>Sign In</Body2>
-							<p className="error-message">{this.props.message}</p>
-							<span><Textfield autoFocus floatingLabel="Username" value={this.state.email}
+							{this.state.statusText && <div className="login-error">
+								<Icon name="warning"/><p>{this.state.statusText}</p>
+								</div>}
+							<span className="inputbox">
+								<Textfield autoFocus floatingLabel="Username" value={this.state.email}
 											 onChange={({target: {value: email}}) => {
 												 this.setState({email: email})
-											 }}/> </span>
-							<span><Textfield floatingLabel="Password" type="password"
+											 }}/>
+							</span>
+							<span className="inputbox">
+								<Textfield floatingLabel="Password" type="password"
 											 value={this.state.password}
 											 onChange={({target: {value: password}}) => {
 												 this.setState({password})
-											 }}/> </span>
+											 }}/>
+							</span>
 						</CardText>
 						<CardActions>
 							<form>
-							<span>
+
 								<Button
 									type="submit"
 									raised
 									onClick={this.handleLogin}
 									disabled={!this.validateLoginForm()}>Login
 								</Button>
-							</span>
-								<span><Caption><Link to="/register">Register</Link></Caption></span>
-								<span><Caption><a className="not-active" href="">Forgot password?</a></Caption></span>
+
+
+								<p className="forget-password"><a className="not-active" href="">Forgot password?</a></p>
 							</form>
 						</CardActions>
-						<p className="error-message">{this.state.statusText}</p>
+						<CardText className="register-block">
+							<p><Icon name="spa"/>{register}</p>
+							<hr />
+							<div className="register">
+							<p className="bold-text">Don't have an account?</p>
+							<p className="bold-text"><Link to="/register">Get Registered!</Link></p>
+							</div>
+						</CardText>
+
 					</Card>
+
 				}
+				<Dialog
+					open={this.state.isOpen}
+					onClose={() => {this.setState({isOpen:false})}}
+					className="unlogin"
+				>
+				<DialogBody>
+					<Icon  name="warning"/>
+					<br />
+					<p className="bold-text" key="keyword">Please Login or register.</p>
+					<br />
+					{unlogin.map((p, index) => <p key={index}>{p}</p>)}
+				</DialogBody>
+				<DialogFooter>
+					<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+				</DialogFooter>
+			</Dialog>
 			</div>
 		)
 	}
