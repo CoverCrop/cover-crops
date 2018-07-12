@@ -23,7 +23,7 @@ class MyFarmSummary extends Component {
 		let that = this;
 		//TODO: update experiment datasets & file ID
 		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file", {
-			method: 'GET', // or 'PUT'
+			method: 'GET', 
 			headers:{
 				'Content-Type': 'application/json',
 				"Access-Control-Origin": "http://localhost:3000"
@@ -37,7 +37,7 @@ class MyFarmSummary extends Component {
 				let textlines = text.split('\n');
 
 				let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
-				// the first year
+				// TODO: move to utils?
                 let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
                 let b = tmptext.split(' ');
 
@@ -70,7 +70,7 @@ class MyFarmSummary extends Component {
 					let objkey = crop[crop.length-1]; 
 				
 					let pdate = crop[0].substring(crop[0].length - 3);   
-                   
+                   // TODO: convert to the real date
                     	cropobj[objkey]["PDATE"] = pdate;
         
                     linenumber = linenumber+1;
@@ -84,9 +84,9 @@ class MyFarmSummary extends Component {
 				crop = textlines[harvest_line_number+linenumber].split(' ').filter( word => word !== "");
 				while(crop.length > 0){
 					let objkey = crop[crop.length-2] + " " + crop[crop.length-1];
-				console.log(" pppp " +objkey)
+				
 					let hdate = crop[1].substring(crop[1].length - 3);
-                   
+                   // TODO: convert to the real date
                     	cropobj[objkey]["HDATE"] = hdate;
         
                     linenumber = linenumber+1;
@@ -114,6 +114,7 @@ class MyFarmSummary extends Component {
 	render() {
 
 	    let {cropobj, fieldobj} = this.state;
+	    // TODO: filter based on year? remove 2019?
 
 	    let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj => 
 							<tr key={obj["YEAR"]}>
@@ -124,7 +125,7 @@ class MyFarmSummary extends Component {
 								<td>{obj["HDATE"]}</td>
 							</tr>
 							);
-
+        // TODO: combine with cropComponent
 	    let covercropComponent = Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj => 
 							<tr key={obj["YEAR"]}>
 								<td>{obj["YEAR"]}</td>
