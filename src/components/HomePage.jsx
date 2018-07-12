@@ -20,7 +20,7 @@ class HomePage extends Component {
         	<div>
 				<h1 className="secondary-color">How does the simulation work?</h1>
 				<br/>
-				<img src={require("../images/cover-crop-rep-image.png")}/>
+				<img src={require("../images/cover-crop-rep-image.png")} width="100%" />
 			</div>;
 
 		return (
