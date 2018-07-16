@@ -22,7 +22,7 @@ class MyFarmSummary extends Component {
 	componentWillMount() {
 		let that = this;
 		//TODO: update experiment datasets & file ID
-		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file", {
+		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/9df375c9-cc82-4ec0-a7da-56f8084b83c5/7726d57c-ca77-492a-9401-a5ef9589c7b5/file", {
 			method: 'GET', 
 			headers:{
 				'Content-Type': 'application/json',
