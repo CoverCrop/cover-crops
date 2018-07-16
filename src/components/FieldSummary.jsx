@@ -16,6 +16,7 @@ import {
 } from "react-mdc-web";
 import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
+import {uploadDatasetToDataWolf} from "../public/utils";
 
 class FieldSummary extends Component {
 
