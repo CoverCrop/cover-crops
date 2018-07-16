@@ -32,8 +32,7 @@ class FieldSummary extends Component {
 
 	async onFormSubmit(e){
 		e.preventDefault();
-		// let id = await uploadDatasetToDataWolf(this.state.file);
-		let id="d1d7c1ff-313d-4855-9242-a7d7aa5cadf4";
+		let id = await uploadDatasetToDataWolf(this.state.file);
 		console.log("Uploaded File Changed:" + id);
 
 		let updatedUserCLU = Object.assign({}, this.props.selectedCLU);
