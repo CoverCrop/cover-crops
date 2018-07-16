@@ -40,7 +40,6 @@ class SelectFieldsCC extends Component {
 		);
 	};
 
-    //TODO: use the real data
 	handleLatFieldChange = (lat) => {
 		this.props.handleLatFieldChange(lat)
 	};
@@ -67,7 +66,6 @@ class SelectFieldsCC extends Component {
 	//TODO: add search function.
     //TODO: div is pop up, text is too bottom.
     //TODO: the click on Icon is not working.
-    //TODO: add polygon.
 	render() {
 
 		let options = this.state.clus.map(w => Object.assign({ value: w, label: w.cluname }))

@@ -95,42 +95,77 @@
 }
 
 .cover-crop-analyzer {
-	height: 38px;
-	width: 281px;
 	color: #FFFFFF;
 	font-family: Roboto;
-	font-size: 32px;
-	line-height: 38px;
+	font-size: 24px;
+	line-height: 35px;
 	margin-left: 24px;
+}
+
+.about-the-project-onselect {
+	color: #FFFFFF;
+	font-family: Roboto;
+	font-size: 24px;
+	line-height: 61px;
+	/*text-align: right;*/
+	margin-left: 524px;
 }
 
 .about-the-project {
-	height: 35px;
-	width: 232px;
-	color: #FFFFFF;
+	color: #455A64;
 	font-family: Roboto;
-	font-size: 30px;
-	line-height: 35px;
-	text-align: right;
-	margin-left: 24px;
+	font-size: 24px;
+	text-align: center;
+	right: 40px;
+	top:20px;
+	position: absolute;
+}
+
+.header-tab{
+	position: relative;
+	padding-top: 10px;
+	padding-left: 23px;
+	padding-right: 23px;
+	height: 71px;
 }
 
 .rectangle-2 {
-	height: 48px;
-	width: 411px;
+	height: 49px;
+	width: 300px;
 	background-color: #1AB146;
+	position: absolute;
 }
 
-.rectangle-3 {
-	height: 48px;
-	width: 411px;
+.rectangle-3-onselect {
+	/*height: 52px;*/
+	width: calc(100vw - 648px);
 	background-color: #455A64;
+	position: absolute;
+	left: 624px;
+	top:10px;
+}
+
+.triangle-bottomright {
+	width: 0;
+	height: 0;
+	border-bottom: 61px solid #455A64;
+	border-left: 61px solid transparent;
+	position: absolute;
+	left: 563px;
+	top:10px;
+}
+
+
+.rectangle-3 {
+	width: calc(100vw - 561px);
+	display: inline-block;
 }
 
 .analyzer-line {
 	display: block;
 	height: 3px;
 	border: 3px solid #1AB146;
+	margin-top: -12px;
 }
 
 .analyzer-tab {

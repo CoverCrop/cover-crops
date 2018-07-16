@@ -125,6 +125,16 @@
 	/*padding-bottom: 25px;*/
 }
 
+.add-help .add-field-title{
+	padding-top: 15px;
+	padding-left: 20px;
+	margin-left: -10px;
+	background-color: white;
+	height: 63px;
+	width: 284px;
+}
+
+
 .add-field-title .mdc-fab{
 	height:32px;
 	width:32px;
@@ -138,17 +148,20 @@
 	font-weight: bold;
 	line-height: 28px;
 	margin-left: 12px;
+
 }
 
 .myfield-list {
 	padding-top: 20px;
 }
+
 .myfield-list h2 {
 	height: 28px;
 	/*width: 86px;*/
 	color: #455A64;
 	font-size: 20px;
-	font-weight: 500;
+	font-weight: bold;
+
 	/*line-height: 28px;*/
 }
 
@@ -157,6 +170,11 @@
 	width: 304px;
 	border-radius: 2px 2px 0 0;
 	background-color: #455A64;
+}
+
+.minimap .fullmap{
+	height: 266px;
+	width: 304px;
 }
 
 .unselect-my-field{
@@ -191,6 +209,19 @@
 
 
 
+.add-help {
+	height: 294px;
+	width: 305px;
+	background-color: #EBF5EE;
+	padding: 20px;
+}
+
+.add-help p{
+	color: #455A64;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 25px;
+}
 
 .add-field-bottom {
 	background-color: #DEE4E8;
