@@ -137,6 +137,10 @@ h1, h2, h3, h5, h6, p, ul {
 	border-left: 1px solid #D8D8D8;
 }
 
+.border-right{
+	border-right: 1px solid #D8D8D8;
+}
+
 .border-top{
 	border-top: 2px solid #D8D8D8;
 }

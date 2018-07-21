@@ -290,6 +290,11 @@
 	margin: 15px 0 15px 0;
 }
 
+.summary-table .th{
+	text-align: left;
+}
+
+
 .south-field {
 	color: #108632;
 	font-size: 20px;
@@ -324,3 +329,24 @@
 .summary-div{
 	padding: 10px 30px 40px 20px;
 }
+
+
+.myfarm-tab {
+	margin: 10px 0 0 24px;
+
+	width:100px;
+}
+
+.myfarm-tab .mdc-tab {
+	font-family: Roboto;
+	font-size: 18px;
+	line-height: 24px;
+}
+
+.myfarm-tab .mdc-tab-bar__indicator{
+	/*not working*/
+	background-color: #1AB146;
+	border: 6px solid #1AB146;
+	height: 3px;
+}
+

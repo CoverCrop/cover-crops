@@ -5,19 +5,17 @@ import Footer from './Footer';
 import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
 import styles from '../styles/main.css';
 import styles2 from '../styles/main.css';
-import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
-import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getMyFieldList} from "../public/utils";
-import FieldSummary from "./FieldSummary";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
 
 import MyFarmSummary from "./MyFarmSummary";
+import MyFarmWrap from "./MyFarmWrap";
 
 class MyFarmPage extends Component {
 
@@ -68,8 +66,6 @@ class MyFarmPage extends Component {
 	}
 
 	render() {
-		const {clus, openclu} = this.state;
-		let selectedclu = clus[openclu];
 		const {openclu, clus, fetchError} = this.state;
 		const that = this;
 		let selectCLU = clus[0];
@@ -122,8 +118,8 @@ class MyFarmPage extends Component {
 					<Header />
 					<AnalyzerWrap activeTab={3}/>
 
-					<Grid>
-						<Cell col={4} >
+					<div className="position-relative border-top">
+						<div className="border-right myfarm-left" >
 							{this.state.clus.length === 0 ?
 								<div className="add-help">
 									<p>{addFieldHelper}</p>
@@ -141,23 +137,18 @@ class MyFarmPage extends Component {
 									</div> : cluList}
 							</div>
 								</div>}
-						</Cell>
-						<Cell col={8} >
-							<FieldSummary
+					</div>
+					<div className="myfarm-right">
+							{clus.length > 0 ?
+							<MyFarmWrap
 								selectedCLU={selectCLU}
 								selectedCLUName={selectCLU? selectCLU.cluname: ""}
-							/>
-						</Cell>
-					</Grid>
-						</div>
-						<div className="border-left myfarm-right">
-							{clus.length > 0 ?
-							<MyFarmSummary cluname={selectedclu ?  selectedclu.cluname : ""}/>:
+
+							/>:
 								<img src={require("../images/my-farm-blur.png")}/>
 							}
-						</div>
 					</div>
-
+					</div>
 				</div>
 			</AuthorizedWrap>
 		);
