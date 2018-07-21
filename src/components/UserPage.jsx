@@ -10,6 +10,19 @@ import AnalyzerWrap from "./AnalyzerWrap";
 
 class UserPage extends Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+			isSelectedEventSuccessful: true
+		};
+
+		this.handleEventClick = this.handleEventClick.bind(this);
+	}
+
+	handleEventClick (isSelectedEventSuccessful) {
+		this.setState({isSelectedEventSuccessful: isSelectedEventSuccessful})
+	}
+
 	render() {
 		return (
 			<AuthorizedWrap>

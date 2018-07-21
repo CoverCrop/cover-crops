@@ -5,9 +5,7 @@ import styles2 from "../styles/main.css";
 import {Textfield, Button, Fab, Grid, Cell, Title, Caption, Icon, MenuAnchor, Menu,
 	MenuItem, MenuDivider} from 'react-mdc-web';
 import {connect} from "react-redux";
-import SelectFieldsCC from "./SelectFieldsCC";
 import CoordinateFieldCC from "./CoordinateFieldCC";
-import {handleUserLogout} from "../actions/user";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
 
@@ -25,11 +23,11 @@ class AddFieldBox extends Component {
 
 	handleLatFieldChange = (e) => {
 		this.props.handleLatFieldChange(e.target.value)
-	}
+	};
 
 	handleLongFieldChange = (e) =>  {
 		this.props.handleLongFieldChange(e.target.value)
-	}
+	};
 
 	handleAddCLU() {
 		const CLUapi = config.CLUapi + "/api/userfield";
@@ -54,7 +52,6 @@ class AddFieldBox extends Component {
 		});
 	}
 
-    //TODO: button disable is not working
 	render() {
 		return(
 			<div>

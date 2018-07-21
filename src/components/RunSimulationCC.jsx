@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
-import {ID, getResult, wait, uploadDatasetToDataWolf, calculateDayOfYear} from "../public/utils";
+import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange} from '../actions/analysis';
 import styles from "../styles/analysis-page.css"
@@ -41,7 +41,7 @@ class RunSimulationCC extends Component {
 	}
 
 	async runSimulation() {
-        let that = this;
+		let that = this;
 		let status = "STARTED";
 		let personId = sessionStorage.getItem("personId"); // Read person Id from session storage
 		this.setState({
@@ -62,18 +62,18 @@ class RunSimulationCC extends Component {
 		};
 
 		let id = ID();
-		let { latitude, longitude, weatherPattern, startDate, endDate} = this.props;
+		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
 		let objStartDate = startDate.toDate();
 		let objEndDate = endDate.toDate();
 		let plantingYear = objStartDate.getFullYear();
 		let plantingDoy = calculateDayOfYear(objStartDate);
 		let harvestDoy = calculateDayOfYear(objEndDate);
 
-		let withCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, true);
-		let withoutCoverCropDatasetId = await uploadDatasetToDataWolf(plantingYear, plantingDoy, harvestDoy, false);
-		console.log(withCoverCropDatasetId)
-		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withCoverCropDatasetId);
-		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, withoutCoverCropDatasetId);
+		let withCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, true);
+		let withoutCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, false);
+
+		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withCoverCropDatasetId);
+		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withoutCoverCropDatasetId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: 'POST',
@@ -97,9 +97,9 @@ class RunSimulationCC extends Component {
 
 
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
-        // check the status until two progresses are finished
-        while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
-			|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
+		// check the status until two progresses are finished
+		while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
+		|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
@@ -135,6 +135,7 @@ class RunSimulationCC extends Component {
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
+		const outputFilename = "output.json";
 
 		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
 		console.log("Without cover crop result dataset = " + withoutCoverCropDatasetResultGUID);
@@ -142,8 +143,8 @@ class RunSimulationCC extends Component {
 		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
 
-			getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile){
-				getResult(withoutCoverCropDatasetResultGUID).then(function (withoutCoverCropResultFile) {
+			getOutputFileJson(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile){
+				getOutputFileJson(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
 
 					status = "COMPLETED";
 					that.setState({
@@ -224,7 +225,7 @@ class RunSimulationCC extends Component {
 	}
 
 	render(){
- 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
+		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		let weatherbuttons = weatherPatterns.map(w =>
 			<Button dense raised={this.props.weatherPattern === w}
 					onClick={()=>{ this.props.handleWeatherPatternChange(w) }}
@@ -234,13 +235,13 @@ class RunSimulationCC extends Component {
 		return(
 			<div className="run-simulate">
 				<div className="black-bottom">
-				<Title>Field</Title>
-				<Card>
-					<CardText>
-						<CardTitle>{this.props.cluname}</CardTitle>
-						{this.props.latitude} {this.props.longitude}
-					</CardText>
-				</Card>
+					<Title>Field</Title>
+					<Card>
+						<CardText>
+							<CardTitle>{this.props.cluname}</CardTitle>
+							{this.props.latitude} {this.props.longitude}
+						</CardText>
+					</Card>
 				</div>
 				<div className="black-bottom select-date">
 					<Title>Select Cover Crop Dates</Title>
@@ -279,10 +280,10 @@ class RunSimulationCC extends Component {
 
 					{weatherbuttons}
 				</div>}
-<div className="run-button">
-				<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
+				<div className="run-button">
+					<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
-</div></div>
+				</div></div>
 		)
 	}
 }
@@ -294,6 +295,7 @@ const mapStateToProps = (state) => {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
 		cluname: state.analysis.cluname,
+		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked

@@ -3,10 +3,14 @@ import { connect } from 'react-redux';
 import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, CardText, Body1, Body2, CardActions,
 	Fab, Icon, Grid, Cell} from "react-mdc-web";
 import "babel-polyfill";
-import {datawolfURL, latId, lonId, weatherId, workloadId, resultDatasetId} from "../datawolf.config";
+import {
+	datawolfURL, latId, lonId, weatherId, workloadId, resultDatasetId,
+	userInputJSONDatasetID
+} from "../datawolf.config";
 import styles from '../styles/user-page.css';
 import { handleResults} from '../actions/analysis';
-import {groupBy, getResult, getWeatherName, ConvertDDToDMS, wait} from '../public/utils';
+import {groupBy, getOutputFileJson, getWeatherName, ConvertDDToDMS, wait, sortByDateInDescendingOrder} from '../public/utils';
+import {setSelectedUserEventStatus} from "../actions/user";
 
 class UserEvents extends Component {
 
@@ -31,6 +35,8 @@ class UserEvents extends Component {
 		});
 
 		const events = await eventRequest.json();
+		events.sort(sortByDateInDescendingOrder);
+
 		const eventGroups = groupBy(events, event => event.title);
 		// the list with both executions,  each array is [WithCoverCrop, WithoutCoverCrop]
 		const eventfilteredGroup = [];
@@ -50,32 +56,73 @@ class UserEvents extends Component {
 			}
 		});
         this.setState({events: eventfilteredGroup});
+
+		// Select the first event for highlighting.
+        if (eventfilteredGroup.length > 0) {
+			this.setState({selectedEvent: eventfilteredGroup[0].id});
+
+			if (eventfilteredGroup[0].status === "execution-success") {
+				this.props.setSelectedUserEventStatus(true);
+			}
+			else if (eventfilteredGroup[0].status === "execution-error") {
+				this.props.setSelectedUserEventStatus(false);
+			}
+		}
 	}
 
 	componentWillMount(){
 		// this.props.handleResults("", null, "", null);
-		this.getEvents();
+		this.getEvents().then(function success() {
+			console.log("Fetched events.");
+
+			if (this.state.events.length > 0) {
+				let event = this.state.events[0];
+				this.setState({selectevent: event.id});
+
+				// If the latest simulation is successful, view results
+				if (event.status === "execution-success") {
+					this.props.setSelectedUserEventStatus(true);
+					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])
+				}
+				// Else, set status to display an error message in the chart display area
+				else {
+					this.props.setSelectedUserEventStatus(false);
+				}
+			}
+		}.bind(this));
 	}
 
-	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID) => {
+	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId) => {
+
+		this.setState({selectevent:id});
+		const outputFilename = "output.json";
+
 		if(status ==='execution-success') {
-			this.setState({selectevent:id});
+			this.props.setSelectedUserEventStatus(true);
+
 			let that = this;
 			if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 				(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
-				getResult(withCoverCropDatasetResultGUID).then(function (withCoverCropResultFile) {
-					getResult(withoutCoverCropDatasetResultGUID).then(function (withoutCoverCropResultFile) {
-						that.props.handleResults(
-							withCoverCropDatasetResultGUID,
-							withCoverCropResultFile,
-							withoutCoverCropDatasetResultGUID,
-							withoutCoverCropResultFile
-						);
+				getOutputFileJson(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile) {
+					getOutputFileJson(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
+						getOutputFileJson(withCoverCropUserInputJSONDatasetId).then(function (userInputJson) {
+							that.props.handleResults(
+								withCoverCropDatasetResultGUID,
+								withCoverCropResultFile,
+								withoutCoverCropDatasetResultGUID,
+								withoutCoverCropResultFile,
+								userInputJson
+							);
+						})
 					})
 				})
 			}
 		}
-	}
+		else if(status ==='execution-error')
+		{
+			this.props.setSelectedUserEventStatus(false);
+		}
+	};
 
 
 	render(){
@@ -83,8 +130,7 @@ class UserEvents extends Component {
 			<Card
 				className={(event.id === this.state.selectevent? 'choose-card':'') + " event-list " +(event.status)}
 				  key={event[0].id}
-				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
-					  event[1].datasets[resultDatasetId])}
+				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])}
 			>
 				<CardText >
 					<h2>{event[0].parameters[latId] + ' ' +event[0].parameters[lonId]}</h2>
@@ -150,10 +196,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId,
-						withoutCoverCropResultJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId,
-				withoutCoverCropResultJson))
+		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => {
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson))
+		},
+		setSelectedUserEventStatus: (isSelectedEventSuccessful) => {
+			dispatch(setSelectedUserEventStatus(isSelectedEventSuccessful))
 		}
 	}
 };

@@ -5,7 +5,8 @@ const defaultState = {
 	userId: "",
 	clu: 0,
 	//cluname is not used current
-	cluname: ""
+	cluname: "",
+	isSelectedEventSuccessful: false
 };
 
 const user = (state = defaultState, action) => {
@@ -26,6 +27,10 @@ const user = (state = defaultState, action) => {
 				email: "",
 				isAuthenticated: false,
 				userId: ""
+			});
+		case "SET_SELECTED_USER_EVENT_STATUS":
+			return Object.assign({}, state, {
+				isSelectedEventSuccessful: action.isSelectedEventSuccessful
 			});
 
 		default:

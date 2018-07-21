@@ -23,6 +23,7 @@ const defaultState = {
 	longitude: "",
 	clu: 0,
 	cluname: "",
+	expfile:"",
 	startDate: 0,
 	endDate: 0,
 	weatherPattern: weatherPatterns[0],
@@ -31,7 +32,8 @@ const defaultState = {
 	withCoverCropExecutionId: "",
 	withoutCoverCropResultJson: null,
 	withoutCoverCropExecutionId: "",
-	isFlexibleDatesChecked: false
+	isFlexibleDatesChecked: false,
+	userInputJson: null
 };
 
 const analysis = (state = defaultState, action) => {
@@ -51,7 +53,8 @@ const analysis = (state = defaultState, action) => {
 		case "CHANGE_CLU":
 			return Object.assign({}, state, {
 				clu: action.clu,
-				cluname: action.cluname
+				cluname: action.cluname,
+				expfile: action.expfile
 			});
 		case "CHANGE_START_DATE":
 			return Object.assign({}, state, {
@@ -74,7 +77,8 @@ const analysis = (state = defaultState, action) => {
 				withCoverCropExecutionId: action.withCoverCropExecutionId,
 				withCoverCropResultJson: action.withCoverCropResultJson,
 				withoutCoverCropExecutionId: action.withoutCoverCropExecutionId,
-				withoutCoverCropResultJson: action.withoutCoverCropResultJson
+				withoutCoverCropResultJson: action.withoutCoverCropResultJson,
+				userInputJson: action.userInputJson
 			});
 		case "CHANGE_CARD": {
 			// let newState =

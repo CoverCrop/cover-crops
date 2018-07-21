@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router";
+import {hashHistory, Link} from "react-router";
 import styles from "../styles/header.css";
 import styles2 from "../styles/main.css";
 import {Button, Toolbar, ToolbarRow, ToolbarSection, ToolbarTitle, Grid, Cell, Textfield, Caption, Icon, MenuAnchor, Menu, MenuItem, MenuDivider} from 'react-mdc-web';
@@ -10,11 +10,6 @@ class Header extends Component {
 
 	constructor(props) {
 		super(props);
-
-		this.state = {
-			open: false
-		};
-
 		this.handleLogout = this.handleLogout.bind(this);
 	}
 
@@ -22,6 +17,7 @@ class Header extends Component {
 		sessionStorage.removeItem("personId");
 		sessionStorage.removeItem("email");
 		this.props.handleUserLogout();
+		hashHistory.push('/');
 	}
 
 	render() {
@@ -44,23 +40,22 @@ class Header extends Component {
 						</ToolbarSection>
 					</ToolbarRow>
 				</Toolbar>
-				<Grid className="no-bottom-grid">
+				<div className="header-tab" >
+					<div className="rectangle-2">
+						<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
 
-					<Cell col={5} className="rectangle-2">
-						<div>
-							<Link to="/analysis" className="cover-crop-analyzer" >CoverCrop Analyzer</Link>
-						</div>
-					</Cell>
-					<Cell col={2}></Cell>
-					<Cell col={5} className="rectangle-3">
-						<div>
-							<Link to="/" className="about-the-project">About the Project</Link>
-						</div>
-					</Cell>
-				</Grid>
+					</div>
+
+					{this.props.selected === "home" && <div className="triangle-bottomright"></div> }
+					{this.props.selected === "home" ? <div className="rectangle-3-onselect">
+							<Link to="/" className="about-the-project-onselect">About the Project</Link>
+						</div> :
+						<Link to="/" className="about-the-project">About the Project</Link>
+
+					}
+				</div>
 			</div>
-
-		);
+			);
 	}
 }
 
