@@ -68,9 +68,10 @@ class ChartCC extends Component {
 
 
 	// Generates charts array object containing individual charts and datasets
-	generateCharts(chartArrayTypeName, chartDataArray) {
-		let labelArray = ['2009-07-01', '2010-04-01', '2010-07-01', '2011-04-01', '2011-07-01', '2012-01-01', '2012-07-01', '2013-01-01', '2013-07-01', '2013-12-01'];
+	generateCharts(chartArrayTypeName, chartDataArray, plantingDate, harvestDate) {
 		let colorIndex = 0;
+		let minTime = plantingDate.getTime();
+		let maxTime = harvestDate.getTime();
 
 		if (this.props.hasOwnProperty(chartArrayTypeName) && this.props[chartArrayTypeName] !== null) {
 			if(this.props[chartArrayTypeName].hasOwnProperty('charts')){
@@ -102,7 +103,9 @@ class ChartCC extends Component {
 									displayFormats: {
 										month: 'YYYY MMM',
 									},
-									tooltipFormat: 'MM/DD/YYYY'
+									tooltipFormat: 'MM/DD/YYYY',
+									min: minTime, // TODO: Check what needs to be the default value
+									max: maxTime // TODO: Check what needs to be the default value
 								}
 							}],
 							yAxes: [{
@@ -152,7 +155,7 @@ class ChartCC extends Component {
 							pointBorderColor: datasetColor,
 							pointBackgroundColor: '#fff',
 							pointBorderWidth: 1,
-							pointHoverRadius: 5,
+							pointHoverRadius: 3,
 							pointHoverBackgroundColor: datasetColor,
 							pointHoverBorderColor: datasetColor,
 							pointHoverBorderWidth: 2,
@@ -192,25 +195,37 @@ class ChartCC extends Component {
 		let resultHtml = [];
 		let keys = [];
 		let chartDataArray = {}; // Associative array to store chart data
+		let plantingDate = new Date();
+		let harvestDate = new Date();
 
-		this.generateCharts("withCoverCropChartDataArray", chartDataArray); // generate charts for with cover crop case
-		this.generateCharts("withoutCoverCropChartDataArray", chartDataArray); // generate charts for without cover crop case
+		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null && this.props["userInputJson"] !== undefined) {
 
-		console.log("Charts array: ");
-		console.log(chartDataArray);
+			let plantingYear = this.props["userInputJson"]["year_planting"];
+			let harvestYear = plantingYear + 1;
+			let plantingDOY = this.props["userInputJson"]["doy_planting"];
+			let harvestDOY = this.props["userInputJson"]["doy_harvest"];
+			plantingDate = new Date(plantingYear, 0, plantingDOY);
+			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
-		let chartIndex = 0;
-		for (let key in chartDataArray){
+			this.generateCharts("withCoverCropChartDataArray", chartDataArray, plantingDate, harvestDate); // generate charts for with cover crop case
+			this.generateCharts("withoutCoverCropChartDataArray", chartDataArray, plantingDate, harvestDate); // generate charts for without cover crop case
 
-			let chartData = chartDataArray[key].chartData;
-			let chartOptions = chartDataArray[key].chartOptions;
+			console.log("Charts array: ");
+			console.log(chartDataArray);
 
-			resultHtml.push(
-				<div key={"div-" + chartIndex} className="line-chart-div">
-					<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
-				</div>);
+			let chartIndex = 0;
+			for (let key in chartDataArray) {
 
-			chartIndex++;
+				let chartData = chartDataArray[key].chartData;
+				let chartOptions = chartDataArray[key].chartOptions;
+
+				resultHtml.push(
+					<div key={"div-" + chartIndex} className="line-chart-div">
+						<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
+					</div>);
+
+				chartIndex++;
+			}
 		}
 
 		return resultHtml;
@@ -226,7 +241,8 @@ class ChartCC extends Component {
 const mapStateToProps = (state) => {
 	return {
 		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson,
-		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson
+		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson,
+		userInputJson: state.analysis.userInputJson
 	}
 };
 

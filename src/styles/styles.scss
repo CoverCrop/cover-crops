@@ -28,6 +28,9 @@ body {
   --mdc-theme-primary: #1AB146;
   --mdc-theme-primary-light: #CDF1D8;
   --mdc-theme-primary-dark:  #1AB146;
+  --mdc-theme-secondary: #455A64;
+  --mdc-theme-secondary-light: #A2ACB1;
+  --mdc-theme-secondary-dark: #455A64;
   font-smoothing: antialiased;
   font-weight: 300;
 }
@@ -54,4 +57,8 @@ input.small {
 
 a:link {
   text-decoration: none;
+}
+
+.mdc-checkbox:after, .mdc-checkbox:before {
+  background-color: rgba(162, 172, 177, 0.14);;
 }

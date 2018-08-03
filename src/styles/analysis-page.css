@@ -16,6 +16,16 @@
 	/*box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);*/
 }
 
+.search-bg-error {
+	position: absolute;
+	top: 22px;
+	left: 46px;
+	background-color: #FFFFFF;
+	/*need fix*/
+	/*border-radius: 2px;*/
+	/*box-shadow: 0 0 2px 0 rgba(0,0,0,0.12), 0 2px 2px 0 rgba(0,0,0,0.24);*/
+}
+
 .search-bg .mdc-text-field {
 	background-color: #FFFFFF;
 	height: 48px;
@@ -32,8 +42,9 @@
 	left: 46px;
 	/*padding-left: 22px;*/
 	/*padding-right: 22px;*/
-	padding-top: 12px;
-	height: 390px;
+	/*padding-top: 12px;*/
+	padding-bottom: 12px;
+	height: auto;
 	width: 411px;
 	background-color: #FFFFFF;
 }
@@ -41,10 +52,16 @@
 .black-bottom{
 	padding-left: 12px;
 	padding-right: 12px;
-	padding-bottom: 5px;
+	padding-bottom: 10px;
 	border-bottom: 1px solid #D8D8D8;
 }
 
+.run-simulate .mdc-typography--title{
+	font-weight: bold;
+	font-size: 20px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
 .run-simulate .mdc-card{
 	background-color: #1AB146;
 	color: white;

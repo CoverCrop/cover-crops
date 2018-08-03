@@ -23,10 +23,11 @@ export const handleEndDateChange = (date) => ({
 	date
 });
 
-export const handleCLUChange = (clu, cluname) => ({
+export const handleCLUChange = (clu, cluname, expfile) => ({
 	type: "CHANGE_CLU",
 	clu,
-	cluname
+	cluname,
+	expfile
 });
 
 export const handleUserCLUChange = (clu, cluname) => ({
@@ -53,12 +54,13 @@ export const handleCardChange = (oldCardIndex, newCardIndex, oldCardData) => ({
 
 });
 
-export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => ({
+export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => ({
 	type: "ADD_RESULT",
 	withCoverCropExecutionId,
 	withCoverCropResultJson,
 	withoutCoverCropExecutionId,
-	withoutCoverCropResultJson
+	withoutCoverCropResultJson,
+	userInputJson
 });
 
 
