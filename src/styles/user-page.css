@@ -282,3 +282,24 @@
 .event-more-options {
 	float:right;
 }
+
+.pagination-div {
+	height: 50px;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.pagination-select.mdc-button:not(:disabled) {
+	background-color: #CFEBD7;
+}
+
+.pagination-button.mdc-button:not(:disabled){
+	height: 32px;
+	min-width: 25px;
+	color: #34515E;
+}
+
+.pagination-button.mdc-button:disabled{
+	height: 32px;
+	min-width: 25px;
+}
