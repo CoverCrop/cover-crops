@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import {connect} from "react-redux";
 import {findFirstSubstring, getMyFieldList} from "../public/utils";
-import {drainage_type, CULTIVARS, readTable, readDetailTable, distribution} from "../experimentFile";
+import {drainage_type, CULTIVARS, readTable, readDetailTable, distribution, convertDate} from "../experimentFile";
 
 class MyFarmSummary extends Component {
 	constructor(props) {
@@ -32,8 +32,8 @@ class MyFarmSummary extends Component {
 
 				let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
 				// TODO: move to utils?
-                let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
-                let b = tmptext.split(' ');
+				let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
+				let b = tmptext.split(' ');
 
 				let FERTILIZER = readTable(textlines, "FERTILIZERS");
 				let PLANTING = readTable(textlines, "PLANTING");
@@ -68,48 +68,48 @@ class MyFarmSummary extends Component {
 
 	render() {
 
-	    let {cropobj, fieldobj} = this.state;
-	    // TODO: filter based on year? remove 2019?
+		let {cropobj, fieldobj} = this.state;
+		// TODO: filter based on year? remove 2019?
 
-	    let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
-							<tr key={obj["YEAR"]}>
-								<td>{obj["YEAR"]}</td>
-								<td>{obj["CROP"]}</td>
-								<td>{obj["CU"]}</td>
-								<td>{distribution[obj["MP"]["PLDS"]]}</td>
-								<td>{obj["MP"]["PDATE"]}</td>
-								<td>{obj["MP"]["PPOP"]}</td>
-								<td>{obj["MP"]["PLDP"]}</td>
-								<td>{obj["MH"]["HDATE"]}</td>
-								<td>{obj["MF"]["FMCD"]}</td>
-								<td>{obj["MF"]["FACD"]}</td>
-								<td>{obj["MF"]["FDATE"]}</td>
-								<td>{obj["MF"]["FAMN"]}</td>
-								<td>{obj["MF"]["FDEP"]}</td>
-							</tr>
-							);
-        // TODO: combine with cropComponent
-	    let covercropComponent = Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
-							<tr key={obj["YEAR"]}>
-								<td>{obj["YEAR"]}</td>
-								<td>{obj["CROP"]}</td>
-								<td>{obj["CU"]}</td>
-								<td>{distribution[obj["MP"]["PLDS"]]}</td>
-								<td>{obj["MP"]["PDATE"]}</td>
-								<td>{obj["MP"]["PPOP"]}</td>
-								<td>{obj["MP"]["PLDP"]}</td>
-								<td>{obj["MH"]["HDATE"]}</td>
-							</tr>
-							);
+		let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
+			<tr key={obj["YEAR"]}>
+				<td>{obj["YEAR"]}</td>
+				<td>{obj["CROP"]}</td>
+				<td>{obj["CU"]}</td>
+				<td>{distribution[obj["MP"]["PLDS"]]}</td>
+				<td>{convertDate(obj["MP"]["PDATE"])}</td>
+				<td>{obj["MP"]["PPOP"]}</td>
+				<td>{obj["MP"]["PLDP"]}</td>
+				<td>{convertDate(obj["MH"]["HDATE"])}</td>
+				<td>{obj["MF"]["FMCD"]}</td>
+				<td>{obj["MF"]["FACD"]}</td>
+				<td>{convertDate(obj["MF"]["FDATE"])}</td>
+				<td>{obj["MF"]["FAMN"]}</td>
+				<td>{obj["MF"]["FDEP"]}</td>
+			</tr>
+		);
+		// TODO: combine with cropComponent
+		let covercropComponent = Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
+			<tr key={obj["YEAR"]}>
+				<td>{obj["YEAR"]}</td>
+				<td>{obj["CROP"]}</td>
+				<td>{obj["CU"]}</td>
+				<td>{distribution[obj["MP"]["PLDS"]]}</td>
+				<td>{convertDate(obj["MP"]["PDATE"])}</td>
+				<td>{obj["MP"]["PPOP"]}</td>
+				<td>{obj["MP"]["PLDP"]}</td>
+				<td>{convertDate(obj["MH"]["HDATE"])}</td>
+			</tr>
+		);
 
 		return (
 
-				<div>
+			<div>
 
-					<div className="border-top summary-div">
+				<div className="border-top summary-div">
 					<p className="myfarm-summary-header">
 						<span className="south-field">{this.props.selectedCLUName + "   "}</span>
-					<span >
+						<span >
 						<a className="download-exp" href="https://covercrop.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file">
 						<Icon name="file_download"></Icon>
 						</a>
@@ -125,7 +125,7 @@ class MyFarmSummary extends Component {
 							<thead>
 							<tr>
 								<th>DRAINAGE</th>
-							<th></th>
+								<th></th>
 								<th></th>
 
 							</tr>
@@ -136,20 +136,20 @@ class MyFarmSummary extends Component {
 								<td>DEPTH/in</td>
 								<td>SPACING/ft</td>
 							</tr>
-						<tr>
-							<td>{drainage_type[fieldobj["FLDT"]]}</td>
-							<td>{fieldobj["FLDD"]}</td>
-							<td>{fieldobj["FLDS"]}</td>
-						</tr>
+							<tr>
+								<td>{drainage_type[fieldobj["FLDT"]]}</td>
+								<td>{fieldobj["FLDD"]}</td>
+								<td>{fieldobj["FLDS"]}</td>
+							</tr>
 							</tbody>
-							</table>
+						</table>
 					</div>
 
 					<div className="table-header">
 						CROP HISTORY
 					</div>
-						<div>
-							<table>
+					<div>
+						<table>
 							<thead>
 							<tr>
 								<th></th>
@@ -177,7 +177,7 @@ class MyFarmSummary extends Component {
 							</tr>
 							</thead>
 							<tbody>
-						{cropComponent}
+							{cropComponent}
 							</tbody>
 
 						</table>
@@ -187,7 +187,7 @@ class MyFarmSummary extends Component {
 						COVER CROP HISTORY
 					</div>
 					<div>
-							<table>
+						<table>
 							<thead>
 							<tr>
 								<th></th>
@@ -212,13 +212,13 @@ class MyFarmSummary extends Component {
 							</tr>
 							</thead>
 							<tbody>
-						{covercropComponent}
+							{covercropComponent}
 							</tbody>
 
 						</table>
 					</div>
-					</div>
 				</div>
+			</div>
 
 		);
 	}

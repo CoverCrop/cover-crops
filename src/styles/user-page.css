@@ -350,3 +350,11 @@
 	height: 3px;
 }
 
+/*table, th, td {*/
+	/*border: 1px solid black;*/
+/*}*/
+
+th {
+	text-align: left;
+	padding: 12px;
+}

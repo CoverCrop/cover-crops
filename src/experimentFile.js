@@ -20,18 +20,26 @@ export function readTable(textlines, table_title){
 	while(table_body.length > 0 && !table_body[0].includes("@")){
 		let colunmobj = {};
 		for (let i = 1; i < table_header.length; i++) {
-			//remove the year in XDATE
-			if(table_header[i].includes("DATE")){
-				colunmobj[table_header[i]] = table_body[i].substring(table_body[i].length - 3);
-			} else {
-				colunmobj[table_header[i]] = table_body[i];
-			}
+			colunmobj[table_header[i]] = table_body[i];
 		}
 		tableobj[table_body[0]] = colunmobj;
 		linenumber = linenumber+1;
 		table_body = textlines[table_line_index+linenumber].split(' ').filter( word => word !== "");
 	}
 	return tableobj;
+}
+
+export function convertDate(dayString) {
+	if(dayString){
+		if(dayString.length === 5){
+			let year = parseInt(dayString.substring(0, 2)) + 2000;
+			let yearcount = parseInt(dayString.substring(dayString.length - 3));
+			let date = new Date(year, 0, yearcount);
+			return date.toISOString().substring(5, 10);
+		} else {
+			return dayString;
+		}
+	}
 }
 
 
