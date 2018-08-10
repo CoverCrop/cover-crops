@@ -30,7 +30,7 @@ h1, h2, h3, h5, h6, p, ul {
 	text-align: center;
 }
 
-.rightmap {
+.float-right {
 	float: right;
 }
 
@@ -144,6 +144,15 @@ h1, h2, h3, h5, h6, p, ul {
 .secondary-color {
 	color: #455A64;
 }
+
+.warning-message{
+	color: #fac312;
+}
+
+.go-up {
+	margin-top: -35px;
+}
+
 
 /*not working*/
 /*.ol-zoom {*/
