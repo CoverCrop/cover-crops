@@ -116,7 +116,7 @@
 	position: absolute;
 	top: 22px;
 	left: 46px;
-	height: 270px;
+	height: 310px;
 	width: 405px;
 	background-color: #FFFFFF;
 	padding-left: 22px;
@@ -225,8 +225,9 @@
 
 .add-field-bottom {
 	background-color: #DEE4E8;
+	/*relative position to the map*/
 	position: absolute;
-	top: 270px;
+	top: 310px;
 	left: 46px;
 	height: 50px;
 	width: 405px;
@@ -281,6 +282,32 @@
 
 .event-more-options {
 	float:right;
+}
+
+.pagination-div {
+	height: 50px;
+	padding-top: 10px;
+	text-align: center;
+}
+
+.pagination-select.mdc-button:not(:disabled) {
+	background-color: #CFEBD7;
+}
+
+.pagination-button.mdc-button:not(:disabled){
+	height: 32px;
+	min-width: 25px;
+	color: #34515E;
+}
+
+.pagination-button.mdc-button:disabled{
+	height: 32px;
+	min-width: 25px;
+}
+
+.exist-message{
+	width: 330px;
+	float: right;
 }
 
 

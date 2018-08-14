@@ -10,6 +10,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
+import {getMyFieldList} from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange, handleUserCLUChange} from "../actions/analysis";
 
 
@@ -18,7 +19,8 @@ class AddFieldPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			clus: [],
+			clus:[],
+			exist_clu: false,
 			markercoordinate: [],
 			areafeatures: [
 				new ol.Feature({})
@@ -36,6 +38,8 @@ class AddFieldPage extends Component {
 			this.props.handleLatFieldChange(lonLatCoordinates[1]);
 			this.props.handleLongFieldChange(lonLatCoordinates[0]);
 
+
+
 			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
@@ -49,13 +53,21 @@ class AddFieldPage extends Component {
 					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
 				});
 
-				this.setState({areafeatures:features});
+				that.setState({areafeatures:features});
 				// console.log(geojson)
-				that.props.handleUserCLUChange(geojson.features[0].properties["clu_id"], "");
+				let clu_id = geojson.features[0].properties["clu_id"];
+				that.props.handleUserCLUChange(clu_id, "");
+				
+				getMyFieldList(this.props.email).then(function(clus){
+					// console.log(clus.filter(userclu => userclu.clu === clu_id));
+					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
+					
+				})
+				
 
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
-				this.setState({areafeatures:[
+				that.setState({areafeatures:[
 						new ol.Feature({})
 					]});
 				that.props.handleUserCLUChange(0, "");
@@ -65,6 +77,7 @@ class AddFieldPage extends Component {
 
 
 	render() {
+		let {markercoordinate, areafeatures, exist_clu} = this.state;
 		return (
 			<AuthorizedWrap>
 			<div>
@@ -73,11 +86,11 @@ class AddFieldPage extends Component {
 
 					<div className="choose-clu-div">
 						<MapCC mapId="choose-clu"
-							   markercoordinate={this.state.markercoordinate}
-							   areafeatures={this.state.areafeatures}
+							   markercoordinate={markercoordinate}
+							   areafeatures={areafeatures}
 							   handleClick={this.handleClick}
 						/>
-						<AddFieldBox />
+						<AddFieldBox exist_clu={exist_clu}/>
 					</div>
 
 			</div>
@@ -86,12 +99,12 @@ class AddFieldPage extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	return {
-		clu: state.analysis.clu
+		email: state.user.email
 	}
 };
+
 
 const mapDispatchToProps = (dispatch) => {
 	return {

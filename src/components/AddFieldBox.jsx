@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
+import {existCLUNote} from "../app.messages.js";
 
 class AddFieldBox extends Component {
 
@@ -86,6 +87,10 @@ class AddFieldBox extends Component {
 						floatingLabel="Longitude"/>
 					</Cell>
 					</Grid>
+					{this.props.exist_clu  && <div className="go-up ">
+						<Icon className="warning-message" name="warning"/>
+						<p className="exist-message">{existCLUNote}</p>
+					</div>}
 					<Textfield
 						required
 						floatingLabel="CLU name"

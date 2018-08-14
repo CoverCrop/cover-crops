@@ -4,13 +4,14 @@ import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, 
 	Fab, Icon, Grid, Cell} from "react-mdc-web";
 import "babel-polyfill";
 import {
-	datawolfURL, latId, lonId, weatherId, workloadId, resultDatasetId,
-	userInputJSONDatasetID
+	datawolfURL, latId, lonId, weatherId, workflowId, resultDatasetId,
+	userInputJSONDatasetID, eventPageSize
 } from "../datawolf.config";
 import styles from '../styles/user-page.css';
 import { handleResults} from '../actions/analysis';
 import {groupBy, getOutputFileJson, getWeatherName, ConvertDDToDMS, wait, sortByDateInDescendingOrder} from '../public/utils';
 import {setSelectedUserEventStatus} from "../actions/user";
+import EventCard from "./EventCard";
 
 class UserEvents extends Component {
 
@@ -19,7 +20,9 @@ class UserEvents extends Component {
 		this.state = {
 			sortopen: false,
 			events: [],
-			selectevent: null
+			selectevent: null,
+			pagenumber:1,
+			totalpage:0
 		}
 	}
 
@@ -41,7 +44,7 @@ class UserEvents extends Component {
 		// the list with both executions,  each array is [WithCoverCrop, WithoutCoverCrop]
 		const eventfilteredGroup = [];
 		eventGroups.forEach(function(v, k){
-			if(v.length === 2 && v[0]["description"] !== ""){
+			if(v.length === 2 && v[0]["description"] !== "" && v[0]["workflowId"] === workflowId){
 				if(v[0]["description"] === "WithCoverCrop"){
 					v.status= v[0].datasets[resultDatasetId] === 'ERROR' || v[1].datasets[resultDatasetId] === 'ERROR' ? 'execution-error' : 'execution-success';
 					v.id= k;
@@ -55,23 +58,12 @@ class UserEvents extends Component {
 				}
 			}
 		});
-        this.setState({events: eventfilteredGroup});
-
-		// Select the first event for highlighting.
-        if (eventfilteredGroup.length > 0) {
-			this.setState({selectedEvent: eventfilteredGroup[0].id});
-
-			if (eventfilteredGroup[0].status === "execution-success") {
-				this.props.setSelectedUserEventStatus(true);
-			}
-			else if (eventfilteredGroup[0].status === "execution-error") {
-				this.props.setSelectedUserEventStatus(false);
-			}
-		}
+        this.setState({events: eventfilteredGroup, totalpage: Math.ceil(eventfilteredGroup.length/eventPageSize) });
 	}
 
 	componentWillMount(){
-		// this.props.handleResults("", null, "", null);
+		// avoid displaying selectedEventNotSuccessful while the history page is loading
+		this.props.setSelectedUserEventStatus(true);
 		this.getEvents().then(function success() {
 			console.log("Fetched events.");
 
@@ -82,7 +74,8 @@ class UserEvents extends Component {
 				// If the latest simulation is successful, view results
 				if (event.status === "execution-success") {
 					this.props.setSelectedUserEventStatus(true);
-					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])
+					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])
 				}
 				// Else, set status to display an error message in the chart display area
 				else {
@@ -124,42 +117,56 @@ class UserEvents extends Component {
 		}
 	};
 
+	handlePageChange = (pagenumber) => {
+		let selectEvent =  this.state.events[(pagenumber-1) * eventPageSize];
+		this.setState({pagenumber, selectevent: selectEvent.id });
+		this.viewResult(selectEvent.id, selectEvent.status, selectEvent[0].datasets[resultDatasetId],
+			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID])
+
+	};
+
 
 	render(){
-        let eventsList =  this.state.events.map( event =>
-			<Card
-				className={(event.id === this.state.selectevent? 'choose-card':'') + " event-list " +(event.status)}
-				  key={event[0].id}
-				  onClick={() => this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])}
-			>
-				<CardText >
-					<h2>{event[0].parameters[latId] + ' ' +event[0].parameters[lonId]}</h2>
-					<div className="event-list-text">
-						<p className="text1 label">In</p>
-						<p className="text2 label">Out</p>
-						<p className="text3 label">Weather</p>
-						<p className="text4 label">Status</p>
-						<p className="text5 label">Time</p>
-
-						<p className="text3 experiment-value bold-text">{getWeatherName(event[0].parameters[weatherId])}</p>
-						<p className="text4 experiment-value">{event.status.slice(10)}</p>
-						<p className="text5 experiment-value">{event[0].date}</p>
-					</div>
-					{ event.status === 'execution-error'?
-
-							<Icon name="warning" />
-
-						:
-							<Icon name="check_circle"/>
-
-					}
-
-				</CardText>
-			</Card>
+		let {pagenumber, totalpage} = this.state;
+        let eventsList =  this.state.events.slice((pagenumber-1) * eventPageSize, pagenumber*eventPageSize).map( event =>
+			<EventCard event={event} selectevent={this.state.selectevent} viewResult={this.viewResult}/>
 		);
+
+        //pageArray has max 5 element.
+		let pageArray = [...Array(totalpage+1).keys()].slice(1);
+		if(pageArray.length > 5){
+			if(pagenumber < 4) {
+				pageArray = pageArray.slice(0, 5);
+			} else if(pagenumber > totalpage -3){
+				pageArray = pageArray.slice(totalpage -5, totalpage);
+			} else{
+				pageArray = pageArray.slice(pagenumber - 3, pagenumber + 2);
+			}
+		}
+
+		let pageComponentArray= pageArray.map(p =>
+			<Button className={(p === pagenumber? 'pagination-select':'') + " pagination-button"}
+					key={p}
+					onClick={() => this.handlePageChange(p)}
+			>{p}</Button>
+		);
+
+		let pagination = (<div className="pagination-div">
+			<Button className="pagination-button" key="left" onClick={() => this.handlePageChange(pagenumber-1)}
+					disabled={pagenumber === 1}
+			>
+				<Icon name="keyboard_arrow_left" />
+			</Button>
+			{pageComponentArray}
+			<Button className="pagination-button" key="right" onClick={() => this.handlePageChange(pagenumber+1)}
+			disabled={pagenumber === totalpage}
+			>
+				<Icon name="keyboard_arrow_right" />
+			</Button>
+		</div>);
 		return(
 			<div>
-				<div className="event-list-header">
+				<div className="event-list-header" key="event-list-header">
 					<Button className="bold-text"
 						onClick={() => {
 						this.setState({sortopen: true})
@@ -179,8 +186,9 @@ class UserEvents extends Component {
 					</MenuAnchor>
 					<Button className="event-more-options">More Options</Button>
 				</div>
-				<div className="event-list-parent">
+				<div className="event-list-parent" key="event-list-parent">
 					{eventsList}
+					{pagination}
 				</div>
 			</div>
 		)
