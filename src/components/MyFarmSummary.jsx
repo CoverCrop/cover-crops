@@ -156,6 +156,9 @@ class MyFarmSummary extends Component {
 								<th>Cultivar</th>
 								<th></th>
 								<th>Planting</th>
+								<th></th>
+								<th></th>
+								<th></th>
 								<th>Harvest</th>
 								<th>Fertilizer</th>
 
