@@ -63,6 +63,8 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, we
 
 // the fist weather pattern is the Default.
 export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
+// Cover crops currently supported
+export const coverCrops = [ {value: "Cereal-Rye", label: "Cereal Rye"}];
 
 export const latId = "b78a76f0-982b-4e37-cae4-6acfc753184a";
 export const lonId = "be161213-0bf9-4377-809e-1c46c93c93dd";

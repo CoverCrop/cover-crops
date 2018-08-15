@@ -1,4 +1,4 @@
-import {weatherPatterns}  from "../datawolf.config";
+import {weatherPatterns, coverCrops}  from "../datawolf.config";
 const initCards = [
 	{
 		cardId: "selectField",
@@ -33,7 +33,8 @@ const defaultState = {
 	withoutCoverCropResultJson: null,
 	withoutCoverCropExecutionId: "",
 	isFlexibleDatesChecked: false,
-	userInputJson: null
+	userInputJson: null,
+	coverCrop: coverCrops[0]
 };
 
 const analysis = (state = defaultState, action) => {
@@ -98,6 +99,10 @@ const analysis = (state = defaultState, action) => {
 				cards: newCards
 			});
 		}
+		case "CHANGE_COVERCROP":
+			return Object.assign({}, state, {
+				coverCrop: action.coverCrop
+			});
 		default:
 			return state;
 	}
