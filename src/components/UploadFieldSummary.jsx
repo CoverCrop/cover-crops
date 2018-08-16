@@ -18,7 +18,7 @@ import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
 import {uploadDatasetToDataWolf} from "../public/utils";
 
-class FieldSummary extends Component {
+class UploadFieldSummary extends Component {
 
 	constructor(props) {
 		super(props);
@@ -78,7 +78,7 @@ class FieldSummary extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="border-top summary-div">
 				<form onSubmit={this.onFormSubmit}>
 					<h1>Upload Experiment File for {this.props.selectedCLUName}</h1>
 					<br />
@@ -105,5 +105,5 @@ class FieldSummary extends Component {
 }
 
 
-export default FieldSummary;
+export default UploadFieldSummary;
 

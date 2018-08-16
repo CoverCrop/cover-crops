@@ -223,7 +223,6 @@
 	line-height: 25px;
 }
 
-
 .add-field-bottom {
 	background-color: #DEE4E8;
 	/*relative position to the map*/
@@ -309,4 +308,80 @@
 .exist-message{
 	width: 330px;
 	float: right;
+}
+
+
+.myfarm-summary-header{
+	height: 24px;
+	width: 102px;
+	margin: 15px 0 15px 0;
+}
+
+.summary-table .th{
+	text-align: left;
+}
+
+
+.south-field {
+	color: #108632;
+	font-size: 20px;
+	font-weight: bold;
+}
+.download-exp{
+	color: black;
+}
+
+.table-header {
+	height: 30px;
+	width: auto;
+	background-color: #EBF5EE;
+	color: #455A64;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 28px;
+	margin: 10px 0 10px 0;
+}
+
+.myfarm-left{
+	float: left;
+	width: 360px;
+	padding: 40px 0px 40px 40px;
+}
+
+.myfarm-right{
+	float: left;
+	width: calc(100vw - 380px);
+}
+
+.summary-div{
+	padding: 10px 30px 40px 20px;
+}
+
+
+.myfarm-tab {
+	margin: 10px 0 0 24px;
+
+	width:100px;
+}
+
+.myfarm-tab .mdc-tab {
+	font-family: Roboto;
+	font-size: 18px;
+	line-height: 24px;
+}
+
+.myfarm-tab .mdc-tab-bar__indicator{
+	/*not working*/
+	background-color: #1AB146;
+	border: 6px solid #1AB146;
+	height: 3px;
+}
+
+/*table, th, td {*/
+	/*border: 1px solid black;*/
+/*}*/
+
+th {
+	text-align: left;
+	padding: 12px;
 }

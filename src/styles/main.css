@@ -133,12 +133,16 @@ h1, h2, h3, h5, h6, p, ul {
 	padding: 0px;
 }
 
-.border-left.mdc-layout-grid__cell{
+.border-left{
 	border-left: 1px solid #D8D8D8;
 }
 
-.border-top.mdc-layout-grid__cell{
-	border-top: 1px solid #D8D8D8;
+.border-right{
+	border-right: 1px solid #D8D8D8;
+}
+
+.border-top{
+	border-top: 2px solid #D8D8D8;
 }
 
 .secondary-color {
@@ -159,3 +163,7 @@ h1, h2, h3, h5, h6, p, ul {
 	/*left: unset;*/
 	/*right: 8px;*/
 /*}*/
+
+.position-relative {
+	position: relative;
+}
