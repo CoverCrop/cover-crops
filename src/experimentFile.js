@@ -7,15 +7,15 @@ export const drainage_type ={"DR000": "No drainage",
 	"DR002": "Sub-surface tiles",
 	"DR003": "Surface furrows"};
 
-export const distribution = {"R": "Row"}
+export const distribution = {"R": "Row"};
 
 // add 0 as default to avoid undefined error
 export function readTable(textlines, table_title){
 	let tableobj = {"0":{}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
-	let table_header = textlines[table_line_index+1].split(' ').filter( word => word !== "");
+	let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
 	let linenumber = 2;
-	let table_body = textlines[table_line_index + linenumber].split(' ').filter( word => word !== "");
+	let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
 
 	while(table_body.length > 0 && !table_body[0].includes("@")){
 		let colunmobj = {};
@@ -24,7 +24,7 @@ export function readTable(textlines, table_title){
 		}
 		tableobj[table_body[0]] = colunmobj;
 		linenumber = linenumber+1;
-		table_body = textlines[table_line_index+linenumber].split(' ').filter( word => word !== "");
+		table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
 	}
 	return tableobj;
 }

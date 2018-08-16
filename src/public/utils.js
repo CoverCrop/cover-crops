@@ -188,10 +188,10 @@ export async function wait(ms) {
 }
 
 export function findFirstSubstring(textArray, s) {
-	for(var i = 0; i < textArray.length;i++)
+	for(let i = 0; i < textArray.length;i++)
 	{
 		if(textArray[i].indexOf(s) !== -1)
 			return i;
 	}
 	return -1;
-};
+}
