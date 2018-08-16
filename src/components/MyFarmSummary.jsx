@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {connect} from "react-redux";
-import {findFirstSubstring, getMyFieldList} from "../public/utils";
-import {drainage_type, CULTIVARS, readTable, readDetailTable, distribution, convertDate} from "../experimentFile";
+import {findFirstSubstring, convertDate, readTable} from "../public/utils";
+import {drainage_type, CULTIVARS, distribution} from "../experimentFile";
 
 class MyFarmSummary extends Component {
 	constructor(props) {
