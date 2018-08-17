@@ -1,73 +1,18 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {findFirstSubstring, convertDate, readTable} from "../public/utils";
-import {drainage_type, CULTIVARS, distribution} from "../experimentFile";
+import {connect} from "react-redux";
+import {findFirstSubstring, getMyFieldList, readTable, convertDate} from "../public/utils";
+import {FMCD, drainage_type, CULTIVARS, distribution } from "../experimentFile";
+
 
 class MyFarmSummary extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			cropobj:{},
-			fieldobj :{}
-		}
-	}
-
-	componentWillMount() {
-		let that = this;
-		//TODO: update experiment datasets & file ID
-		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/9df375c9-cc82-4ec0-a7da-56f8084b83c5/7726d57c-ca77-492a-9401-a5ef9589c7b5/file", {
-			method: 'GET',
-			headers:{
-				'Content-Type': 'application/json',
-				"Access-Control-Origin": "http://localhost:3000"
-			},
-			credentials: "include"
-		}).then(res => res.text())
-			.catch(error => console.error('Error:', error))
-			.then(text => {
-				let cropobj = {};
-
-				let textlines = text.split('\n');
-
-				let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
-				// TODO: move to utils?
-				let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
-				let b = tmptext.split(' ');
-
-				let FERTILIZER = readTable(textlines, "FERTILIZERS");
-				let PLANTING = readTable(textlines, "PLANTING");
-				let HARVEST = readTable(textlines, "HARVEST");
-				const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
-
-
-				let linenumber = 2;
-				let crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
-				while (crop.length >0){
-					let obj = {};
-					for (let i = 0; i < b.length; i++) {
-						//or check with: if (b.length > i) { assignment }
-
-						obj[b[i]] = exp[b[i]]? exp[b[i]][crop[i]]: crop[i];
-					}
-					let objkey = obj["YEAR"] + " " + obj["CROP"];
-					cropobj[objkey] = obj;
-					linenumber = linenumber+1;
-					crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
-				}
-
-
-				let fieldobj = readTable(textlines, "FIELDS")[1];
-
-				// console.log(fieldobj)
-
-				this.setState({cropobj, fieldobj});
-
-			});
 	}
 
 	render() {
 
-		let {cropobj, fieldobj} = this.state;
+		let {cropobj, fieldobj} = this.props;
 		// TODO: filter based on year? remove 2019?
 
 		let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
@@ -80,7 +25,7 @@ class MyFarmSummary extends Component {
 				<td>{obj["MP"]["PPOP"]}</td>
 				<td>{obj["MP"]["PLDP"]}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
-				<td>{obj["MF"]["FMCD"]}</td>
+				<td>{FMCD[obj["MF"]["FMCD"]]}</td>
 				<td>{obj["MF"]["FACD"]}</td>
 				<td>{convertDate(obj["MF"]["FDATE"])}</td>
 				<td>{obj["MF"]["FAMN"]}</td>
@@ -226,4 +171,11 @@ class MyFarmSummary extends Component {
 	}
 }
 
-export default MyFarmSummary;
+const mapStateToProps = (state) => {
+	return {
+		cropobj: state.user.cropobj,
+		fieldobj: state.user.fieldobj
+	}
+};
+
+export default connect(mapStateToProps, null)(MyFarmSummary);

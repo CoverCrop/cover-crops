@@ -3,7 +3,8 @@ import ol from 'openlayers';
 import PropTypes from 'prop-types';
 import styles from "../styles/main.css";
 import styles2 from "../styles/user-page.css";
-import {handleLatFieldChange, handleLongFieldChange, handleCLUChange, handleUserCLUChange} from "../actions/analysis";
+import {handleLatFieldChange, handleLongFieldChange, handleCLUChange} from "../actions/analysis";
+import {handleUserCLUChange} from "../actions/user";
 require("openlayers/css/ol.css");
 
 class MapCC extends Component {

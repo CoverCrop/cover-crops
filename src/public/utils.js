@@ -1,5 +1,6 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
+import {CULTIVARS} from "../experimentFile";
 
 /***
  * Checks if user
@@ -55,7 +56,7 @@ export const ID = function () {
 
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
-export async function getOutputFileJson(datasetId, outputFileName = null) {
+export async function getOutputFile(datasetId, outputFileName = null, filetype = "json") {
 	let headers = {
 		"Content-Type": "application/json",
 		"Access-Control-Origin": "http://localhost:3000"
@@ -97,8 +98,14 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 				headers: headers,
 				credentials: "include"
 			});
-
-		return await fileDownloadResponse.json();
+		if(filetype === "json"){
+			return await fileDownloadResponse.json();
+		}
+		if(filetype === "txt"){
+			console.log("working")
+			return await fileDownloadResponse.text();
+		}
+		return await fileDownloadResponse;
 	}
 	else {
 		return null;
@@ -213,18 +220,67 @@ export function findFirstSubstring(textArray, s) {
 export function readTable(textlines, table_title){
 	let tableobj = {"0":{}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
-	let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
-	let linenumber = 2;
-	let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
+	if(table_line_index >=0){
+		let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
+		let linenumber = 2;
+		let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
 
-	while(table_body.length > 0 && !table_body[0].includes("@")){
-		let colunmobj = {};
-		for (let i = 1; i < table_header.length; i++) {
-			colunmobj[table_header[i]] = table_body[i];
+		while(table_body.length > 0 && !table_body[0].includes("@")){
+			let colunmobj = {};
+			for (let i = 1; i < table_header.length; i++) {
+				colunmobj[table_header[i]] = table_body[i];
+			}
+			tableobj[table_body[0]] = colunmobj;
+			linenumber = linenumber+1;
+			table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
 		}
-		tableobj[table_body[0]] = colunmobj;
-		linenumber = linenumber+1;
-		table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
+		return tableobj;
 	}
-	return tableobj;
+	return {};
+}
+
+export function dictToOptions(dict){
+	return Object.keys(dict).map(function(key) {
+		return {value: key, label:dict[key]};
+	});
+}
+
+export function getCropObj(text){
+
+	console.log("running!!!!!!!")
+	let cropobj = {};
+
+	let textlines = text.split('\n');
+
+	let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
+	// TODO: move to utils?
+	let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
+	let b = tmptext.split(' ');
+
+	let FERTILIZER = readTable(textlines, "FERTILIZERS");
+	let PLANTING = readTable(textlines, "PLANTING");
+	let HARVEST = readTable(textlines, "HARVEST");
+	const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
+
+
+	let linenumber = 2;
+	let crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
+	while (crop.length >0){
+		let obj = {};
+		for (let i = 0; i < b.length; i++) {
+			//or check with: if (b.length > i) { assignment }
+
+			obj[b[i]] = exp[b[i]]? exp[b[i]][crop[i]]: crop[i];
+		}
+		let objkey = obj["YEAR"] + " " + obj["CROP"];
+		cropobj[objkey] = obj;
+		linenumber = linenumber+1;
+		crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
+	}
+	return cropobj;
+}
+
+export function getFieldObj(text){
+	let textlines = text.split('\n');
+	return readTable(textlines, "FIELDS")[1];
 }

@@ -3,9 +3,14 @@ const defaultState = {
 	email: "",
 	isAuthenticated: sessionStorage.getItem("personId") !== null,
 	userId: "",
+	//used in add field page, not used in my farm page.
 	clu: 0,
 	//cluname is not used current
 	cluname: "",
+	// could be removed if not necessary.
+	exptxt:"",
+	cropobj: {},
+	fieldobj: {},
 	isSelectedEventSuccessful: false
 };
 
@@ -32,7 +37,12 @@ const user = (state = defaultState, action) => {
 			return Object.assign({}, state, {
 				isSelectedEventSuccessful: action.isSelectedEventSuccessful
 			});
-
+		case "CHANGE_EXPERIMENT_TXT":
+			return Object.assign({}, state, {
+				exptxt: action.exptxt,
+				cropobj: action.cropobj,
+				fieldobj: action.fieldobj
+			});
 		default:
 			return state;
 	}

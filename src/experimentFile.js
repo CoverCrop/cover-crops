@@ -8,3 +8,7 @@ export const drainage_type ={"DR000": "No drainage",
 	"DR003": "Surface furrows"};
 
 export const distribution = {"R": "Row"};
+//Fertilizer material code
+export const FMCD = { "FE001": "Ammonium nitrate", "FE002": "Ammonium sulfate", "FE004": "Anhydrous ammonia",
+"FE005": "Urea", "FE006": "Diammnoium phosphate", "FE007": "Monoammonium phosphate", "FE010": "Urea ammonium nitrate solution"
+};

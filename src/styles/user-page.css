@@ -1,106 +1,3 @@
-.event-list {
-	/*if not using grid*/
-	/*width: 450px;*/
-	/*float: left;*/
-	/*margin-bottom: 20px;*/
-	/*margin-right: 20px;*/
-	position: relative;
-}
-
-.choose-card.event-list{
-	background-color: #EBF5EE;
-}
-
-.event-list h2{
-	color: #000000;
-	font-size: 20px;
-	font-weight: bold;
-	line-height: 28px;
-}
-
-.execution-error .material-icons{
-	color: #E05869;
-}
-
-.execution-success .material-icons{
-	color: #1F977E;
-}
-
-.event-list .material-icons{
-	position: absolute;
-	top: 50%;
-	bottom:50%;
-	right:20px;
-}
-
-.event-list-text {
-	position: relative;
-	height: 80px;
-	width: 80%;
-}
-
-.text1 {
-	position: absolute;
-	top: 12px;
-	left: 0px;
-}
-
-.text1 .label{
-	margin-right: 10px;
-}
-
-.text2 {
-	position: absolute;
-	top: 34px;
-	left: 0px;
-}
-
-.text3 {
-	position: absolute;
-	top: 56px;
-	left: 0px;
-}
-
-.text4 {
-	position: absolute;
-	top: 12px;
-	left: 50%;
-}
-
-.text5 {
-	position: absolute;
-	top: 34px;
-	left: 50%;
-}
-
-.label {
-	height: 14px;
-	width: 12px;
-	color: #708792;
-	font-size: 14px;
-	line-height: 14px;
-}
-
-.experiment-value {
-	padding-left: 60px;
-	color: #000000;
-	font-size: 14px;
-	line-height: 16px;
-}
-
-.bold-text {
-	font-size: 16px;
-	font-weight: bold;
-}
-.bold-text.mdc-button {
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.event-list-parent {
-	position: relative;
-}
-
 .choose-clu-div {
 	position: relative;
 }
@@ -201,14 +98,6 @@
 	font-size: 18px;
 }
 
-
-
-
-
-
-
-
-
 .add-help {
 	height: 294px;
 	width: 305px;
@@ -265,45 +154,6 @@
 	position: absolute;
 }
 
-.event-list-header {
-	position: relative;
-	height: 45px;
-	width: 100%;
-	background-color: #1AB146;
-}
-
-.event-list-header .mdc-button:not(:disabled) {
-	color: white;
-}
-
-.event-list-header div {
-	display: inline;
-}
-
-.event-more-options {
-	float:right;
-}
-
-.pagination-div {
-	height: 50px;
-	padding-top: 10px;
-	text-align: center;
-}
-
-.pagination-select.mdc-button:not(:disabled) {
-	background-color: #CFEBD7;
-}
-
-.pagination-button.mdc-button:not(:disabled){
-	height: 32px;
-	min-width: 25px;
-	color: #34515E;
-}
-
-.pagination-button.mdc-button:disabled{
-	height: 32px;
-	min-width: 25px;
-}
 
 .exist-message{
 	width: 330px;
@@ -345,6 +195,7 @@
 .myfarm-left{
 	float: left;
 	width: 360px;
+	height: calc(100vh - 190px);
 	padding: 40px 0px 40px 40px;
 }
 
@@ -384,4 +235,39 @@
 th {
 	text-align: left;
 	padding: 12px;
+}
+
+/*update forms*/
+
+.myfarm-input .mdc-typography--title{
+	height: 28px;
+	width: 80px;
+	color: #455A64;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 28px;
+}
+
+.myfarm-input p {
+	height: 16px;
+	width: 131.8px;
+	color: rgba(0,0,0,0.38);
+	font-family: Roboto;
+	font-size: 12px;
+	line-height: 16px;
+}
+
+.update-box {
+	width: 230px;
+}
+
+.myfarm-input .Select-control{
+	background-color: #CFEBD7;
+	/*box-shadow: 0 0 3px 0 rgba(0,0,0,0.12), 0 2px 3px 0 rgba(0,0,0,0.12);*/
+    color: #1AB146;
+	/*border: 0px;*/
+}
+
+.myfarm-input .Select-value-label{
+	color: #1AB146;
 }
