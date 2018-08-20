@@ -1,5 +1,3 @@
-import {findFirstSubstring} from "./public/utils";
-
 export const CULTIVARS = { "1": "NEWTON", "2":"DEKALB 591", "3": "M GROUP 2", "4": "FALLOW"};
 
 export const drainage_type ={"DR000": "No drainage",
