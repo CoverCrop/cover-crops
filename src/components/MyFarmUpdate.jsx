@@ -40,7 +40,7 @@ class MyFarmUpdate extends Component {
 
 	render() {
 		const {elementType, firstField, secondField, cropobj, handleCropChange, cropyear} = this.props;
-		const options = Array.isArray(this.props.options)? this.props.options: dictToOptions(this.props.options);
+		const options = (elementType !== "select" || Array.isArray(this.props.options))? this.props.options: dictToOptions(this.props.options);
 		const defaultValue = cropobj[cropyear][firstField][secondField];
 		return (
 			<div className="update-box">
@@ -62,11 +62,16 @@ class MyFarmUpdate extends Component {
 													showYearDropdown
 													scrollableYearDropdown
 								/>);
+								// TODO: a bug when all the text are removed
 							case "input":
 								return (<Textfield
-									value={this.state.updateValue}
+									min="0"
+									type="number"
+									step="1"
+									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
-										this.setState({updateValue})
+										handleCropChange(cropobj, cropyear, firstField, secondField, updateValue)
+
 									}}
 								/>);
 							default :

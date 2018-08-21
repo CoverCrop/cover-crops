@@ -12,3 +12,7 @@ export const distribution = {"R": "Row"};
 export const FMCD = { "FE001": "Ammonium nitrate", "FE002": "Ammonium sulfate", "FE004": "Anhydrous ammonia",
 "FE005": "Urea", "FE006": "Diammnoium phosphate", "FE007": "Monoammonium phosphate", "FE010": "Urea ammonium nitrate solution"
 };
+
+export const FACD = {"AP001": "Broadcast, not incorporated", "AP002": "Broadcast, incorporated",
+	"AP004": "Banded beneath surface", "AP009": "Injected"};
+

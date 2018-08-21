@@ -9,7 +9,7 @@ import {
 } from "../datawolf.config";
 import styles from '../styles/history-page.css';
 import { handleResults} from '../actions/analysis';
-import {groupBy, getOutputFile, getWeatherName, ConvertDDToDMS, wait, sortByDateInDescendingOrder} from '../public/utils';
+import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from '../public/utils';
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
 
@@ -96,9 +96,9 @@ class UserEvents extends Component {
 			let that = this;
 			if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 				(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
-				getOutputFile(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile) {
-					getOutputFile(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
-						getOutputFile(withCoverCropUserInputJSONDatasetId).then(function (userInputJson) {
+				getOutputFileJson(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile) {
+					getOutputFileJson(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
+						getOutputFileJson(withCoverCropUserInputJSONDatasetId).then(function (userInputJson) {
 							that.props.handleResults(
 								withCoverCropDatasetResultGUID,
 								withCoverCropResultFile,

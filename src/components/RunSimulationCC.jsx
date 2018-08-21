@@ -9,7 +9,7 @@ import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns, coverCrops} from "../datawolf.config";
 import config from "../app.config";
-import {ID, getOutputFile, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
+import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import Select from 'react-select';
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
 	handleWeatherPatternChange, handleCoverCropChange} from '../actions/analysis';
@@ -146,8 +146,8 @@ class RunSimulationCC extends Component {
 		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
 
-			getOutputFile(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile){
-				getOutputFile(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
+			getOutputFileJson(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile){
+				getOutputFileJson(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
 
 					status = "COMPLETED";
 					that.setState({

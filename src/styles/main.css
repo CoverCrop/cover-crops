@@ -166,6 +166,7 @@ h1, h2, h3, h5, h6, p, ul {
 
 .position-relative {
 	position: relative;
+	height:auto;
 }
 
 .blue-button {

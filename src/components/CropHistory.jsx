@@ -23,7 +23,7 @@ import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
 import {uploadDatasetToDataWolf,readTable} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {FMCD } from "../experimentFile";
+import {FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
 import {handleCropChange} from "../actions/user";
 
@@ -67,7 +67,12 @@ class CropHistory extends Component {
 				{(selectcrop && selectcrop["MF"]["FDATE"])?
 					<div className="black-bottom">
 						<Title>Fertilizer </Title>
-						<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year} firstField="MF" secondField="FMCD" options={FMCD}/>
+						<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
+									  firstField="MF" secondField="FMCD" options={FMCD}/>
+						<MyFarmUpdate elementType="select" title="APPLICATION" cropyear={this.state.year}
+									  firstField="MF" secondField="FACD" options={FACD}/>
+						<MyFarmUpdate elementType="input" title="AMOUNT" cropyear={this.state.year}
+									  firstField="MF" secondField="FAMN" />
 					</div> : <p>No data for this year</p>
 
 				}

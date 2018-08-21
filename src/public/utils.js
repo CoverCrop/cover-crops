@@ -56,7 +56,15 @@ export const ID = function () {
 
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
-export async function getOutputFile(datasetId, outputFileName = null, filetype = "json") {
+export async function getOutputFileJson(datasetId, outputFileName = null) {
+	return getOutputFile(datasetId, outputFileName, "json")
+}
+
+export async function getOutputFileTxt(datasetId, outputFileName = null) {
+	return getOutputFile(datasetId, outputFileName, "txt")
+}
+
+async function getOutputFile(datasetId, outputFileName = null, filetype ) {
 	let headers = {
 		"Content-Type": "application/json",
 		"Access-Control-Origin": "http://localhost:3000"

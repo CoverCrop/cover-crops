@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Cell, Dialog, DialogBody, DialogFooter, Grid, Icon, Button} from "react-mdc-web";
 import {connect} from "react-redux";
 import {convertDate, cropObjToExptxt, uploadDatasetToDataWolf} from "../public/utils";
-import {distribution, drainage_type, FMCD} from "../experimentFile";
+import {distribution, drainage_type, FACD, FMCD} from "../experimentFile";
 import {handleExptxtChange} from "../actions/user";
 import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
@@ -79,7 +79,7 @@ class MyFarmSummary extends Component {
 				<td>{obj["MP"]["PLDP"]}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
 				<td>{FMCD[obj["MF"]["FMCD"]]}</td>
-				<td>{obj["MF"]["FACD"]}</td>
+				<td>{FACD[obj["MF"]["FACD"]]}</td>
 				<td>{convertDate(obj["MF"]["FDATE"])}</td>
 				<td>{obj["MF"]["FAMN"]}</td>
 				<td>{obj["MF"]["FDEP"]}</td>

@@ -9,7 +9,7 @@ import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList, getOutputFile} from "../public/utils";
+import {getMyFieldList, getOutputFileTxt} from "../public/utils";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
@@ -70,7 +70,7 @@ class MyFarmPage extends Component {
 		let expdatasetID = clus[cluIndex].expfile === ""? defaultExptxtDatasetID: clus[cluIndex].expfile;
 		// console.log(expdatasetID)
 		//TODO: double check!!!!
-		getOutputFile(expdatasetID, null, "txt").then(exptxt =>
+		getOutputFileTxt(expdatasetID, null).then(exptxt =>
 		{this.props.handleExptxtGet(exptxt);})
 
 	}
