@@ -22,9 +22,23 @@ export const handleUserCLUChange = (clu, cluname) => ({
 	cluname
 });
 
-export const handleExptxtChange = (exptxt) => ({
-	type: "CHANGE_EXPERIMENT_TXT",
+export const handleExptxtGet = (exptxt) => ({
+	type: "GET_EXPERIMENT_TXT",
 	exptxt,
 	cropobj: getCropObj(exptxt),
 	fieldobj: getFieldObj(exptxt)
 });
+
+export const handleExptxtChange = (exptxt) => ({
+	type: "CHANGE_EXPERIMENT_TXT",
+	exptxt,
+});
+
+export const handleCropChange = (cropobj, cropyear, firstField, secondField, updateValue) => ({
+	type: "CHANGE_CROP",
+	cropobj,
+	cropyear,
+	firstField,
+	secondField,
+	updateValue
+})

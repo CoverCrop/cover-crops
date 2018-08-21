@@ -122,24 +122,13 @@
 	width: 405px;
 }
 
+
+
 .add-field-bottom .add-button{
-	height: 33px;
-	width: 128px;
-	color: #FFFFFF;
-	background-color: #34515E;
-	font-family: Roboto;
-	font-size: 18px;
-	font-weight: 500;
-	line-height: 21px;
-	text-align: center;
 	top: 8px;
 	right: 5px;
 	position: absolute;
 }
-.add-field-bottom .add-button:disabled {
-	background-color: #c7cdd0;
-}
-
 
 .add-field-bottom .cancel-button {
 	height: 28px;

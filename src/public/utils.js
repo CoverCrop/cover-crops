@@ -216,7 +216,8 @@ export function findFirstSubstring(textArray, s) {
 	return -1;
 }
 
-// add 0 as default to avoid undefined error
+// add 0 as default to avoid undefined error.
+// Cannot read treatment table, its first columns are all 1.
 export function readTable(textlines, table_title){
 	let tableobj = {"0":{}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
@@ -247,7 +248,6 @@ export function dictToOptions(dict){
 
 export function getCropObj(text){
 
-	console.log("running!!!!!!!")
 	let cropobj = {};
 
 	let textlines = text.split('\n');
@@ -261,7 +261,6 @@ export function getCropObj(text){
 	let PLANTING = readTable(textlines, "PLANTING");
 	let HARVEST = readTable(textlines, "HARVEST");
 	const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
-
 
 	let linenumber = 2;
 	let crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
@@ -283,4 +282,37 @@ export function getCropObj(text){
 export function getFieldObj(text){
 	let textlines = text.split('\n');
 	return readTable(textlines, "FIELDS")[1];
+}
+
+export function cropObjToExptxt(text, cropobj){
+	console.log("cropObjToExptxt working");
+	let exptxt = text;
+	// let tmptext = text.replace("TNAME....................", "YEAR CROP");
+	let textlines = text.split('\n');
+    // TODO
+	const exp =  {"MF": "FERTILIZER"};
+	const expLocation =  {"MF": 12};
+
+	for (var factor in exp) {
+		let tableName = exp[factor];
+		let table_line_index = findFirstSubstring(textlines, tableName);
+		let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
+		console.log(isNaN(table_line_index))
+		for (var cropyear in cropobj) {
+			let thisobj = cropobj[cropyear][factor];
+			//	get line number
+			let exp_line = findFirstSubstring(textlines, cropyear);
+            let exp_line_array = textlines[exp_line].split(" ").filter( word => word !== "");
+			let lineNumber = parseInt(exp_line_array[expLocation[factor]]);
+
+			if(lineNumber> 0){
+				let modify_line_number = table_line_index + 1 + lineNumber;
+				let newline = " " + lineNumber + " " +table_header.map(header =>  thisobj[header]).join(" ")
+				console.log(textlines[modify_line_number])
+				textlines[modify_line_number] = newline;
+			}
+		}
+	}
+
+	return textlines.join("\n");
 }

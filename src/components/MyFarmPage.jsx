@@ -17,8 +17,9 @@ import ol from "openlayers";
 import MyFarmSummary from "./MyFarmSummary";
 import MyFarmWrap from "./MyFarmWrap";
 import {handleCLUChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
-import {handleExptxtChange} from "../actions/user";
+import {handleExptxtGet} from "../actions/user";
 import {defaultExptxtDatasetID} from "../datawolf.config";
+
 class MyFarmPage extends Component {
 
 	constructor(props) {
@@ -70,7 +71,7 @@ class MyFarmPage extends Component {
 		// console.log(expdatasetID)
 		//TODO: double check!!!!
 		getOutputFile(expdatasetID, null, "txt").then(exptxt =>
-		{this.props.handleExptxtChange(exptxt);})
+		{this.props.handleExptxtGet(exptxt);})
 
 	}
 
@@ -172,8 +173,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleExptxtChange: (exptxt) => {
-			dispatch(handleExptxtChange(exptxt));
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt));
 		}
 	}
 };

@@ -11,7 +11,8 @@ const defaultState = {
 	exptxt:"",
 	cropobj: {},
 	fieldobj: {},
-	isSelectedEventSuccessful: false
+	isSelectedEventSuccessful: false,
+	isExperimentUpdate: false
 };
 
 const user = (state = defaultState, action) => {
@@ -37,12 +38,35 @@ const user = (state = defaultState, action) => {
 			return Object.assign({}, state, {
 				isSelectedEventSuccessful: action.isSelectedEventSuccessful
 			});
-		case "CHANGE_EXPERIMENT_TXT":
+		case "GET_EXPERIMENT_TXT":
 			return Object.assign({}, state, {
+				isExperimentUpdate: false,
 				exptxt: action.exptxt,
 				cropobj: action.cropobj,
 				fieldobj: action.fieldobj
 			});
+		case "CHANGE_EXPERIMENT_TXT":
+			return Object.assign({}, state, {
+				isExperimentUpdate: false,
+				exptxt: action.exptxt,
+			});
+		case "CHANGE_CROP":
+			//TODO: cropobj as input
+			let {cropyear, firstField, secondField, updateValue} = action;
+			return {
+				...state,
+				isExperimentUpdate: true,
+				cropobj : {
+					...state.cropobj,
+					[cropyear] : {
+						...state.cropobj[cropyear],
+						[firstField] : {
+							...state.cropobj[cropyear][firstField],
+							[secondField] : updateValue
+						}
+					}
+				}
+			};
 		default:
 			return state;
 	}

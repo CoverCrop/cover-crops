@@ -107,7 +107,7 @@ class AddFieldBox extends Component {
 				</div>
 				<div className="add-field-bottom">
 					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
-					<button type="submit" className="add-button"
+					<button type="submit" className="blue-button add-button"
 							disabled={this.state.cluname ==="" || this.props.clu ===0 }
 							onClick={this.handleAddCLU}
 					>ADD FIELD</button>

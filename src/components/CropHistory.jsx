@@ -25,26 +25,26 @@ import {uploadDatasetToDataWolf,readTable} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {FMCD } from "../experimentFile";
 import {connect} from "react-redux";
+import {handleCropChange} from "../actions/user";
 
 class CropHistory extends Component {
 
 	constructor(props) {
 		super(props);
-		//TODO: use the first one.
+		//TODO: use the first one. this initial is not working.
+
 		this.state ={
-			selectcrop: this.props.cropobj["2017 Corn"],
-			year: "2017 Corn"
+			selectcrop: this.props.cropobj? undefined: this.props.cropobj.values()[0],
+			year: this.props.cropobj? undefined: this.props.cropobj.keys()[0]
 		};
 	}
-
-
 
 	render() {
 		let years = Object.keys(this.props.cropobj).filter(obj => obj.indexOf("Corn") > 0 || obj.indexOf("Soybean") > 0 );
 		let options = years.map(function(key){
 			return {value: key, label:key}
 		});
-		console.log(this.state.selectcrop)
+		// console.log(this.state.selectcrop);
 		let {selectcrop} = this.state;
 
 		return (
@@ -64,22 +64,12 @@ class CropHistory extends Component {
 							}
 						/>
 					</div>
-				{selectcrop && <div>
+				{(selectcrop && selectcrop["MF"]["FDATE"])?
 					<div className="black-bottom">
 						<Title>Fertilizer </Title>
-						<MyFarmUpdate elementType="select"  title="MATERIAL" defaultValue={selectcrop["MF"]["FMCD"]} options={FMCD}/>
-						<Select
-							name="year"
-							value={this.state.year}
-							options={options}
-							onChange={selectedOption => this.setState({
-								year: selectedOption.value,
-								selectcrop: this.props.cropobj[selectedOption.value]
-							})
-							}
-						/>
-					</div>
-				</div>
+						<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year} firstField="MF" secondField="FMCD" options={FMCD}/>
+					</div> : <p>No data for this year</p>
+
 				}
 			</div>
 
@@ -92,9 +82,11 @@ const mapStateToProps = (state) => {
 	return {
 		exptxt: state.user.exptxt,
 		cropobj: state.user.cropobj,
-		fieldobj: state.user.fieldobj
 	}
 };
+
+
+
 
 export default connect(mapStateToProps, null)(CropHistory);
 

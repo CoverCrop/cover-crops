@@ -11,8 +11,8 @@ import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getMyFieldList} from "../public/utils";
-import {handleLatFieldChange, handleLongFieldChange, handleUserCLUChange} from "../actions/analysis";
-
+import {handleLatFieldChange, handleLongFieldChange } from "../actions/analysis";
+import {handleUserCLUChange} from "../actions/user"
 
 class AddFieldPage extends Component {
 
@@ -57,13 +57,13 @@ class AddFieldPage extends Component {
 				// console.log(geojson)
 				let clu_id = geojson.features[0].properties["clu_id"];
 				that.props.handleUserCLUChange(clu_id, "");
-				
+
 				getMyFieldList(this.props.email).then(function(clus){
 					// console.log(clus.filter(userclu => userclu.clu === clu_id));
 					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
-					
+
 				})
-				
+
 
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);

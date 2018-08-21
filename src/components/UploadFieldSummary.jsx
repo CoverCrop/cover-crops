@@ -17,7 +17,7 @@ import {
 import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
 import {uploadDatasetToDataWolf} from "../public/utils";
-import {handleExptxtChange} from "../actions/user";
+import {handleExptxtGet} from "../actions/user";
 import {connect} from "react-redux";
 
 class UploadFieldSummary extends Component {
@@ -61,7 +61,7 @@ class UploadFieldSummary extends Component {
 				var reader = new FileReader();
 				reader.onload = (function(theFile) {
 					return function(e) { console.log(e.target.result)}})(this.state.file);
-				handleExptxtChange(reader.readAsText(this.state.file))
+				handleExptxtGet(reader.readAsText(this.state.file))
 			}
 			this.fileInput.value = "";
 		}).catch(function(e) {
@@ -112,8 +112,8 @@ class UploadFieldSummary extends Component {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleExptxtChange: (exptxt) => {
-			dispatch(handleExptxtChange(exptxt));
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt));
 		}
 	}
 };

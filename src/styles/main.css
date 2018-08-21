@@ -167,3 +167,23 @@ h1, h2, h3, h5, h6, p, ul {
 .position-relative {
 	position: relative;
 }
+
+.blue-button {
+	height: 33px;
+	width: 128px;
+	color: #FFFFFF;
+	background-color: #34515E;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 21px;
+	text-align: center;
+}
+
+.blue-button.small-text {
+	font-size: 10px;
+	font-weight: 500;
+}
+
+.blue-button:disabled {
+	background-color: #c7cdd0;
+}
