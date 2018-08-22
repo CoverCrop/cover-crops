@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import styles from "../styles/analysis-page.css"
 import ol from 'openlayers';
 import config from '../app.config';
+import {getExtentOfFieldsForUser} from "../public/utils";
 
 class RightPaneCC extends Component {
 
@@ -16,7 +17,8 @@ class RightPaneCC extends Component {
 			markercoordinate: [],
 			areafeatures: [
 				new ol.Feature({})
-			]
+			],
+			extent: null
 		}
 	}
 
@@ -46,6 +48,11 @@ class RightPaneCC extends Component {
 				console.log("Get CLU failed: " + e);
 			});
 		}
+	}
+
+	componentDidMount() {
+		let currentFieldsExtent = getExtentOfFieldsForUser(this.props.email);
+		this.setState({extent: currentFieldsExtent});
 	}
 
 	render(){
@@ -79,6 +86,7 @@ class RightPaneCC extends Component {
 					   markercoordinate={this.state.markercoordinate}
 					   areafeatures={this.state.areafeatures}
 					   recenter
+					   extent={this.state.extent}
 				/>
 				<SelectFieldsCC />
 				{this.props.clu === 0 ? null : <RunSimulationCC />}
@@ -92,7 +100,8 @@ const mapStateToProps = (state) => {
 		analysis_longitude: state.analysis.longitude,
 		analysis_latitude: state.analysis.latitude,
 		clu: state.analysis.clu,
-		activeCardIndex: state.analysis.activeCardIndex
+		activeCardIndex: state.analysis.activeCardIndex,
+		email: state.user.email
 	}
 };
 

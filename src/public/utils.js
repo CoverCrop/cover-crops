@@ -1,5 +1,6 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
+import ol from 'openlayers';
 
 /***
  * Checks if user
@@ -181,6 +182,69 @@ export async function getMyFieldList(email) {
 	};
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
+}
+
+/**
+ * Get CLU GeoJSON given a CLU ID
+ * @param cluId
+ * @returns {Promise.<*>}
+ */
+export async function getCLUGeoJSON(cluId) {
+
+	const response = await fetch(config.CLUapi + "/api/CLUs/" + cluId, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Origin": "http://localhost:3000"
+		}
+	});
+	return await response.json();
+}
+
+/**
+ * Get Extent of the field CLUs in user's profile.
+ * @param emailId
+ */
+export function getExtentOfFieldsForUser(emailId){
+
+	let fieldsPolygonLayer = new ol.layer.Vector({
+		id: "fieldsPolygon",
+		source: new ol.source.Vector({
+			features: [
+				new ol.Feature({})
+			]
+		}),
+		visible: true
+	});
+	let fieldPolygonSource = fieldsPolygonLayer.getSource();
+	let currentExtent = ol.extent.createEmpty();
+
+	getMyFieldList(emailId).then(function(clus){
+
+		clus.forEach(function (clu) {
+
+			getCLUGeoJSON(clu.clu).then(function (geoJSON) {
+
+				let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
+					dataProjection: 'EPSG:4326',
+					featureProjection: 'EPSG:3857'
+				});
+
+				fieldPolygonSource.addFeatures(features);
+				currentExtent = ol.extent.extend(currentExtent, fieldPolygonSource.getExtent());
+				fieldPolygonSource.clear();
+
+			}, function (err) {
+				console.log(err);
+			});
+		});
+
+	}, function(err) {
+		console.log(err);
+	});
+
+	return currentExtent;
+
 }
 
 export async function wait(ms) {

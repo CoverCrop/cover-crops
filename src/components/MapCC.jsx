@@ -1,17 +1,18 @@
 import React, {Component} from "react";
 import ol from 'openlayers';
 import PropTypes from 'prop-types';
-import styles from "../styles/main.css";
-import styles2 from "../styles/user-page.css";
-import {handleLatFieldChange, handleLongFieldChange, handleCLUChange, handleUserCLUChange} from "../actions/analysis";
+import config from "../app.config.js"
 require("openlayers/css/ol.css");
 
 class MapCC extends Component {
 
 	constructor(props) {
 		super(props);
-		this.defaultCenter = ol.proj.fromLonLat([-88.243385, 40.116421]);
-		this.defaultZoom = 6;
+
+		this.defaultCenter = (this.props.defaultCenter !== undefined && this.props.defaultCenter !== null) ?
+			this.props.defaultCenter : ol.proj.fromLonLat(config.defaultCenterLongLat);
+		this.defaultZoom = (this.props.defaultZoom !== undefined && this.props.defaultZoom !== null) ?
+			this.props.defaultZoom : config.defaultZoom;
 
 		this.iconStyle = new ol.style.Style({
 			image: new ol.style.Icon(({
@@ -104,8 +105,14 @@ class MapCC extends Component {
 
 		// wait until the map is loaded and update the size.
 		let that = this;
-		new Promise(resolve => setTimeout(resolve, 200)).then(function (){
+		new Promise(resolve => setTimeout(resolve, 500)).then(function (){
 			that.state.map.updateSize();
+
+			console.log(that.props.extent);
+			if (that.props.extent !== undefined && that.props.extent !== null) {
+				console.log("Inside");
+				that.state.map.getView().fit(that.props.extent, that.state.map.getSize());
+			}
 		})
 	}
 
@@ -145,7 +152,9 @@ MapCC.propTypes = {
 	// to fit the map based area polygon on whenever map is update
 	fitmap: PropTypes.bool,
 	// to rencenter the map based on marker whenever map is update, but keep the default zoom level.
-	recenter: PropTypes.bool
+	recenter: PropTypes.bool,
+	// to zoom into the location where fields are present
+	extent: PropTypes.array
 };
 
 export default MapCC;
