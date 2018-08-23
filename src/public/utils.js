@@ -1,6 +1,6 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
-import ol from 'openlayers';
+import ol from "openlayers";
 
 /***
  * Checks if user
@@ -226,8 +226,8 @@ export function getExtentOfFieldsForUser(emailId){
 			getCLUGeoJSON(clu.clu).then(function (geoJSON) {
 
 				let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
-					dataProjection: 'EPSG:4326',
-					featureProjection: 'EPSG:3857'
+					dataProjection: "EPSG:4326",
+					featureProjection: "EPSG:3857"
 				});
 
 				fieldPolygonSource.addFeatures(features);
