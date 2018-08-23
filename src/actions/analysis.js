@@ -63,5 +63,10 @@ export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson,
 	userInputJson
 });
 
+export const handleCoverCropChange = (coverCrop) => ({
+	type: "CHANGE_COVERCROP",
+	coverCrop
+});
+
 
 

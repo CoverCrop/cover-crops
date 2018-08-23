@@ -19,4 +19,4 @@ export const register = "Creating an account allows you to save the simulation d
 	" and information about your farm and fields.";
 export const unlogin = ["We are glad you want to check out CoverCrop Analyzer! " ,
 	"For the best experience, login or register for a free account."];
-
+export const existCLUNote = "Selected field already available in your profile, continuing will overwrite the name, lat/long and management file.";
