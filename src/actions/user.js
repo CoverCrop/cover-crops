@@ -41,4 +41,4 @@ export const handleCropChange = (cropobj, cropyear, firstField, secondField, upd
 	firstField,
 	secondField,
 	updateValue
-})
+});

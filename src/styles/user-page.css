@@ -125,19 +125,14 @@
 
 
 .add-field-bottom .add-button{
+	width: 128px;
 	top: 8px;
 	right: 5px;
 	position: absolute;
 }
 
 .add-field-bottom .cancel-button {
-	height: 28px;
 	width: 70px;
-	color: #1AB146;
-	font-family: Roboto;
-	font-size: 14px;
-	line-height: 28px;
-	text-align: center;
 	top: 8px;
 	right: 140px;
 	position: absolute;
@@ -244,26 +239,30 @@ th {
 	font-family: Roboto;
 	font-size: 12px;
 	line-height: 16px;
-	margin-top: 3px;
-
+	/*margin-top: 10px;*/
 }
 
 .update-box {
 	width: 230px;
-	/*float:left;*/
+	float:left;
+	/*display: inline-block;*/
+	height: 90px;
+	margin-right:10px;
 }
 
-.myfarm-input .Select-control{
-	background-color: #CFEBD7;
-	/*box-shadow: 0 0 3px 0 rgba(0,0,0,0.12), 0 2px 3px 0 rgba(0,0,0,0.12);*/
-    color: #1AB146;
-	/*border: 0px;*/
-}
 
-.myfarm-input .Select-value-label{
-	color: #1AB146;
-}
+/*.myfarm-input .Select-control{*/
+	/*background-color: #CFEBD7;*/
+	/*!*box-shadow: 0 0 3px 0 rgba(0,0,0,0.12), 0 2px 3px 0 rgba(0,0,0,0.12);*!*/
+    /*color: #1AB146;*/
+	/*!*border: 0px;*!*/
+/*}*/
+
+/*.myfarm-input .Select-value-label{*/
+	/*color: #1AB146;*/
+/*}*/
 
 .myfarm-input .mdc-text-field--upgraded:not(.mdc-text-field--fullwidth):not(.mdc-text-field--box):not(.mdc-text-field--textarea){
 	height:auto;
 }
+

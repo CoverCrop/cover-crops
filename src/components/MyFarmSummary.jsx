@@ -3,7 +3,7 @@ import {Cell, Dialog, DialogBody, DialogFooter, Grid, Icon, Button} from "react-
 import {connect} from "react-redux";
 import {convertDate, cropObjToExptxt, uploadDatasetToDataWolf} from "../public/utils";
 import {distribution, drainage_type, FACD, FMCD} from "../experimentFile";
-import {handleExptxtChange} from "../actions/user";
+import {handleExptxtChange, handleExptxtGet} from "../actions/user";
 import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
 
@@ -113,10 +113,15 @@ class MyFarmSummary extends Component {
 						</span>
 
 					</p>
-					<button type="submit" className="blue-button small-text"
+					<button type="submit" className="blue-button"
 							disabled={!this.props.isExperimentUpdate}
 							onClick={() => this.onUpdateSubmit()}
 					>UPDATE EXPERIMENT</button>
+					<Button type="submit" className="cancel-button"
+							disabled={!this.props.isExperimentUpdate}
+							onClick={() => this.props.handleExptxtGet(this.props.exptxt)}
+					>CANCEL</Button>
+
 
 					<div className="table-header">
 						FIELD PROFILE
@@ -254,6 +259,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		handleExptxtChange: (exptxt) => {
 			dispatch(handleExptxtChange(exptxt))
+		},
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt))
 		}
 	}
 };

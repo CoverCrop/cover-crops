@@ -1,41 +1,25 @@
 import React, {Component} from "react";
 import {
-	Body1,
-	Body2,
 	Button,
-	Cell,
 	Checkbox,
 	Dialog,
 	DialogBody,
 	DialogFooter,
-	Fab,
-	FormField,
-	Grid,
-	Icon,
-	Title,
-	Card,
-	CardText,
-	CardTitle,
-	DatePicker,
-	Textfield
+	Textfield,
+	Title
 } from "react-mdc-web";
+import DatePicker from "react-datepicker";
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 import Select from 'react-select';
-import config from "../app.config";
-import {expfail, expsuccess} from "../app.messages";
-import {dictToOptions} from "../public/utils";
-import {coverCrops} from "../datawolf.config";
+import {convertDayString, convertFullDate, dictToOptions} from "../public/utils";
 import {connect} from "react-redux";
-import {handleCropChange, setSelectedUserEventStatus} from "../actions/user";
-import {handleResults} from "../actions/analysis";
+import {handleCropChange} from "../actions/user";
 
 class MyFarmUpdate extends Component {
 
 	constructor(props) {
 		super(props);
-		// TODO: remove
-		this.state ={
-			updateValue:this.props.defaultValue,
-		};
 	}
 
 	render() {
@@ -44,7 +28,7 @@ class MyFarmUpdate extends Component {
 		const defaultValue = cropobj[cropyear][firstField][secondField];
 		return (
 			<div className="update-box">
-				<p>{this.props.title}</p>
+				<p  className={this.props.elementType}>{this.props.title}</p>
 				{defaultValue &&
 					(() => {
 						switch (elementType) {
@@ -55,12 +39,13 @@ class MyFarmUpdate extends Component {
 									options={options}
 									onChange={selectedOption => handleCropChange(cropobj, cropyear, firstField, secondField, selectedOption.value)}
 								/>);
-							//	TODO: onchange
+
 							case "date":
-								return (<DatePicker className="date-picker-cc" selected={this.state.updateValue}
-													selectsEnd
-													showYearDropdown
-													scrollableYearDropdown
+								return (<DatePicker className="date-picker-cc"
+													selected={moment(convertFullDate(defaultValue))}
+													onChange={moment =>
+														handleCropChange(cropobj, cropyear, firstField, secondField, convertDayString(moment))
+													}
 								/>);
 								// TODO: a bug when all the text are removed
 							case "input":
@@ -71,7 +56,6 @@ class MyFarmUpdate extends Component {
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
 										handleCropChange(cropobj, cropyear, firstField, secondField, updateValue)
-
 									}}
 								/>);
 							default :

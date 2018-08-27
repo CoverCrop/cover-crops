@@ -57,11 +57,11 @@ export const ID = function () {
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
 export async function getOutputFileJson(datasetId, outputFileName = null) {
-	return getOutputFile(datasetId, outputFileName, "json")
+	return getOutputFile(datasetId, outputFileName, "json");
 }
 
 export async function getOutputFileTxt(datasetId, outputFileName = null) {
-	return getOutputFile(datasetId, outputFileName, "txt")
+	return getOutputFile(datasetId, outputFileName, "txt");
 }
 
 async function getOutputFile(datasetId, outputFileName = null, filetype ) {
@@ -110,7 +110,6 @@ async function getOutputFile(datasetId, outputFileName = null, filetype ) {
 			return await fileDownloadResponse.json();
 		}
 		if(filetype === "txt"){
-			console.log("working")
 			return await fileDownloadResponse.text();
 		}
 		return await fileDownloadResponse;
@@ -145,10 +144,21 @@ export function ConvertDDToDMS(dd)
 export function convertDate(dayString) {
 	if(dayString){
 		if(dayString.length === 5){
+
+			return convertFullDate(dayString).substring(5, 10);
+		} else {
+			return dayString;
+		}
+	}
+}
+
+export function convertFullDate(dayString) {
+	if(dayString){
+		if(dayString.length === 5){
 			let year = parseInt(dayString.substring(0, 2)) + 2000;
 			let yearcount = parseInt(dayString.substring(dayString.length - 3));
 			let date = new Date(year, 0, yearcount);
-			return date.toISOString().substring(5, 10);
+			return date.toISOString();
 		} else {
 			return dayString;
 		}
@@ -156,10 +166,19 @@ export function convertDate(dayString) {
 }
 
 export function calculateDayOfYear(date) {
+	console.log(date)
 	let timeStamp = new Date().setFullYear(date.getFullYear(), 0, 1);
 	let yearFirstDay = Math.floor(timeStamp / 86400000);
 	let today = Math.ceil((date.getTime()) / 86400000);
 	return today - yearFirstDay;
+}
+
+//eg. moment to 17096
+export function convertDayString(moment) {
+	if(moment.dayOfYear() < 99){
+		return (moment.get('year')-2000).toString() + "0" + moment.dayOfYear().toString()
+	}
+	return (moment.get('year')-2000).toString() + moment.dayOfYear().toString()
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
@@ -263,7 +282,7 @@ export function getCropObj(text){
 	let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
 	// TODO: move to utils?
 	let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
-	let b = tmptext.split(' ');
+	let b = tmptext.split(" ");
 
 	let FERTILIZER = readTable(textlines, "FERTILIZERS");
 	let PLANTING = readTable(textlines, "PLANTING");

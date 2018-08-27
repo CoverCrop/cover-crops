@@ -73,6 +73,9 @@ class CropHistory extends Component {
 									  firstField="MF" secondField="FACD" options={FACD}/>
 						<MyFarmUpdate elementType="input" title="AMOUNT" cropyear={this.state.year}
 									  firstField="MF" secondField="FAMN" />
+						<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
+									  firstField="MF" secondField="FDATE" />
+
 					</div> : <p>No data for this year</p>
 
 				}
