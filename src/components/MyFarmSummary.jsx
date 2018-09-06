@@ -2,17 +2,20 @@ import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import {findFirstSubstring, convertDate, readTable} from "../public/utils";
 import {drainage_type, CULTIVARS, distribution} from "../experimentFile";
+import config from "../app.config";
 
 class MyFarmSummary extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			cropobj:{},
-			fieldobj :{}
+			cropobj: {},
+			fieldobj: {},
+			soilobj: []
 		}
 	}
 
-	componentWillMount() {
+
+	async getInfo() {
 		let that = this;
 		//TODO: update experiment datasets & file ID
 		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/9df375c9-cc82-4ec0-a7da-56f8084b83c5/7726d57c-ca77-492a-9401-a5ef9589c7b5/file", {
@@ -63,11 +66,31 @@ class MyFarmSummary extends Component {
 				this.setState({cropobj, fieldobj});
 
 			});
+        //TODO
+		fetch(config.CLUapi + "/api/soils?lat="+ that.props.lat + "&lon="+that.props.lon   , {
+			method: 'GET',
+			headers:{
+				'Content-Type': 'application/json',
+				"Access-Control-Origin": "http://localhost:3000"
+			}
+		}).then(res => res.json())
+			.catch(error => console.error('Error:', error))
+			.then(soilobj => {
+				this.setState({soilobj});
+			});
+	}
+
+	componentWillMount(){
+		this.getInfo();
+	}
+
+	componentWillReceiveProps(){
+		this.getInfo();
 	}
 
 	render() {
 
-		let {cropobj, fieldobj} = this.state;
+		let {cropobj, fieldobj, soilobj} = this.state;
 		// TODO: filter based on year? remove 2019?
 
 		let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
@@ -98,6 +121,20 @@ class MyFarmSummary extends Component {
 				<td>{obj["MP"]["PPOP"]}</td>
 				<td>{obj["MP"]["PLDP"]}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
+			</tr>
+		);
+
+		let soilComponent = soilobj.map( obj =>
+			<tr key={obj["depth_bottom"]}>
+				<td>{obj["depth_bottom"]}</td>
+				<td>{obj["claytotal_r"]}</td>
+				<td>{obj["silttotal_r"]}</td>
+				<td>{obj["sandtotal_r"]}</td>
+				<td>{obj["sandtotal_r"]}</td>
+				<td>{obj["ph01mcacl2_r"]}</td>
+				<td>{obj["sandtotal_r"]}</td>
+				<td>{obj["sandtotal_r"]}</td>
+
 			</tr>
 		);
 
@@ -142,6 +179,37 @@ class MyFarmSummary extends Component {
 							</tr>
 							</tbody>
 						</table>
+						<hr className="dotted-hr"/>
+						<table>
+
+							<thead>
+							<tr>
+								<th>SOIL</th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>DEPTH,cm</td>
+								<td>CLAY,%</td>
+								<td>SILT,%</td>
+								<td>SAND,%</td>
+								<td>ORGANIC CARBON,%</td>
+								<td>PH in WATER</td>
+								<td>CATION EXCHNAGE CAPACITY, cmol/kg</td>
+								<td>TOTAL NITROGEN,%</td>
+							</tr>
+							{soilComponent}
+							</tbody>
+						</table>
+
 					</div>
 
 					<div className="table-header">
@@ -225,5 +293,6 @@ class MyFarmSummary extends Component {
 		);
 	}
 }
+
 
 export default MyFarmSummary;
