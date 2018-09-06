@@ -65,9 +65,9 @@ class MyFarmSummary extends Component {
 
 				this.setState({cropobj, fieldobj});
 
-			});
-        //TODO
-		fetch(config.CLUapi + "/api/soils?lat="+ that.props.lat + "&lon="+that.props.lon   , {
+			}); 
+
+		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon="+that.props.lon , {
 			method: 'GET',
 			headers:{
 				'Content-Type': 'application/json',
