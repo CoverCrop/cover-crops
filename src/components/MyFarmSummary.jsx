@@ -1,71 +1,96 @@
 import React, {Component} from "react";
-import {Cell, Dialog, DialogBody, DialogFooter, Grid, Icon, Button} from "react-mdc-web";
-import {connect} from "react-redux";
-import {convertDate, cropObjToExptxt, uploadDatasetToDataWolf} from "../public/utils";
-import {distribution, drainage_type, FACD, FMCD} from "../experimentFile";
-import {handleExptxtChange, handleExptxtGet} from "../actions/user";
+import {Cell, Grid, Icon} from "react-mdc-web";
+import {findFirstSubstring, convertDate, readTable} from "../public/utils";
+import {drainage_type, CULTIVARS, distribution} from "../experimentFile";
 import config from "../app.config";
-import {expfail, expsuccess} from "../app.messages";
-
 
 class MyFarmSummary extends Component {
 	constructor(props) {
 		super(props);
-		this.state ={
-			file:null,
-			isOpen: false,
-			message: ""
-		};
+		this.state = {
+			cropobj: {},
+			fieldobj: {},
+			soilobj: []
+		}
 	}
 
-	async onUpdateSubmit(e){
 
-		// e.preventDefault();
+	async getInfo() {
+		let that = this;
+		//TODO: update experiment datasets & file ID
+		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/9df375c9-cc82-4ec0-a7da-56f8084b83c5/7726d57c-ca77-492a-9401-a5ef9589c7b5/file", {
+			method: 'GET',
+			headers:{
+				'Content-Type': 'application/json',
+				"Access-Control-Origin": "http://localhost:3000"
+			},
+			credentials: "include"
+		}).then(res => res.text())
+			.catch(error => console.error('Error:', error))
+			.then(text => {
+				let cropobj = {};
 
-		let newTXT = cropObjToExptxt(this.props.exptxt, this.props.cropobj);
-		this.props.handleExptxtChange(newTXT);
+				let textlines = text.split('\n');
 
-		let userExpFile = new File([newTXT],
-			"experiment.txt",
-			{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+				let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
+				// TODO: move to utils?
+				let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
+				let b = tmptext.split(' ');
+
+				let FERTILIZER = readTable(textlines, "FERTILIZERS");
+				let PLANTING = readTable(textlines, "PLANTING");
+				let HARVEST = readTable(textlines, "HARVEST");
+				const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
 
 
-		let id = await uploadDatasetToDataWolf(userExpFile);
+				let linenumber = 2;
+				let crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
+				while (crop.length >0){
+					let obj = {};
+					for (let i = 0; i < b.length; i++) {
+						//or check with: if (b.length > i) { assignment }
 
-		console.log("Uploaded File Changed:" + id);
-
-		let updatedUserCLU = Object.assign({}, this.props.selectedCLU);
-		updatedUserCLU.expfile = id;
-		let headers = {
-			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
-		};
-
-		const CLUapi = config.CLUapi + "/api/userfield";
-		fetch(CLUapi,{
-			method: 'POST',
-			headers: headers,
-			body: JSON.stringify(updatedUserCLU)
-		}).then(response => response.json())
-			.then((responseJson) => {
-				if(responseJson.status_code !== 200){
-					this.setState({file:null, message: expfail, isOpen: true });
-					console.log("set experiment file failed: " + responseJson.message)
-				} else {
-					this.setState({file:null, isOpen: true, message: expsuccess });
-					console.log(responseJson)
+						obj[b[i]] = exp[b[i]]? exp[b[i]][crop[i]]: crop[i];
+					}
+					let objkey = obj["YEAR"] + " " + obj["CROP"];
+					cropobj[objkey] = obj;
+					linenumber = linenumber+1;
+					crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
 				}
-			}).catch(function(e) {
-			this.setState({file:null, message: expfail, isOpen: true});
-			console.log("set experiment file failed: " + e);
 
-		});
+
+				let fieldobj = readTable(textlines, "FIELDS")[1];
+
+				// console.log(fieldobj)
+
+				this.setState({cropobj, fieldobj});
+
+			});
+
+		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon="+that.props.lon , {
+			method: 'GET',
+			headers:{
+				'Content-Type': 'application/json',
+				"Access-Control-Origin": "http://localhost:3000"
+			}
+		}).then(res => res.json())
+			.catch(error => console.error('Error:', error))
+			.then(soilobj => {
+				this.setState({soilobj});
+			});
 	}
 
+	componentWillMount(){
+		this.getInfo();
+	}
+
+	componentWillReceiveProps(){
+		this.getInfo();
+	}
 
 	render() {
 
-		let {cropobj, fieldobj} = this.props;
+		let {cropobj, fieldobj, soilobj} = this.state;
 		// TODO: filter based on year? remove 2019?
 
 		let cropComponent = Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
@@ -78,8 +103,8 @@ class MyFarmSummary extends Component {
 				<td>{obj["MP"]["PPOP"]}</td>
 				<td>{obj["MP"]["PLDP"]}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
-				<td>{FMCD[obj["MF"]["FMCD"]]}</td>
-				<td>{FACD[obj["MF"]["FACD"]]}</td>
+				<td>{obj["MF"]["FMCD"]}</td>
+				<td>{obj["MF"]["FACD"]}</td>
 				<td>{convertDate(obj["MF"]["FDATE"])}</td>
 				<td>{obj["MF"]["FAMN"]}</td>
 				<td>{obj["MF"]["FDEP"]}</td>
@@ -99,6 +124,20 @@ class MyFarmSummary extends Component {
 			</tr>
 		);
 
+		let soilComponent = soilobj.map( obj =>
+			<tr key={obj["depth_bottom"]}>
+				<td>{obj["depth_bottom"]}</td>
+				<td>{obj["claytotal_r"]}</td>
+				<td>{obj["silttotal_r"]}</td>
+				<td>{obj["sandtotal_r"]}</td>
+				<td>{(obj["om_r"] * 0.58).toFixed(2)}</td>
+				<td>{obj["ph1to1h2o_r"]}</td>
+				<td>{obj["cec7_r"]}</td>
+				<td> -- </td>
+
+			</tr>
+		);
+
 		return (
 
 			<div>
@@ -110,19 +149,9 @@ class MyFarmSummary extends Component {
 						<a className="download-exp" href="https://covercrop.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file">
 						<Icon name="file_download"></Icon>
 						</a>
-						</span>
+					</span>
 
 					</p>
-					<button type="submit" className="blue-button"
-							disabled={!this.props.isExperimentUpdate}
-							onClick={() => this.onUpdateSubmit()}
-					>UPDATE EXPERIMENT</button>
-					<Button type="submit" className="cancel-button"
-							disabled={!this.props.isExperimentUpdate}
-							onClick={() => this.props.handleExptxtGet(this.props.exptxt)}
-					>CANCEL</Button>
-
-
 					<div className="table-header">
 						FIELD PROFILE
 					</div>
@@ -150,6 +179,37 @@ class MyFarmSummary extends Component {
 							</tr>
 							</tbody>
 						</table>
+						<hr className="dotted-hr"/>
+						<table>
+
+							<thead>
+							<tr>
+								<th>SOIL</th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+
+							</tr>
+							</thead>
+							<tbody>
+							<tr>
+								<td>DEPTH,cm</td>
+								<td>CLAY,%</td>
+								<td>SILT,%</td>
+								<td>SAND,%</td>
+								<td>ORGANIC CARBON,%</td>
+								<td>pH in WATER</td>
+								<td>CATION EXCHANGE CAPACITY, cmol/kg</td>
+								<td>TOTAL NITROGEN,%</td>
+							</tr>
+							{soilComponent}
+							</tbody>
+						</table>
+
 					</div>
 
 					<div className="table-header">
@@ -228,42 +288,11 @@ class MyFarmSummary extends Component {
 						</table>
 					</div>
 				</div>
-				<Dialog
-					open={this.state.isOpen}
-					onClose={() => {this.setState({isOpen:false})}}
-					className="unlogin"
-				>
-					<DialogBody>
-						<p className="bold-text" key="keyword"> {this.state.message}</p>
-					</DialogBody>
-					<DialogFooter>
-						<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
-					</DialogFooter>
-				</Dialog>
 			</div>
 
 		);
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		exptxt: state.user.exptxt,
-		cropobj: state.user.cropobj,
-		fieldobj: state.user.fieldobj,
-		isExperimentUpdate: state.user.isExperimentUpdate
-	}
-};
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		handleExptxtChange: (exptxt) => {
-			dispatch(handleExptxtChange(exptxt))
-		},
-		handleExptxtGet: (exptxt) => {
-			dispatch(handleExptxtGet(exptxt))
-		}
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyFarmSummary);
+export default MyFarmSummary;
