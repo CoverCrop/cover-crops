@@ -65,7 +65,7 @@ class MyFarmSummary extends Component {
 
 				this.setState({cropobj, fieldobj});
 
-			}); 
+			});
 
 		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon="+that.props.lon , {
 			method: 'GET',
@@ -130,10 +130,10 @@ class MyFarmSummary extends Component {
 				<td>{obj["claytotal_r"]}</td>
 				<td>{obj["silttotal_r"]}</td>
 				<td>{obj["sandtotal_r"]}</td>
-				<td>{obj["sandtotal_r"]}</td>
-				<td>{obj["ph01mcacl2_r"]}</td>
-				<td>{obj["sandtotal_r"]}</td>
-				<td>{obj["sandtotal_r"]}</td>
+				<td>{(obj["om_r"] * 0.58).toFixed(2)}</td>
+				<td>{obj["ph1to1h2o_r"]}</td>
+				<td>{obj["cec7_r"]}</td>
+				<td> -- </td>
 
 			</tr>
 		);
@@ -202,8 +202,8 @@ class MyFarmSummary extends Component {
 								<td>SILT,%</td>
 								<td>SAND,%</td>
 								<td>ORGANIC CARBON,%</td>
-								<td>PH in WATER</td>
-								<td>CATION EXCHNAGE CAPACITY, cmol/kg</td>
+								<td>pH in WATER</td>
+								<td>CATION EXCHANGE CAPACITY, cmol/kg</td>
 								<td>TOTAL NITROGEN,%</td>
 							</tr>
 							{soilComponent}
