@@ -198,3 +198,7 @@ h1, h2, h3, h5, h6, p, ul {
 	line-height: 28px;
 	text-align: center;
 }
+
+.dotted-hr {
+	border-top: dotted 1px;
+}

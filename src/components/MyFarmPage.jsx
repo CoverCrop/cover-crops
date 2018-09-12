@@ -153,7 +153,8 @@ class MyFarmPage extends Component {
 							<MyFarmWrap
 								selectedCLU={selectCLU}
 								selectedCLUName={selectCLU? selectCLU.cluname: ""}
-
+								lat={selectCLU.lat}
+								lon={selectCLU.lon}
 							/>:
 								<img src={require("../images/my-farm-blur.png")}/>
 							}
