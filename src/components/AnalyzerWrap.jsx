@@ -14,6 +14,7 @@ class AnalyzerWrap extends Component {
 	render() {
 		const {activeTab} = this.props;
 		// Cannot use Link within Tab
+		// click tabs will jump to a new page
 		return(
 			<div>
 				<span className="analyzer-line"> </span>

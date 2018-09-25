@@ -175,10 +175,6 @@
 }
 
 .analyzer-tab .mdc-tab {
-	height: 28px;
-	width: 118px;
-	/*color: #455A64;*/
-	font-family: Roboto;
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 28px;

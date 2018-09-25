@@ -127,6 +127,19 @@ export function ConvertDDToDMS(dd)
 	return deg + "d " + min + "' " + sec + "\"";
 }
 
+export function convertDate(dayString) {
+	if(dayString){
+		if(dayString.length === 5){
+			let year = parseInt(dayString.substring(0, 2)) + 2000;
+			let yearcount = parseInt(dayString.substring(dayString.length - 3));
+			let date = new Date(year, 0, yearcount);
+			return date.toISOString().substring(5, 10);
+		} else {
+			return dayString;
+		}
+	}
+}
+
 export function calculateDayOfYear(date) {
 	let timeStamp = new Date().setFullYear(date.getFullYear(), 0, 1);
 	let yearFirstDay = Math.floor(timeStamp / 86400000);
@@ -185,4 +198,33 @@ export async function getMyFieldList(email) {
 
 export async function wait(ms) {
 	new Promise(resolve => setTimeout(resolve, ms));
+}
+
+export function findFirstSubstring(textArray, s) {
+	for(let i = 0; i < textArray.length;i++)
+	{
+		if(textArray[i].indexOf(s) !== -1)
+			return i;
+	}
+	return -1;
+}
+
+// add 0 as default to avoid undefined error
+export function readTable(textlines, table_title){
+	let tableobj = {"0":{}};
+	let table_line_index = findFirstSubstring(textlines, table_title);
+	let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
+	let linenumber = 2;
+	let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
+
+	while(table_body.length > 0 && !table_body[0].includes("@")){
+		let colunmobj = {};
+		for (let i = 1; i < table_header.length; i++) {
+			colunmobj[table_header[i]] = table_body[i];
+		}
+		tableobj[table_body[0]] = colunmobj;
+		linenumber = linenumber+1;
+		table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
+	}
+	return tableobj;
 }
