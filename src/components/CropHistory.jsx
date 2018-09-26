@@ -52,6 +52,7 @@ class CropHistory extends Component {
 			<div className="border-top summary-div myfarm-input">
 
 					<div className="black-bottom">
+						<div className="update-box">
 						<p>YEAR</p>
 						<Select
 							name="year"
@@ -63,6 +64,7 @@ class CropHistory extends Component {
 							})
 							}
 						/>
+						</div>
 					</div>
 				{(selectcrop && selectcrop["MF"]["FDATE"])?
 					<div className="black-bottom">
