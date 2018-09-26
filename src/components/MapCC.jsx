@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import ol from 'openlayers';
 import PropTypes from 'prop-types';
-import config from "../app.config.js"
+import config from "../app.config.js";
 require("openlayers/css/ol.css");
 
 class MapCC extends Component {
@@ -109,8 +109,8 @@ class MapCC extends Component {
 			that.state.map.updateSize();
 
 			console.log(that.props.extent);
-			if (that.props.extent !== undefined && that.props.extent !== null) {
-				console.log("Inside");
+			if (that.props.extent !== undefined && that.props.extent !== null && that.props.extent[0] !== Infinity) {
+				// console.log("Inside");
 				that.state.map.getView().fit(that.props.extent, that.state.map.getSize());
 			}
 		})

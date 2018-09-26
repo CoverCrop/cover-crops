@@ -202,7 +202,7 @@ export async function getCLUGeoJSON(cluId) {
 }
 
 /**
- * Get Extent of the field CLUs in user's profile.
+ * Get Extent of the field CLUs in user's profile. return empty extend if no clu available.
  * @param emailId
  */
 export function getExtentOfFieldsForUser(emailId){
@@ -225,15 +225,16 @@ export function getExtentOfFieldsForUser(emailId){
 
 			getCLUGeoJSON(clu.clu).then(function (geoJSON) {
 
-				let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
-					dataProjection: "EPSG:4326",
-					featureProjection: "EPSG:3857"
-				});
+                if(geoJSON.length >0) {
+					let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
+						dataProjection: "EPSG:4326",
+						featureProjection: "EPSG:3857"
+					});
 
-				fieldPolygonSource.addFeatures(features);
-				currentExtent = ol.extent.extend(currentExtent, fieldPolygonSource.getExtent());
-				fieldPolygonSource.clear();
-
+					fieldPolygonSource.addFeatures(features);
+					currentExtent = ol.extent.extend(currentExtent, fieldPolygonSource.getExtent());
+					fieldPolygonSource.clear();
+				}
 			}, function (err) {
 				console.log(err);
 			});
