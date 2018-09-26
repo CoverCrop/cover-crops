@@ -64,13 +64,13 @@ class AddFieldPage extends Component {
 				// console.log(geojson)
 				let clu_id = geojson.features[0].properties["clu_id"];
 				that.props.handleUserCLUChange(clu_id, "");
-				
+				// TODO, remove this API and save the clus in redux.
 				getMyFieldList(this.props.email).then(function(clus){
 					// console.log(clus.filter(userclu => userclu.clu === clu_id));
 					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
-					
+
 				})
-				
+
 
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
