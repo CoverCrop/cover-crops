@@ -50,23 +50,24 @@ const user = (state = defaultState, action) => {
 				isExperimentUpdate: false,
 				exptxt: action.exptxt,
 			});
-		case "CHANGE_CROP":
+		case "CHANGE_CROP": {
 			//TODO: cropobj as input
 			let {cropyear, firstField, secondField, updateValue} = action;
 			return {
 				...state,
 				isExperimentUpdate: true,
-				cropobj : {
+				cropobj: {
 					...state.cropobj,
-					[cropyear] : {
+					[cropyear]: {
 						...state.cropobj[cropyear],
-						[firstField] : {
+						[firstField]: {
 							...state.cropobj[cropyear][firstField],
-							[secondField] : updateValue
+							[secondField]: updateValue
 						}
 					}
 				}
 			};
+		}
 		default:
 			return state;
 	}

@@ -166,7 +166,6 @@ export function convertFullDate(dayString) {
 }
 
 export function calculateDayOfYear(date) {
-	console.log(date)
 	let timeStamp = new Date().setFullYear(date.getFullYear(), 0, 1);
 	let yearFirstDay = Math.floor(timeStamp / 86400000);
 	let today = Math.ceil((date.getTime()) / 86400000);
@@ -176,9 +175,9 @@ export function calculateDayOfYear(date) {
 //eg. moment to 17096
 export function convertDayString(moment) {
 	if(moment.dayOfYear() < 99){
-		return (moment.get('year')-2000).toString() + "0" + moment.dayOfYear().toString()
+		return (moment.get("year")-2000).toString() + "0" + moment.dayOfYear().toString();
 	}
-	return (moment.get('year')-2000).toString() + moment.dayOfYear().toString()
+	return (moment.get("year")-2000).toString() + moment.dayOfYear().toString();
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
@@ -277,7 +276,7 @@ export function getCropObj(text){
 
 	let cropobj = {};
 
-	let textlines = text.split('\n');
+	let textlines = text.split("\n");
 
 	let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
 	// TODO: move to utils?
@@ -290,7 +289,7 @@ export function getCropObj(text){
 	const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
 
 	let linenumber = 2;
-	let crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
+	let crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
 	while (crop.length >0){
 		let obj = {};
 		for (let i = 0; i < b.length; i++) {
@@ -301,31 +300,28 @@ export function getCropObj(text){
 		let objkey = obj["YEAR"] + " " + obj["CROP"];
 		cropobj[objkey] = obj;
 		linenumber = linenumber+1;
-		crop = textlines[treaments_line_number+linenumber].split(' ').filter( word => word !== "");
+		crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
 	}
 	return cropobj;
 }
 
 export function getFieldObj(text){
-	let textlines = text.split('\n');
+	let textlines = text.split("\n");
 	return readTable(textlines, "FIELDS")[1];
 }
 
 export function cropObjToExptxt(text, cropobj){
-	console.log("cropObjToExptxt working");
-	let exptxt = text;
 	// let tmptext = text.replace("TNAME....................", "YEAR CROP");
-	let textlines = text.split('\n');
+	let textlines = text.split("\n");
     // TODO
 	const exp =  {"MF": "FERTILIZER"};
 	const expLocation =  {"MF": 12};
 
-	for (var factor in exp) {
+	for (let factor in exp) {
 		let tableName = exp[factor];
 		let table_line_index = findFirstSubstring(textlines, tableName);
 		let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
-		console.log(isNaN(table_line_index))
-		for (var cropyear in cropobj) {
+		for (let cropyear in cropobj) {
 			let thisobj = cropobj[cropyear][factor];
 			//	get line number
 			let exp_line = findFirstSubstring(textlines, cropyear);
@@ -334,8 +330,7 @@ export function cropObjToExptxt(text, cropobj){
 
 			if(lineNumber> 0){
 				let modify_line_number = table_line_index + 1 + lineNumber;
-				let newline = " " + lineNumber + " " +table_header.map(header =>  thisobj[header]).join(" ")
-				console.log(textlines[modify_line_number])
+				let newline = " " + lineNumber + " " +table_header.map(header =>  thisobj[header]).join(" ");
 				textlines[modify_line_number] = newline;
 			}
 		}
