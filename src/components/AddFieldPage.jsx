@@ -3,6 +3,7 @@ import Header from './Header';
 import ol from 'openlayers';
 import {Body1, Body2, Button, Card, CardText, Cell, Checkbox, FormField, Grid, Textfield} from "react-mdc-web";
 import MapCC from './MapCC';
+import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"

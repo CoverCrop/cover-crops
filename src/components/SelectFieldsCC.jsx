@@ -68,7 +68,7 @@ class SelectFieldsCC extends Component {
     //TODO: the click on Icon is not working.
 	render() {
 
-		let options = this.state.clus.map(w => Object.assign({ value: w, label: w.cluname }))
+		let options = this.state.clus.map(w => Object.assign({ value: w, label: w.cluname }));
 		const {cluname} = this.state;
 		if(this.state.fetchError) {
 			return (
