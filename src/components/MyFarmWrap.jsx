@@ -6,6 +6,7 @@ import {connect} from "react-redux";
 import {handleUserLogout} from "../actions/user";
 import MyFarmSummary from "./MyFarmSummary";
 import UploadFieldSummary from "./UploadFieldSummary";
+import CropHistory from "./CropHistory";
 
 class MyFarmWrap extends Component {
 
@@ -13,6 +14,17 @@ class MyFarmWrap extends Component {
 		super(props);
 		this.state = {
 			activeTab:1
+		}
+	}
+
+	renderContent(activeTab) {
+		switch(activeTab) {
+			case 1:
+				return <UploadFieldSummary {...this.props} />;
+			case 2: return <CropHistory {...this.props} />;
+			//case 4
+			default:
+				return <MyFarmSummary {...this.props} />;
 		}
 	}
 
@@ -30,13 +42,13 @@ class MyFarmWrap extends Component {
 						>
 							Field Profile
 						</Tab>
-						{/*<Tab*/}
-							{/*active={activeTab===2}*/}
-							{/*onClick={() => {this.setState({activeTab:2})}}*/}
-						{/*>*/}
-							{/*Crop History*/}
+						<Tab
+							active={activeTab===2}
+							onClick={() => {this.setState({activeTab:2})}}
+						>
+							Crop History
 
-						{/*</Tab>*/}
+						</Tab>
 						{/*<Tab*/}
 							{/*active={activeTab===3}*/}
 							{/*onClick={() => {this.setState({activeTab:2})}}*/}
@@ -53,10 +65,7 @@ class MyFarmWrap extends Component {
 					</Tabbar>
 
 				</div>
-				{/*TODO: use switch when there are 4 tabs*/}
-				{activeTab === 1 ?
-					<UploadFieldSummary {...this.props} />:
-						<MyFarmSummary {...this.props} />}
+				{this.renderContent(activeTab)}
 
 			</div>
 		);

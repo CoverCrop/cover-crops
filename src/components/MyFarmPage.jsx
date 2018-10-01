@@ -9,13 +9,16 @@ import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList} from "../public/utils";
+import {getMyFieldList, getOutputFileTxt} from "../public/utils";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
 
 import MyFarmSummary from "./MyFarmSummary";
 import MyFarmWrap from "./MyFarmWrap";
+import {handleCLUChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
+import {handleExptxtGet} from "../actions/user";
+import {defaultExptxtDatasetID} from "../datawolf.config";
 
 class MyFarmPage extends Component {
 
@@ -34,7 +37,8 @@ class MyFarmPage extends Component {
 
 		getMyFieldList(this.props.email).then(function(clus){
 			// console.log(clus)
-			that.setState({clus, fetchError: false});
+			// list the latest updated on the top.
+			that.setState({clus: clus.reverse(), fetchError: false});
 			that.handleCLUChange(0);
 		}, function(err) {
 			console.log(err);
@@ -62,6 +66,12 @@ class MyFarmPage extends Component {
 						new ol.Feature({})
 					]});
 			});
+
+		let expdatasetID = clus[cluIndex].expfile === ""? defaultExptxtDatasetID: clus[cluIndex].expfile;
+		// console.log(expdatasetID)
+		//TODO: double check!!!!
+		getOutputFileTxt(expdatasetID, null).then(exptxt =>
+		{this.props.handleExptxtGet(exptxt);})
 
 	}
 
@@ -162,5 +172,13 @@ const mapStateToProps = (state) => {
 	}
 };
 
-export default connect(mapStateToProps, null)(MyFarmPage);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt));
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyFarmPage);
 

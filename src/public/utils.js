@@ -1,5 +1,6 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
+import {CULTIVARS} from "../experimentFile";
 
 /***
  * Checks if user
@@ -56,6 +57,14 @@ export const ID = function () {
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
 // function
 export async function getOutputFileJson(datasetId, outputFileName = null) {
+	return getOutputFile(datasetId, outputFileName, "json");
+}
+
+export async function getOutputFileTxt(datasetId, outputFileName = null) {
+	return getOutputFile(datasetId, outputFileName, "txt");
+}
+
+async function getOutputFile(datasetId, outputFileName = null, filetype ) {
 	let headers = {
 		"Content-Type": "application/json",
 		"Access-Control-Origin": "http://localhost:3000"
@@ -97,8 +106,13 @@ export async function getOutputFileJson(datasetId, outputFileName = null) {
 				headers: headers,
 				credentials: "include"
 			});
-
-		return await fileDownloadResponse.json();
+		if(filetype === "json"){
+			return await fileDownloadResponse.json();
+		}
+		if(filetype === "txt"){
+			return await fileDownloadResponse.text();
+		}
+		return await fileDownloadResponse;
 	}
 	else {
 		return null;
@@ -130,10 +144,21 @@ export function ConvertDDToDMS(dd)
 export function convertDate(dayString) {
 	if(dayString){
 		if(dayString.length === 5){
+
+			return convertFullDate(dayString).substring(5, 10);
+		} else {
+			return dayString;
+		}
+	}
+}
+
+export function convertFullDate(dayString) {
+	if(dayString){
+		if(dayString.length === 5){
 			let year = parseInt(dayString.substring(0, 2)) + 2000;
 			let yearcount = parseInt(dayString.substring(dayString.length - 3));
 			let date = new Date(year, 0, yearcount);
-			return date.toISOString().substring(5, 10);
+			return date.toISOString();
 		} else {
 			return dayString;
 		}
@@ -145,6 +170,14 @@ export function calculateDayOfYear(date) {
 	let yearFirstDay = Math.floor(timeStamp / 86400000);
 	let today = Math.ceil((date.getTime()) / 86400000);
 	return today - yearFirstDay;
+}
+
+//eg. moment to 17096
+export function convertDayString(moment) {
+	if(moment.dayOfYear() < 99){
+		return (moment.get("year")-2000).toString() + "0" + moment.dayOfYear().toString();
+	}
+	return (moment.get("year")-2000).toString() + moment.dayOfYear().toString();
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
@@ -209,22 +242,99 @@ export function findFirstSubstring(textArray, s) {
 	return -1;
 }
 
-// add 0 as default to avoid undefined error
+// add 0 as default to avoid undefined error.
+// Cannot read treatment table, its first columns are all 1.
 export function readTable(textlines, table_title){
 	let tableobj = {"0":{}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
-	let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
-	let linenumber = 2;
-	let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
+	if(table_line_index >=0){
+		let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
+		let linenumber = 2;
+		let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
 
-	while(table_body.length > 0 && !table_body[0].includes("@")){
-		let colunmobj = {};
-		for (let i = 1; i < table_header.length; i++) {
-			colunmobj[table_header[i]] = table_body[i];
+		while(table_body.length > 0 && !table_body[0].includes("@")){
+			let colunmobj = {};
+			for (let i = 1; i < table_header.length; i++) {
+				colunmobj[table_header[i]] = table_body[i];
+			}
+			tableobj[table_body[0]] = colunmobj;
+			linenumber = linenumber+1;
+			table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
 		}
-		tableobj[table_body[0]] = colunmobj;
-		linenumber = linenumber+1;
-		table_body = textlines[table_line_index+linenumber].split(" ").filter( word => word !== "");
+		return tableobj;
 	}
-	return tableobj;
+	return {};
+}
+
+export function dictToOptions(dict){
+	return Object.keys(dict).map(function(key) {
+		return {value: key, label:dict[key]};
+	});
+}
+
+export function getCropObj(text){
+
+	let cropobj = {};
+
+	let textlines = text.split("\n");
+
+	let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
+	// TODO: move to utils?
+	let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
+	let b = tmptext.split(" ");
+
+	let FERTILIZER = readTable(textlines, "FERTILIZERS");
+	let PLANTING = readTable(textlines, "PLANTING");
+	let HARVEST = readTable(textlines, "HARVEST");
+	const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
+
+	let linenumber = 2;
+	let crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
+	while (crop.length >0){
+		let obj = {};
+		for (let i = 0; i < b.length; i++) {
+			//or check with: if (b.length > i) { assignment }
+
+			obj[b[i]] = exp[b[i]]? exp[b[i]][crop[i]]: crop[i];
+		}
+		let objkey = obj["YEAR"] + " " + obj["CROP"];
+		cropobj[objkey] = obj;
+		linenumber = linenumber+1;
+		crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
+	}
+	return cropobj;
+}
+
+export function getFieldObj(text){
+	let textlines = text.split("\n");
+	return readTable(textlines, "FIELDS")[1];
+}
+
+export function cropObjToExptxt(text, cropobj){
+	// let tmptext = text.replace("TNAME....................", "YEAR CROP");
+	let textlines = text.split("\n");
+    // TODO
+	const exp =  {"MF": "FERTILIZER"};
+	const expLocation =  {"MF": 12};
+
+	for (let factor in exp) {
+		let tableName = exp[factor];
+		let table_line_index = findFirstSubstring(textlines, tableName);
+		let table_header = textlines[table_line_index+1].split(" ").filter( word => word !== "");
+		for (let cropyear in cropobj) {
+			let thisobj = cropobj[cropyear][factor];
+			//	get line number
+			let exp_line = findFirstSubstring(textlines, cropyear);
+            let exp_line_array = textlines[exp_line].split(" ").filter( word => word !== "");
+			let lineNumber = parseInt(exp_line_array[expLocation[factor]]);
+
+			if(lineNumber> 0){
+				let modify_line_number = table_line_index + 1 + lineNumber;
+				let newline = " " + lineNumber + " " +table_header.map(header =>  thisobj[header]).join(" ");
+				textlines[modify_line_number] = newline;
+			}
+		}
+	}
+
+	return textlines.join("\n");
 }

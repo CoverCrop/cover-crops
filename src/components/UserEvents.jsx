@@ -7,9 +7,9 @@ import {
 	datawolfURL, latId, lonId, weatherId, workflowId, resultDatasetId,
 	userInputJSONDatasetID, eventPageSize
 } from "../datawolf.config";
-import styles from '../styles/user-page.css';
+import styles from '../styles/history-page.css';
 import { handleResults} from '../actions/analysis';
-import {groupBy, getOutputFileJson, getWeatherName, ConvertDDToDMS, wait, sortByDateInDescendingOrder} from '../public/utils';
+import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from '../public/utils';
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
 
