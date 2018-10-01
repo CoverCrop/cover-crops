@@ -1,11 +1,10 @@
 {
   "presets": [
-	"latest",
+	"env",
 	"stage-0",
 	"react"
   ],
   "plugins": [
-	["babel-root-import"],
 	["transform-flow-strip-types"]
   ],
   "env": {
