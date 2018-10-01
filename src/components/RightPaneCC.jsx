@@ -85,7 +85,6 @@ class RightPaneCC extends Component {
 				<MapCC mapId="analysis-clu"
 					   markercoordinate={this.state.markercoordinate}
 					   areafeatures={this.state.areafeatures}
-					   recenter
 					   extent={this.state.extent}
 				/>
 				<SelectFieldsCC />

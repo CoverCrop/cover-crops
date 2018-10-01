@@ -271,7 +271,7 @@ export function getExtentOfFieldsForUser(emailId){
 
 			getCLUGeoJSON(clu.clu).then(function (geoJSON) {
 
-                if(geoJSON.length >0) {
+
 					let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
 						dataProjection: "EPSG:4326",
 						featureProjection: "EPSG:3857"
@@ -280,7 +280,7 @@ export function getExtentOfFieldsForUser(emailId){
 					fieldPolygonSource.addFeatures(features);
 					currentExtent = ol.extent.extend(currentExtent, fieldPolygonSource.getExtent());
 					fieldPolygonSource.clear();
-				}
+
 			}, function (err) {
 				console.log(err);
 			});
