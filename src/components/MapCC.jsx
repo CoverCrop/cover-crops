@@ -106,13 +106,12 @@ class MapCC extends Component {
 		// wait until the map is loaded and update the size.
 		let that = this;
 		new Promise(resolve => setTimeout(resolve, 500)).then(function (){
-			that.state.map.updateSize();
-
-			console.log(that.props.extent);
+			console.log("map extent: " + that.props.extent);
 			if (that.props.extent !== undefined && that.props.extent !== null && that.props.extent[0] !== Infinity) {
 				// console.log("Inside");
 				that.state.map.getView().fit(that.props.extent, that.state.map.getSize());
 			}
+			that.state.map.updateSize();
 		})
 	}
 
