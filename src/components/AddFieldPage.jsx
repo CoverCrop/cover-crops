@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import Header from './Header';
 import ol from 'openlayers';
-import {Button, Textfield, Card, CardText, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
-import styles from '../styles/main.css';
+import {Body1, Body2, Button, Card, CardText, Cell, Checkbox, FormField, Grid, Textfield} from "react-mdc-web";
 import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
@@ -10,6 +9,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
+import {getCLUGeoJSON, getExtentOfFieldsForUser, getMyFieldList} from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange, handleUserCLUChange} from "../actions/analysis";
 
 
@@ -18,12 +18,23 @@ class AddFieldPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			clus: [],
+			clus:[],
+			exist_clu: false,
 			markercoordinate: [],
 			areafeatures: [
 				new ol.Feature({})
-			]
-		}
+			],
+			extent: null
+		};
+	}
+
+	componentDidMount() {
+
+		let currentExtent = getExtentOfFieldsForUser(this.props.email);
+		// if (!ol.extent.isEmpty(currentExtent)) {
+		// 	this.setState({defaultCenter: ol.extent.getCenter(currentExtent)})
+		// }
+		this.setState({extent: currentExtent});
 	}
 
 	handleClick = (e) => {
@@ -36,35 +47,44 @@ class AddFieldPage extends Component {
 			this.props.handleLatFieldChange(lonLatCoordinates[1]);
 			this.props.handleLongFieldChange(lonLatCoordinates[0]);
 
+
+
 			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 			let that = this;
 			fetch(CLUapi).then(response => {
-				let geojson = response.json();
-				return geojson;
+				return response.json();
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
 					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
 				});
 
-				this.setState({areafeatures:features});
+				that.setState({areafeatures:features});
 				// console.log(geojson)
-				that.props.handleUserCLUChange(geojson.features[0].properties["clu_id"], "");
+				let clu_id = geojson.features[0].properties["clu_id"];
+				that.props.handleUserCLUChange(clu_id, "");
+				// TODO, remove this API and save the clus in redux.
+				getMyFieldList(this.props.email).then(function(clus){
+					// console.log(clus.filter(userclu => userclu.clu === clu_id));
+					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
+
+				})
+
 
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
-				this.setState({areafeatures:[
+				that.setState({areafeatures:[
 						new ol.Feature({})
 					]});
 				that.props.handleUserCLUChange(0, "");
 			});
-
-	}
+	};
 
 
 	render() {
+		let {markercoordinate, areafeatures, exist_clu} = this.state;
 		return (
 			<AuthorizedWrap>
 			<div>
@@ -73,11 +93,12 @@ class AddFieldPage extends Component {
 
 					<div className="choose-clu-div">
 						<MapCC mapId="choose-clu"
-							   markercoordinate={this.state.markercoordinate}
-							   areafeatures={this.state.areafeatures}
+							   markercoordinate={markercoordinate}
+							   areafeatures={areafeatures}
 							   handleClick={this.handleClick}
+							   extent={this.state.extent}
 						/>
-						<AddFieldBox />
+						<AddFieldBox exist_clu={exist_clu}/>
 					</div>
 
 			</div>
@@ -86,12 +107,13 @@ class AddFieldPage extends Component {
 	}
 }
 
-
 const mapStateToProps = (state) => {
 	return {
-		clu: state.analysis.clu
+		clu: state.analysis.clu,
+		email: state.user.email
 	}
 };
+
 
 const mapDispatchToProps = (dispatch) => {
 	return {

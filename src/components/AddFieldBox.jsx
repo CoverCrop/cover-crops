@@ -8,6 +8,7 @@ import {connect} from "react-redux";
 import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
+import {existCLUNote} from "../app.messages.js";
 
 class AddFieldBox extends Component {
 
@@ -19,7 +20,12 @@ class AddFieldBox extends Component {
 			cluname: ""
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
-		}
+	}
+
+	componentDidMount(){
+		this.props.handleLatFieldChange("");
+		this.props.handleLongFieldChange("");
+	}
 
 	handleLatFieldChange = (e) => {
 		this.props.handleLatFieldChange(e.target.value)
@@ -63,29 +69,33 @@ class AddFieldBox extends Component {
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
 					<Grid className="no-padding-grid">
-					<Cell col={6}>
-					<CoordinateFieldCC
-						helptext="Latitude value must between -90 and 90"
-						min="-90"
-						max="90"
-						type="number"
-						step="0.000001"
-						value={this.props.latitude}
-						onChange={this.handleLatFieldChange}
-						floatingLabel="Latitude"/>
-					</Cell>
-					<Cell col={6}>
-					<CoordinateFieldCC
-						helptext="Longitude value must between -180 and 180"
-						min="-180"
-						max="180"
-						type="number"
-						step="0.000001"
-						value={this.props.longitude}
-						onChange={this.handleLongFieldChange}
-						floatingLabel="Longitude"/>
-					</Cell>
+						<Cell col={6}>
+							<CoordinateFieldCC
+								helptext="Latitude value must between -90 and 90"
+								min="-90"
+								max="90"
+								type="number"
+								step="0.000001"
+								value={this.props.latitude}
+								onChange={this.handleLatFieldChange}
+								floatingLabel="Latitude"/>
+						</Cell>
+						<Cell col={6}>
+							<CoordinateFieldCC
+								helptext="Longitude value must between -180 and 180"
+								min="-180"
+								max="180"
+								type="number"
+								step="0.000001"
+								value={this.props.longitude}
+								onChange={this.handleLongFieldChange}
+								floatingLabel="Longitude"/>
+						</Cell>
 					</Grid>
+					{this.props.exist_clu  && <div className="go-up ">
+						<Icon className="warning-message" name="warning"/>
+						<p className="exist-message">{existCLUNote}</p>
+					</div>}
 					<Textfield
 						required
 						floatingLabel="CLU name"
@@ -97,7 +107,7 @@ class AddFieldBox extends Component {
 				</div>
 				<div className="add-field-bottom">
 					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
-					<button type="submit" className="add-button"
+					<button type="submit" className="blue-button add-button"
 							disabled={this.state.cluname ==="" || this.props.clu ===0 }
 							onClick={this.handleAddCLU}
 					>ADD FIELD</button>

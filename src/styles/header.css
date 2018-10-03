@@ -107,8 +107,8 @@
 	font-family: Roboto;
 	font-size: 24px;
 	line-height: 61px;
-	/*text-align: right;*/
-	margin-left: 524px;
+	text-align: right;
+	margin-left: calc(100vw - 900px);
 }
 
 .about-the-project {
@@ -138,7 +138,7 @@
 
 .rectangle-3-onselect {
 	/*height: 52px;*/
-	width: calc(100vw - 648px);
+	width: calc(100vw - 662px);
 	background-color: #455A64;
 	position: absolute;
 	left: 624px;
@@ -175,10 +175,6 @@
 }
 
 .analyzer-tab .mdc-tab {
-	height: 28px;
-	width: 118px;
-	/*color: #455A64;*/
-	font-family: Roboto;
 	font-size: 24px;
 	font-weight: bold;
 	line-height: 28px;

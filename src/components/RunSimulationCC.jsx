@@ -7,12 +7,14 @@ import 'react-select/dist/react-select.css';
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
-	weatherPatterns} from "../datawolf.config";
+	weatherPatterns, coverCrops} from "../datawolf.config";
 import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
+import Select from 'react-select';
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
-	handleWeatherPatternChange} from '../actions/analysis';
+	handleWeatherPatternChange, handleCoverCropChange} from '../actions/analysis';
 import styles from "../styles/analysis-page.css"
+import SelectFieldsCC from "./SelectFieldsCC";
 
 class RunSimulationCC extends Component {
 
@@ -22,6 +24,7 @@ class RunSimulationCC extends Component {
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
+		this.handleCoverCropChange = this.handleCoverCropChange.bind(this);
 
 		this.state = {
 			simulationStatus: "",
@@ -220,6 +223,12 @@ class RunSimulationCC extends Component {
 		this.props.handleWeatherPatternChange(weatherPattern);
 	}
 
+	handleCoverCropChange(coverCrop){
+		// TODO Selected cover crop should be added to the JSON used for generating the experiment file
+		// Right now only one is supported so this selection is ignored
+		this.props.handleCoverCropChange(coverCrop);
+	}
+
 	toggleDropdown(e) {
 		this.setState({ open: !this.state.open })
 	}
@@ -243,8 +252,18 @@ class RunSimulationCC extends Component {
 						</CardText>
 					</Card>
 				</div>
+				<div className="black-bottom">
+					<Title>Cover Crop</Title>
+					<Select
+						name="selectccrop"
+						value={this.props.coverCrop}
+						onChange={this.handleCoverCropChange}
+						options={coverCrops}
+					/>
+				</div>
 				<div className="black-bottom select-date">
-					<Title>Select Cover Crop Dates</Title>
+
+					<Title>Cover Crop Dates</Title>
 					<div className="select-date-div">
 						<Body1>Establishment </Body1>
 						<DatePicker className="date-picker-cc" selected={this.props.startDate}
@@ -298,7 +317,8 @@ const mapStateToProps = (state) => {
 		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
 		cards: state.analysis.cards,
-		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked
+		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked,
+		coverCrop: state.analysis.coverCrop
 	}
 };
 
@@ -321,6 +341,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
 			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson))
+		},
+		handleCoverCropChange: (coverCrop) => {
+			dispatch(handleCoverCropChange(coverCrop))
 		}
 	}
 };

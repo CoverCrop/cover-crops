@@ -15,9 +15,11 @@ const parameters = {
 	modelWithoutCoverCrop: "ff590fee-b691-42cd-9d8f-ed0205b72d21" // CH441169-nocover.v46
 };
 
+export const workflowId = "12101e88-4f50-4b3c-add7-930444fc6ba1";
+
 export function getWithCoverCropExecutionRequest(id, lat, long, personId, weatherPattern, exp_dataset_id, json_dataset_id) {
 	return {
-		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
+		"workflowId": workflowId,
 		"creatorId": personId,
 		"title": id,
 		"description":"WithCoverCrop",
@@ -39,7 +41,7 @@ export function getWithCoverCropExecutionRequest(id, lat, long, personId, weathe
 
 export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, weatherPattern, exp_dataset_id, json_dataset_id) {
 	return {
-		"workflowId": "12101e88-4f50-4b3c-add7-930444fc6ba1",
+		"workflowId": workflowId,
 		"creatorId": personId,
 		"title": id,
 		"description":"WithoutCoverCrop",
@@ -61,14 +63,16 @@ export function getWithoutCoverCropExecutionRequest (id, lat, long, personId, we
 
 // the fist weather pattern is the Default.
 export const weatherPatterns = ["Average", "Hot", "Cold", "Dry", "Wet"];
+// Cover crops currently supported
+export const coverCrops = [ {value: "Cereal-Rye", label: "Cereal Rye"}];
 
 export const latId = "b78a76f0-982b-4e37-cae4-6acfc753184a";
 export const lonId = "be161213-0bf9-4377-809e-1c46c93c93dd";
 export const weatherId = "b20babe8-1ce1-4d1c-8d1d-adca68262f7e";
 export const resultDatasetId = "8884b4be-07d8-4a70-a624-efcafd58ffb2";
-export const workloadId = "12101e88-4f50-4b3c-add7-930444fc6ba1";
 export const userInputJSONDatasetID = "d03b2aa2-7156-42b5-f03a-522306f1ac5c";
-
+export const eventPageSize = 6;
 export const defaultExpDatasetID = "dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec";
+export const defaultExptxtDatasetID= "9df375c9-cc82-4ec0-a7da-56f8084b83c5";
 
 

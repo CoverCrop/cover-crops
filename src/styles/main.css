@@ -30,7 +30,7 @@ h1, h2, h3, h5, h6, p, ul {
 	text-align: center;
 }
 
-.rightmap {
+.float-right {
 	float: right;
 }
 
@@ -133,20 +133,72 @@ h1, h2, h3, h5, h6, p, ul {
 	padding: 0px;
 }
 
-.border-left.mdc-layout-grid__cell{
+.border-left{
 	border-left: 1px solid #D8D8D8;
 }
 
-.border-top.mdc-layout-grid__cell{
-	border-top: 1px solid #D8D8D8;
+.border-right{
+	border-right: 1px solid #D8D8D8;
+}
+
+.border-top{
+	border-top: 2px solid #D8D8D8;
 }
 
 .secondary-color {
 	color: #455A64;
 }
 
+.warning-message{
+	color: #fac312;
+}
+
+.go-up {
+	margin-top: -35px;
+}
+
+
 /*not working*/
 /*.ol-zoom {*/
 	/*left: unset;*/
 	/*right: 8px;*/
 /*}*/
+
+.position-relative {
+	position: relative;
+	height:auto;
+}
+
+.blue-button {
+	height: 33px;
+
+	color: #FFFFFF;
+	background-color: #34515E;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 21px;
+	text-align: center;
+}
+
+.blue-button.small-text {
+	font-size: 10px;
+	font-weight: 500;
+}
+
+.blue-button:disabled {
+	background-color: #c7cdd0;
+}
+
+.cancel-button {
+	height: 28px;
+
+	color: #1AB146;
+	font-family: Roboto;
+	font-size: 14px;
+	line-height: 28px;
+	text-align: center;
+}
+
+.dotted-hr {
+	border-top: dotted 1px;
+}

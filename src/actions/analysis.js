@@ -30,12 +30,6 @@ export const handleCLUChange = (clu, cluname, expfile) => ({
 	expfile
 });
 
-export const handleUserCLUChange = (clu, cluname) => ({
-	type: "CHANGE_USER_CLU",
-	clu,
-	cluname
-});
-
 export const handleWeatherPatternChange = (weatherPattern) => ({
 	type: "CHANGE_WEATHER",
 	weatherPattern
@@ -61,6 +55,11 @@ export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson,
 	withoutCoverCropExecutionId,
 	withoutCoverCropResultJson,
 	userInputJson
+});
+
+export const handleCoverCropChange = (coverCrop) => ({
+	type: "CHANGE_COVERCROP",
+	coverCrop
 });
 
 

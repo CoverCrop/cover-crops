@@ -17,8 +17,10 @@ import {
 import config from "../app.config";
 import {expfail, expsuccess} from "../app.messages";
 import {uploadDatasetToDataWolf} from "../public/utils";
+import {handleExptxtGet} from "../actions/user";
+import {connect} from "react-redux";
 
-class FieldSummary extends Component {
+class UploadFieldSummary extends Component {
 
 	constructor(props) {
 		super(props);
@@ -55,7 +57,11 @@ class FieldSummary extends Component {
 				console.log("set experiment file failed: " + responseJson.message)
 			} else {
 				this.setState({file:null, isOpen: true, message: expsuccess });
-				console.log(responseJson)
+				console.log(responseJson);
+				var reader = new FileReader();
+				reader.onload = (function(theFile) {
+					return function(e) { console.log(e.target.result)}})(this.state.file);
+				handleExptxtGet(reader.readAsText(this.state.file))
 			}
 			this.fileInput.value = "";
 		}).catch(function(e) {
@@ -78,7 +84,7 @@ class FieldSummary extends Component {
 
 	render() {
 		return (
-			<div>
+			<div className="border-top summary-div">
 				<form onSubmit={this.onFormSubmit}>
 					<h1>Upload Experiment File for {this.props.selectedCLUName}</h1>
 					<br />
@@ -104,6 +110,13 @@ class FieldSummary extends Component {
 	}
 }
 
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt));
+		}
+	}
+};
 
-export default FieldSummary;
+export default connect(null, mapDispatchToProps)(UploadFieldSummary);
 
