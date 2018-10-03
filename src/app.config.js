@@ -5,8 +5,8 @@ const devConfig = {
 	semanticServer: "",
 	CLUapi: "https://covercrop.ncsa.illinois.edu",
 	latestWeatherDate: "2018-01-31",
-	defaultCenterLongLat: [-88.243385, 40.116421],
-	defaultZoom: 7
+	defaultCenterLongLat: [-88.2, 40.14],
+	defaultZoom: 10
 };
 
 const prodConfig = {
@@ -16,8 +16,8 @@ const prodConfig = {
 	semanticServer: "",
 	CLUapi: "https://covercrop.ncsa.illinois.edu",
 	latestWeatherDate: "2018-01-31",
-	defaultCenterLongLat: [-88.243385, 40.116421],
-	defaultZoom: 7
+	defaultCenterLongLat: [-88.2, 40.14],
+	defaultZoom: 10
 };
 
 const config = getConfig();
