@@ -166,6 +166,37 @@ h1, h2, h3, h5, h6, p, ul {
 
 .position-relative {
 	position: relative;
+	height:auto;
+}
+
+.blue-button {
+	height: 33px;
+
+	color: #FFFFFF;
+	background-color: #34515E;
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 21px;
+	text-align: center;
+}
+
+.blue-button.small-text {
+	font-size: 10px;
+	font-weight: 500;
+}
+
+.blue-button:disabled {
+	background-color: #c7cdd0;
+}
+
+.cancel-button {
+	height: 28px;
+
+	color: #1AB146;
+	font-family: Roboto;
+	font-size: 14px;
+	line-height: 28px;
+	text-align: center;
 }
 
 .dotted-hr {

@@ -4,7 +4,9 @@ const devConfig = {
 	fragilityMappingServer: "",
 	semanticServer: "",
 	CLUapi: "https://covercrop.ncsa.illinois.edu",
-	latestWeatherDate: "2018-01-31"
+	latestWeatherDate: "2018-01-31",
+	defaultCenterLongLat: [-88.2, 40.14],
+	defaultZoom: 10
 };
 
 const prodConfig = {
@@ -13,7 +15,9 @@ const prodConfig = {
 	fragilityMappingServer: "",
 	semanticServer: "",
 	CLUapi: "https://covercrop.ncsa.illinois.edu",
-	latestWeatherDate: "2018-01-31"
+	latestWeatherDate: "2018-01-31",
+	defaultCenterLongLat: [-88.2, 40.14],
+	defaultZoom: 10
 };
 
 const config = getConfig();

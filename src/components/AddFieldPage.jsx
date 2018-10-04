@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import Header from './Header';
 import ol from 'openlayers';
-import {Button, Textfield, Card, CardText, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
-import styles from '../styles/main.css';
+import {Body1, Body2, Button, Card, CardText, Cell, Checkbox, FormField, Grid, Textfield} from "react-mdc-web";
 import MapCC from './MapCC';
 import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
@@ -10,7 +9,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList} from "../public/utils";
+import {getCLUGeoJSON, getExtentOfFieldsForUser, getMyFieldList} from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange, handleUserCLUChange} from "../actions/analysis";
 
 
@@ -24,8 +23,18 @@ class AddFieldPage extends Component {
 			markercoordinate: [],
 			areafeatures: [
 				new ol.Feature({})
-			]
-		}
+			],
+			extent: null
+		};
+	}
+
+	componentDidMount() {
+
+		let currentExtent = getExtentOfFieldsForUser(this.props.email);
+		// if (!ol.extent.isEmpty(currentExtent)) {
+		// 	this.setState({defaultCenter: ol.extent.getCenter(currentExtent)})
+		// }
+		this.setState({extent: currentExtent});
 	}
 
 	handleClick = (e) => {
@@ -45,8 +54,7 @@ class AddFieldPage extends Component {
 			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 			let that = this;
 			fetch(CLUapi).then(response => {
-				let geojson = response.json();
-				return geojson;
+				return response.json();
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
@@ -57,13 +65,13 @@ class AddFieldPage extends Component {
 				// console.log(geojson)
 				let clu_id = geojson.features[0].properties["clu_id"];
 				that.props.handleUserCLUChange(clu_id, "");
-				
+				// TODO, remove this API and save the clus in redux.
 				getMyFieldList(this.props.email).then(function(clus){
 					// console.log(clus.filter(userclu => userclu.clu === clu_id));
 					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
-					
+
 				})
-				
+
 
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
@@ -72,8 +80,7 @@ class AddFieldPage extends Component {
 					]});
 				that.props.handleUserCLUChange(0, "");
 			});
-
-	}
+	};
 
 
 	render() {
@@ -89,6 +96,7 @@ class AddFieldPage extends Component {
 							   markercoordinate={markercoordinate}
 							   areafeatures={areafeatures}
 							   handleClick={this.handleClick}
+							   extent={this.state.extent}
 						/>
 						<AddFieldBox exist_clu={exist_clu}/>
 					</div>
@@ -101,6 +109,7 @@ class AddFieldPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
+		clu: state.analysis.clu,
 		email: state.user.email
 	}
 };
