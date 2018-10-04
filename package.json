@@ -101,7 +101,7 @@
     "karma-sinon": "1.0.5",
     "karma-sourcemap-loader": "0.3.7",
     "karma-webpack": "2.0.2",
-    "moment": "2.18.1",
+    "moment": "2.22.2",
     "node-sass": "4.0.0",
     "npm-run-all": "4.0.1",
     "open": "0.0.5",
