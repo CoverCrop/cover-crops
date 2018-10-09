@@ -197,14 +197,14 @@ class MyFarmSummary extends Component {
 							</thead>
 							<tbody>
 							<tr>
-								<td>DEPTH,cm</td>
-								<td>CLAY,%</td>
-								<td>SILT,%</td>
-								<td>SAND,%</td>
-								<td>ORGANIC CARBON,%</td>
+								<td>DEPTH, cm</td>
+								<td>CLAY, %</td>
+								<td>SILT, %</td>
+								<td>SAND, %</td>
+								<td>ORGANIC CARBON, %</td>
 								<td>pH in WATER</td>
 								<td>CATION EXCHANGE CAPACITY, cmol/kg</td>
-								<td>TOTAL NITROGEN,%</td>
+								<td>TOTAL NITROGEN, %</td>
 							</tr>
 							{soilComponent}
 							</tbody>
@@ -242,7 +242,7 @@ class MyFarmSummary extends Component {
 								<td>Material</td>
 								<td>Application</td>
 								<td>Date</td>
-								<td>Amount</td>
+								<td>Amount, lb/acre</td>
 								<td>Depth, in</td>
 							</tr>
 							</thead>
