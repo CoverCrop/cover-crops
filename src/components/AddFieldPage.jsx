@@ -10,7 +10,8 @@ import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getCLUGeoJSON, getExtentOfFieldsForUser, getMyFieldList} from "../public/utils";
-import {handleLatFieldChange, handleLongFieldChange, handleCLUChange} from "../actions/analysis";
+import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
+import {handleUserCLUChange} from "../actions/user";
 
 
 class AddFieldPage extends Component {
@@ -124,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(handleLongFieldChange(lon));
 		},
 		handleUserCLUChange: (clu, cluname) => {
-			dispatch(handleCLUChange(clu, cluname));
+			dispatch(handleUserCLUChange(clu, cluname));
 		}
 	}
 };
