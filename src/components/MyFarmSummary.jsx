@@ -18,7 +18,7 @@ class MyFarmSummary extends Component {
 	async getInfo() {
 		let that = this;
 		//TODO: update experiment datasets & file ID
-		fetch("https://covercrop.ncsa.illinois.edu/datawolf/datasets/9df375c9-cc82-4ec0-a7da-56f8084b83c5/7726d57c-ca77-492a-9401-a5ef9589c7b5/file", {
+		fetch("https://fd-datawolf.ncsa.illinois.edu/datawolf/datasets/ff2f769f-edff-4b98-a1d9-b3a1d2f24e9a/23f759cb-3594-41a4-a5c7-1a830da75f9b/file", {
 			method: 'GET',
 			headers:{
 				'Content-Type': 'application/json',
