@@ -146,7 +146,7 @@ class MyFarmSummary extends Component {
 					<p className="myfarm-summary-header">
 						<span className="south-field">{this.props.selectedCLUName + "   "}</span>
 						<span >
-						<a className="download-exp" href="https://covercrop.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file">
+						<a className="download-exp" href="https://fd-datawolf.ncsa.illinois.edu/datawolf/datasets/dd80f5be-76b9-4a57-ae34-7a8da2ccb7ec/943f6da6-6bb6-41f5-b65d-a336d5edfddc/file">
 						<Icon name="file_download"></Icon>
 						</a>
 					</span>
