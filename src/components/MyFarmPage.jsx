@@ -14,11 +14,8 @@ import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
 
-import MyFarmSummary from "./MyFarmSummary";
 import MyFarmWrap from "./MyFarmWrap";
-import {handleCLUChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
-import {handleExptxtGet} from "../actions/user";
-import {defaultExptxtDatasetID} from "../datawolf.config";
+import {handleExptxtGet, handleUserCLUChange} from "../actions/user";
 
 class MyFarmPage extends Component {
 
@@ -66,13 +63,23 @@ class MyFarmPage extends Component {
 						new ol.Feature({})
 					]});
 			});
+		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
 
-		let expdatasetID = clus[cluIndex].expfile === ""? defaultExptxtDatasetID: clus[cluIndex].expfile;
-		// console.log(expdatasetID)
-		//TODO: double check!!!!
-		getOutputFileTxt(expdatasetID, null).then(exptxt =>
-		{this.props.handleExptxtGet(exptxt);})
-
+		fetch(config.CLUapi + "/api/users/" + this.props.email + "/CLUs/" + clus[cluIndex].clu + "/experiment_file_sqx" , {
+			method: 'GET',
+			headers:{
+				'Content-Type': 'application/json',
+				"Access-Control-Origin": "http://localhost:3000",
+			},
+			credentials: "include"
+		}).then(res => res.text())
+			.catch(error => console.error('Error:', error))
+			.then(exptxt => {
+				if(exptxt.includes("EXP.DETAILS")){
+					this.props.handleExptxtGet(exptxt);
+				}
+				}
+			)
 	}
 
 	render() {
@@ -174,6 +181,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		handleUserCLUChange: (clu, cluname) =>{
+			dispatch(handleUserCLUChange(clu, cluname));
+		},
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}

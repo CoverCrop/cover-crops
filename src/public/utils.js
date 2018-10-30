@@ -317,7 +317,7 @@ export function readTable(textlines, table_title){
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter( word => word !== "");
 
-		while(table_body.length > 0 && !table_body[0].includes("@")){
+		while(table_body.length > 1 && !table_body[0].includes("@")){
 			let colunmobj = {};
 			for (let i = 1; i < table_header.length; i++) {
 				colunmobj[table_header[i]] = table_body[i];
@@ -355,7 +355,7 @@ export function getCropObj(text){
 
 	let linenumber = 2;
 	let crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
-	while (crop.length >0){
+	while (crop.length > 1){
 		let obj = {};
 		for (let i = 0; i < b.length; i++) {
 			//or check with: if (b.length > i) { assignment }
