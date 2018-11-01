@@ -57,8 +57,7 @@ class AddFieldBox extends Component {
 			fetch(postJSONapi,{
 				method: 'POST',
 				headers: headers,
-				// credentials: "include",
-
+				credentials: "include",
 			}).then(response => {
 				window.location = "/#/profile"
 			})
