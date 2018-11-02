@@ -60,8 +60,7 @@ class Login extends Component {
 						"Authorization": "Basic " + hash,
 						"Content-Type": "application/json",
 						"Access-Control-Origin": "http://localhost:3000"
-					},
-					credentials: 'include'
+					}
 				});
 
 				// Store token in cookie if request is successful
