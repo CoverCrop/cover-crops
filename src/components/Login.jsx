@@ -11,7 +11,7 @@ import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils"
 import {Link} from "react-router";
 import config from "../app.config";
-import {invalidLoginCredentials, register, unlogin} from "../app.messages";
+import {dataWolfGetTokenCallFailed, invalidLoginCredentials, register, unlogin} from "../app.messages";
 
 class Login extends Component {
 
@@ -79,29 +79,28 @@ class Login extends Component {
 					let tokenString = "token=" + jsonKeyData["token"];
 
 					document.cookie =  tokenString + ";" + domainString + ";" + pathString + ";" + expiresString;
+
+					// Calling event handler for successful logging in
+					this.props.handleUserLogin(this.state.email, jsonData["id"], true);
+					sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
+					sessionStorage.setItem("email", jsonData["email"]); // Store email ID in session storage for future use
+
+					const CLUapi = config.CLUapi + "/api/user";
+					let serviceLoginResponse = await fetch(CLUapi, {
+						method: 'POST',
+						headers: {
+							"Authorization": "Basic " + hash,
+							"Content-Type": "application/json",
+							"Access-Control-Origin": "http://localhost:3000"
+						}
+					});
+					console.log(serviceLoginResponse);
 				}
 				else {
 					console.error("Call to get token from Data Wolf did not succeed. Response status: " +
 						keyResponse.status);
+					this.setState({statusText: dataWolfGetTokenCallFailed});
 				}
-
-				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
-				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
-				sessionStorage.setItem("email", jsonData["email"]); // Store email ID in session storage for future use
-
-
-				const CLUapi = config.CLUapi + "/api/user";
-				let serviceLoginResponse = await fetch(CLUapi, {
-					method: 'POST',
-					headers: {
-						"Authorization": "Basic " + hash,
-						"Content-Type": "application/json",
-						"Access-Control-Origin": "http://localhost:3000"
-					},
-					// credentials: 'include'
-				});
-
-				console.log(serviceLoginResponse);
 
 				// Check for authentication
 				// TODO: should we do something when status is not 200?
