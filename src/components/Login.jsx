@@ -53,6 +53,39 @@ class Login extends Component {
 					return data;
 				});
 
+				// Get token from Data Wolf
+				let keyResponse = await fetch(datawolfURL + "/login/key", {
+					method: 'GET',
+					headers: {
+						"Authorization": "Basic " + hash,
+						"Content-Type": "application/json",
+						"Access-Control-Origin": "http://localhost:3000"
+					},
+					credentials: 'include'
+				});
+
+				// Store token in cookie if request is successful
+				if(keyResponse.status === 200) {
+					let jsonKeyData = await keyResponse.json().then(function(data) {
+						return data;
+					});
+
+					// Set 24 hours expiration
+					let date = new Date();
+					date.setTime(date.getTime() + (24*60*60*1000));
+
+					let expiresString = "expires=" + date.toUTCString();
+					let domainString = "domain=.ncsa.illinois.edu";
+					let pathString = "path=/";
+					let tokenString = "token=" + jsonKeyData["token"];
+
+					document.cookie =  tokenString + ";" + domainString + ";" + pathString + ";" + expiresString;
+				}
+				else {
+					console.error("Call to get token from Data Wolf did not succeed. Response status: " +
+						keyResponse.status);
+				}
+
 				this.props.handleUserLogin(this.state.email, jsonData["id"], true);
 				sessionStorage.setItem("personId", jsonData["id"]); // Store person ID in session storage for future use
 				sessionStorage.setItem("email", jsonData["email"]); // Store email ID in session storage for future use
