@@ -52,7 +52,15 @@ class AddFieldBox extends Component {
 			// credentials: "include",
 			body: bodyjson
 		}).then(response => {
-			window.location= "/#/profile"
+			const postJSONapi = config.CLUapi + "/api/users/"+ sessionStorage.getItem("email") + "/CLUs/" + clu
+				+ "/experiment_file_json";
+			fetch(postJSONapi,{
+				method: 'POST',
+				headers: headers,
+				credentials: "include",
+			}).then(response => {
+				window.location = "/#/profile"
+			})
 		}).catch(function(e) {
 			console.log("Add CLU failed: " + e );
 		});
