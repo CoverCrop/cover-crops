@@ -300,7 +300,7 @@ class RunSimulationCC extends Component {
 					{weatherbuttons}
 				</div>}
 				<div className="run-button">
-					<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
+					<Button disabled={isButtonDisabled} raised onClick={() => this.runSimulation} >Run Simulation</Button>
 
 				</div></div>
 		)
