@@ -1,31 +1,11 @@
 import React, {Component} from "react";
-import {
-	Body1,
-	Body2,
-	Button,
-	Cell,
-	Checkbox,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Fab,
-	FormField,
-	Grid,
-	Icon,
-	Title,
-	Card,
-	CardText,
-	CardTitle
-} from "react-mdc-web";
-import Select from 'react-select';
-
+import {Title} from "react-mdc-web";
 import config from "../app.config";
-import {expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf, readTable, convertFullDate} from "../public/utils";
+import {convertFullDate, getExperimentSQX} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
-import {handleCropChange} from "../actions/user";
+import {handleExptxtGet} from "../actions/user";
 
 class Fertilizer extends Component {
 
@@ -62,17 +42,21 @@ class Fertilizer extends Component {
 			jsonBody["EVENT"] = "fertilizer";
 
 			jsonBody = [jsonBody];
-			console.log(jsonBody)
 
 			fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json"  , {
-				method: 'PATCH',
-				data: jsonBody,
+				method: "PATCH",
+				body: JSON.stringify(jsonBody),
 				headers:{
 					'Content-Type': 'application/json',
 					"Access-Control-Origin": "http://localhost:3000"
 				},
 				credentials: "include"
-			}).then(res => console.error('Error:', error))
+			}).then(response => {return response.json();})
+				.then(dataset_json => {
+					getExperimentSQX(email, clu).then(exptxt => {
+						this.props.handleExptxtGet(exptxt);
+					})
+				})
 				.catch(error => console.error('Error:', error))
 		}
 	}
@@ -93,11 +77,11 @@ class Fertilizer extends Component {
 						/>
 						<MyFarmUpdate elementType="select" title="APPLICATION" cropyear={this.state.year}
 						firstField="MF" secondField="FACD" options={FACD}
-						defaultValue={selectcrop["FACD"]} handler = {this.handler}
+						defaultValue={this.state.FACD} handler = {this.handler}
 						/>
 						<MyFarmUpdate elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
 						firstField="MF" secondField="FAMN"
-						defaultValue={selectcrop["FAMN"]} handler = {this.handler}
+						defaultValue={this.state.FAMN} handler = {this.handler}
 						/>
 						<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
 									  firstField="MF" secondField="FDATE"
@@ -118,5 +102,13 @@ const mapStateToProps = (state) => {
 	}
 };
 
-export default connect(mapStateToProps, null)(Fertilizer);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		handleExptxtGet: (exptxt) => {
+			dispatch(handleExptxtGet(exptxt));
+		}
+	}
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Fertilizer);
 

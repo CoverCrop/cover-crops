@@ -47,7 +47,6 @@ class MyFarmUpdate extends Component {
 														this.props.handler(secondField, moment.toISOString())
 													}
 								/>);
-								// TODO: a bug when all the text are removed
 							case "input":
 								return (<Textfield
 									min="0"
@@ -55,7 +54,7 @@ class MyFarmUpdate extends Component {
 									step="1"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
-										this.props.handler(secondField, updateValue)
+										this.props.handler(secondField, updateValue == "" ? 1: updateValue)
 									}}
 								/>);
 							default :

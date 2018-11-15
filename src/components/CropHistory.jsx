@@ -32,8 +32,6 @@ class CropHistory extends Component {
 
 	constructor(props) {
 		super(props);
-		//TODO: use the first one. this initial is not working.
-
 		this.state ={
 			year: this.props.cropobj? undefined: this.props.cropobj.keys()[0]
 		};
@@ -53,7 +51,6 @@ class CropHistory extends Component {
 		let options = years.map(function(key){
 			return {value: key, label:key}
 		});
-		// console.log(this.state.selectcrop);
 		return (
 
 			<div className="border-top summary-div myfarm-input">
