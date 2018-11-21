@@ -221,20 +221,20 @@ export async function uploadDatasetToDataWolf(filedata) {
 }
 
 export async function getExperimentSQX(email, CLU_id) {
-	let experiemnt_URL = config.CLUapi + "/api/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
-	const Response = await fetch(experiemnt_URL , {
-		method: 'GET',
+	let experiment_URL = config.CLUapi + "/api/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
+	const Response = await fetch(experiment_URL , {
+		method: "GET",
 		headers:{
-			'Content-Type': 'application/json',
+			"Content-Type": "application/json",
 			"Access-Control-Origin": "http://localhost:3000",
-			'Cache-Control': 'no-cache'
+			"Cache-Control": "no-cache"
 		},
 		credentials: "include"
 	});
 
-	return Response.text().then(function (exptxt) {
-		if(exptxt.includes("EXP.DETAILS")){
-			return exptxt;
+	return Response.text().then(function (expTxt) {
+		if(expTxt.includes("EXP.DETAILS")){
+			return expTxt;
 		} else {
 			return " ";
 		}

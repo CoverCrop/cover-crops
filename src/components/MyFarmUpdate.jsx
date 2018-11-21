@@ -23,7 +23,7 @@ class MyFarmUpdate extends Component {
 	}
 
 	render() {
-		const {elementType, firstField, secondField, cropobj, cropyear, defaultValue} = this.props;
+		const {elementType, firstField, secondField, defaultValue} = this.props;
 		const options = (elementType !== "select" || Array.isArray(this.props.options))? this.props.options: dictToOptions(this.props.options);
 		// const defaultValue = cropobj[cropyear][firstField][secondField];
 		return (

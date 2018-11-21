@@ -1,31 +1,6 @@
 import React, {Component} from "react";
-import {
-	Body1,
-	Body2,
-	Button,
-	Cell,
-	Checkbox,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Fab,
-	FormField,
-	Grid,
-	Icon,
-	Title,
-	Card,
-	CardText,
-	CardTitle
-} from "react-mdc-web";
 import Select from 'react-select';
-
-import config from "../app.config";
-import {expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf, readTable, convertFullDate} from "../public/utils";
-import MyFarmUpdate from "./MyFarmUpdate";
-import {FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
-import {handleCropChange} from "../actions/user";
 import Fertilizer from "./Fertilizer";
 
 class CropHistory extends Component {
@@ -35,14 +10,13 @@ class CropHistory extends Component {
 		this.state ={
 			year: this.props.cropobj? undefined: this.props.cropobj.keys()[0]
 		};
-		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleSelectYear =(year) =>{
 		this.setState({year: year} );
 	}
 
-	handleClick(){
+	handleClick = () =>{
 		this.fertilizer.postToDatawolf();
 	}
 
@@ -77,7 +51,6 @@ class CropHistory extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		exptxt: state.user.exptxt,
 		cropobj: state.user.cropobj,
 	}
 };
