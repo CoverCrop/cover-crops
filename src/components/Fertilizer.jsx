@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Title} from "react-mdc-web";
+import {Title, Button} from "react-mdc-web";
 import config from "../app.config";
 import {convertFullDate, getExperimentSQX} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {FACD, FMCD} from "../experimentFile";
+import {defaultFerilizer, FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
 import {handleExptxtGet} from "../actions/user";
 
@@ -15,7 +15,9 @@ class Fertilizer extends Component {
 	}
 
 	componentDidMount() {
-		this.props.onRef(this)
+		this.props.onRef(this);
+		let year = this.props.year;
+		this.setInitialFertilizer(year);
 	}
 	componentWillUnmount() {
 		this.props.onRef(undefined)
@@ -23,6 +25,10 @@ class Fertilizer extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
+		this.setInitialFertilizer(year);
+	}
+
+	setInitialFertilizer(year) {
 		if(year){
 			let selectcrop = this.props.cropobj[year]["MF"];
 			this.setState(selectcrop);
@@ -32,9 +38,10 @@ class Fertilizer extends Component {
 		}
 	}
 
-	postToDatawolf(){
+	async postToDatawolf(){
 		var jsonBody = this.state;
 		let {email, clu, year } =  this.props;
+		let requestStatus = false;
 		if(jsonBody["FDATE"]){
 
 			jsonBody["FERNAME"] = year;
@@ -43,7 +50,7 @@ class Fertilizer extends Component {
 
 			jsonBody = [jsonBody];
 
-			fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json"  , {
+			let updateResponse = await fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json"  , {
 				method: "PATCH",
 				body: JSON.stringify(jsonBody),
 				headers:{
@@ -51,13 +58,16 @@ class Fertilizer extends Component {
 					"Access-Control-Origin": "http://localhost:3000"
 				},
 				credentials: "include"
-			}).then(response => {return response.json();})
+			})
+
+			updateResponse.json()
 				.then(dataset_json => {
 					getExperimentSQX(email, clu).then(exptxt => {
 						this.props.handleExptxtGet(exptxt);
 					})
 				})
 				.catch(error => console.error('Error:', error))
+			return updateResponse.status;
 		}
 	}
 
@@ -65,10 +75,18 @@ class Fertilizer extends Component {
 		this.setState({[field_name] : field_value});
 	}
 
+	handleAdd = () =>{
+		let pureyear = this.props.year.split(" ")[0];
+		let newFerilizer = Object.assign({}, defaultFerilizer);
+        // set default date as 04-02
+		newFerilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
+		newFerilizer["FERNAME"] = this.props.year;
+		this.setState(newFerilizer);
+	}
+
 	render() {
 		return (
-
-				(this.state.FDATE)?
+				(this.state.FDATE) ?
 					<div className="black-bottom">
 						<Title>Fertilizer </Title>
 						<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
@@ -88,7 +106,9 @@ class Fertilizer extends Component {
 									  defaultValue={this.state.FDATE} handler = {this.handler}
 						/>
 
-					</div> : <p>No data for this year</p>
+					</div> : <div className="black-bottom">
+						<Button onClick={() => this.handleAdd()}>Add Fertilizer</Button>
+					</div>
 
 		)
 	}

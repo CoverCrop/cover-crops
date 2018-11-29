@@ -14,3 +14,10 @@ export const FMCD = { "FE001": "Ammonium nitrate", "FE002": "Ammonium sulfate", 
 export const FACD = {"AP001": "Broadcast, not incorporated", "AP002": "Broadcast, incorporated",
 	"AP004": "Banded beneath surface", "AP009": "Injected"};
 
+export const defaultFerilizer = {
+	"FDATE": "0402",
+	"FMCD": "FE004",
+	"FACD": "AP009",
+	"FDEP": "20",
+	"FAMN": "199",
+}

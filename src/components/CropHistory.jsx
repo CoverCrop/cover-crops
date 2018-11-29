@@ -3,6 +3,9 @@ import {
 	Body1,
 	Body2,
 	Button,
+	Card,
+	CardText,
+	CardTitle,
 	Cell,
 	Checkbox,
 	Dialog,
@@ -12,20 +15,10 @@ import {
 	FormField,
 	Grid,
 	Icon,
-	Title,
-	Card,
-	CardText,
-	CardTitle
+	Title
 } from "react-mdc-web";
 import Select from 'react-select';
-
-import config from "../app.config";
-import {expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf, readTable, convertFullDate} from "../public/utils";
-import MyFarmUpdate from "./MyFarmUpdate";
-import {FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
-import {handleCropChange} from "../actions/user";
 import Fertilizer from "./Fertilizer";
 
 class CropHistory extends Component {
@@ -43,7 +36,13 @@ class CropHistory extends Component {
 	}
 
 	handleClick(){
-		this.fertilizer.postToDatawolf();
+		let a = this.fertilizer.postToDatawolf();
+		let that = this;
+		a.then(function(status) {
+			if(status == 200){
+				that.setState({isOpen:true})
+			}
+		});
 	}
 
 	render() {
@@ -52,24 +51,38 @@ class CropHistory extends Component {
 			return {value: key, label:key}
 		});
 		return (
+			<div>
+				<div className="border-top summary-div myfarm-input">
 
-			<div className="border-top summary-div myfarm-input">
-
-				<div className="black-bottom">
-					<div className="update-box">
-						<p>YEAR</p>
-						<Select
-							name="year"
-							value={this.state.year}
-							options={options}
-							onChange={selectedOption => this.handleSelectYear(selectedOption.value)}
-						/>
+					<div className="black-bottom">
+						<div className="update-box">
+							<p>YEAR</p>
+							<Select
+								name="year"
+								value={this.state.year}
+								options={options}
+								onChange={selectedOption => this.handleSelectYear(selectedOption.value)}
+							/>
+						</div>
 					</div>
+					{this.state.year && <Fertilizer year={this.state.year} onRef={ref => (this.fertilizer = ref)}/> }
+					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
-				<Fertilizer year={this.state.year} onRef={ref => (this.fertilizer = ref)}/>
-				{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
+				<Dialog
+					open={this.state.isOpen}
+					onClose={() => {this.setState({isOpen:false})}}
+					className="unlogin"
+				>
+					<DialogBody>
+						<Icon  name="done_all"/>
+						<br />
+						<p className="bold-text" key="keyword">Experiment file update success.</p>
+					</DialogBody>
+					<DialogFooter>
+						<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+					</DialogFooter>
+				</Dialog>
 			</div>
-
 
 		)
 	}
