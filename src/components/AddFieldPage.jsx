@@ -90,7 +90,7 @@ class AddFieldPage extends Component {
 			<AuthorizedWrap>
 			<div>
 				<Header />
-				<AnalyzerWrap activeTab={3}/>
+				<AnalyzerWrap activeTab={4}/>
 
 					<div className="choose-clu-div">
 						<MapCC mapId="choose-clu"

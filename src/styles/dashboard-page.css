@@ -1,0 +1,46 @@
+.title_dashboard {
+	font-weight: bold;
+	color: #34515E;
+	size: 24px;
+	line-height: 20px;
+	margin: 1em 0 1em 2em;
+}
+
+.pills_dashboard{
+	padding-left: 1em;
+	padding-right: 1em;
+	color: #FFFFFF;
+}
+
+.wet {
+	background-color: #1A83B1 !important;
+}
+
+.avg {
+	background-color: #1AB146 !important;
+}
+
+.dry {
+	background-color: #8A8A6D !important;
+}
+
+.hot {
+	background-color: #E29E52 !important;
+}
+
+.cool {
+	background-color: #40A8AA !important;
+}
+
+.filters_dashboard {
+	margin-left: 2em !important;
+	color: #34515E;
+}
+
+.headers_dashboard {
+	margin-bottom: 1em;
+}
+
+.selected {
+	border: 3px solid #000000 !important;
+}

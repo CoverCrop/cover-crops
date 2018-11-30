@@ -7,6 +7,7 @@ import AboutPage from './AboutPage'
 import UserPage from './UserPage';
 import MyFarmPage from "./MyFarmPage";
 import RouteMismatch from './RouteMismatch'
+import DashboardPage from './DashboardPage'
 import "material-components-web/dist/material-components-web.min.css";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
@@ -35,6 +36,7 @@ class App extends Component {
 					<Route path="/" component={HomePage}/>
 					<Route path="/analysis" component={AnalysisPage}/>
 					<Route path="/addfield" component={AddFieldPage}/>
+					<Route path="/dashboard" component={DashboardPage}/>
 					<Route path="/profile" component={MyFarmPage}/>
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>

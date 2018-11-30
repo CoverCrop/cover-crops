@@ -35,6 +35,12 @@ class AnalyzerWrap extends Component {
 						</Tab>
 						<Tab
 							active={activeTab===3}
+							href="#/dashboard"
+						>
+							Dashboard
+						</Tab>
+						<Tab
+							active={activeTab===4}
 							href="#/profile"
 						>
 							My Fields
