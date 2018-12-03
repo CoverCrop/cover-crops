@@ -7,11 +7,12 @@ class StackedBarNegativeValues extends Component {
 	static PropTypes = {
 		data: PropTypes.array,
 		title: PropTypes.string
-	}
+	};
+
 	componentDidMount() {
 		const el = this._rootNode;
 		D3StackedBarNegativeValues.create(el, {
-			width: 800,
+			width: 1000,
 			height: 400
 		}, this.getStackedBarNegativeValuesState());
 	}
@@ -27,14 +28,12 @@ class StackedBarNegativeValues extends Component {
 
 	getStackedBarNegativeValuesState() {
 		return {
-			width: 800,
+			width: 1000,
 			height: 400,
 			data: this.props.data,
 			title: this.props.title
 		};
 	}
-
-
 
 	_setRef(componentNode) {
 		this._rootNode = componentNode;
@@ -43,6 +42,7 @@ class StackedBarNegativeValues extends Component {
     render() {
         return (
             <div className="stacked-bar-container" ref={this._setRef.bind(this)}/>
+
         );
     }
 

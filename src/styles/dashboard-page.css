@@ -44,3 +44,10 @@
 .selected {
 	border: 3px solid #000000 !important;
 }
+
+.dashboard_divider {
+	background: #708792;
+	text-align: right;
+	color: #F9F9F9;
+	margin-right: 20px;
+}
