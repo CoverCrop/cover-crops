@@ -1,21 +1,6 @@
 import React, {Component} from "react";
 import {
-	Body1,
-	Body2,
-	Button,
-	Card,
-	CardText,
-	CardTitle,
-	Cell,
-	Checkbox,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Fab,
-	FormField,
-	Grid,
-	Icon,
-	Title
+	Button
 } from "react-mdc-web";
 import Select from 'react-select';
 import {connect} from "react-redux";
@@ -28,7 +13,6 @@ class CropHistory extends Component {
 		this.state ={
 			year: this.props.cropobj? undefined: this.props.cropobj.keys()[0]
 		};
-		this.handleClick = this.handleClick.bind(this);
 	}
 
 	handleSelectYear =(year) =>{
@@ -90,7 +74,6 @@ class CropHistory extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		exptxt: state.user.exptxt,
 		cropobj: state.user.cropobj,
 	}
 };

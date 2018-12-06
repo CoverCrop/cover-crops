@@ -1,15 +1,11 @@
 import React, {Component} from "react";
-import Header from './Header'
-import Footer from './Footer'
-import styles from '../styles/main.css'
-import styles2 from '../styles/home-page.css'
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitle, CardSubtitle, CardActions, CardText,
 	Body2, Icon, Dialog, DialogBody, DialogFooter} from "react-mdc-web";
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
-import {checkAuthentication} from "../public/utils"
-import {Link} from "react-router";
+import {checkAuthentication} from "../public/utils";
+import {hashHistory, Link} from "react-router";
 import config from "../app.config";
 import {dataWolfGetTokenCallFailed, invalidLoginCredentials, register, unlogin} from "../app.messages";
 
@@ -36,13 +32,13 @@ class Login extends Component {
 			const token = this.state.email + ":" + this.state.password;
 			const hash = btoa(token);
 			let loginResponse = await fetch(datawolfURL + "/login?email=" + this.state.email, {
-				method: 'GET',
+				method: "GET",
 				headers: {
 					"Authorization": "Basic " + hash,
 					"Content-Type": "application/json",
 					"Access-Control-Origin": "http://localhost:3000"
 				},
-				credentials: 'include'
+				credentials: "include"
 			});
 
 			console.log(loginResponse);
@@ -55,7 +51,7 @@ class Login extends Component {
 
 				// Get token from Data Wolf
 				let keyResponse = await fetch(datawolfURL + "/login/key", {
-					method: 'GET',
+					method: "GET",
 					headers: {
 						"Authorization": "Basic " + hash,
 						"Content-Type": "application/json",
@@ -87,7 +83,7 @@ class Login extends Component {
 
 					const CLUapi = config.CLUapi + "/api/user";
 					let serviceLoginResponse = await fetch(CLUapi, {
-						method: 'POST',
+						method: "POST",
 						headers: {
 							"Authorization": "Basic " + hash,
 							"Content-Type": "application/json",
@@ -107,6 +103,7 @@ class Login extends Component {
 				checkAuthentication().then(function (checkAuthResponse) {
 					if (checkAuthResponse.status === 200) {
 						console.log("Person Valid");
+						hashHistory.push("/analysis");
 					}
 					else if (checkAuthResponse.status === 401) {
 						console.log("Unauthorized");
@@ -148,16 +145,17 @@ class Login extends Component {
 								</div>}
 							<span className="inputbox">
 								<Textfield autoFocus floatingLabel="Username" value={this.state.email}
-											 onChange={({target: {value: email}}) => {
-												 this.setState({email: email})
-											 }}/>
+											onChange={({target: {value: email}}) => {
+												this.setState({email: email});
+											}}/>
 							</span>
 							<span className="inputbox">
 								<Textfield floatingLabel="Password" type="password"
-											 value={this.state.password}
-											 onChange={({target: {value: password}}) => {
-												 this.setState({password})
-											 }}/>
+											value={this.state.password}
+											onChange={({target: {value: password}}) => {
+												this.setState({password});
+											}}
+								/>
 							</span>
 						</CardText>
 						<CardActions>
@@ -188,7 +186,7 @@ class Login extends Component {
 				}
 				<Dialog
 					open={this.state.isOpen}
-					onClose={() => {this.setState({isOpen:false})}}
+					onClose={() => {this.setState({isOpen:false}); }}
 					className="unlogin"
 				>
 				<DialogBody>
@@ -199,11 +197,11 @@ class Login extends Component {
 					{unlogin.map((p, index) => <p key={index}>{p}</p>)}
 				</DialogBody>
 				<DialogFooter>
-					<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+					<Button compact onClick={()=> { this.setState({isOpen: false}); }}>Close</Button>
 				</DialogFooter>
 			</Dialog>
 			</div>
-		)
+		);
 	}
 }
 
@@ -212,7 +210,7 @@ const mapStateToProps = (state) => {
 	return {
 		email: state.user.email,
 		isAuthenticated: state.user.isAuthenticated
-	}
+	};
 };
 
 
@@ -221,7 +219,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleUserLogin: (email, userId, isAuthenticated) => {
 			dispatch(handleUserLogin(email, userId, isAuthenticated));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
