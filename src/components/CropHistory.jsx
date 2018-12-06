@@ -74,7 +74,7 @@ class CropHistory extends Component {
 					className="unlogin"
 				>
 					<DialogBody>
-						<Icon  name="done_all"/>
+						<Icon  name="done"/>
 						<br />
 						<p className="bold-text" key="keyword">Experiment file update success.</p>
 					</DialogBody>

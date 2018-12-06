@@ -3,7 +3,7 @@ import {Title, Button} from "react-mdc-web";
 import config from "../app.config";
 import {convertFullDate, getExperimentSQX} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultFerilizer, FACD, FMCD} from "../experimentFile";
+import {defaultFertilizer, FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
 import {handleExptxtGet} from "../actions/user";
 
@@ -33,7 +33,7 @@ class Fertilizer extends Component {
 			let selectcrop = this.props.cropobj[year]["MF"];
 			this.setState(selectcrop);
 			let fdate = selectcrop["FDATE"];
-			console.log(convertFullDate(fdate));
+			// console.log(convertFullDate(fdate));
 			this.setState({"FDATE":convertFullDate(fdate)});
 		}
 	}
@@ -68,6 +68,24 @@ class Fertilizer extends Component {
 				})
 				.catch(error => console.error('Error:', error))
 			return updateResponse.status;
+		} else {
+			let deleteResponse = await fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu +
+				"/experiment_file_json?fe_name=" + year  , {
+				method: "DELETE",
+				body: JSON.stringify(jsonBody),
+				headers:{
+					"Access-Control-Origin": "http://localhost:3000"
+				},
+				credentials: "include"
+			})
+			deleteResponse.json()
+				.then(dataset_json => {
+					getExperimentSQX(email, clu).then(exptxt => {
+						this.props.handleExptxtGet(exptxt);
+					})
+				})
+				.catch(error => console.error('Error:', error))
+			return deleteResponse.status;
 		}
 	}
 
@@ -77,11 +95,16 @@ class Fertilizer extends Component {
 
 	handleAdd = () =>{
 		let pureyear = this.props.year.split(" ")[0];
-		let newFerilizer = Object.assign({}, defaultFerilizer);
+		let newFertilizer = Object.assign({}, defaultFertilizer);
         // set default date as 04-02
-		newFerilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
-		newFerilizer["FERNAME"] = this.props.year;
-		this.setState(newFerilizer);
+		newFertilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
+		newFertilizer["FERNAME"] = this.props.year;
+		this.setState(newFertilizer);
+	}
+
+	handleDelete = () =>{
+		let emptyFertilizer = {};
+		this.setState({FDATE:null})
 	}
 
 	render() {
@@ -105,6 +128,7 @@ class Fertilizer extends Component {
 									  firstField="MF" secondField="FDATE"
 									  defaultValue={this.state.FDATE} handler = {this.handler}
 						/>
+						<Button onClick={() => this.handleDelete()}>Delete Fertilizer</Button>
 
 					</div> : <div className="black-bottom">
 						<Button onClick={() => this.handleAdd()}>Add Fertilizer</Button>
