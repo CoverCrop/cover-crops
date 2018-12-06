@@ -103,7 +103,6 @@ class Fertilizer extends Component {
 	}
 
 	handleDelete = () =>{
-		let emptyFertilizer = {};
 		this.setState({FDATE:null})
 	}
 
