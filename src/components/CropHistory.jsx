@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {
-	Button
+	Button,
+	Dialog,
+	DialogBody,
+	DialogFooter,
+	Icon
 } from "react-mdc-web";
 import Select from 'react-select';
 import {connect} from "react-redux";
