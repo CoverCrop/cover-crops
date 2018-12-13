@@ -4,6 +4,7 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AuthorizedWrap from "./AuthorizedWrap";
 import StackedBarNegativeValues from "./StackedBarNegativeValues";
 import {Grid, Cell, Checkbox, FormField, label, Button, Icon} from "react-mdc-web";
+import {getMyFieldList} from "../public/utils";
 import styles from "../styles/dashboard-page.css";
 
 class DashboardPage extends Component {
@@ -14,11 +15,23 @@ class DashboardPage extends Component {
 			precipitation: 1,
 			temperature: 1,
 			use_weather_data: false,
-			show_fields_menu: true
+			show_fields_menu: true,
+	        fetch_error: false,
+	        clus: []
         };
         this.updateUseWeatherData = this.updateUseWeatherData.bind(this);
         this.setPrecipitation = this.setPrecipitation.bind(this);
         this.setTemperature = this.setTemperature.bind(this);
+    }
+
+    componentDidMount() {
+    	let that = this;
+	    getMyFieldList(this.props.email).then(function(clus){
+		    that.setState({clus: clus.reverse(), fetchError: false});
+	    }, function(err) {
+		    console.log(err);
+		    that.setState({fetchError: true});
+	    })
     }
 
 	updateUseWeatherData() {

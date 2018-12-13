@@ -1,12 +1,12 @@
 import React, {Component} from "react";
-import Header from './Header';
-import ol from 'openlayers';
+import Header from "./Header";
+import ol from "openlayers";
 import {Body1, Body2, Button, Card, CardText, Cell, Checkbox, FormField, Grid, Textfield} from "react-mdc-web";
-import MapCC from './MapCC';
+import MapCC from "./MapCC";
 import ViewResultsCC from "./ViewResultsCC";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
-import AddFieldBox from "./AddFieldBox"
+import AddFieldBox from "./AddFieldBox";
 import {connect} from "react-redux";
 import config from "../app.config";
 import {getCLUGeoJSON, getExtentOfFieldsForUser, getMyFieldList} from "../public/utils";
@@ -40,7 +40,7 @@ class AddFieldPage extends Component {
 
 	handleClick = (e) => {
             this.setState({markercoordinate: e.coordinate});
-			let lonLatCoordinates = ol.proj.transform(e.coordinate, 'EPSG:3857', 'EPSG:4326');
+			let lonLatCoordinates = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326");
 
 			// Format number to a string with 6 digits after decimal point
 			lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
@@ -59,7 +59,7 @@ class AddFieldPage extends Component {
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 
 				that.setState({areafeatures:features});
@@ -71,7 +71,7 @@ class AddFieldPage extends Component {
 					// console.log(clus.filter(userclu => userclu.clu === clu_id));
 					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
 
-				})
+				});
 
 
 			}).catch(function (e) {
@@ -112,7 +112,7 @@ const mapStateToProps = (state) => {
 	return {
 		clu: state.analysis.clu,
 		email: state.user.email
-	}
+	};
 };
 
 
@@ -127,7 +127,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleUserCLUChange: (clu, cluname) => {
 			dispatch(handleUserCLUChange(clu, cluname));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddFieldPage);
