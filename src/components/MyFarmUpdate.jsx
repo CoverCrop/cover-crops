@@ -12,7 +12,7 @@ import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Select from 'react-select';
-import {convertDayString, convertFullDate, dictToOptions} from "../public/utils";
+import {convertFullDate, dictToOptions} from "../public/utils";
 import {connect} from "react-redux";
 import {handleCropChange} from "../actions/user";
 
@@ -23,9 +23,9 @@ class MyFarmUpdate extends Component {
 	}
 
 	render() {
-		const {elementType, firstField, secondField, cropobj, handleCropChange, cropyear} = this.props;
+		const {elementType, firstField, secondField, defaultValue} = this.props;
 		const options = (elementType !== "select" || Array.isArray(this.props.options))? this.props.options: dictToOptions(this.props.options);
-		const defaultValue = cropobj[cropyear][firstField][secondField];
+		// const defaultValue = cropobj[cropyear][firstField][secondField];
 		return (
 			<div className="update-box">
 				<p  className={this.props.elementType}>{this.props.title}</p>
@@ -37,17 +37,16 @@ class MyFarmUpdate extends Component {
 									name={this.props.title}
 									value={defaultValue}
 									options={options}
-									onChange={selectedOption => handleCropChange(cropobj, cropyear, firstField, secondField, selectedOption.value)}
+									onChange={selectedOption => this.props.handler(secondField, selectedOption.value)}
 								/>);
 
 							case "date":
 								return (<DatePicker className="date-picker-cc"
-													selected={moment(convertFullDate(defaultValue))}
+													selected={moment((defaultValue))}
 													onChange={moment =>
-														handleCropChange(cropobj, cropyear, firstField, secondField, convertDayString(moment))
+														this.props.handler(secondField, moment.toISOString())
 													}
 								/>);
-								// TODO: a bug when all the text are removed
 							case "input":
 								return (<Textfield
 									min="0"
@@ -55,7 +54,7 @@ class MyFarmUpdate extends Component {
 									step="1"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
-										handleCropChange(cropobj, cropyear, firstField, secondField, updateValue)
+										this.props.handler(secondField, updateValue == "" ? 1: updateValue)
 									}}
 								/>);
 							default :
@@ -68,21 +67,5 @@ class MyFarmUpdate extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		exptxt: state.user.exptxt,
-		cropobj: state.user.cropobj,
-		fieldobj: state.user.fieldobj
-	}
-};
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		handleCropChange: (cropobj, cropyear, firstField, secondField, updateValue) => {
-			dispatch(handleCropChange(cropobj, cropyear, firstField, secondField, updateValue))
-		}
-	}
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(MyFarmUpdate);
+export default MyFarmUpdate;
 

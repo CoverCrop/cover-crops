@@ -8,7 +8,7 @@ import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getMyFieldList, getOutputFileTxt} from "../public/utils";
+import {getExperimentSQX, getMyFieldList, getOutputFileTxt} from "../public/utils";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
@@ -43,6 +43,7 @@ class MyFarmPage extends Component {
 	}
 
 	handleCLUChange = (cluIndex) =>{
+		this.props.handleExptxtGet("");
 		this.setState({openclu: cluIndex});
 		let {clus} = this.state;
 		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + clus[cluIndex].lat + "&lon=" + clus[cluIndex].lon + "&soil=false";
@@ -63,22 +64,10 @@ class MyFarmPage extends Component {
 					]});
 			});
 		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
+		getExperimentSQX(this.props.email, clus[cluIndex].clu).then(exptxt => {
+			this.props.handleExptxtGet(exptxt);
+		});
 
-		fetch(config.CLUapi + "/api/users/" + this.props.email + "/CLUs/" + clus[cluIndex].clu + "/experiment_file_sqx" , {
-			method: "GET",
-			headers:{
-				"Content-Type": "application/json",
-				"Access-Control-Origin": "http://localhost:3000",
-			},
-			credentials: "include"
-		}).then(res => res.text())
-			.catch(error => console.error("Error:", error))
-			.then(exptxt => {
-				if(exptxt.includes("EXP.DETAILS")){
-					this.props.handleExptxtGet(exptxt);
-				}
-				}
-			)
 	}
 
 	render() {

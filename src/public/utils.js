@@ -219,6 +219,28 @@ export async function uploadDatasetToDataWolf(filedata) {
 	});
 }
 
+export async function getExperimentSQX(email, CLU_id) {
+	let experiment_URL = config.CLUapi + "/api/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
+	const Response = await fetch(experiment_URL , {
+		method: "GET",
+		headers:{
+			"Content-Type": "application/json",
+			"Access-Control-Origin": "http://localhost:3000",
+			"Cache-Control": "no-cache"
+		},
+		credentials: "include"
+	});
+
+	return Response.text().then(function (expTxt) {
+		if(expTxt.includes("EXP.DETAILS")){
+			return expTxt;
+		} else {
+			return " ";
+		}
+	});
+
+}
+
 export async function getMyFieldList(email) {
 	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
 	const Response = await fetch(CLUapi, {headers: getHeaders()});
@@ -368,31 +390,35 @@ export function getCropObj(text){
 
 	let textlines = text.split("\n");
 
-	let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
-	// TODO: move to utils?
-	let tmptext = textlines[treaments_line_number+1].replace("TNAME....................", "YEAR CROP");
-	let b = tmptext.split(" ");
+	if(textlines.length <10){
+		return cropobj;
+	} else {
+		let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
+		// TODO: move to utils?
+		let tmptext = textlines[treaments_line_number + 1].replace("TNAME....................", "YEAR CROP");
+		let b = tmptext.split(" ");
 
-	let FERTILIZER = readTable(textlines, "FERTILIZERS");
-	let PLANTING = readTable(textlines, "PLANTING");
-	let HARVEST = readTable(textlines, "HARVEST");
-	const exp =  {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
+		let FERTILIZER = readTable(textlines, "FERTILIZERS");
+		let PLANTING = readTable(textlines, "PLANTING");
+		let HARVEST = readTable(textlines, "HARVEST");
+		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
 
-	let linenumber = 2;
-	let crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
-	while (crop.length > 1){
-		let obj = {};
-		for (let i = 0; i < b.length; i++) {
-			//or check with: if (b.length > i) { assignment }
+		let linenumber = 2;
+		let crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
+		while (crop.length > 1) {
+			let obj = {};
+			for (let i = 0; i < b.length; i++) {
+				//or check with: if (b.length > i) { assignment }
 
-			obj[b[i]] = exp[b[i]]? exp[b[i]][crop[i]]: crop[i];
+				obj[b[i]] = exp[b[i]] ? exp[b[i]][crop[i]] : crop[i];
+			}
+			let objkey = obj["YEAR"] + " " + obj["CROP"];
+			cropobj[objkey] = obj;
+			linenumber = linenumber + 1;
+			crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
 		}
-		let objkey = obj["YEAR"] + " " + obj["CROP"];
-		cropobj[objkey] = obj;
-		linenumber = linenumber+1;
-		crop = textlines[treaments_line_number+linenumber].split(" ").filter( word => word !== "");
+		return cropobj;
 	}
-	return cropobj;
 }
 
 export function getFieldObj(text){
