@@ -13,7 +13,7 @@ D3StackedBarNegativeValues.create = function(el, props, state) {
 	this.update(el, state);
 };
 
-D3StackedBarNegativeValues.update = function(el, state, configuration, chart) {
+D3StackedBarNegativeValues.update = function(el, state, configuration) {
 	this._drawBars(el, state);
 };
 
@@ -74,28 +74,41 @@ D3StackedBarNegativeValues._drawBars = function(el, state) {
 
 	const scales = this._scales(el, data, state);
 
-	scales.y.domain([d3.min(series, stackMin), d3.max(series, stackMax)]);
+	const yMaxValue = d3.max(series, stackMax) + 1;
+	const yMinValue = d3.min(series, stackMin) - 1;
+
+	scales.y.domain([yMinValue, yMaxValue]);
 	scales.x.domain(data.map(function(d) { return d.date;}));
 
-	const redBox = g.append("rect")
-		.attr("x", 0)
-		.attr("y", scales.y(d3.max(series, stackMax)))
-		.attr("width", graphWidth)
-		.attr("height", scales.y(15) - scales.y(d3.max(series, stackMax)))
-		.attr("fill", "#FBE6E6");
+	// TODO: The 15 and 10 values in the next 2 block need to be updated to match the graph criteria.
+	if(yMaxValue > 15) {
+		// Red Background
+		g.append("rect")
+			.attr("x", 0)
+			.attr("y", scales.y(d3.max(series, stackMax)))
+			.attr("width", graphWidth)
+			.attr("height", scales.y(15) - scales.y(yMaxValue))
+			.attr("fill", "#FBE6E6");
+	}
 
-	const yellowBox = g.append("rect")
-		.attr("x", 0)
-		.attr("y", scales.y(15))
-		.attr("width", graphWidth)
-		.attr("height", scales.y(10) - scales.y(15))
-		.attr("fill", "#FAECD4");
+	if(yMaxValue > 10) {
+		const maxForYellowBackground = Math.min(yMaxValue, 15);
+		// Yellow Background
+		g.append("rect")
+			.attr("x", 0)
+			.attr("y", scales.y(15))
+			.attr("width", graphWidth)
+			.attr("height", scales.y(10) - scales.y(maxForYellowBackground))
+			.attr("fill", "#FAECD4");
+	}
 
-	const grayBox = g.append("rect")
+	const maxForGrayBackground = Math.min(yMaxValue, 10);
+	// Gray Background
+	g.append("rect")
 		.attr("x", 0)
-		.attr("y", scales.y(10))
+		.attr("y", scales.y(maxForGrayBackground))
 		.attr("width", graphWidth)
-		.attr("height", scales.y(d3.min(series, stackMin)) - scales.y(10))
+		.attr("height", scales.y(yMinValue) - scales.y(maxForGrayBackground))
 		.attr("fill", "#EBEBEB");
 
 	// Adding marker lines
@@ -114,7 +127,8 @@ D3StackedBarNegativeValues._drawBars = function(el, state) {
 		.attr("y2", scales.y(15));
 
 
-	const stacked_bars = g.selectAll(".d3-stacked-bar")
+	// Stacked bars
+	g.selectAll(".d3-stacked-bar")
 		.data(series)
 		.enter().append("g")
 		.attr("fill", function(d) { return scales.z(d.key); })

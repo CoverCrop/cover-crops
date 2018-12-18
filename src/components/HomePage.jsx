@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import Header from './Header'
-import styles from '../styles/main.css';
-import styles2 from '../styles/home-page.css'
+import Header from "./Header"
+import styles from "../styles/main.css";
+import styles2 from "../styles/home-page.css"
 import {Cell, Grid, Title, Textfield, Card, CardHeader, CardMedia, CardTitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
 import Login from "./Login";
 import {welcometext} from "../app.messages";
@@ -25,13 +25,13 @@ class HomePage extends Component {
 
 		return (
 			<div >
-				<Header selected='home'/>
+				<Header selected="home"/>
 				<span className="home-line"> </span>
 
 				<div className="home-content"
-					 style={{backgroundImage: 'url("../images/ground.jpg")',
-						 backgroundSize: 'cover',
-					backgroundPosition: 'center',
+					 style={{backgroundImage: "url('../images/ground.jpg')",
+						 backgroundSize: "cover",
+					backgroundPosition: "center",
 
 					 }}>
 					{window.innerWidth > 1300 ?

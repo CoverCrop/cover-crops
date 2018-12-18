@@ -1,7 +1,8 @@
-import {datawolfURL, weatherPatterns} from "../datawolf.config";
+import {datawolfURL, resultDatasetId, weatherPatterns, workflowId} from "../datawolf.config";
 import config from "../app.config";
 import ol from "openlayers";
 import {CULTIVARS} from "../experimentFile";
+const moment = require("moment");
 
 /***
  * Checks if user
@@ -13,10 +14,7 @@ export async function checkAuthentication() {
 
 	return await fetch(datawolfURL + "/persons/" + personId, {
 		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
-		},
+		headers: getHeaders(),
 		credentials: "include"
 	});
 }
@@ -66,16 +64,12 @@ export async function getOutputFileTxt(datasetId, outputFileName = null) {
 }
 
 async function getOutputFile(datasetId, outputFileName = null, filetype ) {
-	let headers = {
-		"Content-Type": "application/json",
-		"Access-Control-Origin": "http://localhost:3000"
-	};
 
 	// Get - Result Dataset
 	const datasetResponse = await
 		fetch(datawolfURL + "/datasets/" + datasetId, {
 			method: "GET",
-			headers: headers,
+			headers: getHeaders(),
 			credentials: "include"
 		});
 
@@ -104,7 +98,7 @@ async function getOutputFile(datasetId, outputFileName = null, filetype ) {
 		const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetId + "/" + fileId + "/file",
 			{
 				method: "GET",
-				headers: headers,
+				headers: getHeaders(),
 				credentials: "include"
 			});
 		if(filetype === "json"){
@@ -181,6 +175,11 @@ export function convertDayString(moment) {
 	return (moment.get("year")-2000).toString() + moment.dayOfYear().toString();
 }
 
+export function getWeekFromDOY(doy, year) {
+	const time = moment().dayOfYear(doy).year(year);
+	return time.isoWeek();
+}
+
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
 	let userInputFile = new File([
 			"{\"with_cover_crop\": " + isWithCoverCrop + "," +
@@ -222,14 +221,43 @@ export async function uploadDatasetToDataWolf(filedata) {
 
 export async function getMyFieldList(email) {
 	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
-	let headers = {
-		"Content-Type": "application/json",
-		"Access-Control-Origin": "http://localhost:3000"
-	};
-	const Response = await fetch(CLUapi, {headers: headers});
+	const Response = await fetch(CLUapi, {headers: getHeaders()});
 	return await Response.json();
 }
 
+export async function getFilteredEventsList(email) {
+	const eventApi = datawolfURL + "/executions?email=" + email;
+
+	let eventRequest = await fetch(eventApi, {
+		method: "GET",
+		headers: getHeaders(),
+		credentials: "include"
+
+	});
+	const events = await eventRequest.json();
+	events.sort(sortByDateInDescendingOrder);
+
+	const eventGroups = groupBy(events, event => event.title);
+	// the list with both executions,  each array is [WithCoverCrop, WithoutCoverCrop]
+	const eventFilteredGroup = [];
+	eventGroups.forEach(function (v, k) {
+		if (v.length === 2 && v[0]["description"] !== "" && v[0]["workflowId"] === workflowId) {
+			if (v[0]["description"] === "WithCoverCrop") {
+				v.status = v[0].datasets[resultDatasetId] === "ERROR" || v[1].datasets[resultDatasetId] === "ERROR" ? "execution-error" : "execution-success";
+				v.id = k;
+				eventFilteredGroup.push(v);
+			} else if (v[0]["description"] === "WithoutCoverCrop") {
+				// the first event is WithoutCoverCrop, swap it before add to event list
+				let tmpv = [v[1], v[0]];
+				tmpv.status = v[0].datasets[resultDatasetId] === "ERROR" || v[1].datasets[resultDatasetId] === "ERROR" ? "execution-error" : "execution-success";
+				tmpv.id = k;
+				eventFilteredGroup.push(tmpv);
+			}
+		}
+	});
+
+	return eventFilteredGroup;
+}
 /**
  * Get CLU GeoJSON given a CLU ID
  * @param cluId
@@ -239,10 +267,7 @@ export async function getCLUGeoJSON(cluId) {
 
 	const response = await fetch(config.CLUapi + "/api/CLUs/" + cluId, {
 		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
-		}
+		headers: getHeaders()
 	});
 	return await response.json();
 }
@@ -402,4 +427,11 @@ export function cropObjToExptxt(text, cropobj){
 	}
 
 	return textlines.join("\n");
+}
+
+function getHeaders() {
+	return {
+		"Content-Type": "application/json",
+		"Access-Control-Origin": "http://localhost:3000"
+	};
 }

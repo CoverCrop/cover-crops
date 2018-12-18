@@ -1,9 +1,9 @@
 import React, {Component} from "react";
 import {Link} from "react-router";
-import Header from './Header';
-import Footer from './Footer';
+import Header from "./Header";
+import Footer from "./Footer";
 import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
-import styles from '../styles/main.css';
+import styles from "../styles/main.css";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
@@ -25,7 +25,7 @@ class MyFarmPage extends Component {
 			areafeatures: [],
 			openclu: 0,
 			fetchError: false
-		}
+		};
 	}
 
 	componentWillMount() {
@@ -39,7 +39,7 @@ class MyFarmPage extends Component {
 		}, function(err) {
 			console.log(err);
 			that.setState({fetchError: true});
-		})
+		});
 	}
 
 	handleCLUChange = (cluIndex) =>{
@@ -53,7 +53,7 @@ class MyFarmPage extends Component {
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 				that.setState({areafeatures:features});
 			}).catch(function (e) {
@@ -65,14 +65,14 @@ class MyFarmPage extends Component {
 		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
 
 		fetch(config.CLUapi + "/api/users/" + this.props.email + "/CLUs/" + clus[cluIndex].clu + "/experiment_file_sqx" , {
-			method: 'GET',
+			method: "GET",
 			headers:{
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				"Access-Control-Origin": "http://localhost:3000",
 			},
 			credentials: "include"
 		}).then(res => res.text())
-			.catch(error => console.error('Error:', error))
+			.catch(error => console.error("Error:", error))
 			.then(exptxt => {
 				if(exptxt.includes("EXP.DETAILS")){
 					this.props.handleExptxtGet(exptxt);
@@ -96,16 +96,15 @@ class MyFarmPage extends Component {
 							{c.lat + " " + c.lon}
 						</CardText>
 					</Card>
-					<div className='minimap'>
+					<div className="minimap">
 						<MapCC mapId={c.cluname}
-							   markercoordinate={ ol.proj.transform([c.lon, c.lat], 'EPSG:4326', 'EPSG:3857' )}
-							   areafeatures={this.state.areafeatures}
-							   fitmap
-							   zoomlevel="15"
+							markercoordinate={ ol.proj.transform([c.lon, c.lat], "EPSG:4326", "EPSG:3857" )}
+							areafeatures={this.state.areafeatures}
+							fitmap
+							zoomlevel="15"
 						/>
 					</div>
-				</div>
-
+				</div>;
 
 			} else {
 				return <div className="unselect-my-field" key={c.clu}>

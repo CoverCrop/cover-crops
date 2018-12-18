@@ -20,7 +20,7 @@ class UserPage extends Component {
 	}
 
 	handleEventClick (isSelectedEventSuccessful) {
-		this.setState({isSelectedEventSuccessful: isSelectedEventSuccessful})
+		this.setState({isSelectedEventSuccessful: isSelectedEventSuccessful});
 	}
 
 	render() {

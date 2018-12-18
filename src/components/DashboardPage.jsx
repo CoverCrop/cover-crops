@@ -4,38 +4,137 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AuthorizedWrap from "./AuthorizedWrap";
 import StackedBarNegativeValues from "./StackedBarNegativeValues";
 import {Grid, Cell, Checkbox, FormField, label, Button, Icon} from "react-mdc-web";
-import {getMyFieldList} from "../public/utils";
+import {
+	getMyFieldList,
+	sortByDateInDescendingOrder,
+	getFilteredEventsList,
+	getOutputFileJson,
+	getWeekFromDOY
+} from "../public/utils";
+import { latId, lonId, resultDatasetId, biomassField, nitrogenField} from "../datawolf.config";
 import styles from "../styles/dashboard-page.css";
 
 class DashboardPage extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
+constructor(props) {
+super(props);
+this.state = {
 			precipitation: 1,
 			temperature: 1,
 			use_weather_data: false,
 			show_fields_menu: true,
-	        fetch_error: false,
-	        clus: []
-        };
-        this.updateUseWeatherData = this.updateUseWeatherData.bind(this);
-        this.setPrecipitation = this.setPrecipitation.bind(this);
-        this.setTemperature = this.setTemperature.bind(this);
-    }
+	fetch_error: false,
+	clus: []
+};
+this.updateUseWeatherData = this.updateUseWeatherData.bind(this);
+this.setPrecipitation = this.setPrecipitation.bind(this);
+this.setTemperature = this.setTemperature.bind(this);
+}
 
-    componentDidMount() {
-    	let that = this;
-	    getMyFieldList(this.props.email).then(function(clus){
-		    that.setState({clus: clus.reverse(), fetchError: false});
-	    }, function(err) {
-		    console.log(err);
-		    that.setState({fetchError: true});
-	    })
-    }
+getParsedDataByKey(file, key) {
+	let originalData = file["charts"].filter(chart => chart.variable === key)[0]["datasets"][0]["data"];
+
+	let groupedData = originalData.reduce((groupedData, {YEAR, DOY, value}) => {
+		const week = getWeekFromDOY(DOY, YEAR);
+		const key = YEAR + "-" + week;
+		if(!groupedData[key]) {
+			groupedData[key] = [];
+		}
+		groupedData[key].push(value);
+		return groupedData;
+	}, []);
+
+	function getSum(total, num) {
+		return total + num;
+	}
+
+	let output = {};
+
+	Object.keys(groupedData).map( key => {
+		if (!(key !== "DOY" && key !== "Week" && key !== "YEAR" && key !== "Value")) {
+			return;
+		}
+		const values = groupedData[key];
+		const sum = values.reduce(getSum);
+		output[key] = sum / values.length;
+	});
+
+	return output;
+}
+
+async componentDidMount() {
+	let that = this;
+	let {email} = this.props;
+	getMyFieldList(email).then(clus =>  {
+		getFilteredEventsList(email).then(events => {
+
+			clus.map(clu => {
+				let eventsForClu = events.filter(event => Number(event[0]["parameters"][latId]) === clu.lat &&
+				Number(event[0]["parameters"][lonId]) === clu.lon);
+				eventsForClu.sort(sortByDateInDescendingOrder);
+				clu["resultInClu"] = eventsForClu.length > 0 ? false : true;
+				eventsForClu.map(cluEvent => {
+					const outputFileName = "output.json";
+					const withCoverCropDatasetId = cluEvent[0].datasets[resultDatasetId];
+					if(!clu["resultInClu"] && withCoverCropDatasetId !== "ERROR" && withCoverCropDatasetId !== undefined) {
+						getOutputFileJson(withCoverCropDatasetId, outputFileName).then( withCoverCropResultFile => {
+
+							const nitrogenData = that.getParsedDataByKey(withCoverCropResultFile, nitrogenField);
+							const biomassData = that.getParsedDataByKey(withCoverCropResultFile, biomassField);
+
+							const keysBiomass = Object.keys(biomassData);
+							const keysNitrogen = Object.keys(nitrogenData);
+							let keysToUse = keysNitrogen;
+							if(keysBiomass.length < keysNitrogen.length) {
+								keysToUse = keysBiomass;
+							}
+							let graphData = [];
+
+							keysToUse.forEach(key => {
+
+								if(key in biomassData && key in nitrogenData) {
+									// TODO: If the nitrogen data is already negative values, remove -1
+									let newEntry = {date: key, biomass: biomassData[key], nitrogen: - 1 * nitrogenData[key]};
+									graphData.push(newEntry);
+								}
+
+							});
+
+							clu["graphData"] = graphData;
+							clu["resultInClu"] = true;
+						});
+					}
+				});
+
+			});
+			let interval = setInterval(() => {
+				let haveAllClusBeenUpdated = true;
+				clus.map(clu => {
+					if(!clu["resultInClu"]) {
+						haveAllClusBeenUpdated = false;
+					}
+				});
+				if(haveAllClusBeenUpdated) {
+					this.setState({clus: clus.reverse(), fetchError: false});
+					clearInterval(interval);
+				}
+			}, 3000);
+
+
+
+		});
+
+
+	}).catch( err => {
+		console.log(err);
+		that.setState({fetchError: true});
+	});
+
+
+}
 
 	updateUseWeatherData() {
-        this.setState({use_weather_data: !this.state.use_weather_data});
+this.setState({use_weather_data: !this.state.use_weather_data});
 	}
 
 	setPrecipitation(selected) {
@@ -43,14 +142,14 @@ class DashboardPage extends Component {
 	}
 
 	setTemperature(selected) {
-        this.setState({temperature: selected});
-    }
+this.setState({temperature: selected});
+}
 
-    updateShowFieldsMenu() {
+updateShowFieldsMenu() {
 		this.setState({show_fields_menu: !this.state.show_fields_menu});
-    }
+}
 
-    render() {
+render() {
 		const wetClasses = this.state.precipitation === 0 ? "wet selected" : "wet";
 		const avgClasses1 = this.state.precipitation === 1 ? "avg selected": "avg";
 		const dryClasses = this.state.precipitation === 2  ? "dry selected" : "dry";
@@ -90,7 +189,14 @@ class DashboardPage extends Component {
 			{date: "03-2018", biomass:  22, nitrogen: 10},
 			{date: "04-2018", biomass:  23, nitrogen: 10},
 		];
-        return (
+
+		let stackedBarGraphs = this.state.clus.map(clu => {
+			if(clu.graphData !== undefined && clu.graphData.length > 0) {
+				return 	<StackedBarNegativeValues key={clu.clu} title={clu.cluname} data = {clu.graphData}/>;
+			}
+
+		});
+return (
 			<AuthorizedWrap>
 				<div>
 					<Header />
@@ -121,12 +227,12 @@ class DashboardPage extends Component {
 						</Cell>
 					</Grid>
 					<div className="dashboard_divider"> Show/Hide fields<Icon name="arrow_drop_down"/></div>
-					<StackedBarNegativeValues title="East Field" data = {data}/>
+					{stackedBarGraphs}
 
 				</div>
 			</AuthorizedWrap>
-        );
-    }
+);
+}
 
 }
 
