@@ -1,20 +1,19 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2,
-	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web"
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-select/dist/react-select.css';
+	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web";
+import "react-datepicker/dist/react-datepicker.css";
+import "react-select/dist/react-select.css";
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
 	weatherPatterns, coverCrops} from "../datawolf.config";
 import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
-import Select from 'react-select';
+import Select from "react-select";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
-	handleWeatherPatternChange, handleCoverCropChange} from '../actions/analysis';
-import styles from "../styles/analysis-page.css"
-import SelectFieldsCC from "./SelectFieldsCC";
+	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
+
 
 class RunSimulationCC extends Component {
 
@@ -43,6 +42,7 @@ class RunSimulationCC extends Component {
 		};
 	}
 
+
 	async runSimulation() {
 		let that = this;
 		let status = "STARTED";
@@ -51,6 +51,7 @@ class RunSimulationCC extends Component {
 			simulationStatus: status,
 			runSimulationButtonDisabled: true
 		});
+		this.props.startShowingModal();
 
 		// Update status
 		let cardData = {
@@ -60,8 +61,8 @@ class RunSimulationCC extends Component {
 		this.props.handleCardChange(1, 1, cardData);
 
 		let headers = {
-			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
+			"Content-Type": "application/json",
+			"Access-Control-Origin": "http://localhost:3000"
 		};
 
 		let id = ID();
@@ -79,14 +80,14 @@ class RunSimulationCC extends Component {
 		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withoutCoverCropDatasetId);
 
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
-			method: 'POST',
+			method: "POST",
 			headers: headers,
 			credentials: "include",
 			body: JSON.stringify(withCoverCropExecutionRequest)
 		});
 
 		let withoutCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
-			method: 'POST',
+			method: "POST",
 			headers: headers,
 			credentials: "include",
 			body: JSON.stringify(withoutCoverCropExecutionRequest)
@@ -106,13 +107,13 @@ class RunSimulationCC extends Component {
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
-				method: 'GET',
+				method: "GET",
 				headers: headers,
 				credentials: "include"
 			});
 
 			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
-				method: 'GET',
+				method: "GET",
 				headers: headers,
 				credentials: "include"
 			});
@@ -174,13 +175,13 @@ class RunSimulationCC extends Component {
 							withoutCoverCropResultFile
 						);
 						// that.props.handleCardChange(1, 2, cardData);
-						window.location = '/#/history';
+						window.location = "/#/history";
 					}
 					else {
 						console.log("Execution ID wasn't generated.");
 					}
-				})
-			})
+				});
+			});
 
 		}
 		else {
@@ -197,12 +198,12 @@ class RunSimulationCC extends Component {
 				cardSubtitle: "Status: " + status
 			};
 			this.props.handleCardChange(1, 1, cardData);
-			window.location = '/#/history';
+			window.location = "/#/history";
 		}
 	}
 
 	handleStartDateChange(date) {
-		this.props.handleStartDateChange(date)
+		this.props.handleStartDateChange(date);
 	}
 
 	handleEndDateChange(date) {
@@ -212,11 +213,11 @@ class RunSimulationCC extends Component {
 		let endDateString = date.toDate().toISOString().split("T")[0]; // Get YYYY-MM-DD format date string
 		this.setState({selectedFutureWeatherEndDate: new Date(endDateString) > new Date(config.latestWeatherDate)});
 
-		this.props.handleEndDateChange(date)
+		this.props.handleEndDateChange(date);
 	}
 
 	handleFlexibleDatesChange({target: {checked}}) {
-		this.props.handleFlexibleDatesChange(checked)
+		this.props.handleFlexibleDatesChange(checked);
 	}
 
 	handleWeatherPatternChange(weatherPattern){
@@ -230,14 +231,14 @@ class RunSimulationCC extends Component {
 	}
 
 	toggleDropdown(e) {
-		this.setState({ open: !this.state.open })
+		this.setState({ open: !this.state.open });
 	}
 
 	render(){
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		let weatherbuttons = weatherPatterns.map(w =>
 			<Button dense raised={this.props.weatherPattern === w}
-					onClick={()=>{ this.props.handleWeatherPatternChange(w) }}
+					onClick={()=>{ this.props.handleWeatherPatternChange(w); }}
 					key={w}
 			>{w}</Button>);
 
@@ -300,10 +301,10 @@ class RunSimulationCC extends Component {
 					{weatherbuttons}
 				</div>}
 				<div className="run-button">
-					<Button disabled={isButtonDisabled} raised onClick={() => this.runSimulation} >Run Simulation</Button>
+					<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
 
 				</div></div>
-		)
+		);
 	}
 }
 
@@ -319,7 +320,7 @@ const mapStateToProps = (state) => {
 		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked,
 		coverCrop: state.analysis.coverCrop
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -334,18 +335,18 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(handleWeatherPatternChange(weatherPattern));
 		},
 		handleFlexibleDatesChange: (checked) =>{
-			dispatch(handleFlexibleDatesChange(checked))
+			dispatch(handleFlexibleDatesChange(checked));
 		},
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
-			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
+			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData));
 		},
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson))
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson));
 		},
 		handleCoverCropChange: (coverCrop) => {
-			dispatch(handleCoverCropChange(coverCrop))
+			dispatch(handleCoverCropChange(coverCrop));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(RunSimulationCC);

@@ -2,12 +2,12 @@ import React, {Component} from "react";
 import SelectFieldsCC from "./SelectFieldsCC";
 import RunSimulationCC from "./RunSimulationCC";
 import ViewResultsCC from "./ViewResultsCC";
-import MapCC from "./MapCC"
-import { connect } from 'react-redux';
-import styles from "../styles/analysis-page.css"
-import ol from 'openlayers';
-import config from '../app.config';
+import MapCC from "./MapCC";
+import { connect } from "react-redux";
+import ol from "openlayers";
+import config from "../app.config";
 import {getExtentOfFieldsForUser} from "../public/utils";
+import Spinner from "./Spinner";
 
 class RightPaneCC extends Component {
 
@@ -18,8 +18,11 @@ class RightPaneCC extends Component {
 			areafeatures: [
 				new ol.Feature({})
 			],
-			extent: null
-		}
+			extent: null,
+			showModal: false
+		};
+		
+		this.startShowingModal = this.startShowingModal.bind(this);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -29,7 +32,7 @@ class RightPaneCC extends Component {
 		} = nextProps;
 
 		// add marker
-		let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], 'EPSG:4326', 'EPSG:3857' );
+		let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], "EPSG:4326", "EPSG:3857" );
 		this.setState({markercoordinate: coordinate});
 
 		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + analysis_latitude + "&lon=" + analysis_longitude + "&soil=false";
@@ -41,7 +44,7 @@ class RightPaneCC extends Component {
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 				this.setState({areafeatures:features});
 			}).catch(function (e) {
@@ -55,7 +58,13 @@ class RightPaneCC extends Component {
 		this.setState({extent: currentFieldsExtent});
 	}
 
+	startShowingModal() {
+		this.setState({showModal: true});
+	}
 	render(){
+		if(this.state.showModal) {
+			return( <Spinner/> );
+		}
 
 		let displayComponent = null;
 
@@ -83,12 +92,12 @@ class RightPaneCC extends Component {
 		return(
 			<div className="analysis-map-div">
 				<MapCC mapId="analysis-clu"
-					   markercoordinate={this.state.markercoordinate}
-					   areafeatures={this.state.areafeatures}
-					   extent={this.state.extent}
+					markercoordinate={this.state.markercoordinate}
+					areafeatures={this.state.areafeatures}
+					extent={this.state.extent}
 				/>
 				<SelectFieldsCC />
-				{this.props.clu === 0 ? null : <RunSimulationCC />}
+				{this.props.clu === 0 ? null : <RunSimulationCC startShowingModal={this.startShowingModal}/>}
 			</div>
 		);
 	}
@@ -101,7 +110,7 @@ const mapStateToProps = (state) => {
 		clu: state.analysis.clu,
 		activeCardIndex: state.analysis.activeCardIndex,
 		email: state.user.email
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(RightPaneCC);
