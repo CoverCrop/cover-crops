@@ -28,20 +28,9 @@ class RunSimulationCC extends Component {
 		this.state = {
 			simulationStatus: "",
 			runSimulationButtonDisabled: false,
-			withstep1: "",
-			withstep2: "",
-			withstep3: "",
-			withstep4: "",
-			withstep5: "",
-			withoutstep1: "",
-			withoutstep2: "",
-			withoutstep3: "",
-			withoutstep4: "",
-			withoutstep5: "",
 			selectedFutureWeatherEndDate: false // true, if user selects end date for which we do not have weather data
 		};
 	}
-
 
 	async runSimulation() {
 		let that = this;
@@ -52,13 +41,6 @@ class RunSimulationCC extends Component {
 			runSimulationButtonDisabled: true
 		});
 		this.props.startShowingModal();
-
-		// Update status
-		let cardData = {
-			cardTitle: this.props.cards[1].cardTitle,
-			cardSubtitle: "Status: " + status
-		};
-		this.props.handleCardChange(1, 1, cardData);
 
 		let headers = {
 			"Content-Type": "application/json",
@@ -99,11 +81,12 @@ class RunSimulationCC extends Component {
 		console.log("With cover crop execution id = " + withCoverCropExecutionGUID);
 		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
 
-
+		let withStatus = "";
+		let withoutStatus = "";
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 		// check the status until two progresses are finished
-		while( this.state.withstep5 === "" || this.state.withstep5 === "WAITING" || this.state.withstep5 === "RUNNING"
-		|| this.state.withoutstep5 === "" || this.state.withoutstep5 === "WAITING" || this.state.withoutstep5 === "RUNNING" ){
+		while( withStatus === "" || withStatus === "WAITING" || withStatus === "RUNNING"
+		|| withoutStatus === "" || withoutStatus === "WAITING" || withoutStatus === "RUNNING" ){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
@@ -120,22 +103,11 @@ class RunSimulationCC extends Component {
 			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
 				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
-
-				this.setState({withstep1: withCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
-				this.setState({withstep2: withCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
-				this.setState({withstep3: withCoverCropAnalysisResult.stepState[steps.Generate_Exp]});
-				this.setState({withstep4: withCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
-				this.setState({withstep5: withCoverCropAnalysisResult.stepState[steps.Output_Parser]});
-				this.setState({withoutstep1: withoutCoverCropAnalysisResult.stepState[steps.Weather_Converter]});
-				this.setState({withoutstep2: withoutCoverCropAnalysisResult.stepState[steps.Soil_Converter]});
-				this.setState({withoutstep3: withoutCoverCropAnalysisResult.stepState[steps.Generate_Exp]});
-				this.setState({withoutstep4: withoutCoverCropAnalysisResult.stepState[steps.DSSAT_Batch]});
-				this.setState({withoutstep5: withoutCoverCropAnalysisResult.stepState[steps.Output_Parser]});
+				withStatus = withCoverCropAnalysisResult.stepState[steps.Output_Parser];
+				withoutStatus = withoutCoverCropAnalysisResult.stepState[steps.Output_Parser];
 			}
 		}
-		// for debug
-		// console.log(withCoverCropAnalysisResult);
-		// console.log(withoutCoverCropAnalysisResult);
+
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
@@ -156,25 +128,13 @@ class RunSimulationCC extends Component {
 						runSimulationButtonDisabled: false
 					});
 
-					// Update status
-					cardData = {
-						cardTitle: that.props.cards[1].cardTitle,
-						cardSubtitle: "Status: " + status
-					};
-					that.props.handleCardChange(1, 1, cardData);
-
 					if (withCoverCropExecutionGUID !== "" && withoutCoverCropExecutionGUID !== "") {
-						cardData = {
-							cardTitle: "Completed Simulation",
-							cardSubtitle: "Execution IDs: " + withCoverCropExecutionGUID + " " + withoutCoverCropExecutionGUID
-						};
 						that.props.handleResults(
 							withCoverCropExecutionGUID,
 							withCoverCropResultFile,
 							withoutCoverCropExecutionGUID,
 							withoutCoverCropResultFile
 						);
-						// that.props.handleCardChange(1, 2, cardData);
 						window.location = "/#/history";
 					}
 					else {
@@ -192,12 +152,6 @@ class RunSimulationCC extends Component {
 				runSimulationButtonDisabled: false
 			});
 
-			// Update status
-			cardData = {
-				cardTitle: this.props.cards[1].cardTitle,
-				cardSubtitle: "Status: " + status
-			};
-			this.props.handleCardChange(1, 1, cardData);
 			window.location = "/#/history";
 		}
 	}
@@ -301,7 +255,7 @@ class RunSimulationCC extends Component {
 					{weatherbuttons}
 				</div>}
 				<div className="run-button">
-					<Button disabled={isButtonDisabled} raised onClick={this.runSimulation} >Run Simulation</Button>
+					<Button disabled={isButtonDisabled} raised onClick={() => this.runSimulation()} >Run Simulation</Button>
 
 				</div></div>
 		);
@@ -317,7 +271,6 @@ const mapStateToProps = (state) => {
 		cluname: state.analysis.cluname,
 		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
-		cards: state.analysis.cards,
 		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked,
 		coverCrop: state.analysis.coverCrop
 	};
@@ -336,9 +289,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleFlexibleDatesChange: (checked) =>{
 			dispatch(handleFlexibleDatesChange(checked));
-		},
-		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
-			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData));
 		},
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
 			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson));
