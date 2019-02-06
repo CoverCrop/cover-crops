@@ -38,19 +38,24 @@ class Planting extends Component {
 	}
 
 	getBodyJson(){
-		var jsonBody = this.state;
+		var jsonBody= {};
+		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
 		let {email, clu, year } =  this.props;
 		let requestStatus = false;
-		if(jsonBody["PDATE"]) {
+		if(jsonBody["CONTENT"][0]["PDATE"]) {
 
 			jsonBody["PLNAME"] = year;
-			jsonBody["PPOE"] = jsonBody["PPOP"];
-			jsonBody["PDATE"] = jsonBody["PDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["PPOE"] = jsonBody["CONTENT"][0]["PPOP"];
+			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, '').substring(0, 8);
 			jsonBody["EVENT"] = "planting";
 			return jsonBody
 
 		} else {
-			return {};
+			return {
+				"EVENT":"planting",
+				"HNAME":year,
+				"CONTENT":[]
+			};
 		}
 
 	}

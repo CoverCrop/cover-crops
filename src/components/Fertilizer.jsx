@@ -24,7 +24,7 @@ class Fertilizer extends Component {
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
 		if(year){
-			let selectcrop = this.props.cropobj[year]["MF"];
+			let selectcrop = this.props.cropobj[year]["MF"][0];
 			this.setState({FMCD: "None"});
 			this.setState(selectcrop);
 			let fdate = selectcrop["FDATE"];
@@ -34,12 +34,13 @@ class Fertilizer extends Component {
 	}
 
 	getBodyJson(){
-		var jsonBody = Object.assign({}, this.state);
+		var jsonBody= {};
+		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
 		let {email, clu, year } =  this.props;
-		if(jsonBody["FMCD"] === "None"){
-			jsonBody = {"FDATE": null}
+		if(jsonBody["CONTENT"][0]["FMCD"] === "None"){
+			jsonBody["CONTENT"] = []
 		} else {
-			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["FDATE"] = jsonBody["CONTENT"][0]["FDATE"].replace(/-/g, '').substring(0, 8);
 		}
 		jsonBody["FERNAME"] = year;
 

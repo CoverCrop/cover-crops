@@ -38,20 +38,25 @@ class Harvest extends Component {
 	}
 
 	getBodyJson(){
-		var jsonBody = this.state;
+		var jsonBody= {};
+		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
 		let {email, clu, year } =  this.props;
 		let requestStatus = false;
-		if(jsonBody["HDATE"]) {
+		if(jsonBody["CONTENT"][0]["HDATE"]) {
 
 			jsonBody["HNAME"] = year;
-			jsonBody["HPC"] = "100";
-			jsonBody["HSTG"] = "GS000";
-			jsonBody["HDATE"] = jsonBody["HDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["HPC"] = "100";
+			jsonBody["CONTENT"][0]["HSTG"] = "GS000";
+			jsonBody["CONTENT"][0]["HDATE"] = jsonBody["CONTENT"][0]["HDATE"].replace(/-/g, '').substring(0, 8);
 			jsonBody["EVENT"] = "harvest";
 			return jsonBody
 
 		} else {
-			return {};
+			return {
+				"EVENT":"harvest",
+				"HNAME":year,
+				"CONTENT":[]
+			};
 		}
 
 	}
