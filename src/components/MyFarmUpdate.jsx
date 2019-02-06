@@ -24,14 +24,18 @@ class MyFarmUpdate extends Component {
 
 	render() {
 		const {elementType, firstField, secondField, defaultValue} = this.props;
-		const options = (elementType !== "select" || Array.isArray(this.props.options))? this.props.options: dictToOptions(this.props.options);
+		const options = (elementType !== "select" || Array.isArray(this.props.options)) ? this.props.options : dictToOptions(this.props.options);
 		// const defaultValue = cropobj[cropyear][firstField][secondField];
+		let divClasses = "update-box";
+		if (this.props.isLeft) divClasses += " update-box-left";
+
 		return (
-			<div className="update-box">
+			<div>
+			{defaultValue && <div className={divClasses}>
 				<p  className={this.props.elementType}>{this.props.title}</p>
-				{defaultValue &&
-					(() => {
-						switch (elementType) {
+
+				{(() => {
+					switch (elementType) {
 							case "select":
 								return (<Select
 									name={this.props.title}
@@ -60,9 +64,11 @@ class MyFarmUpdate extends Component {
 							default :
 								null
 						}
-					})()
-				}
+					})()}
+
+			</div>}
 			</div>
+
 		)
 	}
 }

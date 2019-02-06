@@ -1,11 +1,12 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import {findFirstSubstring, convertDate, readTable} from "../public/utils";
-import {drainage_type, CULTIVARS, distribution, FMCD, FACD} from "../experimentFile";
+import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 
 class MyFarmSummary extends Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -13,13 +14,12 @@ class MyFarmSummary extends Component {
 		}
 	}
 
-
 	async getInfo() {
 		let that = this;
 
-		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon="+that.props.lon , {
+		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon=" + that.props.lon, {
 			method: 'GET',
-			headers:{
+			headers: {
 				'Content-Type': 'application/json',
 				"Access-Control-Origin": "http://localhost:3000"
 			}
@@ -30,11 +30,11 @@ class MyFarmSummary extends Component {
 			});
 	}
 
-	componentWillMount(){
+	componentWillMount() {
 		this.getInfo();
 	}
 
-	componentWillReceiveProps(){
+	componentWillReceiveProps() {
 		this.getInfo();
 	}
 
@@ -43,22 +43,39 @@ class MyFarmSummary extends Component {
 		let {cropobj, fieldobj} = this.props;
 		let {soilobj} = this.state;
 
-		let cropComponent = cropobj && Object.values(cropobj).filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
-			<tr key={obj["YEAR"]}>
-				<td>{obj["YEAR"]}</td>
-				<td>{obj["CROP"]}</td>
-				<td>{obj["CU"]}</td>
-				<td>{distribution[obj["MP"]["PLDS"]]}</td>
-				<td>{convertDate(obj["MP"]["PDATE"])}</td>
-				<td>{obj["MP"]["PPOP"]}</td>
-				<td>{obj["MP"]["PLDP"]}</td>
-				<td>{convertDate(obj["MH"]["HDATE"])}</td>
-				<td>{FMCD[obj["MF"]["FMCD"]]}</td>
-				<td>{FACD[obj["MF"]["FACD"]]}</td>
-				<td>{convertDate(obj["MF"]["FDATE"])}</td>
-				<td>{obj["MF"]["FAMN"]}</td>
-				<td>{obj["MF"]["FDEP"]}</td>
-			</tr>
+        // cropComponent will get a warning about div but has no choice.
+		let cropComponent = cropobj && Object.values(cropobj)
+			.filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
+				<tbody>
+				<tr key={obj["YEAR"]}>
+					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
+					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
+					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLRS"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLDP"]}</td>
+					<td rowSpan={obj["MF"].length}>{convertDate(obj["MH"]["HDATE"])}</td>
+					<td>{obj["MF"].length >0 && FMCD[obj["MF"][0]["FMCD"]]}</td>
+					<td>{obj["MF"].length >0 && FACD[obj["MF"][0]["FACD"]]}</td>
+					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
+					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"]}</td>
+					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"]}</td>
+				</tr>
+				{
+					obj["MF"].slice(1).map(MFObj =>
+						<tr key={obj["YEAR"]+ "-"+ MFObj["FDATE"]}>
+							<td>{FMCD[MFObj["FMCD"]]}</td>
+							<td>{FACD[MFObj["FACD"]]}</td>
+							<td>{convertDate(MFObj["FDATE"])}</td>
+							<td>{MFObj["FAMN"]}</td>
+							<td>{MFObj["FDEP"]}</td>
+						</tr>)
+				}
+				</tbody>
+
+
 		);
 		// TODO: combine with cropComponent
 		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
@@ -66,7 +83,7 @@ class MyFarmSummary extends Component {
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>
 				<td>{obj["CU"]}</td>
-				<td>{distribution[obj["MP"]["PLDS"]]}</td>
+				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
 				<td>{obj["MP"]["PPOP"]}</td>
 				<td>{obj["MP"]["PLDP"]}</td>
@@ -167,9 +184,10 @@ class MyFarmSummary extends Component {
 					<div className="table-header">
 						CROP HISTORY
 					</div>
-					<div>
+					<div className="summary-table">
 						<table>
 							<thead>
+
 							<tr>
 								<th></th>
 								<th>Cultivar</th>
@@ -178,10 +196,12 @@ class MyFarmSummary extends Component {
 								<th></th>
 								<th></th>
 								<th></th>
+								<th></th>
 								<th>Harvest</th>
 								<th>Fertilizer</th>
 
 							</tr>
+
 							<tr>
 								<td>YEAR</td>
 								<td>CROP</td>
@@ -189,6 +209,7 @@ class MyFarmSummary extends Component {
 								<td>Distribution</td>
 								<td>Date</td>
 								<td>POP, seeds/acre</td>
+								<td>ROW SPACING, inch</td>
 								<td>Depth, in</td>
 								<td>Date</td>
 								<td>Material</td>
@@ -197,18 +218,16 @@ class MyFarmSummary extends Component {
 								<td>Amount, lb/acre</td>
 								<td>Depth, in</td>
 							</tr>
-							</thead>
-							<tbody>
-							{cropComponent}
-							</tbody>
 
+							</thead>
+							{cropComponent}
 						</table>
 					</div>
 
 					<div className="table-header">
 						COVER CROP HISTORY
 					</div>
-					<div>
+					<div className="summary-table">
 						<table>
 							<thead>
 							<tr>
