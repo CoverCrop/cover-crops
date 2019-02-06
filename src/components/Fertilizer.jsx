@@ -22,15 +22,11 @@ class Fertilizer extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		let year = nextProps.year;
-		if(year){
-			let selectcrop = this.props.cropobj[year]["MF"][0];
 			this.setState({FMCD: "None"});
-			this.setState(selectcrop);
-			let fdate = selectcrop["FDATE"];
+			this.setState(nextProps.crop);
+			let fdate = nextProps.crop["FDATE"];
 			console.log(convertFullDate(fdate));
 			this.setState({"FDATE":convertFullDate(fdate)});
-		}
 	}
 
 	getBodyJson(){

@@ -23,6 +23,7 @@ class CropHistory extends Component {
 			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0],
 			isOpen: false
 		};
+		this.fertilizer = []
 	}
 
 	handleSelectYear = (year) => {
@@ -30,7 +31,7 @@ class CropHistory extends Component {
 	}
 
 	handleClick = () => {
-		let fertilizerJson = this.fertilizer.getBodyJson();
+		let fertilizerJson = this.fertilizer.map(f => f.getBodyJson());
 		let plantingJson = this.planting.getBodyJson();
 		let harvestJson = this.harvest.getBodyJson();
 		let {email, clu} = this.props;
@@ -62,6 +63,9 @@ class CropHistory extends Component {
 		let options = years.map(function(key){
 			return {value: key, label:key}
 		});
+		let fertilizerUI = this.state.year ? this.props.cropobj[this.state.year]["MF"].map((crop, index) =>
+			<Fertilizer crop={crop} onRef={ref => (this.fertilizer[index] = ref)}/>
+		) : null;
 		return (
 			<div>
 				<div className="border-top summary-div myfarm-input">
@@ -77,7 +81,8 @@ class CropHistory extends Component {
 							/>
 						</div>
 					</div>
-					<Fertilizer year={this.state.year} onRef={ref => (this.fertilizer = ref)}/>
+
+					{fertilizerUI}
 					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>
 					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
@@ -97,7 +102,6 @@ class CropHistory extends Component {
 					</DialogFooter>
 				</Dialog>
 			</div>
-
 
 		)
 	}
