@@ -67,7 +67,7 @@ class Planting extends Component {
 	render() {
 		return (
 			(this.state.PDATE) ?
-				<div className="black-bottom-crop">
+				<div className="black-bottom-crop" key="planting">
 					<Title>Planting </Title>
 
 					<MyFarmUpdate elementType="select" title="DISTRIBUTION" cropyear={this.state.year}

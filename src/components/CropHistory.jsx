@@ -4,7 +4,8 @@ import {
 	Dialog,
 	DialogBody,
 	DialogFooter,
-	Icon
+	Icon,
+	Title
 } from "react-mdc-web";
 import Select from 'react-select';
 import {connect} from "react-redux";
@@ -21,20 +22,27 @@ class CropHistory extends Component {
 		super(props);
 		this.state = {
 			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0],
-			isOpen: false
+			isOpen: false,
+			flist: [{FMCD: "None", addnew: true}]
 		};
 		this.fertilizer = []
 	}
 
 	handleSelectYear = (year) => {
 		this.setState({year: year});
+
+		let flist = this.props.cropobj[year]["MF"];
+		flist.push({FMCD: "None", addnew: true});
+		this.setState({flist: flist});
 	}
 
 	handleClick = () => {
-		let fertilizerJson = this.fertilizer.map(f => f.getBodyJson());
+
+		let fertilizerJson = {"EVENT": "fertilizer", "FERNAME": this.state.year};
+		fertilizerJson["CONTENT"] = this.fertilizer.map(f => f.getBodyJson())
+			.filter(jsonBody => jsonBody["FMCD"] !== "None");
 		let plantingJson = this.planting.getBodyJson();
 		let harvestJson = this.harvest.getBodyJson();
-		let {email, clu} = this.props;
 
 		let jsonBody = [fertilizerJson, plantingJson, harvestJson];
 		// console.log(jsonBody);
@@ -58,19 +66,29 @@ class CropHistory extends Component {
 		}).catch(error => console.error('Error:', error))
 	}
 
+	addFertilizer = (newFertilizer) => {
+		let newObj = {FMCD: "None", addnew: true};
+		this.setState((state) => ({ flist:
+				this.fertilizer.map(f => f.getBodyJson()).slice(0, -1).concat([newFertilizer, newObj])}));
+
+	}
+
 	render() {
 		let years = Object.keys(this.props.cropobj).filter(obj => obj.indexOf("Corn") > 0 || obj.indexOf("Soybean") > 0 );
 		let options = years.map(function(key){
 			return {value: key, label:key}
 		});
-		let fertilizerUI = this.state.year ? this.props.cropobj[this.state.year]["MF"].map((crop, index) =>
-			<Fertilizer crop={crop} onRef={ref => (this.fertilizer[index] = ref)}/>
-		) : null;
+		let fertilizerUI = this.state.flist.map((crop, index) =>
+			<Fertilizer key={index+ "f"} year={this.state.year} crop={crop}
+						onRef={ref => (this.fertilizer[index] = ref)}
+						addFertilizer={this.addFertilizer}
+			/>
+		);
 		return (
 			<div>
 				<div className="border-top summary-div myfarm-input">
 
-					<div className="black-bottom-crop">
+					<div className="black-bottom-crop" key="selectyear">
 						<div className="update-box">
 							<p>YEAR</p>
 							<Select
@@ -81,8 +99,13 @@ class CropHistory extends Component {
 							/>
 						</div>
 					</div>
-
-					{fertilizerUI}
+					{this.state.year && <div className="black-bottom-crop" key="fertilizer">
+						<Title>Fertilizer </Title>
+						<div className="fertilizer-box-div">
+						{fertilizerUI}
+						</div>
+					</div>
+					}
 					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>
 					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}

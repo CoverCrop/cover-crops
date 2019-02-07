@@ -15,36 +15,34 @@ class Fertilizer extends Component {
 	}
 
 	componentDidMount() {
-		this.props.onRef(this)
+		this.props.onRef(this);
+		this.setState({FMCD: "None"});
+		this.setState(this.props.crop);
+		let fdate = this.props.crop["FDATE"];
+		console.log(convertFullDate(fdate));
+		this.setState({"FDATE":convertFullDate(fdate)});
 	}
+
 	componentWillUnmount() {
-		this.props.onRef(undefined)
+		this.props.onRef(undefined);
 	}
 
 	componentWillReceiveProps(nextProps) {
-			this.setState({FMCD: "None"});
-			this.setState(nextProps.crop);
-			let fdate = nextProps.crop["FDATE"];
-			console.log(convertFullDate(fdate));
-			this.setState({"FDATE":convertFullDate(fdate)});
+		this.setState({FMCD: "None"});
+		this.setState(nextProps.crop);
+		let fdate = nextProps.crop["FDATE"];
+		console.log(convertFullDate(fdate));
+		this.setState({"FDATE": convertFullDate(fdate)});
 	}
 
 	getBodyJson(){
-		var jsonBody= {};
-		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
-		let {email, clu, year } =  this.props;
-		if(jsonBody["CONTENT"][0]["FMCD"] === "None"){
-			jsonBody["CONTENT"] = []
-		} else {
-			jsonBody["CONTENT"][0]["FDATE"] = jsonBody["CONTENT"][0]["FDATE"].replace(/-/g, '').substring(0, 8);
+		var jsonBody = Object.assign({}, this.state);
+
+		if(jsonBody["FMCD"] !== "None"){
+			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, '').substring(0, 8);
 		}
-		jsonBody["FERNAME"] = year;
-
-		jsonBody["EVENT"] = "fertilizer";
-
 		return jsonBody;
 	}
-
 
 	handler = (field_name, field_value) => {
 		this.setState({[field_name] : field_value});
@@ -52,10 +50,16 @@ class Fertilizer extends Component {
 		if(field_name === "FMCD" && field_value !=="None" && !this.state.FDATE){
 			let pureyear = this.props.year.split(" ")[0];
 			let newFertilizer = Object.assign({}, defaultFertilizer);
+			newFertilizer["FMCD"] = field_value;
 			// set default date as 04-02
 			newFertilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
 			newFertilizer["FERNAME"] = this.props.year;
+			if(this.state.addnew){
+				this.props.addFertilizer(newFertilizer);
+			}
 			this.setState(newFertilizer);
+			this.setState({addnew:false});
+
 		}
 		// delete fertilizer
 		if(field_name === "FMCD" && field_value ==="None"){
@@ -66,8 +70,7 @@ class Fertilizer extends Component {
 	render() {
 		return (
 			(this.state.FMCD) ?
-			<div className="black-bottom-crop">
-				<Title>Fertilizer </Title>
+			<div className="fertilizer-box-left">
 				<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
 							  firstField="MF" secondField="FMCD" options={FMCD}
 							  defaultValue={this.state.FMCD} handler = {this.handler}
@@ -77,23 +80,23 @@ class Fertilizer extends Component {
 								  firstField="MF" secondField="FACD" options={FACD}
 								  defaultValue={this.state.FACD} handler={this.handler}
 					/>
-					<div className="update-box-div">
-						< MyFarmUpdate isLeft elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
+
+						< MyFarmUpdate elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
 									   firstField="MF" secondField="FAMN"
 									   defaultValue={this.state.FAMN} handler = {this.handler}
 						/>
-						<MyFarmUpdate isLeft elementType="input" title="DEPTH, in" cropyear={this.state.year}
+						<MyFarmUpdate elementType="input" title="DEPTH, in" cropyear={this.state.year}
 									  firstField="MF" secondField="FDEP"
 									  defaultValue={this.state.FDEP} handler = {this.handler}
 						/>
-					</div>
+
 					<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
 								  firstField="MF" secondField="FDATE"
 								  defaultValue={this.state.FDATE} handler = {this.handler}
 					/>
 
 				</div>: null}
-			</div> :<div></div>
+			</div>:<div></div>
 		)
 	}
 }
