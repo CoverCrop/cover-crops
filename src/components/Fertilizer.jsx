@@ -26,10 +26,16 @@ class Fertilizer extends Component {
 		if(year){
 			let selectcrop = this.props.cropobj[year]["MF"][0];
 			this.setState({FMCD: "None"});
-			this.setState(selectcrop);
-			let fdate = selectcrop["FDATE"];
-			console.log(convertFullDate(fdate));
-			this.setState({"FDATE":convertFullDate(fdate)});
+
+			if(selectcrop){
+				this.setState(selectcrop);
+				let fdate = selectcrop["FDATE"];
+				console.log(convertFullDate(fdate));
+				this.setState({"FDATE":convertFullDate(fdate)});
+			}
+			else{
+				this.setState({"FDATE":null});
+			}
 		}
 	}
 
