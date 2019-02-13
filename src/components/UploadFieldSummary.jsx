@@ -46,6 +46,7 @@ class UploadFieldSummary extends Component {
 		};
 
 		const CLUapi = config.CLUapi + "/api/userfield";
+		let that = this;
 		fetch(CLUapi,{
 			method: 'POST',
 			headers: headers,
@@ -58,16 +59,17 @@ class UploadFieldSummary extends Component {
 			} else {
 				this.setState({file:null, isOpen: true, message: expsuccess });
 				console.log(responseJson);
-				var reader = new FileReader();
-				reader.onload = (function(theFile) {
-					return function(e) { console.log(e.target.result)}})(this.state.file);
-				handleExptxtGet(reader.readAsText(this.state.file))
+				// old code for submit a SQX
+				// var reader = new FileReader();
+				// reader.onload = (function(theFile) {
+				// 	return function(e) { console.log(e.target.result)}})(this.state.file);
+				// handleExptxtGet(reader.readAsText(this.state.file))
 			}
 			this.fileInput.value = "";
 		}).catch(function(e) {
-			this.setState({file:null, message: expfail, isOpen: true});
+			that.setState({file:null, message: expfail, isOpen: true});
 			console.log("set experiment file failed: " + e);
-			this.fileInput.value = "";
+			that.fileInput.value = "";
 		});
 	}
 
@@ -86,7 +88,7 @@ class UploadFieldSummary extends Component {
 		return (
 			<div className="border-top summary-div">
 				<form onSubmit={this.onFormSubmit}>
-					<h1>Upload Experiment File for {this.props.selectedCLUName}</h1>
+					<h1>Upload Experiment File JSON for {this.props.selectedCLUName}</h1>
 					<br />
 					<input ref={ref=> this.fileInput = ref}
 						   type="file"

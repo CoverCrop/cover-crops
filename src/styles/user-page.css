@@ -138,12 +138,10 @@
 	position: absolute;
 }
 
-
 .exist-message{
 	width: 330px;
 	float: right;
 }
-
 
 .myfarm-summary-header{
 	height: 24px;
@@ -151,10 +149,10 @@
 	margin: 15px 0 15px 0;
 }
 
-.summary-table .th{
-	text-align: left;
+.summary-table td{
+	padding: 7px 0px 0px 12px;
+	vertical-align: top;
 }
-
 
 .south-field {
 	color: #108632;
@@ -250,6 +248,21 @@ th {
 	margin-right:10px;
 }
 
+.update-box-left{
+	float: left;
+}
+
+.update-box-div{
+	position: relative;
+	height: 90px;
+}
+
+.black-bottom-crop{
+	padding-left: 12px;
+	padding-right: 12px;
+	margin-bottom: 10px;
+	border-bottom: 1px solid #D8D8D8;
+}
 
 /*.myfarm-input .Select-control{*/
 	/*background-color: #CFEBD7;*/
