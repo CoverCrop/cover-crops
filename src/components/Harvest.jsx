@@ -15,7 +15,7 @@ class Harvest extends Component {
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;
-		this.setInitialState(year);
+		this.setInitialState(this.props, year);
 	}
 
 	componentWillUnmount() {
@@ -24,12 +24,12 @@ class Harvest extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
-		this.setInitialState(year);
+		this.setInitialState(nextProps, year);
 	}
 
-	setInitialState(year) {
+	setInitialState(nextProps, year) {
 		if (year) {
-			let selectcrop = this.props.cropobj[year]["MH"];
+			let selectcrop = nextProps.cropobj[year]? nextProps.cropobj[year]["MH"]: {};
 			this.setState(selectcrop);
 			let pdate = selectcrop["HDATE"];
 			// console.log(convertFullDate(pdate));
@@ -68,7 +68,7 @@ class Harvest extends Component {
 	render() {
 		return (
 			(this.state.HDATE) ?
-				<div className="black-bottom-crop" key="harvest">
+				<div className="black-top-crop" key="harvest">
 					<Title>Harvest </Title>
 
 					<MyFarmUpdate elementType="date" title="DATE HARVESTED" cropyear={this.state.year}

@@ -101,14 +101,6 @@ class Fertilizer extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		email: state.user.email,
-		clu: state.user.clu,
-		cropobj: state.user.cropobj,
-	}
-};
-
 const mapDispatchToProps = (dispatch) => {
 	return {
 		handleExptxtGet: (exptxt) => {
@@ -117,5 +109,5 @@ const mapDispatchToProps = (dispatch) => {
 	}
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fertilizer);
+export default connect(null, mapDispatchToProps)(Fertilizer);
 

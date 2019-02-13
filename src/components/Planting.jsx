@@ -15,7 +15,7 @@ class Planting extends Component {
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;
-		this.setInitialState(year);
+		this.setInitialState(this.props, year);
 	}
 
 	componentWillUnmount() {
@@ -23,13 +23,14 @@ class Planting extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log("should be working!!!!")
 		let year = nextProps.year;
-		this.setInitialState(year);
+		this.setInitialState(nextProps, year);
 	}
 
-	setInitialState(year) {
+	setInitialState(nextProps, year) {
 		if (year) {
-			let selectcrop = this.props.cropobj[year]["MP"];
+			let selectcrop = nextProps.cropobj[year]?  nextProps.cropobj[year]["MP"] :{};
 			this.setState(selectcrop);
 			let pdate = selectcrop["PDATE"];
 			// console.log(convertFullDate(pdate));
@@ -67,7 +68,7 @@ class Planting extends Component {
 	render() {
 		return (
 			(this.state.PDATE) ?
-				<div className="black-bottom-crop" key="planting">
+				<div className="black-top-crop planting-div" key="planting">
 					<Title>Planting </Title>
 
 					<MyFarmUpdate elementType="select" title="DISTRIBUTION" cropyear={this.state.year}

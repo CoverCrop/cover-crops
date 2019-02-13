@@ -1,20 +1,10 @@
 import React, {Component} from "react";
-import {
-	Button,
-	Checkbox,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Textfield,
-	Title
-} from "react-mdc-web";
+import {Button, Checkbox, Dialog, DialogBody, DialogFooter, Textfield, Title} from "react-mdc-web";
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import Select from 'react-select';
-import {convertFullDate, dictToOptions} from "../public/utils";
-import {connect} from "react-redux";
-import {handleCropChange} from "../actions/user";
+import {dictToOptions} from "../public/utils";
 
 class MyFarmUpdate extends Component {
 
@@ -46,6 +36,7 @@ class MyFarmUpdate extends Component {
 
 							case "date":
 								return (<DatePicker className="date-picker-cc"
+													showYearDropdown
 													selected={moment((defaultValue))}
 													onChange={moment =>
 														this.props.handler(secondField, moment.toISOString())

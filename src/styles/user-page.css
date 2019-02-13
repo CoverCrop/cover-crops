@@ -244,7 +244,7 @@ th {
 	width: 230px;
 	/*float:left;*/
 	/*display: inline-block;*/
-	height: 90px;
+	height: 80px;
 	margin-right:10px;
 }
 
@@ -265,13 +265,34 @@ th {
 .fertilizer-box-div{
 	position: relative;
 	overflow: hidden;
+	padding-bottom: 200px;
+}
+
+/*because fertilizer-box-div has overflow:hidden,
+need this to show the option dropdown of Select */
+.planting-div{
+	margin-top: -200px;
 }
 
 .black-bottom-crop{
 	padding-left: 12px;
 	padding-right: 12px;
-	margin-bottom: 10px;
+	/*margin-bottom: 10px;*/
 	border-bottom: 1px solid #D8D8D8;
+}
+
+.no-bottom-crop{
+	padding-left: 12px;
+	padding-right: 12px;
+	/*margin-bottom: 10px;*/
+	/*border-bottom: 1px solid #D8D8D8;*/
+}
+
+.black-top-crop{
+	padding-left: 12px;
+	padding-right: 12px;
+	/*margin-bottom: 10px;*/
+	border-top: 1px solid #D8D8D8;
 }
 
 /*.myfarm-input .Select-control{*/
