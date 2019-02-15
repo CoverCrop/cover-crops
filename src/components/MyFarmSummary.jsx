@@ -121,7 +121,7 @@ class MyFarmSummary extends Component {
 						<span>
 							<a className="download-exp" href={
 								config.CLUapi + "/api/users/" + this.props.selectedCLU.userid + "/CLUs/" +
-								this.props.selectedCLU.clu + "/experiment_file_sqx"}>
+								this.props.selectedCLU.clu + "/experiment_file_sqx?download=true"}>
 								<Icon name="file_download"/>
 							</a>
 					</span>
