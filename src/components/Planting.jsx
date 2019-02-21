@@ -23,7 +23,6 @@ class Planting extends Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("should be working!!!!")
 		let year = nextProps.year;
 		this.setInitialState(nextProps, year);
 	}

@@ -11,6 +11,7 @@ class Fertilizer extends Component {
 
 	constructor(props) {
 		super(props);
+		// set to null not "none", for not showing this component if user has not select a year
 		this.state ={FMCD: null};
 	}
 
