@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 
 ### Changed
+- Download link on My Farm Summary page to point to the DSSAT sequence file (.SQX) of the field. [CCROP-179](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-179)
 
 ### Fixed
 - When a user logs in, redirect to the start a job page [CCROP-159](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-159)
