@@ -30,9 +30,9 @@ class Tillage extends Component {
 	setInitialState(nextProps, year) {
 		if (year) {
 			this.setState({TIMPL: "None"});
-			let selectcrop = nextProps.cropobj[year]? nextProps.cropobj[year]["MT"]: {};
+			let selectcrop = nextProps.cropobj[year] ? nextProps.cropobj[year]["MT"] : {};
 			this.setState(selectcrop);
-			if (nextProps.cropobj[year]["MT"]){
+			if (nextProps.cropobj[year]["MT"]) {
 				let pdate = selectcrop["TDATE"];
 				// console.log(convertFullDate(pdate));
 				this.setState({"TDATE": convertFullDate(pdate)});
@@ -40,12 +40,12 @@ class Tillage extends Component {
 		}
 	}
 
-	getBodyJson(){
-		var jsonBody= {};
-		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
-		let {email, clu, year } =  this.props;
+	getBodyJson() {
+		var jsonBody = {};
+		jsonBody["CONTENT"] = [Object.assign({}, this.state)];
+		let {email, clu, year} = this.props;
 		let requestStatus = false;
-		if(jsonBody["CONTENT"][0]["TDATE"]) {
+		if (jsonBody["CONTENT"][0]["TDATE"]) {
 
 			jsonBody["TNAME"] = year;
 			jsonBody["CONTENT"][0]["TDATE"] = jsonBody["CONTENT"][0]["TDATE"].replace(/-/g, '').substring(0, 8);
@@ -54,18 +54,18 @@ class Tillage extends Component {
 
 		} else {
 			return {
-				"EVENT":"tillage",
-				"HNAME":year,
-				"CONTENT":[]
+				"EVENT": "tillage",
+				"HNAME": year,
+				"CONTENT": []
 			};
 		}
 
 	}
 
 	handler = (field_name, field_value) => {
-		this.setState({[field_name] : field_value});
+		this.setState({[field_name]: field_value});
 		// add tillage
-		if(field_name === "TIMPL" && field_value !=="None" && !this.state.TDATE){
+		if (field_name === "TIMPL" && field_value !== "None" && !this.state.TDATE) {
 			let pureyear = this.props.year.split(" ")[0];
 			let newTillage = Object.assign({}, defaultTillage);
 			newTillage["TIMPL"] = field_value;
@@ -75,8 +75,8 @@ class Tillage extends Component {
 			this.setState(newTillage);
 		}
 		// delete tillage
-		if(field_name === "TIMPL" && field_value ==="None"){
-			this.setState({TDATE:undefined})
+		if (field_name === "TIMPL" && field_value === "None") {
+			this.setState({TDATE: undefined})
 		}
 	}
 
@@ -89,17 +89,17 @@ class Tillage extends Component {
 
 					<MyFarmUpdate elementType="select" title="IMPLEMENT" cropyear={this.state.year}
 								  firstField="MT" secondField="TIMPL" options={TIMPL}
-								  defaultValue={this.state.TIMPL} handler = {this.handler}
+								  defaultValue={this.state.TIMPL} handler={this.handler}
 					/>
 
 					{this.state.TDATE && <div>
 						<MyFarmUpdate elementType="date" title="DATE" cropyear={this.state.year}
 									  firstField="MT" secondField="TDATE"
-									  defaultValue={this.state.TDATE} handler = {this.handler}
+									  defaultValue={this.state.TDATE} handler={this.handler}
 						/>
 						<MyFarmUpdate elementType="input" title="DEPTH" cropyear={this.state.year}
 									  firstField="MT" secondField="TDEP"
-									  defaultValue={this.state.TDEP} handler = {this.handler}
+									  defaultValue={this.state.TDEP} handler={this.handler}
 						/>
 
 					</div>}
