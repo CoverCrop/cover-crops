@@ -15,6 +15,7 @@ import config from "../app.config";
 import {convertFullDate, getExperimentSQX} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
+import Tillage from "./Tillage";
 
 class CropHistory extends Component {
 
@@ -65,8 +66,9 @@ class CropHistory extends Component {
 			.filter(jsonBody => jsonBody["FMCD"] !== "None");
 		let plantingJson = this.planting.getBodyJson();
 		let harvestJson = this.harvest.getBodyJson();
+		let tillageJson = this.tillage.getBodyJson();
 		let {email, clu} = this.props;
-		let jsonBody = [fertilizerJson, plantingJson, harvestJson];
+		let jsonBody = [fertilizerJson, plantingJson, harvestJson, tillageJson];
 		// console.log(jsonBody);
 		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
@@ -131,6 +133,7 @@ class CropHistory extends Component {
 					}
 					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>
 					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>
+					<Tillage year={this.state.year} onRef={ref => (this.tillage = ref)}/>
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
 				<Dialog

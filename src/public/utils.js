@@ -397,7 +397,8 @@ export function getCropObj(text) {
 		let FERTILIZER = readDuplicateTable(textlines, "FERTILIZERS");
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
-		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST};
+		let TILLAGE = readTable(textlines, "TILLAGE");
+		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
 		let crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
