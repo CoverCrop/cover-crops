@@ -62,6 +62,9 @@ class MyFarmSummary extends Component {
 					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
 					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"]}</td>
 					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"]["TIMPL"]}</td>
+					<td rowSpan={obj["MF"].length}>{convertDate(obj["MT"]["TDATE"])}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"]["TDEP"]}</td>
 				</tr>
 				{
 					obj["MF"].slice(1).map(MFObj =>
@@ -73,6 +76,7 @@ class MyFarmSummary extends Component {
 							<td>{MFObj["FDEP"]}</td>
 						</tr>)
 				}
+
 				</tbody>
 
 
@@ -201,7 +205,13 @@ class MyFarmSummary extends Component {
 								<th></th>
 								<th>Harvest</th>
 								<th>Fertilizer</th>
-
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th>Tillage</th>
+								<th></th>
+								<th></th>
 							</tr>
 
 							<tr>
@@ -218,6 +228,9 @@ class MyFarmSummary extends Component {
 								<td>Application</td>
 								<td>Date</td>
 								<td>Amount, lb/acre</td>
+								<td>Depth, in</td>
+								<td>Implement</td>
+								<td>Date</td>
 								<td>Depth, in</td>
 							</tr>
 
