@@ -36,8 +36,8 @@ export const PLDS = {"R": "Row", "B": "Broadcast"};
 export const TIMPL = {
 	"None": "No Tillage", "TI002": "Subsoiler", "TI003": "Moldboard plow",
 	"TI004": "Chisel plow, sweeps", "TI005": "Chisel plow, straight point", "TI006": "Chisel plow, twisted shovels",
-	"TI007": "Disk plow", "TI008": "Disk, 1-way", "TI009": "Disk, tandem", "TI010": "Disk,double disk",
-	"TI011": "Cultivator,field", "TI012": "Cultivator, row", "TI014": "Harrow,spike", "TI015": "Harrow,tine",
+	"TI007": "Disk plow", "TI008": "Disk, 1-way", "TI009": "Disk, tandem", "TI010": "Disk, double disk",
+	"TI011": "Cultivator, field", "TI012": "Cultivator, row", "TI014": "Harrow, spike", "TI015": "Harrow, tine",
 	"TI019": "Fertilizer applicator, anhydrous"
 };
 
