@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import {findFirstSubstring, convertDate, readTable} from "../public/utils";
-import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
+import {drainage_type, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 
@@ -50,7 +50,7 @@ class MyFarmSummary extends Component {
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["CU"]["CNAME"]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
@@ -82,7 +82,7 @@ class MyFarmSummary extends Component {
 			<tr key={obj["YEAR"]}>
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>
-				<td>{obj["CU"]}</td>
+				<td>{obj["CU"]["CNAME"]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
 				<td>{obj["MP"]["PPOP"]}</td>

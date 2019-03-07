@@ -84,7 +84,7 @@ class Tillage extends Component {
 		return (
 
 			(this.state.TIMPL) ?
-				<div className="black-top-crop" key="tillage">
+				<div className="black-top-crop  after-fertilizer-div" key="tillage">
 					<Title>Tillage </Title>
 
 					<MyFarmUpdate elementType="select" title="IMPLEMENT" cropyear={this.state.year}

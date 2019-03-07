@@ -1,5 +1,3 @@
-export const CULTIVARS = {"1": "NEWTON", "2": "DEKALB 591", "3": "M GROUP 2", "4": "FALLOW"};
-
 export const drainage_type = {
 	"DR000": "No drainage",
 	"DR001": "Ditches",
@@ -42,3 +40,6 @@ export const TIMPL = {
 };
 
 export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
+export const CR = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
+export const CROP = ["Corn", "Soybean", "Fallow"];
+export const CULTIVARS = ["NEWTON", "DEKALB 591", "M GROUP 2", "2500-2600 GDD", "Fallow"];
