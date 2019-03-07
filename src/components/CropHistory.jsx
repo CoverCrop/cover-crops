@@ -230,9 +230,9 @@ class CropHistory extends Component {
 						</div>
 					</div>}
 					{this.state.crop !== "Fallow" &&
-					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>}
+					<Planting title="Planting" year={this.state.year} onRef={ref => (this.planting = ref)}/>}
 					{this.state.crop !== "Fallow" &&
-					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
+					<Harvest title="Harvest" year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
 					{this.state.year && <div className="black-top-crop" key="fertilizer">
 						<Title>Fertilizer </Title>
 						<div className="fertilizer-box-div">

@@ -69,7 +69,7 @@ class Harvest extends Component {
 		return (
 			(this.state.HDATE) ?
 				<div className="black-top-crop" key="harvest">
-					<Title>Harvest </Title>
+					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="date" title="DATE HARVESTED" cropyear={this.state.year}
 								  firstField="MP" secondField="HDATE"

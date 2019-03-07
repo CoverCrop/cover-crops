@@ -68,7 +68,7 @@ class Planting extends Component {
 		return (
 			(this.state.PDATE) ?
 				<div className="black-top-crop" key="planting">
-					<Title>Planting </Title>
+					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="select" title="DISTRIBUTION" cropyear={this.state.year}
 								  firstField="MP" secondField="PLDS" options={PLDS}
