@@ -8,16 +8,14 @@ import UserPage from './UserPage';
 import MyFarmPage from "./MyFarmPage";
 import RouteMismatch from './RouteMismatch'
 import "material-components-web/dist/material-components-web.min.css";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {createMuiTheme, MuiThemeProvider} from '@material-ui/core';
 import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
-import injectTapEventPlugin from 'react-tap-event-plugin'
-import {isUserAuthenticated} from "../public/utils";
 import RegistrationPage from "./RegistrationPage";
 import {handleUserLogin} from "../actions/user";
 import {connect} from "react-redux";
 
 global.__base = __dirname + "/";
-injectTapEventPlugin();
+const theme = createMuiTheme();
 
 class App extends Component {
 
@@ -30,7 +28,7 @@ class App extends Component {
 	render() {
 
 		return (
-			<MuiThemeProvider>
+			<MuiThemeProvider theme={theme}>
 				<Router history={hashHistory}>
 					<Route path="/" component={HomePage}/>
 					<Route path="/analysis" component={AnalysisPage}/>
