@@ -5,13 +5,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
 ### Added
 
 ### Changed
+- Included Tillage information in Crop History section of summary page [CCROP-188] (https://opensource.ncsa.illinois.edu/jira/browse/CCROP-188) 
+
+### Fixed
+
+
+## [0.3.0] - 2019-03-06
+
+### Added
+
+- User can view and modify tillage on MyFarm crop history page [CCROP-180](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-180)
+- User can add new fertilizer entry on MyFarm crop history page and modify planting, harvest, etc [CCROP-156](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-156)
+- Populate default farm data when user adds a CLU [CCROP-134](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-134)
+
+### Changed
 - Download link on My Farm Summary page to point to the DSSAT sequence file (.SQX) of the field. [CCROP-179](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-179)
+- Summary page built from SQX data associated with a farm using service SQX endpoint [CCROP-148](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-148)
 
 ### Fixed
 - When a user logs in, redirect to the start a job page [CCROP-159](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-159)
+- Run simulation button not responding to button press [CCROP-165](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-165)
 
 ## [0.2.0] - 2018-10-12
 
