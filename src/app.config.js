@@ -3,7 +3,8 @@ const devConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
-	CLUapi: "https://fd-postgres.ncsa.illinois.edu",
+	domain: "localhost",
+	CLUapi: "http://localhost:5000",
 	latestWeatherDate: "2018-11-30",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10
@@ -14,6 +15,7 @@ const prodConfig = {
 	fragilityServer: "",
 	fragilityMappingServer: "",
 	semanticServer: "",
+	domain: ".ncsa.illinois.edu",
 	CLUapi: "https://fd-postgres.ncsa.illinois.edu",
 	latestWeatherDate: "2018-11-30",
 	defaultCenterLongLat: [-88.2, 40.14],
