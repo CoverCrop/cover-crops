@@ -11,6 +11,7 @@ import Select from 'react-select';
 import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
+import Cultivars from "./Cultivars";
 import config from "../app.config";
 import {convertFullDate, getExperimentSQX} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
@@ -124,6 +125,9 @@ class CropHistory extends Component {
 							/>
 						</div>
 					</div>
+
+					<Cultivars year={this.state.year} onRef={ref => (this.cultivars = ref)}/>
+
 					{this.state.year && <div className="no-bottom-crop" key="fertilizer">
 						<Title>Fertilizer </Title>
 						<div className="fertilizer-box-div">
