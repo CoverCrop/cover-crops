@@ -42,3 +42,5 @@ export const TIMPL = {
 };
 
 export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
+// export const CROP = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
+export const CROP = ["Corn", "Soybean", "Fallow"];

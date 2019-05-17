@@ -11,12 +11,12 @@ import Select from 'react-select';
 import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
-import Cultivars from "./Cultivars";
 import config from "../app.config";
 import {convertFullDate, getExperimentSQX} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
+import {CROP} from "../experimentFile";
 
 class CropHistory extends Component {
 
@@ -25,7 +25,8 @@ class CropHistory extends Component {
 		this.state = {
 			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0],
 			isOpen: false,
-			flist: [{FMCD: "None", addnew: true}]
+			flist: [{FMCD: "None", addnew: true}],
+			crop: null,
 		};
 		// this.fertilizer is filter by isDefined, cause the fertilizer number
 		// is not all the same, and may get undefined error when switching from
@@ -57,19 +58,85 @@ class CropHistory extends Component {
 			...this.props.cropobj[year]["MF"],
 			{FMCD: "None", addnew: true}
 		];
-		this.setState({flist: flist});
+		this.setState({flist: flist,
+			crop: this.props.cropobj[year]["CROP"]
+		});
 	}
 
 	handleClick = () => {
 
-		let fertilizerJson = {"EVENT": "fertilizer", "FERNAME": this.state.year};
-		fertilizerJson["CONTENT"] = this.fertilizer.filter(f => f).map(f => f.getBodyJson())
-			.filter(jsonBody => jsonBody["FMCD"] !== "None");
-		let plantingJson = this.planting.getBodyJson();
-		let harvestJson = this.harvest.getBodyJson();
-		let tillageJson = this.tillage.getBodyJson();
+		let jsonBody = [];
 		let {email, clu} = this.props;
-		let jsonBody = [fertilizerJson, plantingJson, harvestJson, tillageJson];
+		if (this.state.crop === "Fallow") {
+			// let newName = this.state.year.slice(0, 5) + "Fallow";
+			let newName = this.state.year;
+			let tillageJson = this.tillage.getBodyJson();
+			tillageJson["TNAME"] = newName;
+			jsonBody = [
+				{
+					"EVENT": "planting",
+					"PLNAME": newName,
+					"CONTENT": []
+				},
+				{
+					"EVENT": "fertilizer",
+					"FERNAME": newName,
+					"CONTENT": this.fertilizer.filter(f => f).map(f => f.getBodyJson())
+						.filter(jsonBody => jsonBody["FMCD"] !== "None")
+				},
+				{
+					"EVENT": "harvest",
+					"HNAME": newName,
+					"CONTENT": []
+				},
+				tillageJson
+			]
+
+		} else {
+			// crop type is not changed
+
+			let fertilizerJson = {"EVENT": "fertilizer", "FERNAME": this.state.year};
+			fertilizerJson["CONTENT"] = this.fertilizer.filter(f => f).map(f => f.getBodyJson())
+				.filter(jsonBody => jsonBody["FMCD"] !== "None");
+			let plantingJson = this.planting.getBodyJson();
+			let harvestJson = this.harvest.getBodyJson();
+			let tillageJson = this.tillage.getBodyJson();
+
+			jsonBody = [fertilizerJson, plantingJson, harvestJson, tillageJson];
+			if (this.state.year.indexOf(this.state.crop) < 0) {
+				// let newName = this.state.year.slice(0, 5) + "Fallow";
+				let newName = this.state.year;
+				let newName2 = this.state.year.slice(0, 5) + this.state.crop;
+				fertilizerJson["FERNAME"] = newName2;
+				plantingJson["PLNAME"] = newName2;
+				harvestJson["HNAME"] = newName2;
+				tillageJson["TNAME"] = newName2;
+				jsonBody = [
+					{
+						"EVENT": "planting",
+						"PLNAME": newName,
+						"CONTENT": []
+					},
+					{
+						"EVENT": "fertilizer",
+						"FERNAME": newName,
+						"CONTENT": []
+					},
+					{
+						"EVENT": "harvest",
+						"HNAME": newName,
+						"CONTENT": []
+					},
+					{
+						"EVENT": "tillage",
+						"HNAME": newName,
+						"CONTENT": []
+					},
+					fertilizerJson, plantingJson, harvestJson, tillageJson
+				]
+			}
+		}
+
 		// console.log(jsonBody);
 		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
@@ -102,7 +169,10 @@ class CropHistory extends Component {
 	render() {
 		let years = Object.keys(this.props.cropobj).filter(obj => obj.indexOf("Corn") > 0 || obj.indexOf("Soybean") > 0 );
 		let options = years.map(function(key){
-			return {value: key, label:key}
+			return {value: key, label:key.slice(0, 4)}
+		});
+		let CROPoptions = CROP.map(function (key) {
+			return {value: key, label: key}
 		});
 		let fertilizerUI = this.state.flist.map((crop, index) =>
 			<Fertilizer key={index+ "f"} year={this.state.year} crop={crop}
@@ -126,17 +196,32 @@ class CropHistory extends Component {
 						</div>
 					</div>
 
-					<Cultivars year={this.state.year} onRef={ref => (this.cultivars = ref)}/>
+					{this.state.year && <div className="no-bottom-crop" key="cultivars">
+						<Title>Cultivars </Title>
+						<div className="update-box-div">
+							<div className="update-box update-box-left">
+								<p>CROP</p>
+								<Select
+									name="CROP"
+									value={this.state.crop}
+									options={CROPoptions}
+									onChange={selectedOption => this.setState({crop: selectedOption.value})}
+								/>
+							</div>
+						</div>
+					</div>}
+					{this.state.crop !== "Fallow" &&
+					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>}
+					{this.state.crop !== "Fallow" &&
+					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
+					{this.state.year && <div className="black-top-crop" key="fertilizer">
 
-					{this.state.year && <div className="no-bottom-crop" key="fertilizer">
 						<Title>Fertilizer </Title>
 						<div className="fertilizer-box-div">
-						{fertilizerUI}
+							{fertilizerUI}
 						</div>
 					</div>
 					}
-					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>
-					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>
 					<Tillage year={this.state.year} onRef={ref => (this.tillage = ref)}/>
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
