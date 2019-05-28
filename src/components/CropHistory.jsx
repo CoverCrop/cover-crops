@@ -16,7 +16,7 @@ import {convertFullDate, getExperimentSQX, isCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
-import {CROP, defaultCropYears} from "../experimentFile";
+import {CROP, cultivars, defaultCropYears} from "../experimentFile";
 
 class CropHistory extends Component {
 
@@ -147,7 +147,7 @@ class CropHistory extends Component {
 				newName = this.state.year.slice(0, 5) + this.state.crop;
 				fertilizerJson["FERNAME"] = newName;
 				plantingJson["PLNAME"] = newName;
-
+				plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.crop];
 				harvestJson["HNAME"] = newName;
 				tillageJson["TNAME"] = newName;
 				jsonBody = [
@@ -214,9 +214,9 @@ class CropHistory extends Component {
 		}
 
 		let options = defaultCropYears.map(function(key){
-			let yearNmae = years.find(s => s.includes(key));
-			if (yearNmae){
-				return {value: yearNmae, label:key}
+			let yearName = years.find(s => s.includes(key));
+			if (yearName){
+				return {value: yearName, label:key}
 			} else {
 				return {value: key +" None", label:key}
 			}
