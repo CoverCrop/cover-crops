@@ -32,10 +32,9 @@ class Tillage extends Component {
 			this.setState({TIMPL: "None"});
 			let selectcrop = nextProps.cropobj[year] ? nextProps.cropobj[year]["MT"] : {};
 			this.setState(selectcrop);
-			if (nextProps.cropobj[year]["MT"]) {
-				let pdate = selectcrop["TDATE"];
-				// console.log(convertFullDate(pdate));
-				this.setState({"TDATE": convertFullDate(pdate)});
+			if (nextProps.cropobj[year] && nextProps.cropobj[year]["MT"]) {
+				let tdate = selectcrop["TDATE"];
+				this.setState({"TDATE": convertFullDate(tdate)});
 			}
 		}
 	}
@@ -55,7 +54,7 @@ class Tillage extends Component {
 		} else {
 			return {
 				"EVENT": "tillage",
-				"HNAME": year,
+				"TNAME": year,
 				"CONTENT": []
 			};
 		}

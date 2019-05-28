@@ -32,6 +32,21 @@ export const defaultFertilizer = {
 	"FAMN": "193",
 };
 
+export const defaultPlanting = {
+	// "PDATE":"0513",
+	"PPOP":"8",
+	"PPOE":"8",
+	"PLME":"S",
+	"PLDS":"R",
+	"PLRS": "76",
+	"PLRD": "0",
+	"PLDP": "4"
+}
+
+export const defaultHarvest = {
+	"HDATE" : "0928"
+}
+
 export const PLDS = {"R": "Row", "B": "Broadcast"};
 export const TIMPL = {
 	"None": "No Tillage", "TI002": "Subsoiler", "TI003": "Moldboard plow",
@@ -43,4 +58,5 @@ export const TIMPL = {
 
 export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
 // export const CROP = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
-export const CROP = ["Corn", "Soybean", "Fallow"];
+export const CROP = ["Corn", "Soybean", "None"];
+export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];

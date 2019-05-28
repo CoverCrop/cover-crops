@@ -12,11 +12,11 @@ import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
 import config from "../app.config";
-import {convertFullDate, getExperimentSQX} from "../public/utils";
+import {convertFullDate, getExperimentSQX, isCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
-import {CROP} from "../experimentFile";
+import {CROP, defaultCropYears} from "../experimentFile";
 
 class CropHistory extends Component {
 
@@ -35,6 +35,7 @@ class CropHistory extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
+		//change to a new CLU
 		if (this.props.clu !== prevProps.clu) {
 			this.setState({year: undefined})
 		}
@@ -43,9 +44,11 @@ class CropHistory extends Component {
 			let year = this.state.year;
 			if(year) {
 				let flist = [
-					...this.props.cropobj[year]["MF"],
 					{FMCD: "None", addnew: true}
 				];
+				if(this.props.cropobj[year]){
+					flist = this.props.cropobj[year]["MF"].concat(flist)
+				}
 				this.setState({flist: flist});
 			}
 		}
@@ -53,44 +56,79 @@ class CropHistory extends Component {
 
 	handleSelectYear = (year) => {
 		this.setState({year: year});
+		if(this.props.cropobj[year]){
+			let flist = [
+				...this.props.cropobj[year]["MF"],
+				{FMCD: "None", addnew: true}
+			];
+			this.setState({flist: flist,
+				crop: this.props.cropobj[year]["CROP"]
+			});
+		} else{
+			this.setState({flist: [{FMCD: "None", addnew: true}],
+				crop: "None"
+			});
+		}
 
-		let flist = [
-			...this.props.cropobj[year]["MF"],
-			{FMCD: "None", addnew: true}
-		];
-		this.setState({flist: flist,
-			crop: this.props.cropobj[year]["CROP"]
-		});
+	}
+
+	handleSelectCrop = (crop) => {
+		if (this.state.crop === "None"){
+			// this.planting.setDefault();
+			// this.harvest.setDefault();
+		}
+		this.setState({crop: crop})
 	}
 
 	handleClick = () => {
 
 		let jsonBody = [];
 		let {email, clu} = this.props;
-		if (this.state.crop === "Fallow") {
-			// let newName = this.state.year.slice(0, 5) + "Fallow";
-			let newName = this.state.year;
+		let newName = this.state.year;
+		if (this.state.crop === "None") {
+			newName = this.state.year.slice(0, 5) + "Fallow";
+			let oldName = this.state.year;
 			let tillageJson = this.tillage.getBodyJson();
-			tillageJson["TNAME"] = newName;
+
 			jsonBody = [
 				{
 					"EVENT": "planting",
-					"PLNAME": newName,
+					"PLNAME": oldName,
 					"CONTENT": []
 				},
 				{
 					"EVENT": "fertilizer",
-					"FERNAME": newName,
-					"CONTENT": this.fertilizer.filter(f => f).map(f => f.getBodyJson())
-						.filter(jsonBody => jsonBody["FMCD"] !== "None")
-				},
-				{
-					"EVENT": "harvest",
-					"HNAME": newName,
+					"FERNAME": oldName,
 					"CONTENT": []
 				},
-				tillageJson
+
+				{
+					"EVENT": "harvest",
+					"HNAME": oldName,
+					"CONTENT": []
+				},
+
+				{
+					"EVENT": "tillage",
+					"TNAME": oldName,
+					"CONTENT": []
+				},
 			]
+			if (tillageJson["CONTENT"].length > 0) {
+				tillageJson["TNAME"] = newName;
+				jsonBody.push(tillageJson)
+			}
+			let fContent = this.fertilizer.filter(f => f).map(f => f.getBodyJson())
+				.filter(jsonBody => jsonBody["FMCD"] !== "None");
+			if (fContent.length > 0){
+
+				let fbody = {
+						"EVENT": "fertilizer",
+						"FERNAME": newName,
+						"CONTENT": fContent
+					};
+				jsonBody.push(fbody)
+			}
 
 		} else {
 			// crop type is not changed
@@ -103,33 +141,34 @@ class CropHistory extends Component {
 			let tillageJson = this.tillage.getBodyJson();
 
 			jsonBody = [fertilizerJson, plantingJson, harvestJson, tillageJson];
+			// crop type is changed
 			if (this.state.year.indexOf(this.state.crop) < 0) {
-				// let newName = this.state.year.slice(0, 5) + "Fallow";
-				let newName = this.state.year;
-				let newName2 = this.state.year.slice(0, 5) + this.state.crop;
-				fertilizerJson["FERNAME"] = newName2;
-				plantingJson["PLNAME"] = newName2;
-				harvestJson["HNAME"] = newName2;
-				tillageJson["TNAME"] = newName2;
+				let oldName = this.state.year;
+				newName = this.state.year.slice(0, 5) + this.state.crop;
+				fertilizerJson["FERNAME"] = newName;
+				plantingJson["PLNAME"] = newName;
+
+				harvestJson["HNAME"] = newName;
+				tillageJson["TNAME"] = newName;
 				jsonBody = [
 					{
 						"EVENT": "planting",
-						"PLNAME": newName,
+						"PLNAME": oldName,
 						"CONTENT": []
 					},
 					{
 						"EVENT": "fertilizer",
-						"FERNAME": newName,
+						"FERNAME": oldName,
 						"CONTENT": []
 					},
 					{
 						"EVENT": "harvest",
-						"HNAME": newName,
+						"HNAME": oldName,
 						"CONTENT": []
 					},
 					{
 						"EVENT": "tillage",
-						"HNAME": newName,
+						"TNAME": oldName,
 						"CONTENT": []
 					},
 					fertilizerJson, plantingJson, harvestJson, tillageJson
@@ -137,7 +176,7 @@ class CropHistory extends Component {
 			}
 		}
 
-		// console.log(jsonBody);
+		// console.log(JSON.stringify(jsonBody, null, 2));
 		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
@@ -152,7 +191,7 @@ class CropHistory extends Component {
 				let a = updateResponse.json();
 				getExperimentSQX(email, clu).then(exptxt => {
 					this.props.handleExptxtGet(exptxt);
-					this.setState({isOpen: true})
+					this.setState({isOpen: true, year: this.state.year.slice(0, 5) + this.state.crop})
 				})
 			}
 		}).catch(error => console.error('Error:', error))
@@ -167,13 +206,26 @@ class CropHistory extends Component {
 	}
 
 	render() {
-		let years = Object.keys(this.props.cropobj).filter(obj => obj.indexOf("Corn") > 0 || obj.indexOf("Soybean") > 0 );
-		let options = years.map(function(key){
-			return {value: key, label:key.slice(0, 4)}
+		let years =[];
+		for(var key in this.props.cropobj){
+			if (isCrop(this.props.cropobj[key])){
+				years.push(key);
+			}
+		}
+
+		let options = defaultCropYears.map(function(key){
+			let yearNmae = years.find(s => s.includes(key));
+			if (yearNmae){
+				return {value: yearNmae, label:key}
+			} else {
+				return {value: key +" None", label:key}
+			}
 		});
+
 		let CROPoptions = CROP.map(function (key) {
 			return {value: key, label: key}
 		});
+
 		let fertilizerUI = this.state.flist.map((crop, index) =>
 			<Fertilizer key={index+ "f"} year={this.state.year} crop={crop}
 						onRef={ref => (this.fertilizer[index] = ref)}
@@ -205,14 +257,14 @@ class CropHistory extends Component {
 									name="CROP"
 									value={this.state.crop}
 									options={CROPoptions}
-									onChange={selectedOption => this.setState({crop: selectedOption.value})}
+									onChange={selectedOption => this.handleSelectCrop( selectedOption.value)}
 								/>
 							</div>
 						</div>
 					</div>}
-					{this.state.crop !== "Fallow" &&
+					{this.state.crop !== "None" &&
 					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>}
-					{this.state.crop !== "Fallow" &&
+					{this.state.crop !== "None" &&
 					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
 					{this.state.year && <div className="black-top-crop" key="fertilizer">
 

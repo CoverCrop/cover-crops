@@ -333,7 +333,7 @@ export function readTable(textlines, table_title) {
 	let tableobj = {"0": {}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "");
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
 
@@ -355,7 +355,7 @@ export function readDuplicateTable(textlines, table_title) {
 	let tableobj = {"0": []};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "");
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
 
@@ -450,4 +450,13 @@ export function cropObjToExptxt(text, cropobj) {
 	}
 
 	return textlines.join("\n");
+}
+
+export function isCrop(cropobj){
+	console.log(parseInt(cropobj["MP"]["PDATE"])% 1000)
+	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
+}
+
+export function isCoverCrop(cropobj) {
+	return cropobj["CROP"] === "Rye"
 }

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {findFirstSubstring, convertDate, readTable} from "../public/utils";
+import {findFirstSubstring, convertDate, readTable, isCrop, isCoverCrop} from "../public/utils";
 import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
@@ -45,7 +45,7 @@ class MyFarmSummary extends Component {
 
         // cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
-			.filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
+			.filter(obj => isCrop(obj)).map(obj =>
 				<tbody>
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
@@ -82,7 +82,7 @@ class MyFarmSummary extends Component {
 
 		);
 		// TODO: combine with cropComponent
-		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
+		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map(obj =>
 			<tr key={obj["YEAR"]}>
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>

@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Title} from "react-mdc-web";
 import {convertFullDate} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultFertilizer, PLDS} from "../experimentFile";
+import {defaultPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Planting extends Component {
@@ -29,11 +29,16 @@ class Planting extends Component {
 
 	setInitialState(nextProps, year) {
 		if (year) {
-			let selectcrop = nextProps.cropobj[year]?  nextProps.cropobj[year]["MP"] :{};
-			this.setState(selectcrop);
-			let pdate = selectcrop["PDATE"];
-			// console.log(convertFullDate(pdate));
-			this.setState({"PDATE": convertFullDate(pdate)});
+			if(nextProps.cropobj[year]){
+				let selectcrop = nextProps.cropobj[year]["MP"] ;
+				this.setState(selectcrop);
+				let pdate = selectcrop["PDATE"];
+				// console.log(convertFullDate(pdate));
+				this.setState({"PDATE": convertFullDate(pdate)});
+			} else{
+				this.setDefault()
+			}
+
 		}
 	}
 
@@ -58,6 +63,14 @@ class Planting extends Component {
 			};
 		}
 
+	}
+
+	setDefault(){
+		let newPlanting = Object.assign({}, defaultPlanting);
+		let pureyear = this.props.year.split(" ")[0];
+		// set default date as 04-22
+		newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
+		this.setState(newPlanting);
 	}
 
 	handler = (field_name, field_value) => {
