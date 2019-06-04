@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {findFirstSubstring, convertDate, readTable, isCrop, isCoverCrop} from "../public/utils";
-import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
+import {convertDate, isCoverCrop, isCrop} from "../public/utils";
+import {CULTIVARS, drainage_type, FACD, FMCD, PLDS} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 

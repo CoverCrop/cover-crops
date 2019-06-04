@@ -59,4 +59,5 @@ export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
 export const CROP = ["Corn", "Soybean", "None"];
 export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "None":"None"};
+export const COVERCROP = ["Rye", "None"];
 

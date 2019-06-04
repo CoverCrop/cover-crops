@@ -69,7 +69,13 @@ class Planting extends Component {
 		let newPlanting = Object.assign({}, defaultPlanting);
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 04-22
-		newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
+		if (this.props.title === "Planting") {
+			// set default date as 04-22
+			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
+		} else {
+			// set default date as 09-22
+			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
+		}
 		this.setState(newPlanting);
 	}
 

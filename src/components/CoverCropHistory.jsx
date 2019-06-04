@@ -1,21 +1,12 @@
 import React, {Component} from "react";
-import {
-	Button,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Icon,
-	Title
-} from "react-mdc-web";
+import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-web";
 import Select from 'react-select';
 import {connect} from "react-redux";
-import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
-import config from "../app.config";
-import {convertFullDate, getExperimentSQX} from "../public/utils";
+import {isCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
-import Tillage from "./Tillage";
+import {COVERCROP, defaultCropYears} from "../experimentFile";
 
 class CoverCropHistory extends Component {
 
@@ -23,7 +14,8 @@ class CoverCropHistory extends Component {
 		super(props);
 		this.state = {
 			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0],
-			isOpen: false
+			isOpen: false,
+			covercrop: null,
 		};
 	}
 
@@ -35,6 +27,20 @@ class CoverCropHistory extends Component {
 
 	handleSelectYear = (year) => {
 		this.setState({year: year});
+		if(this.props.cropobj[year]){
+			this.setState({
+				covercrop: this.props.cropobj[year]["CROP"]
+			});
+		} else{
+			this.setState({
+				covercrop: "None"
+			});
+		}
+
+	}
+
+	handleSelectCoverCrop = (covercrop) => {
+		this.setState({covercrop})
 	}
 
 	handleClick = () => {
@@ -65,9 +71,24 @@ class CoverCropHistory extends Component {
 	}
 
 	render() {
-		let years = Object.keys(this.props.cropobj).filter(obj => obj.indexOf("Fallow") > 0 || obj.indexOf("Rye") > 0 );
-		let options = years.map(function(key){
-			return {value: key, label:key}
+		let years =[];
+		for(var key in this.props.cropobj){
+			if (isCrop(this.props.cropobj[key])){
+				years.push(key);
+			}
+		}
+
+		let options = defaultCropYears.map(function(key){
+			let yearName = years.find(s => s.includes(key)  && (s.includes("Rye")));
+			if (yearName){
+				return {value: yearName, label:key}
+			} else {
+				return {value: key +" None", label:key}
+			}
+		});
+
+		let COVERCROPoptions = COVERCROP.map(function (key) {
+			return {value: key, label: key}
 		});
 
 		return (
@@ -85,9 +106,24 @@ class CoverCropHistory extends Component {
 							/>
 						</div>
 					</div>
-
-					<Planting title="Establishment" year={this.state.year} onRef={ref => (this.planting = ref)}/>
-					<Harvest title="Termination" year={this.state.year} onRef={ref => (this.harvest = ref)}/>
+					{this.state.year && <div className="no-bottom-crop" key="cultivars">
+						<Title>Cultivars </Title>
+						<div className="update-box-div">
+							<div className="update-box update-box-left">
+								<p>CROP</p>
+								<Select
+									name="CROP"
+									value={this.state.covercrop}
+									options={COVERCROPoptions}
+									onChange={selectedOption => this.handleSelectCoverCrop( selectedOption.value)}
+								/>
+							</div>
+						</div>
+					</div>}
+					{this.state.covercrop !== "None" &&
+					<Planting title="Establishment" year={this.state.year} onRef={ref => (this.planting = ref)}/> }
+					{this.state.covercrop !== "None" &&
+					<Harvest title="Termination" year={this.state.year} onRef={ref => (this.harvest = ref)}/> }
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
 				<Dialog
