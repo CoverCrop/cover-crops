@@ -70,7 +70,7 @@ class Login extends Component {
 					date.setTime(date.getTime() + (24*60*60*1000));
 
 					let expiresString = "expires=" + date.toUTCString();
-					let domainString = "domain=.ncsa.illinois.edu";
+					let domainString = "domain="+ config.domain;
 					let pathString = "path=/";
 					let tokenString = "token=" + jsonKeyData["token"];
 

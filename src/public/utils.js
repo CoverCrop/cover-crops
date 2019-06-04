@@ -333,11 +333,10 @@ export function readTable(textlines, table_title) {
 	let tableobj = {"0": {}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "").map(w => w.trim());
-		console.log(table_header)
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
-		table_body[table_header.length - 1] = table_body.slice(table_header.length - 1).join(" ");
+
 		while (table_body.length > 1 && !table_body[0].includes("@")) {
 			let colunmobj = {};
 			for (let i = 1; i < table_header.length; i++) {
@@ -346,7 +345,6 @@ export function readTable(textlines, table_title) {
 			tableobj[table_body[0]] = colunmobj;
 			linenumber = linenumber + 1;
 			table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
-			table_body[table_header.length - 1] = table_body.slice(table_header.length - 1).join(" ");
 		}
 		return tableobj;
 	}
@@ -357,7 +355,7 @@ export function readDuplicateTable(textlines, table_title) {
 	let tableobj = {"0": []};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "").map(w => w.trim());
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
 
@@ -396,12 +394,11 @@ export function getCropObj(text) {
 		let tmptext = textlines[treaments_line_number + 1].replace("TNAME....................", "YEAR CROP");
 		let b = tmptext.split(" ");
         // fertilizer is an array, others are single object
-		let CULTIVARSTABLE = readTable(textlines, "CULTIVARS")
 		let FERTILIZER = readDuplicateTable(textlines, "FERTILIZERS");
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
 		let TILLAGE = readTable(textlines, "TILLAGE");
-		const exp = {"CU": CULTIVARSTABLE, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
+		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
 		let crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
@@ -453,4 +450,13 @@ export function cropObjToExptxt(text, cropobj) {
 	}
 
 	return textlines.join("\n");
+}
+
+export function isCrop(cropobj){
+	console.log(parseInt(cropobj["MP"]["PDATE"])% 1000)
+	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
+}
+
+export function isCoverCrop(cropobj) {
+	return cropobj["CROP"] === "Rye"
 }

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {findFirstSubstring, convertDate, readTable} from "../public/utils";
-import {drainage_type, PLDS, FMCD, FACD} from "../experimentFile";
+import {findFirstSubstring, convertDate, readTable, isCrop, isCoverCrop} from "../public/utils";
+import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 
@@ -45,12 +45,12 @@ class MyFarmSummary extends Component {
 
         // cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
-			.filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
+			.filter(obj => isCrop(obj)).map(obj =>
 				<tbody>
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["CU"]["CNAME"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
@@ -62,6 +62,9 @@ class MyFarmSummary extends Component {
 					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
 					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"]}</td>
 					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TIMPL"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertDate(obj["MT"]["TDATE"])}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TDEP"]}</td>
 				</tr>
 				{
 					obj["MF"].slice(1).map(MFObj =>
@@ -73,16 +76,17 @@ class MyFarmSummary extends Component {
 							<td>{MFObj["FDEP"]}</td>
 						</tr>)
 				}
+
 				</tbody>
 
 
 		);
 		// TODO: combine with cropComponent
-		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
+		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map(obj =>
 			<tr key={obj["YEAR"]}>
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>
-				<td>{obj["CU"]["CNAME"]}</td>
+				<td>{obj["CU"]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
 				<td>{obj["MP"]["PPOP"]}</td>
@@ -201,7 +205,13 @@ class MyFarmSummary extends Component {
 								<th></th>
 								<th>Harvest</th>
 								<th>Fertilizer</th>
-
+								<th></th>
+								<th></th>
+								<th></th>
+								<th></th>
+								<th>Tillage</th>
+								<th></th>
+								<th></th>
 							</tr>
 
 							<tr>
@@ -218,6 +228,9 @@ class MyFarmSummary extends Component {
 								<td>Application</td>
 								<td>Date</td>
 								<td>Amount, lb/acre</td>
+								<td>Depth, in</td>
+								<td>Implement</td>
+								<td>Date</td>
 								<td>Depth, in</td>
 							</tr>
 
