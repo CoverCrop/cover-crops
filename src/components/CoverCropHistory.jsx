@@ -73,7 +73,7 @@ class CoverCropHistory extends Component {
 	render() {
 		let years =[];
 		for(var key in this.props.cropobj){
-			if (isCrop(this.props.cropobj[key])){
+			if (isCoverCrop(this.props.cropobj[key])){
 				years.push(key);
 			}
 		}
