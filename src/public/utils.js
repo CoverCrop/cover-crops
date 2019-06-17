@@ -453,7 +453,6 @@ export function cropObjToExptxt(text, cropobj) {
 }
 
 export function isCrop(cropobj){
-	console.log(parseInt(cropobj["MP"]["PDATE"])% 1000)
 	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
 }
 
