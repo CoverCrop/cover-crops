@@ -221,9 +221,9 @@ th {
 
 /*update forms*/
 
-.myfarm-input .mdc-typography--title{
+.myfarm-input h2{
 	height: 28px;
-	width: 80px;
+	/*width: 80px;*/
 	color: #455A64;
 	font-size: 20px;
 	font-weight: bold;
@@ -310,3 +310,6 @@ need this to show the option dropdown of Select */
 	height:auto;
 }
 
+.delete-field{
+	padding-top: 20px;
+}
