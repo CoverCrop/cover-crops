@@ -7,7 +7,7 @@ export const dataWolfGetTokenCallFailed = "An internal error occurred while logg
 export const selectedEventNotSuccessful = "The selected job did not complete successfully and hence results are not available for displaying.";
 export const expsuccess = "Experiment template file added/updated successfully.";
 export const expfail = "Experiment template file added/updated failed. Please try again.";
-export const deletefail = "Deleting the user field failed. Please try again."
+export const deletefail = "Deleting the user field failed. Please try again.";
 export const addFieldHelper = "Hi! Looks like you haven't added any information about your farm yet.\nClick on \"Add a Field\" button to get started:";
 export const welcometext = ["The objective of this project is to provide farmers with a practical web-based decision support" +
 " tool that they can use in their fields to manage cover crops effectively. It will put to use existing and future research" +
