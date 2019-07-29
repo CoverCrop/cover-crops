@@ -53,18 +53,18 @@ class MyFarmSummary extends Component {
 					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLRS"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLDP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"] * 4046.86}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLRS"] * 0.39}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLDP"] * 0.39}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MH"]["HDATE"])}</td>
 					<td>{obj["MF"].length >0 && FMCD[obj["MF"][0]["FMCD"]]}</td>
 					<td>{obj["MF"].length >0 && FACD[obj["MF"][0]["FACD"]]}</td>
 					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
-					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"]}</td>
-					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"]}</td>
+					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"] * 0.89}</td>
+					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"] * 0.39}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TIMPL"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertDate(obj["MT"]["TDATE"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TDEP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TDEP"] *0.39}</td>
 				</tr>
 				{
 					obj["MF"].slice(1).map(MFObj =>
@@ -89,14 +89,14 @@ class MyFarmSummary extends Component {
 				<td>{obj["CU"]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
-				<td>{obj["MP"]["PPOP"]}</td>
-				<td>{obj["MP"]["PLDP"]}</td>
+				<td>{obj["MP"]["PPOP"] * 4046.86}</td>
+				<td>{obj["MP"]["PLDP"] * 0.39}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
 			</tr>
 		);
 
 		let soilComponent = soilobj && soilobj.map( obj =>
-			<tr key={obj["depth_bottom"]}>
+			<tr key={obj["depth_bottom"] * 0.39}>
 				<td>{obj["depth_bottom"]}</td>
 				<td>{obj["claytotal_r"]}</td>
 				<td>{obj["silttotal_r"]}</td>
@@ -111,8 +111,8 @@ class MyFarmSummary extends Component {
 
 		let fieldComponent = fieldobj && (<tr>
 			<td>{drainage_type[fieldobj["FLDT"]]}</td>
-			<td>{fieldobj["FLDD"]}</td>
-			<td>{fieldobj["FLDS"]}</td>
+			<td>{fieldobj["FLDD"] * 0.39}</td>
+			<td>{fieldobj["FLDS"] * 3.2}</td>
 		</tr>);
 
 		return (
@@ -222,7 +222,7 @@ class MyFarmSummary extends Component {
 								<td>Date</td>
 								<td>POP, seeds/acre</td>
 								<td>ROW SPACING, inch</td>
-								<td>Depth, in</td>
+								<td>Depth, inch</td>
 								<td>Date</td>
 								<td>Material</td>
 								<td>Application</td>
