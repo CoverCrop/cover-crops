@@ -3,6 +3,15 @@ import config from "../app.config";
 import ol from "openlayers";
 import {CULTIVARS} from "../experimentFile";
 
+const SQUARE_METER_TO_ACRE = 0.000247105;
+const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.86
+const CM_TO_INCH = 0.393701;
+const METER_TO_FT = 3.28084167;
+const KG_TO_LB = 2.20462;
+const HA_TO_ACRE = 2.47105;
+const KGPERHA_TO_LBPERACRE = KG_TO_LB/HA_TO_ACRE; // ~ 0.893
+
+
 /***
  * Checks if user
  * @returns {Promise.<*>}
@@ -451,3 +460,29 @@ export function cropObjToExptxt(text, cropobj) {
 
 	return textlines.join("\n");
 }
+
+export function roundResults(val, decimalPlaces){
+	if (decimalPlaces === undefined || decimalPlaces === 0) {
+		return Math.round(val);
+	}
+	else {
+		return Number(val).toFixed(decimalPlaces);
+	}
+}
+
+export function convertCmToInches(cm){
+	return roundResults(cm * CM_TO_INCH, 2);
+}
+
+export function convertMetersToFeet(meters){
+	return roundResults(meters * METER_TO_FT, 2);
+}
+
+export function convertPerSqMeterToPerAcre(sq_meters){
+	return roundResults(sq_meters * QTY_PER_SQUARE_METER_TO_ACRE, 0);
+}
+
+export function convertKgPerHaToLbPerAcre(kg_ha){
+	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 2);
+}
+
