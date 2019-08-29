@@ -342,7 +342,7 @@ export function readTable(textlines, table_title) {
 	let tableobj = {"0": {}};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "");
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
 
@@ -364,7 +364,7 @@ export function readDuplicateTable(textlines, table_title) {
 	let tableobj = {"0": []};
 	let table_line_index = findFirstSubstring(textlines, table_title);
 	if (table_line_index >= 0) {
-		let table_header = textlines[table_line_index + 1].split(" ").filter(word => word !== "");
+		let table_header = textlines[table_line_index + 1].trim().split(" ").filter(word => word !== "");
 		let linenumber = 2;
 		let table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
 
@@ -407,6 +407,7 @@ export function getCropObj(text) {
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
 		let TILLAGE = readTable(textlines, "TILLAGE");
+		let CULTIVARS = readTable(textlines, "CULTIVARS");
 		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
@@ -459,6 +460,14 @@ export function cropObjToExptxt(text, cropobj) {
 	}
 
 	return textlines.join("\n");
+}
+
+export function isCrop(cropobj){
+	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
+}
+
+export function isCoverCrop(cropobj) {
+	return cropobj["CROP"] === "Rye"
 }
 
 export function roundResults(val, decimalPlaces){

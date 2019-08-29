@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Button, Title} from "react-mdc-web";
 import {convertFullDate} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultFertilizer, PLDS} from "../experimentFile";
+import {defaultFertilizer, defaultPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Harvest extends Component {
@@ -29,11 +29,16 @@ class Harvest extends Component {
 
 	setInitialState(nextProps, year) {
 		if (year) {
-			let selectcrop = nextProps.cropobj[year]? nextProps.cropobj[year]["MH"]: {};
-			this.setState(selectcrop);
-			let pdate = selectcrop["HDATE"];
-			// console.log(convertFullDate(pdate));
-			this.setState({"HDATE": convertFullDate(pdate)});
+			if(nextProps.cropobj[year]){
+				let selectcrop =  nextProps.cropobj[year]["MH"];
+				this.setState(selectcrop);
+				let pdate = selectcrop["HDATE"];
+				// console.log(convertFullDate(pdate));
+				this.setState({"HDATE": convertFullDate(pdate)});
+			} else{
+				this.setDefault();
+			}
+
 		}
 	}
 
@@ -59,6 +64,14 @@ class Harvest extends Component {
 			};
 		}
 
+	}
+
+	setDefault() {
+		let newHarvest = {};
+		let pureyear = this.props.year.split(" ")[0];
+		// set default date as 09-22
+		newHarvest["HDATE"] = new Date(pureyear, 8, 22).toISOString();
+		this.setState(newHarvest);
 	}
 
 	handler = (field_name, field_value) => {

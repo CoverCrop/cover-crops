@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import { convertDate, convertCmToInches, convertMetersToFeet,
-	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre} from "../public/utils";
+	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCrop, isCoverCrop} from "../public/utils";
 import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
@@ -46,12 +46,12 @@ class MyFarmSummary extends Component {
 
         // cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
-			.filter(obj => obj["CROP"] !== "Fallow" && obj["CROP"] !== "Rye").map(obj =>
+			.filter(obj => isCrop(obj)).map(obj =>
 				<tbody>
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
+					<td rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
 					<td rowSpan={obj["MF"].length}>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
@@ -83,11 +83,11 @@ class MyFarmSummary extends Component {
 
 		);
 		// TODO: combine with cropComponent
-		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => obj["CROP"] === "Fallow" || obj["CROP"] === "Rye").map(obj =>
+		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map(obj =>
 			<tr key={obj["YEAR"]}>
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>
-				<td>{obj["CU"]}</td>
+				<td>{CULTIVARS[obj["CU"]["CR"]]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
 				<td>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
@@ -223,7 +223,7 @@ class MyFarmSummary extends Component {
 								<td>Date</td>
 								<td>POP, seeds/acre</td>
 								<td>ROW SPACING, inch</td>
-								<td>Depth, inch</td>
+								<td>Depth, in</td>
 								<td>Date</td>
 								<td>Material</td>
 								<td>Application</td>

@@ -244,7 +244,7 @@ th {
 	width: 230px;
 	/*float:left;*/
 	/*display: inline-block;*/
-	height: 80px;
+	height: 70px;
 	margin-right:10px;
 }
 
@@ -270,7 +270,7 @@ th {
 
 /*because fertilizer-box-div has overflow:hidden,
 need this to show the option dropdown of Select */
-.planting-div{
+.after-fertilizer-div{
 	margin-top: -200px;
 }
 
