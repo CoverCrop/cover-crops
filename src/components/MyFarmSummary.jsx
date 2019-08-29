@@ -50,7 +50,7 @@ class MyFarmSummary extends Component {
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["CU"]}</td>
+					<td rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
@@ -86,7 +86,7 @@ class MyFarmSummary extends Component {
 			<tr key={obj["YEAR"]}>
 				<td>{obj["YEAR"]}</td>
 				<td>{obj["CROP"]}</td>
-				<td>{obj["CU"]}</td>
+				<td>{CULTIVARS[obj["CU"]["CR"]]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
 				<td>{obj["MP"]["PPOP"]}</td>

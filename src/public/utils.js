@@ -398,6 +398,7 @@ export function getCropObj(text) {
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
 		let TILLAGE = readTable(textlines, "TILLAGE");
+		let CULTIVARS = readTable(textlines, "CULTIVARS");
 		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
