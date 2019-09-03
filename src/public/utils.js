@@ -467,7 +467,7 @@ export function isCrop(cropobj){
 }
 
 export function isCoverCrop(cropobj) {
-	return cropobj["CROP"] === "Rye"
+	return cropobj["CROP"] === "Rye";
 }
 
 export function roundResults(val, decimalPlaces){
