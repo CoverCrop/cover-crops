@@ -222,7 +222,7 @@ class MyFarmSummary extends Component {
 								<td>Distribution</td>
 								<td>Date</td>
 								<td>POP, seeds/acre</td>
-								<td>ROW SPACING, inch</td>
+								<td>ROW SPACING, in</td>
 								<td>Depth, in</td>
 								<td>Date</td>
 								<td>Material</td>
