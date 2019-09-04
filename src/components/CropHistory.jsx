@@ -55,7 +55,7 @@ class CropHistory extends Component {
 				{FMCD: "None", addnew: true}
 			];
 			this.setState({flist: flist,
-				crop: this.props.cropobj[year]["CROP"]
+				crop: this.props.cropobj[year]["CROP"] !== "Fallow" ? this.props.cropobj[year]["CROP"] : "None"
 			});
 		} else{
 			this.setState({flist: [{FMCD: "None", addnew: true}],

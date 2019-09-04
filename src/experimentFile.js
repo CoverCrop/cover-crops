@@ -1,3 +1,5 @@
+export const CULTIVARS = {"WH": "NEWTON", "MZ": "DEKALB 591", "SB": "M GROUP 2", "FA": "FALLOW"};
+
 export const drainage_type = {
 	"DR000": "No drainage",
 	"DR001": "Ditches",

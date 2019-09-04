@@ -398,6 +398,7 @@ export function getCropObj(text) {
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
 		let TILLAGE = readTable(textlines, "TILLAGE");
+		let CULTIVARS = readTable(textlines, "CULTIVARS");
 		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
@@ -453,7 +454,6 @@ export function cropObjToExptxt(text, cropobj) {
 }
 
 export function isCrop(cropobj){
-	console.log(parseInt(cropobj["MP"]["PDATE"])% 1000)
 	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
 }
 
