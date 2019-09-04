@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
-import {convertDate, isCoverCrop, isCrop} from "../public/utils";
-import {CULTIVARS, drainage_type, FACD, FMCD, PLDS} from "../experimentFile";
+import { convertDate, convertCmToInches, convertMetersToFeet,
+	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCrop, isCoverCrop} from "../public/utils";
+import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 
@@ -53,18 +54,18 @@ class MyFarmSummary extends Component {
 					<td rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</td>
 					<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PPOP"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLRS"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MP"]["PLDP"]}</td>
+					<td rowSpan={obj["MF"].length}>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
+					<td rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLRS"])}</td>
+					<td rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLDP"])}</td>
 					<td rowSpan={obj["MF"].length}>{convertDate(obj["MH"]["HDATE"])}</td>
 					<td>{obj["MF"].length >0 && FMCD[obj["MF"][0]["FMCD"]]}</td>
 					<td>{obj["MF"].length >0 && FACD[obj["MF"][0]["FACD"]]}</td>
 					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
-					<td>{obj["MF"].length >0 && obj["MF"][0]["FAMN"]}</td>
-					<td>{obj["MF"].length >0 && obj["MF"][0]["FDEP"]}</td>
+					<td>{obj["MF"].length >0 && convertKgPerHaToLbPerAcre(obj["MF"][0]["FAMN"])}</td>
+					<td>{obj["MF"].length >0 && convertCmToInches(obj["MF"][0]["FDEP"])}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TIMPL"]}</td>
 					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertDate(obj["MT"]["TDATE"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TDEP"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertCmToInches(obj["MT"]["TDEP"])}</td>
 				</tr>
 				{
 					obj["MF"].slice(1).map(MFObj =>
@@ -89,15 +90,15 @@ class MyFarmSummary extends Component {
 				<td>{CULTIVARS[obj["CU"]["CR"]]}</td>
 				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
 				<td>{convertDate(obj["MP"]["PDATE"])}</td>
-				<td>{obj["MP"]["PPOP"]}</td>
-				<td>{obj["MP"]["PLDP"]}</td>
+				<td>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
+				<td>{convertCmToInches(obj["MP"]["PLDP"])}</td>
 				<td>{convertDate(obj["MH"]["HDATE"])}</td>
 			</tr>
 		);
 
 		let soilComponent = soilobj && soilobj.map( obj =>
 			<tr key={obj["depth_bottom"]}>
-				<td>{obj["depth_bottom"]}</td>
+				<td>{convertCmToInches(obj["depth_bottom"])}</td>
 				<td>{obj["claytotal_r"]}</td>
 				<td>{obj["silttotal_r"]}</td>
 				<td>{obj["sandtotal_r"]}</td>
@@ -111,8 +112,8 @@ class MyFarmSummary extends Component {
 
 		let fieldComponent = fieldobj && (<tr>
 			<td>{drainage_type[fieldobj["FLDT"]]}</td>
-			<td>{fieldobj["FLDD"]}</td>
-			<td>{fieldobj["FLDS"]}</td>
+			<td>{convertCmToInches(fieldobj["FLDD"])}</td>
+			<td>{convertMetersToFeet(fieldobj["FLDS"])}</td>
 		</tr>);
 
 		return (
@@ -148,8 +149,8 @@ class MyFarmSummary extends Component {
 							<tbody>
 							<tr>
 								<td>TYPE</td>
-								<td>DEPTH/in</td>
-								<td>SPACING/ft</td>
+								<td>DEPTH, in</td>
+								<td>SPACING, ft</td>
 							</tr>
 							{fieldComponent}
 							</tbody>
@@ -172,7 +173,7 @@ class MyFarmSummary extends Component {
 							</thead>
 							<tbody>
 							<tr>
-								<td>DEPTH, cm</td>
+								<td>DEPTH, in</td>
 								<td>CLAY, %</td>
 								<td>SILT, %</td>
 								<td>SAND, %</td>
@@ -221,7 +222,7 @@ class MyFarmSummary extends Component {
 								<td>Distribution</td>
 								<td>Date</td>
 								<td>POP, seeds/acre</td>
-								<td>ROW SPACING, inch</td>
+								<td>ROW SPACING, in</td>
 								<td>Depth, in</td>
 								<td>Date</td>
 								<td>Material</td>

@@ -41,11 +41,11 @@ export const defaultPlanting = {
 	"PLRS": "76",
 	"PLRD": "0",
 	"PLDP": "4"
-}
+};
 
 export const defaultHarvest = {
 	"HDATE" : "0928"
-}
+};
 
 export const PLDS = {"R": "Row", "B": "Broadcast"};
 export const TIMPL = {
