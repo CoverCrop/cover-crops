@@ -7,6 +7,8 @@ import {isCoverCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import {COVERCROP, defaultCropYears} from "../experimentFile";
+import config from "../app.config";
+import {getExperimentSQX} from "../public/utils";
 
 class CoverCropHistory extends Component {
 
@@ -50,25 +52,25 @@ class CoverCropHistory extends Component {
 		let {email, clu} = this.props;
 		let jsonBody = [plantingJson, harvestJson];
 		console.log(jsonBody);
-		// fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
-		// 	method: "PATCH",
-		// 	body: JSON.stringify(jsonBody),
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 		"Access-Control-Origin": "http://localhost:3000"
-		// 	},
-		// 	credentials: "include"
-		// }).then(updateResponse => {
-		// 	if (updateResponse.status == 200) {
-		// 		//to make sure the response is a json. a is not called but should be kept
-		// 		let a = updateResponse.json();
-		// 		getExperimentSQX(email, clu).then(exptxt => {
-		// 			this.props.handleExptxtGet(exptxt);
-		// 			this.setState({isOpen: true})
-		// 		})
-		// 	}
-		// }).catch(error => console.error('Error:', error))
-	}
+		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
+			method: "PATCH",
+			body: JSON.stringify(jsonBody),
+			headers: {
+				'Content-Type': 'application/json',
+				"Access-Control-Origin": "http://localhost:3000"
+			},
+			credentials: "include"
+		}).then(updateResponse => {
+			if (updateResponse.status == 200) {
+				//to make sure the response is a json. a is not called but should be kept
+				let a = updateResponse.json();
+				getExperimentSQX(email, clu).then(exptxt => {
+					this.props.handleExptxtGet(exptxt);
+					this.setState({isOpen: true})
+				})
+			}
+		}).catch(error => console.error('Error:', error));
+	};
 
 	render() {
 		let years =[];
