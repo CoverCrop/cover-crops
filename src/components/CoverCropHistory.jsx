@@ -21,7 +21,7 @@ class CoverCropHistory extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.clu !== prevProps.clu) {
-			this.setState({year: undefined})
+			this.setState({year: undefined});
 		}
 	}
 
