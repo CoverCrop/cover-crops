@@ -3,7 +3,7 @@ import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-w
 import Select from 'react-select';
 import {connect} from "react-redux";
 import Planting from "./Planting";
-import {isCrop} from "../public/utils";
+import {isCoverCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import {COVERCROP, defaultCropYears} from "../experimentFile";
