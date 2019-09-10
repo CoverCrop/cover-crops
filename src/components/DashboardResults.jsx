@@ -19,7 +19,7 @@ class DashboardResults extends Component {
 	}
 
 	// Generates charts array object containing individual charts and datasets
-	generateCharts(chartArrayTypeName, plantingDate, harvestDate) {
+	getDashboardDataArray(chartArrayTypeName, plantingDate, harvestDate) {
 		let chartDataArray = {};
 		let colorIndex = 0;
 		let minTime = plantingDate.getTime();
@@ -92,6 +92,9 @@ class DashboardResults extends Component {
 
 		let plantingDate = new Date();
 		let harvestDate = new Date();
+		let harvestDateMin = new Date();
+		let harvestDateMax = new Date();
+		let ymax = 2300; //TODO: Get this dynamically
 		let chartDataArray = {}; // Associative array to store chart data
 		let biomassDates = [];
 		let biomassValues = [];
@@ -109,9 +112,16 @@ class DashboardResults extends Component {
 			let harvestDOY = this.props["userInputJson"]["doy_harvest"];
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
+			harvestDateMin = new Date(harvestYear, 0, harvestDOY - 7);
+			harvestDateMax = new Date(harvestYear, 0, harvestDOY + 7);
+
+			console.log(plantingDate);
+			console.log(harvestDateMin);
+			console.log(harvestDateMax);
+
 		}
 
-		chartDataArray = this.generateCharts("withCoverCropChartDataArray", plantingDate, harvestDate); // generate charts for with cover crop case
+		chartDataArray = this.getDashboardDataArray("withCoverCropChartDataArray", plantingDate, harvestDate); // generate charts for with cover crop case
 		console.log("dashboard array: ");
 		console.log(chartDataArray);
 		for (let key in chartDataArray) {
@@ -150,21 +160,23 @@ class DashboardResults extends Component {
 			}, {
 				step: "month",
 				stepmode: "backward",
-				// count: 6,
-				label: "6m"
+				count: 6,
+				label: "6m",
+				active: true
 			}, {
 				step: "year",
 				stepmode: "todate",
 				count: 1,
 				label: "YTD"
-			// }, {
-			// 	step: "year",
-			// 	stepmode: "backward",
-			// 	count: 1,
-			// 	label: "1y"
+			}, {
+				step: "year",
+				stepmode: "backward",
+				count: 1,
+				label: "1y"
 			}, {
 				step: "all",
 			}],
+
 		};
 
 		let biomass = {
@@ -186,18 +198,122 @@ class DashboardResults extends Component {
 			line: {color: "Orange"}
 		};
 
+		let planting = {
+			x: [plantingDate, plantingDate],
+			y: [0, ymax],
+			name: "IN",
+			type: "scatter",
+			mode: "lines",
+			line: {color: "Black"},
+			showlegend: false
+		};
+
+		let harvest = {
+			x: [harvestDate, harvestDate],
+			y: [0, ymax],
+			name: "OUT",
+			type: "scatter",
+			mode: "lines",
+			line: {color: "Black"},
+			showlegend: false
+		};
+
+		// let data = [biomass, cn, planting, harvest];
 		let data = [biomass, cn];
+
+		let highlightShapes = [
+			{
+				type: "rect",
+				xref: "x",
+				yref:"paper",
+				x0: harvestDateMin,
+				y0: 0,
+				x1: harvestDateMax,
+				y1: 1,
+				fillcolor: "LightYellow",
+				opacity: 0.5,
+				layer: "below",
+				line: {width: 1, dash: "dot"}
+			},
+			{
+				type: "line",
+				xref: "x",
+				yref:"paper",
+				x0: plantingDate,
+				y0: 0,
+				x1: plantingDate,
+				y1: 1.1,
+				line: {width: 2}
+			},
+			{
+				type: "line",
+				xref: "x",
+				yref:"paper",
+				x0: harvestDate,
+				y0: 0,
+				x1: harvestDate,
+				y1: 1.1,
+				line: {width: 2}
+			}
+		];
+
+		let annotations = [
+			{
+				x: plantingDate,
+				y: ymax,
+				xref: "x",
+				yref: "y",
+				text: " IN ",
+				borderpad: 4,
+				bgcolor: "SlateGray",
+				showarrow: false,
+				font: {
+					size: 14,
+					color: "White"
+				},
+				opacity: 0.8,
+				// arrowhead: 3,
+				// ax: -30,
+				// ay: -40,
+				//yanchor: "top",
+				xshift: -20,
+
+			},
+			{
+				x: harvestDate,
+				y: ymax,
+				xref: "x",
+				yref: "y",
+				text: "OUT",
+				showarrow: false,
+				borderpad: 4,
+				bgcolor: "SlateGray",
+				font: {
+					size: 14,
+					color: "White"
+				},
+				opacity: 0.8,
+				// arrowhead: 3,
+				// ax: -30,
+				// ay: -40,
+				//yanchor: "top",
+				xshift: -22
+
+			}
+		];
 
 		let layout = {
 			title: "Cover Crop Patterns",
 			xaxis: {
 				rangeselector: selectorOptions,
-				rangeslider: {borderwidth: 1}
+				rangeslider: {borderwidth: 1, range: ["2018-04-02", "2018-10-01"]} //TODO: Default to current time range
 			},
 			yaxis: {
 				title: "",
 				tickfont: {color: "DeepSkyBlue"},
-				showgrid: false
+				showgrid: false,
+				// range: [0,5000],
+				// rangemode: "tozero"
 			},
 			yaxis2: {
 				title: "",
@@ -205,8 +321,13 @@ class DashboardResults extends Component {
 				tickfont: {color: "Orange"},
 				overlaying: "y",
 				side: "right",
-				showgrid: false
-			}
+				showgrid: false,
+				// rangemode: "tozero"
+				// range: [8,9],
+
+			},
+			shapes: highlightShapes,
+			annotations: annotations
 		};
 
 		// yaxis: {
@@ -222,6 +343,7 @@ class DashboardResults extends Component {
 							config={{
 								"displayModeBar": false
 							}}
+
 						/>
 					</div>);
 
