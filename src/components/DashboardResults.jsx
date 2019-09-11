@@ -9,6 +9,17 @@ import { connect } from "react-redux";
 // instead and decrease size by 3 MB
 import Plotly from "plotly.js/dist/plotly.min";
 import createPlotlyComponent from "react-plotly.js/factory";
+import {Grid, Cell} from "react-mdc-web";
+
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableRow,
+	TableHead,
+
+} from "@material-ui/core";
+
 const Plot = createPlotlyComponent(Plotly);
 
 class DashboardResults extends Component {
@@ -16,6 +27,7 @@ class DashboardResults extends Component {
 	constructor(props) {
 		super(props);
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
+		this.generateTableHTML = this.generateTableHTML.bind(this);
 	}
 
 	// Generates charts array object containing individual charts and datasets
@@ -348,8 +360,8 @@ class DashboardResults extends Component {
 
 
 		resultHtml.push(
-					<div>
-						<Plot
+					<div >
+						<Plot style={{ maxWidth: "800px"}}
 							data={data}
 							layout={layout}
 							config={{
@@ -362,9 +374,104 @@ class DashboardResults extends Component {
 		return resultHtml;
 	}
 
+	// Generate and return charts HTML content
+	generateTableHTML() {
+		let html = [];
+		let rowElems = [];
+
+		rowElems.push(
+			<TableRow key="1">
+				<TableCell style={{width: "140px", padding: "10px"}}>
+					<span style={{fontWeight: "bold"}}>Biomass</span> <br/>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
+				</TableCell>
+				<TableCell>2362</TableCell>
+				<TableCell>1934</TableCell>
+			</TableRow>
+		);
+		rowElems.push(
+			<TableRow key="2">
+				<TableCell style={{width: "140px", padding: "10px"}}>
+					<span style={{fontWeight: "bold"}}>C:N</span>
+				</TableCell>
+				<TableCell>8.4</TableCell>
+				<TableCell>8.3</TableCell>
+			</TableRow>
+		);
+		rowElems.push(
+			<TableRow key="3">
+				<TableCell style={{width: "140px", padding: "10px"}}>
+					<span style={{fontWeight: "bold"}}>Nitrogen Update </span> <br/>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
+				</TableCell>
+				<TableCell>23.1</TableCell>
+				<TableCell>19.3</TableCell>
+			</TableRow>
+		);
+
+		html.push(
+			<Table style={{borderStyle: "solid",
+				borderColor: "rgb(224,224,224)", borderWidth: 1}}>
+
+				<TableHead>
+					<TableRow style={{height: "64px"}}>
+						<TableCell style={{width: "140px", padding: "10px"}}>Cover Crop?</TableCell>
+						<TableCell >YES</TableCell>
+						<TableCell >NO</TableCell>
+					</TableRow>
+				</TableHead>
+
+				{rowElems}
+
+			</Table>
+		);
+
+		return html;
+	}
+
+
 	render() {
 		return (
-				<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
+			<div>
+
+				{/*{this.generateChartsHTML()}*/}
+
+				{/*{this.generateTableHTML()}*/}
+
+				<Table style={{maxWidth: "1200px", borderStyle: "solid",
+					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
+
+					<TableHead>
+						<TableRow style={{height: "64px", backgroundColor: "#EDEBEB"}}>
+							<TableCell ></TableCell>
+							<TableCell ><h3>Cover Crop Termination on 09/01/2019 </h3></TableCell>
+						</TableRow>
+						<TableRow style={{}}>
+							<TableCell  style={{minWidth: "400px", padding: 0, margin: 0}}>{this.generateChartsHTML()}</TableCell>
+							<TableCell style={{maxWidth: "300px", padding: 0, margin: 0,
+								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
+								verticalAlign: "top"
+							}}>
+								{this.generateTableHTML()}
+
+								<div style={{margin: "10px"}}>
+									<h3 >Other Recommendations</h3>
+									Thought experiments (Gedankenexperimenten) are “facts” in the
+									sense that they have a “real life” correlate in the form of electrochemical
+									activity in the brain.
+									But it is quite obvious that they do not relate to facts “out there”........... ...................... .
+									........... ........... ...........
+								</div>
+
+							</TableCell>
+						</TableRow>
+					</TableHead>
+
+				</Table>
+
+			</div>
+
+
 		);
 	}
 }

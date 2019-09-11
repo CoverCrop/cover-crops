@@ -30,10 +30,10 @@ class Dashboard extends Component {
 
 					<div className="position-relative border-top">
 						<Grid className="no-padding-grid">
-							<Cell col={4}>
+							<Cell col={3}>
 								<UserEvents />
 							</Cell>
-							<Cell col={8}>
+							<Cell col={9}>
 								<DashboardResults />
 							</Cell>
 						</Grid>
