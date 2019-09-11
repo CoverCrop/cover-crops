@@ -152,6 +152,8 @@ class DashboardResults extends Component {
 
 		let resultHtml = [];
 		let selectorOptions = {
+			x: 0.01,
+			y: 1.08,
 			buttons: [{
 				step: "month",
 				stepmode: "backward",
@@ -260,9 +262,9 @@ class DashboardResults extends Component {
 		let annotations = [
 			{
 				x: plantingDate,
-				y: ymax,
+				y: 1,
 				xref: "x",
-				yref: "y",
+				yref: "paper",
 				text: " IN ",
 				borderpad: 4,
 				bgcolor: "SlateGray",
@@ -276,14 +278,13 @@ class DashboardResults extends Component {
 				// ax: -30,
 				// ay: -40,
 				//yanchor: "top",
-				xshift: -20,
-
+				xshift: -20
 			},
 			{
 				x: harvestDate,
-				y: ymax,
+				y: 1,
 				xref: "x",
-				yref: "y",
+				yref: "paper",
 				text: "OUT",
 				showarrow: false,
 				borderpad: 4,
@@ -306,12 +307,19 @@ class DashboardResults extends Component {
 			title: "Cover Crop Patterns",
 			xaxis: {
 				rangeselector: selectorOptions,
-				rangeslider: {borderwidth: 1, range: ["2018-04-02", "2018-10-01"]} //TODO: Default to current time range
+				rangeslider: {borderwidth: 1, range: ["2018-04-02", "2018-10-01"]}, //TODO: Default to current time range
+				showline: true,
+				linecolor: "LightGray",
+				zeroline: true,
+				ticks: "outside"
 			},
 			yaxis: {
 				title: "",
 				tickfont: {color: "DeepSkyBlue"},
 				showgrid: false,
+				showline: true,
+				linecolor: "LightGray",
+				ticks: "outside"
 				// range: [0,5000],
 				// rangemode: "tozero"
 			},
@@ -322,12 +330,16 @@ class DashboardResults extends Component {
 				overlaying: "y",
 				side: "right",
 				showgrid: false,
+				showline: true,
+				linecolor: "LightGray",
+				ticks: "outside"
 				// rangemode: "tozero"
 				// range: [8,9],
 
 			},
 			shapes: highlightShapes,
-			annotations: annotations
+			annotations: annotations,
+			legend: {x:0.9, y: 1.35, borderwidth: 0.5}
 		};
 
 		// yaxis: {
