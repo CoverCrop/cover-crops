@@ -466,12 +466,9 @@ class DashboardResults extends Component {
 							</TableCell>
 						</TableRow>
 					</TableHead>
-
 				</Table>
 
 			</div>
-
-
 		);
 	}
 }
