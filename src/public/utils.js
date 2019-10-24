@@ -181,6 +181,23 @@ export function calculateDayOfYear(date) {
 	return today - yearFirstDay;
 }
 
+export function calculateDayDifference(from, to){
+	let diffTime = to.getTime() - from.getTime();
+
+// To calculate the no. of days between two dates
+	return (diffTime / (1000 * 3600 * 24));
+}
+
+export function convertDateToUSFormat(date){
+
+	return (date.getMonth() + 1) + "/" + date.getDate() + "/" +  date.getFullYear();
+}
+
+export function convertDateToUSFormatShort(date){
+
+	return (date.getMonth() + 1) + "/" + date.getDate();
+}
+
 //eg. moment to 17096
 export function convertDayString(moment) {
 	if (moment.dayOfYear() < 99) {

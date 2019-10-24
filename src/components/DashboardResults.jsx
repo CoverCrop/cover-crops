@@ -1,6 +1,9 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 
+import {convertDateToUSFormat, convertDateToUSFormatShort,
+	roundResults, calculateDayDifference} from "../public/utils";
+
 // import Plot from "react-plotly.js";
 //TODO: Performance took a hit. Bundle size increased from 6 MB to 13 MB
 
@@ -10,6 +13,7 @@ import { connect } from "react-redux";
 import Plotly from "plotly.js/dist/plotly.min";
 import createPlotlyComponent from "react-plotly.js/factory";
 import {Grid, Cell} from "react-mdc-web";
+import styles from "../styles/main.css";
 
 import {
 	Table,
@@ -26,22 +30,85 @@ class DashboardResults extends Component {
 
 	constructor(props) {
 		super(props);
+
+		this.state = {
+			ccDataArray: null,
+			noccDataArray: null,
+			plantingDate: new Date(),
+			harvestDate: new Date(),
+			plantingDateStr: "",
+			harvestDateStr: ""
+		};
+
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
 		this.generateTableHTML = this.generateTableHTML.bind(this);
+		this.getYfromArray = this.getYfromArray.bind(this);
 	}
 
+	componentWillReceiveProps(nextProps, nextContext) {
+		console.log(nextProps);
+
+		let plantingDate = new Date();
+		let harvestDate = new Date();
+		let harvestDateMin = new Date();
+		let harvestDateMax = new Date();
+
+		if (nextProps.hasOwnProperty("userInputJson") && nextProps["userInputJson"] !== null && nextProps["userInputJson"] !== undefined) {
+			let plantingYear = nextProps["userInputJson"]["year_planting"];
+			let harvestYear = plantingYear + 1;
+			let plantingDOY = nextProps["userInputJson"]["doy_planting"];
+			let harvestDOY = nextProps["userInputJson"]["doy_harvest"];
+			plantingDate = new Date(plantingYear, 0, plantingDOY);
+			harvestDate = new Date(harvestYear, 0, harvestDOY);
+
+			console.log("mount");
+			this.setState({plantingDate: plantingDate});
+			this.setState({harvestDate: harvestDate});
+			this.setState({plantingDateStr: convertDateToUSFormat(plantingDate)});
+			this.setState({harvestDateStr: convertDateToUSFormat(harvestDate)});
+
+			console.log(nextProps);
+			let ccDataArray = this.getDashboardDataArray(nextProps,"withCoverCropChartDataArray", plantingDate, harvestDate);
+			let noccDataArray = this.getDashboardDataArray(nextProps,"withoutCoverCropChartDataArray", plantingDate, harvestDate);
+
+			this.setState({ccDataArray: ccDataArray});
+			this.setState({noccDataArray: noccDataArray});
+		}
+	}
+
+	getYfromArray(arr, x){
+		let ret = "NA";
+		arr.map(function(item){
+			if(item.x.getTime() === x.getTime()){
+				ret = item.y;
+			}
+		});
+
+		if (ret !== "NA") {
+			return roundResults(ret, 2);
+		} else {
+			return ret;
+		}
+	}
+
+
 	// Generates charts array object containing individual charts and datasets
-	getDashboardDataArray(chartArrayTypeName, plantingDate, harvestDate) {
+	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
+		console.log(properties);
 		let chartDataArray = {};
 		let colorIndex = 0;
 		let minTime = plantingDate.getTime();
 		let maxTime = harvestDate.getTime();
+
+		console.log(new Date(minTime));
+		console.log(new Date(maxTime));
+
 		let chartOptions = {};
 
-		if (this.props.hasOwnProperty(chartArrayTypeName) && this.props[chartArrayTypeName] !== null) {
-			if(this.props[chartArrayTypeName].hasOwnProperty("charts")){
+		if (properties.hasOwnProperty(chartArrayTypeName) && properties[chartArrayTypeName] !== null) {
+			if(properties[chartArrayTypeName].hasOwnProperty("charts")){
 				// Iterate over each chart
-				let charts =  this.props[chartArrayTypeName].charts;
+				let charts =  properties[chartArrayTypeName].charts;
 				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
 					let chartRawData = charts[dataIndex];
 
@@ -107,7 +174,7 @@ class DashboardResults extends Component {
 		let harvestDateMin = new Date();
 		let harvestDateMax = new Date();
 		let ymax = 2300; //TODO: Get this dynamically
-		let chartDataArray = {}; // Associative array to store chart data
+		let ccChartDataArray = {}; // Associative array to store chart data
 		let biomassDates = [];
 		let biomassValues = [];
 		let cnDates = [];
@@ -124,6 +191,10 @@ class DashboardResults extends Component {
 			let harvestDOY = this.props["userInputJson"]["doy_harvest"];
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
+
+			// this.setState({plantingDate: plantingDate.toDateString()});
+			// this.setState({harvestDate: harvestDate.toDateString()});
+
 			harvestDateMin = new Date(harvestYear, 0, harvestDOY - 7);
 			harvestDateMax = new Date(harvestYear, 0, harvestDOY + 7);
 
@@ -133,33 +204,64 @@ class DashboardResults extends Component {
 
 		}
 
-		chartDataArray = this.getDashboardDataArray("withCoverCropChartDataArray", plantingDate, harvestDate); // generate charts for with cover crop case
+		ccChartDataArray = this.state.ccDataArray;// generate charts for with cover crop case
 		console.log("dashboard array: ");
-		console.log(chartDataArray);
-		for (let key in chartDataArray) {
+		console.log(ccChartDataArray);
+		for (let key in ccChartDataArray) {
 			if(key.toString() === "C:N ratio"){
-				cnRows = chartDataArray[key].chartData.datasets[0].data;
+				cnRows = ccChartDataArray[key].chartData.datasets[0].data;
 			}
 
 			if(key.toString() === "TWAD"){
-				biomassRows = chartDataArray[key].chartData.datasets[0].data;
+				biomassRows = ccChartDataArray[key].chartData.datasets[0].data;
 			}
 		}
 
 		console.log(cnRows);
 		console.log(biomassRows);
+		let day = 60 * 60 * 24 * 1000;
 
+		let prevCnDate = null;
 		cnRows.forEach(function(element) {
-			cnDates.push(element.x);
+			let dt = element.x;
+
+			// Adds 0s for missing date to make graph cleaner
+			if(prevCnDate != null){
+				let dayDiff = calculateDayDifference(prevCnDate, dt);
+				while(dayDiff > 1){
+					let newDate = new Date(prevCnDate.getTime() + day);
+					cnDates.push(newDate);
+					cnValues.push(null);
+					dayDiff--;
+					prevCnDate = newDate;
+				}
+			}
+
+			cnDates.push(dt);
 			cnValues.push(element.y);
+			prevCnDate = element.x;
 		});
 
+		let prevBiomassDate = null;
 		biomassRows.forEach(function(element) {
-			biomassDates.push(element.x);
-			biomassValues.push(element.y);
-		});
+			let dt = element.x;
 
-		//console.log(cnDates);
+			// Adds 0s for missing date to make graph cleaner
+			if(prevBiomassDate != null){
+				let dayDiff = calculateDayDifference(prevBiomassDate, dt);
+				while(dayDiff > 1){
+					let newDate = new Date(prevBiomassDate.getTime() + day);
+					biomassDates.push(newDate);
+					biomassValues.push(null);
+					dayDiff--;
+					prevBiomassDate = newDate;
+				}
+			}
+
+			biomassDates.push(dt);
+			biomassValues.push(element.y);
+			prevBiomassDate = element.x;
+		});
 
 
 		let resultHtml = [];
@@ -199,6 +301,7 @@ class DashboardResults extends Component {
 			name: "Biomass",
 			type: "scatter",
 			mode: "lines",
+			connectgaps: false,
 			line: {color: "DeepSkyBlue"}
 		};
 
@@ -209,6 +312,7 @@ class DashboardResults extends Component {
 			yaxis: "y2",
 			type: "scatter",
 			mode: "lines", //lines+marks
+			connectgaps: false,
 			line: {color: "Orange"}
 		};
 
@@ -315,8 +419,56 @@ class DashboardResults extends Component {
 			}
 		];
 
+		let sliderDict = {
+			// pad: {t: 30},
+			currentvalue: {
+				xanchor: "right",
+				prefix: "color: ",
+				font: {
+					color: "#888",
+					size: 20
+				}
+			},
+			pad: { t: 50},
+			len: 1,
+			x: 0,
+			y: 0,
+			steps: [
+				{
+					label: convertDateToUSFormatShort(harvestDateMin),
+					method: "restyle",
+					args: [{frame: {duration: 300},
+						mode: "immediate"}
+					]
+				},
+				{
+					label: "3/29",
+					method: "restyle",
+					args: [{frame: {duration: 300},
+						mode: "immediate"}
+					]
+				},
+				{
+					label: "3/30",
+					method: "restyle",
+					args: [{frame: {duration: 300},
+						mode: "immediate"}
+					]
+				},
+				{
+					label: convertDateToUSFormatShort(harvestDateMax),
+					method: "restyle",
+					args: [{frame: {duration: 300},
+						mode: "immediate"}
+					]
+				}
+
+			]
+		};
+
 		let layout = {
 			title: "Cover Crop Patterns",
+			sliders: [sliderDict],
 			xaxis: {
 				rangeselector: selectorOptions,
 				rangeslider: {borderwidth: 1, range: ["2018-04-02", "2018-10-01"]}, //TODO: Default to current time range
@@ -361,7 +513,7 @@ class DashboardResults extends Component {
 
 		resultHtml.push(
 					<div >
-						<Plot style={{ maxWidth: "800px"}}
+						<Plot style={{ maxWidth: "850px"}}
 							data={data}
 							layout={layout}
 							config={{
@@ -381,31 +533,94 @@ class DashboardResults extends Component {
 
 		rowElems.push(
 			<TableRow key="1">
-				<TableCell style={{width: "140px", padding: "10px"}}>
+				<TableCell className="dashboardTableHeader">
 					<span style={{fontWeight: "bold"}}>Biomass</span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
-				<TableCell>2362</TableCell>
-				<TableCell>1934</TableCell>
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["TWAD"].chartData.datasets[0] != null) ?
+						this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["TWAD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["TWAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
+
 			</TableRow>
 		);
 		rowElems.push(
 			<TableRow key="2">
-				<TableCell style={{width: "140px", padding: "10px"}}>
+				<TableCell className="dashboardTableHeader">
 					<span style={{fontWeight: "bold"}}>C:N</span>
 				</TableCell>
-				<TableCell>8.4</TableCell>
-				<TableCell>8.3</TableCell>
+
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["C:N ratio"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
 			</TableRow>
 		);
 		rowElems.push(
 			<TableRow key="3">
-				<TableCell style={{width: "140px", padding: "10px"}}>
-					<span style={{fontWeight: "bold"}}>Nitrogen Update </span> <br/>
+				<TableCell className="dashboardTableHeader">
+					<span style={{fontWeight: "bold"}}>Nitrogen Uptake </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
-				<TableCell>23.1</TableCell>
-				<TableCell>19.3</TableCell>
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NUAD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NUAD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["NUAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
+			</TableRow>
+		);
+		rowElems.push(
+			<TableRow key="4">
+				<TableCell className="dashboardTableHeader">
+					<span style={{fontWeight: "bold"}}>Nitrogen Leached </span> <br/>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
+				</TableCell>
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLCC"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.ccDataArray["NLCC"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLCC"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["NLCC"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
+			</TableRow>
+		);
+		rowElems.push(
+			<TableRow key="5">
+				<TableCell className="dashboardTableHeader">
+					<span style={{fontWeight: "bold"}}>Nitrogen Loss </span> <br/>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
+				</TableCell>
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
+			</TableRow>
+		);
+
+		rowElems.push(
+			<TableRow key="6">
+				<TableCell className="dashboardTableHeader">
+					<span style={{fontWeight: "bold"}}>Total Soil Inorganic Nitrogen </span> <br/>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
+				</TableCell>
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NIAD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.ccDataArray["NIAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}
+				</TableCell>
+				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NIAD"].chartData.datasets[0] != null) ?
+					this.getYfromArray(this.state.noccDataArray["NIAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+				}</TableCell>
 			</TableRow>
 		);
 
@@ -415,7 +630,7 @@ class DashboardResults extends Component {
 
 				<TableHead>
 					<TableRow style={{height: "64px"}}>
-						<TableCell style={{width: "140px", padding: "10px"}}>Cover Crop?</TableCell>
+						<TableCell  className="dashboardTableHeader">Cover Crop?</TableCell>
 						<TableCell >YES</TableCell>
 						<TableCell >NO</TableCell>
 					</TableRow>
@@ -443,11 +658,11 @@ class DashboardResults extends Component {
 
 					<TableHead>
 						<TableRow style={{height: "64px", backgroundColor: "#EDEBEB"}}>
-							<TableCell ></TableCell>
-							<TableCell ><h3>Cover Crop Termination on 09/01/2019 </h3></TableCell>
+							<TableCell  />
+							<TableCell ><h3>Cover Crop Termination on {this.state.harvestDateStr} </h3></TableCell>
 						</TableRow>
 						<TableRow style={{}}>
-							<TableCell  style={{minWidth: "400px", padding: 0, margin: 0}}>{this.generateChartsHTML()}</TableCell>
+							<TableCell  style={{minWidth: "500px", padding: 0, margin: 0}}>{this.generateChartsHTML()}</TableCell>
 							<TableCell style={{maxWidth: "300px", padding: 0, margin: 0,
 								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
 								verticalAlign: "top"
@@ -455,12 +670,8 @@ class DashboardResults extends Component {
 								{this.generateTableHTML()}
 
 								<div style={{margin: "10px"}}>
-									<h3 >Other Recommendations</h3>
-									Thought experiments (Gedankenexperimenten) are “facts” in the
-									sense that they have a “real life” correlate in the form of electrochemical
-									activity in the brain.
-									But it is quite obvious that they do not relate to facts “out there”........... ...................... .
-									........... ........... ...........
+									<h3 >Other Recommendations / Notes</h3>
+									Add here...
 								</div>
 
 							</TableCell>
