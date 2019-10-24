@@ -179,6 +179,7 @@ class DashboardResults extends Component {
 		let biomassValues = [];
 		let cnDates = [];
 		let cnValues = [];
+		let cnMax = 60;
 
 		let cnRows = [];
 		let biomassRows = [];
@@ -222,6 +223,7 @@ class DashboardResults extends Component {
 		let day = 60 * 60 * 24 * 1000;
 
 		let prevCnDate = null;
+
 		cnRows.forEach(function(element) {
 			let dt = element.x;
 
@@ -241,6 +243,8 @@ class DashboardResults extends Component {
 			cnValues.push(element.y);
 			prevCnDate = element.x;
 		});
+
+		cnMax = Math.max(...cnValues);
 
 		let prevBiomassDate = null;
 		biomassRows.forEach(function(element) {
@@ -348,7 +352,7 @@ class DashboardResults extends Component {
 				y0: 0,
 				x1: harvestDateMax,
 				y1: 1,
-				fillcolor: "LightYellow",
+				fillcolor: "rgb(204, 255, 235)", //"LightYellow",
 				opacity: 0.5,
 				layer: "below",
 				line: {width: 1, dash: "dot"}
@@ -372,7 +376,33 @@ class DashboardResults extends Component {
 				x1: harvestDate,
 				y1: 1.1,
 				line: {width: 2}
-			}
+			},
+			{
+				type: "rect",
+				xref: "paper",
+				yref:"y2",
+				x0: 0,
+				y0: 16,
+				x1: 1,
+				y1: 21,
+				fillcolor: "rgb(240, 240, 194)",
+				opacity: 0.5,
+				layer: "below",
+				line: {width: 0.1}
+			},
+			{
+				type: "rect",
+				xref: "paper",
+				yref:"y2",
+				x0: 0,
+				y0: 21,
+				x1: 1,
+				y1: cnMax,
+				fillcolor: "rgb(240, 220, 220)",
+				opacity: 0.5,
+				layer: "below",
+				line: {width: 0.1}
+			},
 		];
 
 		let annotations = [
