@@ -16,8 +16,8 @@ class AnalyzerWrap extends Component {
 		return(
 			<div>
 				<span className="analyzer-line" />
-				<div className="analyzer-tab">
-					<Tabbar>
+				<div className="analyzer-tab" >
+					<Tabbar style={{textTransform: "initial"}}>
 						<Tab
 							active={activeTab===1}
 							href="#/analysis"
@@ -26,22 +26,24 @@ class AnalyzerWrap extends Component {
 						</Tab>
 						<Tab
 							active={activeTab===2}
-							href="#/history"
+							href="#/dashboard"
 						>
-							Job History
-
+							Dashboard
 						</Tab>
+
 						<Tab
 							active={activeTab===3}
 							href="#/profile"
 						>
-							My Fields
+							My Farm
 						</Tab>
 						<Tab
+							style={{display: "none"}}
 							active={activeTab===4}
-							href="#/dashboard"
+							href="#/history"
 						>
-							Dashboard
+							Job History
+
 						</Tab>
 
 					</Tabbar>

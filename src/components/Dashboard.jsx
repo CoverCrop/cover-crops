@@ -26,7 +26,7 @@ class Dashboard extends Component {
 			<AuthorizedWrap>
 				<div>
 					<Header selected="user"/>
-					<AnalyzerWrap activeTab={4}/>
+					<AnalyzerWrap activeTab={2}/>
 
 					<div className="position-relative border-top">
 						<Grid className="no-padding-grid">

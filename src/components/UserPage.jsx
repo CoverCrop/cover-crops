@@ -28,7 +28,7 @@ class UserPage extends Component {
 			<AuthorizedWrap>
 				<div>
 					<Header selected='user'/>
-					<AnalyzerWrap activeTab={2}/>
+					<AnalyzerWrap activeTab={4}/>
 
 
 					<Grid className="no-padding-grid">
