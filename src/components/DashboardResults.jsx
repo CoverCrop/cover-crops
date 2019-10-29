@@ -91,12 +91,11 @@ class DashboardResults extends Component {
 	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
 
 		let chartDataArray = {};
-		let colorIndex = 0;
 		let minTime = plantingDate.getTime();
 		let maxTime = harvestDate.getTime();
-
-		console.log(new Date(minTime));
-		console.log(new Date(maxTime));
+		//
+		// console.log(new Date(minTime));
+		// console.log(new Date(maxTime));
 
 		let chartOptions = {};
 
@@ -178,6 +177,8 @@ class DashboardResults extends Component {
 
 		let cnRows = [];
 		let biomassRows = [];
+		let windowDurationDays = 14; // must be even. Can be moved to config
+		let harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
 
 		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null && this.props["userInputJson"] !== undefined) {
 
@@ -188,21 +189,13 @@ class DashboardResults extends Component {
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
-			// this.setState({plantingDate: plantingDate.toDateString()});
-			// this.setState({harvestDate: harvestDate.toDateString()});
-
-			harvestDateMin = new Date(harvestYear, 0, harvestDOY - 7);
-			harvestDateMax = new Date(harvestYear, 0, harvestDOY + 7);
-
-			console.log(plantingDate);
-			console.log(harvestDateMin);
-			console.log(harvestDateMax);
-
+			harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
+			harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
 		}
 
 		ccChartDataArray = this.state.ccDataArray;// generate charts for with cover crop case
-		console.log("dashboard array: ");
-		console.log(ccChartDataArray);
+		// console.log("dashboard array: ");
+		// console.log(ccChartDataArray);
 		for (let key in ccChartDataArray) {
 			if(key.toString() === "C:N ratio"){
 				cnRows = ccChartDataArray[key].chartData.datasets[0].data;
@@ -441,51 +434,40 @@ class DashboardResults extends Component {
 			}
 		];
 
+
+		let sliderSteps = [];
+
+		let stepDate = harvestDateMin;
+		while(stepDate <= harvestDateMax){
+
+			sliderSteps.push({
+				label: convertDateToUSFormatShort(stepDate),
+				method: "restyle",
+				args: [
+					{frame: {duration: 300},
+						mode: "immediate"}
+				]
+			});
+			stepDate = new Date(stepDate.getTime() + day);
+		}
+
 		let sliderDict = {
 			// pad: {t: 30},
 			currentvalue: {
 				xanchor: "right",
-				prefix: "color: ",
+				prefix: "Harvest Date: ",
 				font: {
 					color: "#888",
-					size: 20
+					size: 16
 				}
 			},
-			pad: { t: 50},
+			visible: false,
+			pad: { t: 90},
 			len: 1,
 			x: 0,
 			y: 0,
-			steps: [
-				{
-					label: convertDateToUSFormatShort(harvestDateMin),
-					method: "restyle",
-					args: [{frame: {duration: 300},
-						mode: "immediate"}
-					]
-				},
-				{
-					label: "3/29",
-					method: "restyle",
-					args: [{frame: {duration: 300},
-						mode: "immediate"}
-					]
-				},
-				{
-					label: "3/30",
-					method: "restyle",
-					args: [{frame: {duration: 300},
-						mode: "immediate"}
-					]
-				},
-				{
-					label: convertDateToUSFormatShort(harvestDateMax),
-					method: "restyle",
-					args: [{frame: {duration: 300},
-						mode: "immediate"}
-					]
-				}
-
-			]
+			active: harvestDay,
+			steps: sliderSteps
 		};
 
 		let layout = {
@@ -549,9 +531,13 @@ class DashboardResults extends Component {
 	}
 
 	// Generate and return charts HTML content
-	generateTableHTML() {
+	generateTableHTML(harvestDate) {
 		let html = [];
 		let rowElems = [];
+
+		if(harvestDate == null){
+			harvestDate = this.state.harvestDate;
+		}
 
 		rowElems.push(
 			<TableRow key="1">
@@ -560,11 +546,11 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["TWAD"].chartData.datasets[0] != null) ?
-						this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+						this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["TWAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["TWAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 
 			</TableRow>
@@ -576,11 +562,11 @@ class DashboardResults extends Component {
 				</TableCell>
 
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["C:N ratio"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 			</TableRow>
 		);
@@ -591,11 +577,11 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NUAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NUAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NUAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["NUAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 			</TableRow>
 		);
@@ -606,11 +592,11 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLCC"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NLCC"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["NLCC"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLCC"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NLCC"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["NLCC"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 			</TableRow>
 		);
@@ -621,11 +607,11 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 			</TableRow>
 		);
@@ -637,11 +623,11 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NIAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NIAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["NIAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
 				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NIAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NIAD"].chartData.datasets[0].data, this.state.harvestDate): "NA"
+					this.getYfromArray(this.state.noccDataArray["NIAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}</TableCell>
 			</TableRow>
 		);
@@ -689,7 +675,7 @@ class DashboardResults extends Component {
 								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
 								verticalAlign: "top"
 							}}>
-								{this.generateTableHTML()}
+								{this.generateTableHTML(this.state.harvestDate)}
 
 								<div style={{margin: "10px"}}>
 									<h3 >Other Recommendations / Notes</h3>
