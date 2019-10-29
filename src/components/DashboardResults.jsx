@@ -167,6 +167,8 @@ class DashboardResults extends Component {
 		let harvestDate = new Date();
 		let harvestDateMin = new Date();
 		let harvestDateMax = new Date();
+		let rangeSelectorMin = new Date();
+		let rangeSelectorMax = new Date();
 		let ymax = 2300; //TODO: Get this dynamically
 		let ccChartDataArray = {}; // Associative array to store chart data
 		let biomassDates = [];
@@ -191,6 +193,8 @@ class DashboardResults extends Component {
 
 			harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
 			harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
+			rangeSelectorMin = new Date(plantingYear, 0, plantingDOY - windowDurationDays);
+			rangeSelectorMax = new Date(harvestYear, 0, harvestDOY + windowDurationDays);
 		}
 
 		ccChartDataArray = this.state.ccDataArray;// generate charts for with cover crop case
@@ -256,30 +260,32 @@ class DashboardResults extends Component {
 		let resultHtml = [];
 		let selectorOptions = {
 			x: 0.01,
-			y: 1.08,
-			buttons: [{
-				step: "month",
-				stepmode: "backward",
-				count: 1,
-				label: "1m"
-			}, {
-				step: "month",
-				stepmode: "backward",
-				count: 6,
-				label: "6m",
-				active: true
-			}, {
-				step: "year",
-				stepmode: "todate",
-				count: 1,
-				label: "YTD"
-			}, {
-				step: "year",
-				stepmode: "backward",
-				count: 1,
-				label: "1y"
-			}, {
+			y: 1.15,
+			buttons: [
+			// 	{
+			// 	step: "month",
+			// 	stepmode: "backward",
+			// 	count: 1,
+			// 	label: "1m"
+			// }, {
+			// 	step: "month",
+			// 	stepmode: "backward",
+			// 	count: 6,
+			// 	label: "6m"
+			// }, {
+			// 	step: "year",
+			// 	stepmode: "todate",
+			// 	count: 1,
+			// 	label: "YTD"
+			// }, {
+			// 	step: "year",
+			// 	stepmode: "backward",
+			// 	count: 1,
+			// 	label: "1y"
+			// },
+				{
 				step: "all",
+				label: "show all"
 			}],
 
 		};
@@ -475,7 +481,8 @@ class DashboardResults extends Component {
 			sliders: [sliderDict],
 			xaxis: {
 				rangeselector: selectorOptions,
-				rangeslider: {borderwidth: 1, range: ["2018-04-02", "2018-10-01"]}, //TODO: Default to current time range
+				rangeslider: {borderwidth: 1},
+				range: [rangeSelectorMin, rangeSelectorMax],
 				showline: true,
 				linecolor: "LightGray",
 				zeroline: true,
@@ -507,7 +514,7 @@ class DashboardResults extends Component {
 			},
 			shapes: highlightShapes,
 			annotations: annotations,
-			legend: {x:0.9, y: 1.35, borderwidth: 0.5}
+			legend: {x:0.85, y: 1.40, borderwidth: 0.5}
 		};
 
 		// yaxis: {
