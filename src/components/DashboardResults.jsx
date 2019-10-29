@@ -46,12 +46,9 @@ class DashboardResults extends Component {
 	}
 
 	componentWillReceiveProps(nextProps, nextContext) {
-		console.log(nextProps);
 
 		let plantingDate = new Date();
 		let harvestDate = new Date();
-		let harvestDateMin = new Date();
-		let harvestDateMax = new Date();
 
 		if (nextProps.hasOwnProperty("userInputJson") && nextProps["userInputJson"] !== null && nextProps["userInputJson"] !== undefined) {
 			let plantingYear = nextProps["userInputJson"]["year_planting"];
@@ -61,13 +58,11 @@ class DashboardResults extends Component {
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
-			console.log("mount");
 			this.setState({plantingDate: plantingDate});
 			this.setState({harvestDate: harvestDate});
 			this.setState({plantingDateStr: convertDateToUSFormat(plantingDate)});
 			this.setState({harvestDateStr: convertDateToUSFormat(harvestDate)});
 
-			console.log(nextProps);
 			let ccDataArray = this.getDashboardDataArray(nextProps,"withCoverCropChartDataArray", plantingDate, harvestDate);
 			let noccDataArray = this.getDashboardDataArray(nextProps,"withoutCoverCropChartDataArray", plantingDate, harvestDate);
 
@@ -94,7 +89,7 @@ class DashboardResults extends Component {
 
 	// Generates charts array object containing individual charts and datasets
 	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
-		console.log(properties);
+
 		let chartDataArray = {};
 		let colorIndex = 0;
 		let minTime = plantingDate.getTime();
@@ -217,10 +212,7 @@ class DashboardResults extends Component {
 				biomassRows = ccChartDataArray[key].chartData.datasets[0].data;
 			}
 		}
-
-		console.log(cnRows);
-		console.log(biomassRows);
-		let day = 60 * 60 * 24 * 1000;
+		let day = 60 * 60 * 24 * 1000; //day in millisecs
 
 		let prevCnDate = null;
 
