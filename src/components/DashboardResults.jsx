@@ -234,6 +234,9 @@ class DashboardResults extends Component {
 		});
 
 		cnMax = Math.max(...cnValues);
+		if(cnMax < 21){
+			cnMax = 26;
+		}
 
 		let prevBiomassDate = null;
 		biomassRows.forEach(function(element) {
@@ -311,27 +314,6 @@ class DashboardResults extends Component {
 			line: {color: "Orange"}
 		};
 
-		let planting = {
-			x: [plantingDate, plantingDate],
-			y: [0, ymax],
-			name: "IN",
-			type: "scatter",
-			mode: "lines",
-			line: {color: "Black"},
-			showlegend: false
-		};
-
-		let harvest = {
-			x: [harvestDate, harvestDate],
-			y: [0, ymax],
-			name: "OUT",
-			type: "scatter",
-			mode: "lines",
-			line: {color: "Black"},
-			showlegend: false
-		};
-
-		// let data = [biomass, cn, planting, harvest];
 		let data = [biomass, cn];
 
 		let highlightShapes = [
@@ -373,24 +355,11 @@ class DashboardResults extends Component {
 				xref: "paper",
 				yref:"y2",
 				x0: 0,
-				y0: 16,
-				x1: 1,
-				y1: 21,
-				fillcolor: "rgb(240, 240, 194)",
-				opacity: 0.5,
-				layer: "below",
-				line: {width: 0.1}
-			},
-			{
-				type: "rect",
-				xref: "paper",
-				yref:"y2",
-				x0: 0,
 				y0: 21,
 				x1: 1,
 				y1: cnMax,
 				fillcolor: "rgb(240, 220, 220)",
-				opacity: 0.5,
+				opacity: 0.3,
 				layer: "below",
 				line: {width: 0.1}
 			},
@@ -399,7 +368,7 @@ class DashboardResults extends Component {
 		let annotations = [
 			{
 				x: plantingDate,
-				y: 1,
+				y: 1.06,
 				xref: "x",
 				yref: "paper",
 				text: " IN ",
@@ -419,7 +388,7 @@ class DashboardResults extends Component {
 			},
 			{
 				x: harvestDate,
-				y: 1,
+				y: 1.06,
 				xref: "x",
 				yref: "paper",
 				text: "OUT",
@@ -437,6 +406,19 @@ class DashboardResults extends Component {
 				//yanchor: "top",
 				xshift: -22
 
+			},
+			{
+				text: "Soil N Immobilization <br> Begins<sup>*</sup>",
+				showarrow: false,
+				x: 0.5,
+				y: 25.5,
+				valign: "top",
+				xref:"paper",
+				yref: "y2",
+				// borderwidth: 1,
+				// bordercolor: "black",
+				hovertext: "Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization <br>" +
+					"Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization",
 			}
 		];
 
@@ -477,7 +459,7 @@ class DashboardResults extends Component {
 		};
 
 		let layout = {
-			title: "Cover Crop Patterns",
+			title: "Cover Crop Growth & C:N Prediction",
 			sliders: [sliderDict],
 			xaxis: {
 				rangeselector: selectorOptions,
@@ -489,7 +471,12 @@ class DashboardResults extends Component {
 				ticks: "outside"
 			},
 			yaxis: {
-				title: "",
+				title: {
+					text: "Biomass",
+					font: {
+						color: "DeepSkyBlue"
+					}
+				},
 				tickfont: {color: "DeepSkyBlue"},
 				showgrid: false,
 				showline: true,
@@ -499,8 +486,12 @@ class DashboardResults extends Component {
 				// rangemode: "tozero"
 			},
 			yaxis2: {
-				title: "",
-				// titlefont: {color: "red"},
+				title: {
+					text: "C:N",
+					font: {
+						color: "Orange"
+					}
+				},
 				tickfont: {color: "Orange"},
 				overlaying: "y",
 				side: "right",
@@ -514,7 +505,7 @@ class DashboardResults extends Component {
 			},
 			shapes: highlightShapes,
 			annotations: annotations,
-			legend: {x:0.85, y: 1.40, borderwidth: 0.5}
+			legend: {x:0.88, y: 1.40, borderwidth: 0.5}
 		};
 
 		// yaxis: {
@@ -549,7 +540,7 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="1">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Biomass</span> <br/>
+					<span style={{fontWeight: "bold"}}>Plant Biomass</span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["TWAD"].chartData.datasets[0] != null) ?
@@ -595,21 +586,6 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Leached </span> <br/>
-					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
-				</TableCell>
-				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLCC"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NLCC"].chartData.datasets[0].data, harvestDate): "NA"
-				}
-				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLCC"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NLCC"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
-			</TableRow>
-		);
-		rowElems.push(
-			<TableRow key="5">
-				<TableCell className="dashboardTableHeader">
 					<span style={{fontWeight: "bold"}}>Nitrogen Loss </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
@@ -624,7 +600,7 @@ class DashboardResults extends Component {
 		);
 
 		rowElems.push(
-			<TableRow key="6">
+			<TableRow key="5">
 				<TableCell className="dashboardTableHeader">
 					<span style={{fontWeight: "bold"}}>Total Soil Inorganic Nitrogen </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
@@ -685,8 +661,9 @@ class DashboardResults extends Component {
 								{this.generateTableHTML(this.state.harvestDate)}
 
 								<div style={{margin: "10px"}}>
-									<h3 >Other Recommendations / Notes</h3>
-									Add here...
+									<h3> Notes </h3>
+									<sup>*</sup> Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization. <br/>
+									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization.
 								</div>
 
 							</TableCell>
