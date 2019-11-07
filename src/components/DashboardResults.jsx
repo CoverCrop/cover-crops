@@ -499,18 +499,11 @@ class DashboardResults extends Component {
 				showline: true,
 				linecolor: "LightGray",
 				ticks: "outside"
-				// rangemode: "tozero"
-				// range: [8,9],
-
 			},
 			shapes: highlightShapes,
 			annotations: annotations,
 			legend: {x:0.88, y: 1.40, borderwidth: 0.5}
 		};
-
-		// yaxis: {
-		// 	fixedrange: true
-		// }
 
 
 		resultHtml.push(
