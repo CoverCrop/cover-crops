@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
-import {Button, Textfield, List, ListItem, ListHeader, Body1, Body2,
-	Checkbox, Title, Grid, Cell, Card, CardHeader, CardTitle, CardText, FormField} from "react-mdc-web";
+import {Button, Body1, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
 import "babel-polyfill";

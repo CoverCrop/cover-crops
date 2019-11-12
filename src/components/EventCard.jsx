@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Body1, Body2, Button, Card, CardText, Cell, Checkbox, Content, FormField, Icon, Textfield} from "react-mdc-web";
+import {Card, CardText, Icon} from "react-mdc-web";
 import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId} from "../datawolf.config";
 import {convertDateToUSFormat, getWeatherName, convertDateToUSFormatWithMins} from "../public/utils";
 import {connect} from "react-redux";
@@ -17,7 +17,7 @@ class EventCard extends Component {
 
 		let plantingDate = new Date();
 		let harvestDate = new Date();
-		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null) {
+		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null && this.props["userInputJson"]["year_planting"] !== null) {
 			let plantingYear = this.props["userInputJson"]["year_planting"];
 			let harvestYear = plantingYear + 1;
 			let plantingDOY = this.props["userInputJson"]["doy_planting"];
