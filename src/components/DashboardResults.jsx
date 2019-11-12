@@ -296,7 +296,7 @@ class DashboardResults extends Component {
 		let biomass = {
 			x: biomassDates,  //["2019-01-01", "2019-03-01", "2019-06-01", "2019-09-03"],
 			y: biomassValues, //[0, 15, 19, 21],
-			name: "Biomass",
+			name: "Plant Biomass",
 			type: "scatter",
 			mode: "lines",
 			connectgaps: false,
@@ -430,8 +430,8 @@ class DashboardResults extends Component {
 				yref: "y2",
 				// borderwidth: 1,
 				// bordercolor: "black",
-				hovertext: "Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization <br>" +
-					"Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization",
+				// hovertext: "Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization <br>" +
+				// 	"Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization",
 			}
 		];
 
@@ -485,7 +485,7 @@ class DashboardResults extends Component {
 			},
 			yaxis: {
 				title: {
-					text: "Biomass",
+					text: "Plant Biomass (lb/acres)",
 					font: {
 						color: "DeepSkyBlue"
 					}
