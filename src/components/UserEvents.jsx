@@ -167,24 +167,24 @@ class UserEvents extends Component {
 		return(
 			<div>
 				<div className="event-list-header" key="event-list-header">
-					<Button className="bold-text"
-						onClick={() => {
-						this.setState({sortopen: true})
-					}}>Sort By</Button>
-					<MenuAnchor>
-						<Menu
-							open={this.state.sortopen}
-							onClose={()=>{this.setState({sortopen:false})}}
-						>
-							<MenuItem>
-								Runtime
-							</MenuItem>
-							<MenuItem>
-								Runtime2
-							</MenuItem>
-						</Menu>
-					</MenuAnchor>
-					<Button className="event-more-options">More Options</Button>
+					{/*<Button className="bold-text"*/}
+					{/*	onClick={() => {*/}
+					{/*	this.setState({sortopen: true})*/}
+					{/*}}>Sort By</Button>*/}
+					{/*<MenuAnchor>*/}
+					{/*	<Menu*/}
+					{/*		open={this.state.sortopen}*/}
+					{/*		onClose={()=>{this.setState({sortopen:false})}}*/}
+					{/*	>*/}
+					{/*		<MenuItem>*/}
+					{/*			Runtime*/}
+					{/*		</MenuItem>*/}
+					{/*		<MenuItem>*/}
+					{/*			Runtime2*/}
+					{/*		</MenuItem>*/}
+					{/*	</Menu>*/}
+					{/*</MenuAnchor>*/}
+					{/*<Button className="event-more-options">More Options</Button>*/}
 				</div>
 				<div className="event-list-parent" key="event-list-parent">
 					{eventsList}

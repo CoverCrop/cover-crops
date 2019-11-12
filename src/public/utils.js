@@ -198,6 +198,11 @@ export function convertDateToUSFormatShort(date){
 	return (date.getMonth() + 1) + "/" + date.getDate();
 }
 
+export function convertDateToUSFormatWithMins(date){
+
+	return (date.getMonth() + 1) + "/" + date.getDate() + "/" +  date.getFullYear()+ " " + date.getHours() + ":" + date.getMinutes();
+}
+
 //eg. moment to 17096
 export function convertDayString(moment) {
 	if (moment.dayOfYear() < 99) {

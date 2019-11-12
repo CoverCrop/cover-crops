@@ -6,8 +6,16 @@ import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
 import "babel-polyfill";
 import DatePicker from "react-datepicker";
-import {datawolfURL, steps, resultDatasetId, getWithCoverCropExecutionRequest, getWithoutCoverCropExecutionRequest,
-	weatherPatterns, coverCrops} from "../datawolf.config";
+import {
+	datawolfURL,
+	steps,
+	resultDatasetId,
+	getWithCoverCropExecutionRequest,
+	getWithoutCoverCropExecutionRequest,
+	weatherPatterns,
+	coverCrops,
+	userInputJSONDatasetID,
+} from "../datawolf.config";
 import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import Select from "react-select";
@@ -110,7 +118,9 @@ class RunSimulationCC extends Component {
 
 
 		const withCoverCropDatasetResultGUID = withCoverCropAnalysisResult.datasets[resultDatasetId];
+
 		const withoutCoverCropDatasetResultGUID = withoutCoverCropAnalysisResult.datasets[resultDatasetId];
+		const withCoverCropUserInputJSONDatasetId = withCoverCropAnalysisResult.datasets[userInputJSONDatasetID];
 		const outputFilename = "output.json";
 
 		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
@@ -121,25 +131,28 @@ class RunSimulationCC extends Component {
 
 			getOutputFileJson(withCoverCropDatasetResultGUID, outputFilename).then(function (withCoverCropResultFile){
 				getOutputFileJson(withoutCoverCropDatasetResultGUID, outputFilename).then(function (withoutCoverCropResultFile) {
+					getOutputFileJson(withCoverCropUserInputJSONDatasetId).then(function (userInputJson) {
 
-					status = "COMPLETED";
-					that.setState({
-						simulationStatus: status,
-						runSimulationButtonDisabled: false
+						status = "COMPLETED";
+						that.setState({
+							simulationStatus: status,
+							runSimulationButtonDisabled: false
+						});
+
+						if (withCoverCropExecutionGUID !== "" &&
+							withoutCoverCropExecutionGUID !== "") {
+							that.props.handleResults(
+								withCoverCropExecutionGUID,
+								withCoverCropResultFile,
+								withoutCoverCropExecutionGUID,
+								withoutCoverCropResultFile,
+								userInputJson
+							);
+							window.location = "/#/dashboard";
+						} else {
+							console.log("Execution ID wasn't generated.");
+						}
 					});
-
-					if (withCoverCropExecutionGUID !== "" && withoutCoverCropExecutionGUID !== "") {
-						that.props.handleResults(
-							withCoverCropExecutionGUID,
-							withCoverCropResultFile,
-							withoutCoverCropExecutionGUID,
-							withoutCoverCropResultFile
-						);
-						window.location = "/#/dashboard";
-					}
-					else {
-						console.log("Execution ID wasn't generated.");
-					}
 				});
 			});
 
