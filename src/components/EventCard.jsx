@@ -1,32 +1,47 @@
 import React, {Component} from "react";
 import {Card, CardText, Icon} from "react-mdc-web";
 import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId} from "../datawolf.config";
-import {convertDateToUSFormat, getWeatherName, convertDateToUSFormatWithMins} from "../public/utils";
+import {
+	convertDateToUSFormat,
+	getWeatherName,
+	convertDateToUSFormatWithMins,
+	getOutputFileJson,
+} from "../public/utils";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 
 class EventCard extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			inDate: "",
+			outDate: ""
+		};
+
+		this.getDates = this.getDates.bind(this);
+	}
+
+
+	componentWillMount() {
+		this.getDates(this.props.event[0].datasets[userInputJSONDatasetID]);
+	}
+
+	getDates(datasetId){
+		getOutputFileJson(datasetId).then(userInputJson => {
+			let plantingYear = userInputJson["year_planting"];
+			let harvestYear = plantingYear + 1;
+			let plantingDOY = userInputJson["doy_planting"];
+			let harvestDOY = userInputJson["doy_harvest"];
+			let plantingDate = new Date(plantingYear, 0, plantingDOY);
+			let harvestDate = new Date(harvestYear, 0, harvestDOY);
+			this.setState({inDate: convertDateToUSFormat(plantingDate)});
+			this.setState({outDate: convertDateToUSFormat(harvestDate)});
+		});
 	}
 
 	render() {
 		let {event} = this.props;
-		console.log(event);
-		let inDate, outDate;
 
-		let plantingDate = new Date();
-		let harvestDate = new Date();
-		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null && this.props["userInputJson"]["year_planting"] !== null) {
-			let plantingYear = this.props["userInputJson"]["year_planting"];
-			let harvestYear = plantingYear + 1;
-			let plantingDOY = this.props["userInputJson"]["doy_planting"];
-			let harvestDOY = this.props["userInputJson"]["doy_harvest"];
-			plantingDate = new Date(plantingYear, 0, plantingDOY);
-			harvestDate = new Date(harvestYear, 0, harvestDOY);
-			inDate = convertDateToUSFormat(plantingDate);
-			outDate = convertDateToUSFormat(harvestDate);
-		}
 		return (
 			<Card
 				className={(event.id === this.props.selectevent? "choose-card":"") + " event-list " +(event.status)}
@@ -51,7 +66,7 @@ class EventCard extends Component {
 
 						<Grid container item xs={12} spacing={3} style={{paddingTop: "5px"}}>
 							<Grid item xs={5} >
-								<span className="eventCardLabelTitle">In</span> <span className="eventCardLabelValue">{inDate} </span>
+								<span className="eventCardLabelTitle">In</span> <span className="eventCardLabelValue">{this.state.inDate} </span>
 							</Grid>
 
 							<Grid item xs={7}>
@@ -60,7 +75,7 @@ class EventCard extends Component {
 						</Grid>
 						<Grid container item xs={12} spacing={3} style={{paddingTop: "3px"}}>
 							<Grid item xs={5}>
-								<span className="eventCardLabelTitle">Out</span> <span className="eventCardLabelValue">{outDate} </span>
+								<span className="eventCardLabelTitle">Out</span> <span className="eventCardLabelValue">{this.state.outDate} </span>
 							</Grid>
 
 							<Grid item xs={7}>
@@ -79,25 +94,16 @@ class EventCard extends Component {
 						</Grid>
 					</Grid>
 
-					{/*{ event.status === "execution-error"?*/}
-
-					{/*	<Icon name="warning" />*/}
-
-					{/*	:*/}
-					{/*	<Icon name="check_circle"/>*/}
-
-					{/*}*/}
-
 				</CardText>
 			</Card>
 		);
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		userInputJson: state.analysis.userInputJson
-	};
-};
+// const mapStateToProps = (state) => {
+// 	return {
+// 		userInputJson: state.analysis.userInputJson
+// 	};
+// };
 
-export default connect(mapStateToProps, null) (EventCard);
+export default EventCard;
