@@ -425,10 +425,10 @@ class DashboardResults extends Component {
 
 			},
 			{
-				text: "Soil N Immobilization <br> Begins<sup>*</sup>",
-				showarrow: false,
+				text: "Immobilization Begins<sup>*</sup>",
+				showarrow: true,
 				x: 0.5,
-				y: 25.5,
+				y: 20.25,
 				valign: "top",
 				xref:"paper",
 				yref: "y2",
