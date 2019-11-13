@@ -489,7 +489,7 @@ class DashboardResults extends Component {
 			},
 			yaxis: {
 				title: {
-					text: "Plant Biomass (lb/acres)",
+					text: "Plant Biomass (lb/acre)",
 					font: {
 						color: "DeepSkyBlue"
 					}
