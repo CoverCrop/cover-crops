@@ -5,20 +5,13 @@ import UserEvents from "./UserEvents";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import DashboardResults from "./DashboardResults";
+import {selectedEventNotSuccessful} from "../app.messages";
+import {connect} from "react-redux";
 
 class Dashboard extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			isSelectedEventSuccessful: true
-		};
-
-		this.handleEventClick = this.handleEventClick.bind(this);
-	}
-
-	handleEventClick (isSelectedEventSuccessful) {
-		this.setState({isSelectedEventSuccessful: isSelectedEventSuccessful});
 	}
 
 	render() {
@@ -34,7 +27,7 @@ class Dashboard extends Component {
 								<UserEvents />
 							</Cell>
 							<Cell col={9}>
-								<DashboardResults />
+								{this.props.isSelectedEventSuccessful ? <DashboardResults /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
 							</Cell>
 						</Grid>
 					</div>
@@ -45,4 +38,10 @@ class Dashboard extends Component {
 	}
 }
 
-export default Dashboard;
+const mapStateToProps = (state) => {
+	return {
+		isSelectedEventSuccessful: state.user.isSelectedEventSuccessful
+	};
+};
+
+export default connect(mapStateToProps, null)(Dashboard);
