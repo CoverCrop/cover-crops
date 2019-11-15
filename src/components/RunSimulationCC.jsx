@@ -135,7 +135,7 @@ class RunSimulationCC extends Component {
 							withoutCoverCropExecutionGUID,
 							withoutCoverCropResultFile
 						);
-						window.location = "/#/dashboard";
+						window.location = "/dashboard";
 					}
 					else {
 						console.log("Execution ID wasn't generated.");
@@ -152,7 +152,7 @@ class RunSimulationCC extends Component {
 				runSimulationButtonDisabled: false
 			});
 
-			window.location = "/#/dashboard";
+			window.location = "/dashboard";
 		}
 	}
 

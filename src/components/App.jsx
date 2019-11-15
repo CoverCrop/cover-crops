@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Router, Route, hashHistory, Redirect} from "react-router";
+import {Router, Route, browserHistory} from "react-router";
 import AnalysisPage from "./AnalysisPage";
 import AddFieldPage from "./AddFieldPage";
 import HomePage from "./HomePage";
@@ -29,7 +29,7 @@ class App extends Component {
 
 		return (
 			<MuiThemeProvider theme={theme}>
-				<Router history={hashHistory}>
+				<Router history={browserHistory}>
 					<Route path="/" component={HomePage}/>
 					<Route path="/analysis" component={AnalysisPage}/>
 					<Route path="/addfield" component={AddFieldPage}/>

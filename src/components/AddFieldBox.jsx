@@ -59,8 +59,8 @@ class AddFieldBox extends Component {
 				headers: headers,
 				credentials: "include",
 			}).then(response => {
-				window.location = "/#/profile"
-			})
+				window.location = "/profile";
+			});
 		}).catch(function(e) {
 			console.log("Add CLU failed: " + e );
 		});

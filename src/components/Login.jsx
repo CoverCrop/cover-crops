@@ -5,7 +5,7 @@ import {Textfield, Title, Button, Caption, Card, CardMedia, CardHeader, CardTitl
 import {datawolfURL} from "../datawolf.config";
 import {handleUserLogin} from "../actions/user";
 import {checkAuthentication} from "../public/utils";
-import {hashHistory, Link} from "react-router";
+import {browserHistory, Link} from "react-router";
 import config from "../app.config";
 import {dataWolfGetTokenCallFailed, invalidLoginCredentials, register, unlogin} from "../app.messages";
 
@@ -103,7 +103,7 @@ class Login extends Component {
 				checkAuthentication().then(function (checkAuthResponse) {
 					if (checkAuthResponse.status === 200) {
 						console.log("Person Valid");
-						hashHistory.push("/analysis");
+						browserHistory.push("/analysis");
 					}
 					else if (checkAuthResponse.status === 401) {
 						console.log("Unauthorized");

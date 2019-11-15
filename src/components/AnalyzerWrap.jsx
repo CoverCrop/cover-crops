@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Tabbar, Tab} from "react-mdc-web";
 import {connect} from "react-redux";
 import {handleUserLogout} from "../actions/user";
+import {Link} from "react-router";
 
 class AnalyzerWrap extends Component {
 
@@ -20,27 +21,27 @@ class AnalyzerWrap extends Component {
 					<Tabbar style={{textTransform: "initial"}}>
 						<Tab
 							active={activeTab===1}
-							href="#/analysis"
+							component={Link}	to="/analysis"
 						>
 							Start a Job
 						</Tab>
 						<Tab
 							active={activeTab===2}
-							href="#/dashboard"
+							component={Link}	to="/dashboard"
 						>
 							Dashboard
 						</Tab>
 
 						<Tab
 							active={activeTab===3}
-							href="#/profile"
+							component={Link}	to="/profile"
 						>
 							My Farm
 						</Tab>
 						<Tab
 							style={{display: "none"}}
 							active={activeTab===4}
-							href="#/history"
+							component={Link}	to="/history"
 						>
 							Job History
 
