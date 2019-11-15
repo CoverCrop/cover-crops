@@ -21,30 +21,29 @@ class AnalyzerWrap extends Component {
 					<Tabbar style={{textTransform: "initial"}}>
 						<Tab
 							active={activeTab===1}
-							component={Link}	to="/analysis"
+							component={Link} to="/analysis"
 						>
 							Start a Job
 						</Tab>
 						<Tab
 							active={activeTab===2}
-							component={Link}	to="/dashboard"
+							component={Link} to="/dashboard"
 						>
 							Dashboard
 						</Tab>
 
 						<Tab
 							active={activeTab===3}
-							component={Link}	to="/profile"
+							component={Link} to="/profile"
 						>
 							My Farm
 						</Tab>
 						<Tab
 							style={{display: "none"}}
 							active={activeTab===4}
-							component={Link}	to="/history"
+							component={Link} to="/history"
 						>
 							Job History
-
 						</Tab>
 
 					</Tabbar>
