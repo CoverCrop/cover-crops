@@ -21,9 +21,14 @@ class EventCard extends Component {
 		this.getDates = this.getDates.bind(this);
 	}
 
-
 	componentWillMount() {
 		this.getDates(this.props.event[0].datasets[userInputJSONDatasetID]);
+	}
+
+	componentDidUpdate(prevProps, prevState, snapshot) {
+		if (prevProps.event !== this.props.event) {
+			this.getDates(this.props.event[0].datasets[userInputJSONDatasetID]);
+		}
 	}
 
 	getDates(datasetId){
@@ -50,9 +55,9 @@ class EventCard extends Component {
 			>
 				<CardText >
 
-					<Grid container spacing={1}>
+					<Grid container spacing={8}>
 
-						<Grid container item xs={12} spacing={3}>
+						<Grid container item xs={12} spacing={0}>
 							<Grid item xs={10} >
 								<h2>{event[0].parameters[latId] + " " +event[0].parameters[lonId]}</h2>
 							</Grid>
@@ -64,7 +69,7 @@ class EventCard extends Component {
 						</Grid>
 
 
-						<Grid container item xs={12} spacing={3} style={{paddingTop: "5px"}}>
+						<Grid container item xs={12} style={{paddingTop: "5px"}}>
 							<Grid item xs={5} >
 								<span className="eventCardLabelTitle">In</span> <span className="eventCardLabelValue">{this.state.inDate} </span>
 							</Grid>
@@ -73,7 +78,7 @@ class EventCard extends Component {
 								<span className="eventCardLabelTitle">Status</span> <span className="eventCardLabelValue">{event.status.slice(10)} </span>
 							</Grid>
 						</Grid>
-						<Grid container item xs={12} spacing={3} style={{paddingTop: "3px"}}>
+						<Grid container item xs={12} style={{paddingTop: "3px"}}>
 							<Grid item xs={5}>
 								<span className="eventCardLabelTitle">Out</span> <span className="eventCardLabelValue">{this.state.outDate} </span>
 							</Grid>
@@ -83,7 +88,7 @@ class EventCard extends Component {
 							</Grid>
 
 						</Grid>
-						<Grid container item xs={12} spacing={3} style={{paddingTop: "3px"}}>
+						<Grid container item xs={12} style={{paddingTop: "3px"}}>
 							<Grid item xs={5}>
 								<span className="eventCardLabelTitle">Weather</span> <span className="eventCardLabelValue">{getWeatherName(event[0].parameters[weatherId])}</span>
 							</Grid>
@@ -99,11 +104,5 @@ class EventCard extends Component {
 		);
 	}
 }
-
-// const mapStateToProps = (state) => {
-// 	return {
-// 		userInputJson: state.analysis.userInputJson
-// 	};
-// };
 
 export default EventCard;
