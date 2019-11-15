@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
+- Dashboard page that displays results of C:N and Biomass in time series. Other results on the harvest date are shown in a table. [CCROP-209](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-209)
 
 ### Changed
-- Included Tillage information in Crop History section of summary page [CCROP-188] (https://opensource.ncsa.illinois.edu/jira/browse/CCROP-188) 
+- Included Tillage information in Crop History section of summary page [CCROP-188](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-188) 
+- Disabled Job History Page
+- Replaced hashHistory with browserHistory [CCROP-217](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-217)
 
 ### Fixed
+- Show planting and harvest dates on job cards used in dashboard [CROP-219](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-219)
 
 ## [0.3.0] - 2019-03-06
 
