@@ -106,6 +106,7 @@ h1, h2, h3, h5, h6, p, ul {
 	font-weight: 400;
 	letter-spacing: 1px;
 	margin:0px;
+	text-align: center;
 }
 
 .bold-text {
@@ -245,4 +246,17 @@ h1, h2, h3, h5, h6, p, ul {
 .dashboardTableHeader {
 	width: 180px !important;
 	padding: 10px !important;
+}
+
+.eventCardLabelTitle{
+	color: #708792;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 14px;
+}
+
+.eventCardLabelValue{
+	text-transform: capitalize;
+	font-weight: bold;
+	text-align: left;
 }

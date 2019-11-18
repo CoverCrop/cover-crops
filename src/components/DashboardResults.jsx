@@ -202,11 +202,15 @@ class DashboardResults extends Component {
 		// console.log(ccChartDataArray);
 		for (let key in ccChartDataArray) {
 			if(key.toString() === "C:N ratio"){
-				cnRows = ccChartDataArray[key].chartData.datasets[0].data;
+				if(ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
+					cnRows = ccChartDataArray[key].chartData.datasets[0].data;
+				}
 			}
 
 			if(key.toString() === "TWAD"){
-				biomassRows = ccChartDataArray[key].chartData.datasets[0].data;
+				if(ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
+					biomassRows = ccChartDataArray[key].chartData.datasets[0].data;
+				}
 			}
 		}
 		let day = 60 * 60 * 24 * 1000; //day in millisecs
@@ -421,10 +425,10 @@ class DashboardResults extends Component {
 
 			},
 			{
-				text: "Soil N Immobilization <br> Begins<sup>*</sup>",
-				showarrow: false,
+				text: "Immobilization Begins<sup>*</sup>",
+				showarrow: true,
 				x: 0.5,
-				y: 25.5,
+				y: 20.25,
 				valign: "top",
 				xref:"paper",
 				yref: "y2",
@@ -485,7 +489,7 @@ class DashboardResults extends Component {
 			},
 			yaxis: {
 				title: {
-					text: "Plant Biomass (lb/acres)",
+					text: "Plant Biomass (lb/acre)",
 					font: {
 						color: "DeepSkyBlue"
 					}

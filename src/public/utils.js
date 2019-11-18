@@ -190,12 +190,18 @@ export function calculateDayDifference(from, to){
 
 export function convertDateToUSFormat(date){
 
-	return (date.getMonth() + 1) + "/" + date.getDate() + "/" +  date.getFullYear();
+	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0") + "/" +  date.getFullYear();
 }
 
 export function convertDateToUSFormatShort(date){
 
-	return (date.getMonth() + 1) + "/" + date.getDate();
+	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0");
+}
+
+export function convertDateToUSFormatWithMins(date){
+
+	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0") + "/" +  date.getFullYear()+ " " +
+		date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0");
 }
 
 //eg. moment to 17096
