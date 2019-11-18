@@ -33,6 +33,13 @@
 	right:20px;
 }
 
+.normalIcon{
+	position: initial !important;
+	top: initial !important;
+	bottom: initial !important;
+	right: initial !important;
+}
+
 .event-list-text {
 	position: relative;
 	height: 80px;
