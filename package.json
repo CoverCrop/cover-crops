@@ -26,7 +26,7 @@
   },
   "author": "NCSA",
   "dependencies": {
-    "@material-ui/core": "4.3.3",
+    "@material-ui/core": "4.6.1",
     "algebra.js": "0.2.6",
     "chart.js": "2.7.2",
     "d3": "5.11.0",
