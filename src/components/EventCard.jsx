@@ -55,7 +55,7 @@ class EventCard extends Component {
 			>
 				<CardText >
 
-					<Grid container spacing={8}>
+					<Grid container spacing={0}>
 
 						<Grid container item xs={12} spacing={0}>
 							<Grid item xs={10} >
