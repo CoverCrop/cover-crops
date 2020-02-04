@@ -18,7 +18,7 @@ import {
 import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import Select from "react-select";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
 
 
@@ -29,7 +29,6 @@ class RunSimulationCC extends Component {
 		this.runSimulation = this.runSimulation.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
-		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
 		this.handleCoverCropChange = this.handleCoverCropChange.bind(this);
 
 		this.state = {
@@ -182,10 +181,6 @@ class RunSimulationCC extends Component {
 		this.props.handleEndDateChange(date);
 	}
 
-	handleFlexibleDatesChange({target: {checked}}) {
-		this.props.handleFlexibleDatesChange(checked);
-	}
-
 	handleWeatherPatternChange(weatherPattern){
 		this.props.handleWeatherPatternChange(weatherPattern);
 	}
@@ -277,7 +272,6 @@ const mapStateToProps = (state) => {
 		cluname: state.analysis.cluname,
 		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
-		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked,
 		coverCrop: state.analysis.coverCrop
 	};
 };
@@ -292,9 +286,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleWeatherPatternChange: (weatherPattern) => {
 			dispatch(handleWeatherPatternChange(weatherPattern));
-		},
-		handleFlexibleDatesChange: (checked) =>{
-			dispatch(handleFlexibleDatesChange(checked));
 		},
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
 			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson));

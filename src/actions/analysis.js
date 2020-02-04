@@ -35,11 +35,6 @@ export const handleWeatherPatternChange = (weatherPattern) => ({
 	weatherPattern
 });
 
-export const handleFlexibleDatesChange = (checked) => ({
-	type: "SET_FLEXIBLEDATES",
-	checked
-});
-
 export const handleCardChange = (oldCardIndex, newCardIndex, oldCardData) => ({
 	type: "CHANGE_CARD",
 	oldCardIndex,

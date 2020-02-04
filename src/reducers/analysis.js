@@ -32,7 +32,6 @@ const defaultState = {
 	withCoverCropExecutionId: "",
 	withoutCoverCropResultJson: null,
 	withoutCoverCropExecutionId: "",
-	isFlexibleDatesChecked: false,
 	userInputJson: null,
 	coverCrop: coverCrops[0]
 };
@@ -68,10 +67,6 @@ const analysis = (state = defaultState, action) => {
 		case "CHANGE_WEATHER":
 			return Object.assign({}, state, {
 				weatherPattern: action.weatherPattern
-			});
-		case "SET_FLEXIBLEDATES":
-			return Object.assign({}, state, {
-				isFlexibleDatesChecked: action.checked
 			});
 		case "ADD_RESULT":
 			return Object.assign({}, state, {
