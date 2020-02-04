@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
-import {Button, Body1, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
+import {Button, Body1, Subheading2, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
 import "babel-polyfill";
@@ -230,36 +230,29 @@ class RunSimulationCC extends Component {
 				</div>
 				<div className="black-bottom select-date">
 
-					<Title>Cover Crop Dates</Title>
+					<Title>Planting Dates</Title>
 					<div className="select-date-div">
-						<Body1>Establishment </Body1>
+						<Subheading2>Cover Crop </Subheading2>
 						<DatePicker className="date-picker-cc" selected={this.props.startDate}
 									selectsStart
 									showYearDropdown
 									scrollableYearDropdown
-									placeholderText="Select an establishment date"
+									placeholderText="Select cover crop plant date"
 									startDate={this.props.startDate}
 									endDate={this.props.endDate}
 									onSelect={this.handleStartDateChange}/>
 					</div>
 					<div className="select-date-div">
-						<Body1 >Termination </Body1>
+						<Subheading2>Cash Crop </Subheading2>
 						<DatePicker className="date-picker-cc" selected={this.props.endDate}
 									selectsEnd
 									showYearDropdown
 									scrollableYearDropdown
-									placeholderText="Select a termination date"
+									placeholderText="Select following cash crop plant date"
 									startDate={this.props.startDate}
 									endDate={this.props.endDate}
 									onChange={this.handleEndDateChange}/>
-
 					</div>
-					<FormField id="checkbox-label">
-						<Checkbox
-							onChange={this.handleFlexibleDatesChange}
-							checked={this.props.isFlexibleDatesChecked}/>
-						<label>Flexible termination dates (+/- two weeks)</label>
-					</FormField>
 				</div>
 				{this.state.selectedFutureWeatherEndDate === false ? null : <div className="black-bottom weather-pattern-div">
 					<Title> Weather Pattern</Title>
@@ -269,7 +262,8 @@ class RunSimulationCC extends Component {
 				<div className="run-button">
 					<Button disabled={isButtonDisabled} raised onClick={() => this.runSimulation()} >Run Simulation</Button>
 
-				</div></div>
+				</div>
+			</div>
 		);
 	}
 }
