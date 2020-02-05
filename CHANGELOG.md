@@ -4,13 +4,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+- Slider selection on dashboard to pick the cover crop harvest date. [CCROP-240](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-240)
+
 ## [0.4.0] - 2019-11-22
 
 ### Added
 - Dashboard page that displays results of C:N and Biomass in time series. Other results on the harvest date are shown in a table. [CCROP-209](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-209)
 
 ### Changed
-- Included Tillage information in Crop History section of summary page [CCROP-188](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-188) 
+- Included Tillage information in Crop History section of summary page [CCROP-188](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-188)
 - Disabled Job History Page
 - Replaced hashHistory with browserHistory [CCROP-217](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-217)
 
