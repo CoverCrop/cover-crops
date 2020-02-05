@@ -57,8 +57,8 @@ class EventCard extends Component {
 
 					<Grid container spacing={0}>
 
-						<Grid container item xs={12} spacing={0}>
-							<Grid item xs={10} >
+						<Grid container item spacing={0}>
+							<Grid item xs={10}>
 								<h2>{event[0].parameters[latId] + " " +event[0].parameters[lonId]}</h2>
 							</Grid>
 
@@ -69,34 +69,32 @@ class EventCard extends Component {
 						</Grid>
 
 
-						<Grid container item xs={12} style={{paddingTop: "5px"}}>
-							<Grid item xs={5} >
+						<Grid container item style={{paddingTop: "5px"}}>
+							<Grid item>
 								<span className="eventCardLabelTitle">In</span> <span className="eventCardLabelValue">{this.state.inDate} </span>
 							</Grid>
-
-							<Grid item xs={7}>
-								<span className="eventCardLabelTitle">Status</span> <span className="eventCardLabelValue">{event.status.slice(10)} </span>
-							</Grid>
 						</Grid>
-						<Grid container item xs={12} style={{paddingTop: "3px"}}>
-							<Grid item xs={5}>
+
+
+						<Grid container item style={{paddingTop: "3px"}}>
+							<Grid item>
 								<span className="eventCardLabelTitle">Out</span> <span className="eventCardLabelValue">{this.state.outDate} </span>
 							</Grid>
+						</Grid>
 
-							<Grid item xs={7}>
+						<Grid container item style={{paddingTop: "3px"}}>
+							<Grid item>
+								<span className="eventCardLabelTitle">Weather</span> <span className="eventCardLabelValue">{getWeatherName(event[0].parameters[weatherId])}</span>
+							</Grid>
+						</Grid>
+
+						<Grid container item style={{paddingTop: "3px"}}>
+							<Grid item >
 								<span className="eventCardLabelTitle">Run Time</span> <span className="eventCardLabelValue">{convertDateToUSFormatWithMins(new Date(event[0].date))} </span>
 							</Grid>
 
 						</Grid>
-						<Grid container item xs={12} style={{paddingTop: "3px"}}>
-							<Grid item xs={5}>
-								<span className="eventCardLabelTitle">Weather</span> <span className="eventCardLabelValue">{getWeatherName(event[0].parameters[weatherId])}</span>
-							</Grid>
 
-							<Grid item xs={7}>
-
-							</Grid>
-						</Grid>
 					</Grid>
 
 				</CardText>

@@ -21,12 +21,12 @@ class Dashboard extends Component {
 					<Header selected="user"/>
 					<AnalyzerWrap activeTab={2}/>
 
-					<div className="position-relative border-top">
+					<div className="position-relative border-top" style={{marginLeft: 10}}>
 						<Grid className="no-padding-grid">
-							<Cell col={3}>
+							<Cell col={2}>
 								<UserEvents />
 							</Cell>
-							<Cell col={9}>
+							<Cell col={10}>
 								{this.props.isSelectedEventSuccessful ? <DashboardResults /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
 							</Cell>
 						</Grid>
