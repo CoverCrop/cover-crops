@@ -29,7 +29,7 @@ import {
 
 const Plot = createPlotlyComponent(Plotly);
 
-const windowDurationDays = 14; // must be even. Can be moved to config
+const windowDurationDays = 28; // must be even. Can be moved to config
 const harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
 const day = 60 * 60 * 24 * 1000; //day in millisecs
 
@@ -45,7 +45,7 @@ const DateSlider = withStyles ({
 	mark: {
 		backgroundColor: "#bfbfbf",
 		height: 14,
-		width: 2,
+		// width: 2,
 		marginTop: -4,
 	},
 	markLabel: {
@@ -110,15 +110,17 @@ class DashboardResults extends Component {
 			this.setState({harvestDateStr: convertDateToUSFormat(harvestDate)});
 
 			let sliderSteps = [];
+			let incrementMark = 7;
 			let stepDate = harvestDateMin;
 			let val = 0;
 			while(stepDate <= harvestDateMax){
 
 				sliderSteps.push({
-					label: convertDateToUSFormatShort(stepDate),
+					label: (val%incrementMark === 0) ? convertDateToUSFormatShort(stepDate): "",
 					value: val,
 					date: stepDate
 				});
+
 				stepDate = new Date(stepDate.getTime() + day);
 				val++;
 			}
@@ -683,6 +685,7 @@ class DashboardResults extends Component {
 
 
 	render() {
+
 		return (
 			<div>
 
@@ -698,17 +701,19 @@ class DashboardResults extends Component {
 							<TableCell  style={{minWidth: "500px", padding: 0, margin: 0}}>
 								<div style={{textAlign: "center"}}>
 									{this.generateChartsHTML()}
+
 									<DateSlider
+											defaultValue={harvestDay}
 											track={false}
-											step={null}
-											// valueLabelDisplay="on"
 											min={0}
 											max={windowDurationDays}
-											value={this.state.selHarvestDateId}
-											onChange={this.handleMuiChange("selHarvestDateId")}
-											defaultValue={harvestDay}
+											step={1}
 											marks={this.state.harvestDates}
+											// valueLabelDisplay="on"
+											onChange={this.handleMuiChange("selHarvestDateId")}
+											value={this.state.selHarvestDateId}
 									/>
+
 								</div>
 							</TableCell>
 							<TableCell style={{maxWidth: "300px", padding: 0, margin: 0,
