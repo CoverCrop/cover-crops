@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Slider selection on dashboard to pick the cover crop harvest date. [CCROP-240](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-240)
+- Added loading spinners on Dashboard and "Runs" selection event [CCROP-242](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-242)
 
 ### Changed
 - Text on analysis page related to date selection. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)
 - Calculate cover crop termination date based on cash crop planting date. [CCROP-244](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-244)
+- Refactored dashboard components to make graph more legible [CCROP-245](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-245)
 
 ### Removed
 - Flexible dates check box from analysis page, related handler methods, and relevant code. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)
