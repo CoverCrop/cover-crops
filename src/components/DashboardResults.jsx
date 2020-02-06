@@ -12,8 +12,10 @@ import {convertDateToUSFormat, convertDateToUSFormatShort,
 // instead and decrease size by 3 MB
 import Plotly from "plotly.js/dist/plotly.min";
 import createPlotlyComponent from "react-plotly.js/factory";
-import {Grid, Cell} from "react-mdc-web";
 import styles from "../styles/main.css";
+import Slider from "@material-ui/core/Slider";
+
+import { withStyles } from "@material-ui/core/styles";
 
 import {
 	Table,
@@ -24,7 +26,43 @@ import {
 
 } from "@material-ui/core";
 
+
 const Plot = createPlotlyComponent(Plotly);
+
+const windowDurationDays = 28; // must be even. Can be moved to config
+const harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
+const day = 60 * 60 * 24 * 1000; //day in millisecs
+
+const DateSlider = withStyles ({
+	root: {
+		width: "800px",
+		color: "#52af77",
+	},
+	rail: {
+		height: 6,
+		borderRadius: 2
+	},
+	mark: {
+		backgroundColor: "#bfbfbf",
+		height: 14,
+		// width: 2,
+		marginTop: -4,
+	},
+	markLabel: {
+		fontSize: 14
+	},
+	thumb: {
+		height: 20,
+		width: 20,
+		backgroundColor: "#fff",
+		border: "2px solid currentColor",
+		marginTop: -8,
+		marginLeft: -12,
+		"&:focus,&:hover,&$active": {
+			boxShadow: "inherit",
+		},
+	},
+})(Slider);
 
 class DashboardResults extends Component {
 
@@ -37,11 +75,15 @@ class DashboardResults extends Component {
 			plantingDate: new Date(),
 			harvestDate: new Date(),
 			plantingDateStr: "",
-			harvestDateStr: ""
+			harvestDateStr: "",
+			harvestDates: [],
+			selHarvestDateId: harvestDay,
+			selHarvestDate: new Date()
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
 		this.generateTableHTML = this.generateTableHTML.bind(this);
+		this.handleMuiChange = this.handleMuiChange.bind(this);
 		this.getYfromArray = this.getYfromArray.bind(this);
 	}
 
@@ -58,10 +100,32 @@ class DashboardResults extends Component {
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
+			let harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
+			let harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
+
 			this.setState({plantingDate: plantingDate});
 			this.setState({harvestDate: harvestDate});
+			this.setState({selHarvestDate: harvestDate});
 			this.setState({plantingDateStr: convertDateToUSFormat(plantingDate)});
 			this.setState({harvestDateStr: convertDateToUSFormat(harvestDate)});
+
+			let sliderSteps = [];
+			let incrementMark = 7;
+			let stepDate = harvestDateMin;
+			let val = 0;
+			while(stepDate <= harvestDateMax){
+
+				sliderSteps.push({
+					label: (val%incrementMark === 0) ? convertDateToUSFormatShort(stepDate): "",
+					value: val,
+					date: stepDate
+				});
+
+				stepDate = new Date(stepDate.getTime() + day);
+				val++;
+			}
+
+			this.setState({harvestDates: sliderSteps});
 
 			let ccDataArray = this.getDashboardDataArray(nextProps,"withCoverCropChartDataArray", plantingDate, harvestDate);
 			let noccDataArray = this.getDashboardDataArray(nextProps,"withoutCoverCropChartDataArray", plantingDate, harvestDate);
@@ -69,6 +133,16 @@ class DashboardResults extends Component {
 			this.setState({ccDataArray: ccDataArray});
 			this.setState({noccDataArray: noccDataArray});
 		}
+	}
+
+	getHarvestDateFromId(harvestDates, id){
+		let retVal = harvestDay;
+		harvestDates.forEach(e => {
+			if(e.value === id){
+				retVal =  e.date;
+			}
+		});
+		return retVal;
 	}
 
 	getYfromArray(arr, x){
@@ -86,6 +160,11 @@ class DashboardResults extends Component {
 		}
 	}
 
+	handleMuiChange = name => (event, value) => {
+		this.setState({[name]:  value });
+		let selHarvestDate = this.getHarvestDateFromId(this.state.harvestDates, value);
+		this.setState({selHarvestDate: selHarvestDate});
+	};
 
 	// Generates charts array object containing individual charts and datasets
 	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
@@ -169,7 +248,6 @@ class DashboardResults extends Component {
 		let harvestDateMax = new Date();
 		let rangeSelectorMin = new Date();
 		let rangeSelectorMax = new Date();
-		let ymax = 2300; //TODO: Get this dynamically
 		let ccChartDataArray = {}; // Associative array to store chart data
 		let biomassDates = [];
 		let biomassValues = [];
@@ -179,8 +257,6 @@ class DashboardResults extends Component {
 
 		let cnRows = [];
 		let biomassRows = [];
-		let windowDurationDays = 14; // must be even. Can be moved to config
-		let harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
 
 		if (this.props.hasOwnProperty("userInputJson") && this.props["userInputJson"] !== null && this.props["userInputJson"] !== undefined) {
 
@@ -213,7 +289,6 @@ class DashboardResults extends Component {
 				}
 			}
 		}
-		let day = 60 * 60 * 24 * 1000; //day in millisecs
 
 		let prevCnDate = null;
 
@@ -439,45 +514,8 @@ class DashboardResults extends Component {
 			}
 		];
 
-
-		let sliderSteps = [];
-
-		let stepDate = harvestDateMin;
-		while(stepDate <= harvestDateMax){
-
-			sliderSteps.push({
-				label: convertDateToUSFormatShort(stepDate),
-				method: "restyle",
-				args: [
-					{frame: {duration: 300},
-						mode: "immediate"}
-				]
-			});
-			stepDate = new Date(stepDate.getTime() + day);
-		}
-
-		let sliderDict = {
-			// pad: {t: 30},
-			currentvalue: {
-				xanchor: "right",
-				prefix: "Harvest Date: ",
-				font: {
-					color: "#888",
-					size: 16
-				}
-			},
-			visible: false,
-			pad: { t: 90},
-			len: 1,
-			x: 0,
-			y: 0,
-			active: harvestDay,
-			steps: sliderSteps
-		};
-
 		let layout = {
 			title: "Cover Crop Growth & C:N Prediction",
-			sliders: [sliderDict],
 			xaxis: {
 				rangeselector: selectorOptions,
 				rangeslider: {borderwidth: 1},
@@ -524,7 +562,7 @@ class DashboardResults extends Component {
 
 
 		resultHtml.push(
-					<div >
+					<div  style={{maxHeight: "430px"}}>
 						<Plot style={{ maxWidth: "850px"}}
 							data={data}
 							layout={layout}
@@ -647,12 +685,9 @@ class DashboardResults extends Component {
 
 
 	render() {
+
 		return (
 			<div>
-
-				{/*{this.generateChartsHTML()}*/}
-
-				{/*{this.generateTableHTML()}*/}
 
 				<Table style={{maxWidth: "1200px", borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
@@ -660,15 +695,32 @@ class DashboardResults extends Component {
 					<TableHead>
 						<TableRow style={{height: "64px", backgroundColor: "#EDEBEB"}}>
 							<TableCell  />
-							<TableCell ><h3>Cover Crop Termination on {this.state.harvestDateStr} </h3></TableCell>
+							<TableCell ><h3>Cover Crop Termination on {convertDateToUSFormat(this.state.selHarvestDate)} </h3></TableCell>
 						</TableRow>
 						<TableRow style={{}}>
-							<TableCell  style={{minWidth: "500px", padding: 0, margin: 0}}>{this.generateChartsHTML()}</TableCell>
+							<TableCell  style={{minWidth: "500px", padding: 0, margin: 0}}>
+								<div style={{textAlign: "center"}}>
+									{this.generateChartsHTML()}
+
+									<DateSlider
+											defaultValue={harvestDay}
+											track={false}
+											min={0}
+											max={windowDurationDays}
+											step={1}
+											marks={this.state.harvestDates}
+											// valueLabelDisplay="on"
+											onChange={this.handleMuiChange("selHarvestDateId")}
+											value={this.state.selHarvestDateId}
+									/>
+
+								</div>
+							</TableCell>
 							<TableCell style={{maxWidth: "300px", padding: 0, margin: 0,
 								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
 								verticalAlign: "top"
 							}}>
-								{this.generateTableHTML(this.state.harvestDate)}
+								{this.generateTableHTML(this.state.selHarvestDate)}
 
 								<div style={{margin: "10px"}}>
 									<h3> Notes </h3>
