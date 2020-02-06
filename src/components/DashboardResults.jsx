@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {convertDateToUSFormat, convertDateToUSFormatShort,
 	roundResults, calculateDayDifference} from "../public/utils";
 import config from "../app.config";
+import Spinner from "./Spinner";
 
 // import Plot from "react-plotly.js";
 //TODO: Performance took a hit. Bundle size increased from 6 MB to 13 MB
@@ -72,6 +73,7 @@ class DashboardResults extends Component {
 		super(props);
 
 		this.state = {
+			runStatus: "INIT",
 			ccDataArray: null,
 			noccDataArray: null,
 			plantingDate: new Date(),
@@ -134,6 +136,7 @@ class DashboardResults extends Component {
 
 			this.setState({ccDataArray: ccDataArray});
 			this.setState({noccDataArray: noccDataArray});
+			this.setState({runStatus: "RECEIVED"});
 		}
 	}
 
@@ -669,16 +672,20 @@ class DashboardResults extends Component {
 
 			</Table>
 		);
-
 		return html;
 	}
 
 
 	render() {
+		console.log(this.state.runStatus);
+		let spinner;
+		if(this.state.runStatus === "INIT"){
+			spinner = <Spinner/>;
+		}
 
 		return (
 			<div>
-
+				{spinner}
 				<Table style={{ borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
 
