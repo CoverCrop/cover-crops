@@ -633,12 +633,12 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Decomposition </span> <br/>
+					<span style={{fontWeight: "bold"}}>Nitrogen Reduction </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
 						this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
-						roundResults(this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
+						"-" + roundResults(this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
 								- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate), 2) : "NA"
 				}
 				</TableCell>
