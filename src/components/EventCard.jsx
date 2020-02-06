@@ -9,6 +9,7 @@ import {
 } from "../public/utils";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
+import config from "../app.config";
 
 class EventCard extends Component {
 	constructor(props) {
@@ -36,7 +37,7 @@ class EventCard extends Component {
 			let plantingYear = userInputJson["year_planting"];
 			let harvestYear = plantingYear + 1;
 			let plantingDOY = userInputJson["doy_planting"];
-			let harvestDOY = userInputJson["doy_harvest"];
+			let harvestDOY = userInputJson["doy_harvest"] - config.coverCropTerminationOffsetDays;
 			let plantingDate = new Date(plantingYear, 0, plantingDOY);
 			let harvestDate = new Date(harvestYear, 0, harvestDOY);
 			this.setState({inDate: convertDateToUSFormat(plantingDate)});

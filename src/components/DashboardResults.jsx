@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 
 import {convertDateToUSFormat, convertDateToUSFormatShort,
 	roundResults, calculateDayDifference} from "../public/utils";
+import config from "../app.config";
 
 // import Plot from "react-plotly.js";
 //TODO: Performance took a hit. Bundle size increased from 6 MB to 13 MB
@@ -97,7 +98,7 @@ class DashboardResults extends Component {
 			let plantingYear = nextProps["userInputJson"]["year_planting"];
 			let harvestYear = plantingYear + 1;
 			let plantingDOY = nextProps["userInputJson"]["doy_planting"];
-			let harvestDOY = nextProps["userInputJson"]["doy_harvest"];
+			let harvestDOY = nextProps["userInputJson"]["doy_harvest"] - config.coverCropTerminationOffsetDays;
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
@@ -264,7 +265,7 @@ class DashboardResults extends Component {
 			let plantingYear = this.props["userInputJson"]["year_planting"];
 			let harvestYear = plantingYear + 1;
 			let plantingDOY = this.props["userInputJson"]["doy_planting"];
-			let harvestDOY = this.props["userInputJson"]["doy_harvest"];
+			let harvestDOY = this.props["userInputJson"]["doy_harvest"] - config.coverCropTerminationOffsetDays;
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
