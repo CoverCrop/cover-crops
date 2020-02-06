@@ -654,19 +654,6 @@ class DashboardResults extends Component {
 			</TableRow>
 		);
 
-		rowElems.push(
-			<TableRow key="5">
-				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Total Soil Inorganic Nitrogen </span> <br/>
-					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
-				</TableCell>
-				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NIAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NIAD"].chartData.datasets[0].data, harvestDate): "NA"
-				}
-				</TableCell>
-			</TableRow>
-		);
-
 		html.push(
 			<Table style={{borderStyle: "solid",
 				borderColor: "rgb(224,224,224)", borderWidth: 1}}>
