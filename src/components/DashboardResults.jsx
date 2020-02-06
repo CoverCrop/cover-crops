@@ -700,8 +700,8 @@ class DashboardResults extends Component {
 					<TableHead>
 						<TableRow style={{height: "64px", backgroundColor: "#EDEBEB"}}>
 
-							<TableCell colSpan={2} style={{textAlign: "right"}}>
-								<h3>Cash Crop Planting on {convertDateToUSFormat(this.state.selHarvestDate)} </h3>
+							<TableCell colSpan={2} style={{textAlign: "right", padding: "2px 6px 2px 2px"}}>
+								<h4>Cover Crop Selected: Cereal Rye (CR) &nbsp; &nbsp; Cash Crop Planting on {convertDateToUSFormat(this.state.selHarvestDate)} </h4>
 							</TableCell>
 						</TableRow>
 						<TableRow style={{verticalAlign: "top"}}>
