@@ -518,6 +518,9 @@ class DashboardResults extends Component {
 
 		let layout = {
 			title: "Cover Crop Growth & C:N Prediction",
+			width: 930,
+			height: 600,
+			// responsive: true,
 			xaxis: {
 				rangeselector: selectorOptions,
 				rangeslider: {borderwidth: 1},
@@ -564,8 +567,8 @@ class DashboardResults extends Component {
 
 
 		resultHtml.push(
-					<div  style={{maxHeight: "430px"}}>
-						<Plot style={{ maxWidth: "850px"}}
+					<div >
+						<Plot
 							data={data}
 							layout={layout}
 							config={{
@@ -686,11 +689,13 @@ class DashboardResults extends Component {
 								<h3>Cash Crop Planting on {convertDateToUSFormat(this.state.selHarvestDate)} </h3>
 							</TableCell>
 						</TableRow>
-						<TableRow style={{}}>
+						<TableRow style={{verticalAlign: "top"}}>
 							<TableCell  style={{width: "100%", padding: 0, margin: 0}}>
 								<div style={{textAlign: "center"}}>
 									{this.generateChartsHTML()}
-
+									<div style={{fontSize: "1.125em"}}>
+										Select a cash crop planting date
+									</div>
 									<DateSlider
 											defaultValue={harvestDay}
 											track={false}
@@ -705,7 +710,7 @@ class DashboardResults extends Component {
 
 								</div>
 							</TableCell>
-							<TableCell style={{minWidth: "300px", padding: 0, margin: 0,
+							<TableCell style={{minWidth: "250px", padding: 0, margin: 0,
 								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
 								verticalAlign: "top"
 							}}>
@@ -714,7 +719,8 @@ class DashboardResults extends Component {
 								<div style={{margin: "10px"}}>
 									<h3> Notes </h3>
 									<sup>*</sup> Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization. <br/>
-									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization.
+									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization. <br/>
+									<sup>*</sup> N immobilization happens above the yellow region in the graph.
 								</div>
 
 							</TableCell>
