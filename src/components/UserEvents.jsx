@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
+import { connect } from "react-redux";
 import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, CardText, Body1, Body2, CardActions,
 	Fab, Icon, Grid, Cell} from "react-mdc-web";
 import "babel-polyfill";
@@ -7,9 +7,9 @@ import {
 	datawolfURL, latId, lonId, weatherId, workflowId, resultDatasetId,
 	userInputJSONDatasetID, eventPageSize
 } from "../datawolf.config";
-import styles from '../styles/history-page.css';
-import { handleResults} from '../actions/analysis';
-import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from '../public/utils';
+import styles from "../styles/history-page.css";
+import { handleResults} from "../actions/analysis";
+import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from "../public/utils";
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
 import Spinner from "./Spinner";
@@ -25,15 +25,15 @@ class UserEvents extends Component {
 			pagenumber:1,
 			totalpage:0,
 			runStatus: "INIT"
-		}
+		};
 	}
 
 	async getEvents() {
 		let eventRequest = await fetch(datawolfURL + "/executions?email=" + this.props.email, {
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
-				'Access-Control-Origin': 'http://localhost:3000'
+				"Content-Type": "application/json",
+				"Access-Control-Origin": "http://localhost:3000"
 			},
 			credentials: "include"
 
@@ -48,13 +48,13 @@ class UserEvents extends Component {
 		eventGroups.forEach(function(v, k){
 			if(v.length === 2 && v[0]["description"] !== "" && v[0]["workflowId"] === workflowId){
 				if(v[0]["description"] === "WithCoverCrop"){
-					v.status= v[0].datasets[resultDatasetId] === 'ERROR' || v[1].datasets[resultDatasetId] === 'ERROR' ? 'execution-error' : 'execution-success';
+					v.status= v[0].datasets[resultDatasetId] === "ERROR" || v[1].datasets[resultDatasetId] === "ERROR" ? "execution-error" : "execution-success";
 					v.id= k;
 					eventfilteredGroup.push(v);
 				} else if(v[0]["description"] === "WithoutCoverCrop"){
 					// the first event is WithoutCoverCrop, swap it before add to event list
 					let tmpv = [v[1], v[0]];
-					tmpv.status= v[0].datasets[resultDatasetId] === 'ERROR' || v[1].datasets[resultDatasetId] === 'ERROR' ? 'execution-error' : 'execution-success';
+					tmpv.status= v[0].datasets[resultDatasetId] === "ERROR" || v[1].datasets[resultDatasetId] === "ERROR" ? "execution-error" : "execution-success";
 					tmpv.id=k;
 					eventfilteredGroup.push(tmpv);
 				}
@@ -78,7 +78,7 @@ class UserEvents extends Component {
 				if (event.status === "execution-success") {
 					this.props.setSelectedUserEventStatus(true);
 					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
-						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID]);
 				}
 				// Else, set status to display an error message in the chart display area
 				else {
@@ -96,7 +96,7 @@ class UserEvents extends Component {
 		this.setState({selectevent:id});
 		const outputFilename = "output.json";
 
-		if(status ==='execution-success') {
+		if(status ==="execution-success") {
 			this.props.setSelectedUserEventStatus(true);
 
 			let that = this;
@@ -113,12 +113,12 @@ class UserEvents extends Component {
 								userInputJson
 							);
 							that.setState({runStatus: "LOADED_RESULT"});
-						})
-					})
-				})
+						});
+					});
+				});
 			}
 		}
-		else if(status ==='execution-error')
+		else if(status ==="execution-error")
 		{
 			this.props.setSelectedUserEventStatus(false);
 		}
@@ -128,7 +128,7 @@ class UserEvents extends Component {
 		let selectEvent =  this.state.events[(pagenumber-1) * eventPageSize];
 		this.setState({pagenumber, selectevent: selectEvent.id });
 		this.viewResult(selectEvent.id, selectEvent.status, selectEvent[0].datasets[resultDatasetId],
-			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID])
+			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID]);
 
 	};
 
@@ -158,7 +158,7 @@ class UserEvents extends Component {
 		}
 
 		let pageComponentArray= pageArray.map(p =>
-			<Button className={(p === pagenumber? 'pagination-select':'') + " pagination-button"}
+			<Button className={(p === pagenumber? "pagination-select":"") + " pagination-button"}
 					key={p}
 					onClick={() => this.handlePageChange(p)}
 			>{p}</Button>
@@ -205,26 +205,26 @@ class UserEvents extends Component {
 					{pagination}
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		email: state.user.email
-	}
+	};
 };
 
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson))
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson));
 		},
 		setSelectedUserEventStatus: (isSelectedEventSuccessful) => {
-			dispatch(setSelectedUserEventStatus(isSelectedEventSuccessful))
+			dispatch(setSelectedUserEventStatus(isSelectedEventSuccessful));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserEvents);
