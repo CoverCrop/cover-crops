@@ -12,6 +12,7 @@ import { handleResults} from '../actions/analysis';
 import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from '../public/utils';
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
+import Spinner from "./Spinner";
 
 class UserEvents extends Component {
 
@@ -22,7 +23,8 @@ class UserEvents extends Component {
 			events: [],
 			selectevent: null,
 			pagenumber:1,
-			totalpage:0
+			totalpage:0,
+			runStatus: "INIT"
 		}
 	}
 
@@ -64,6 +66,7 @@ class UserEvents extends Component {
 	componentWillMount(){
 		// avoid displaying selectedEventNotSuccessful while the history page is loading
 		this.props.setSelectedUserEventStatus(true);
+		this.setState({runStatus: "LOADING"});
 		this.getEvents().then(function success() {
 			console.log("Fetched events.");
 
@@ -82,11 +85,14 @@ class UserEvents extends Component {
 					this.props.setSelectedUserEventStatus(false);
 				}
 			}
+			this.setState({runStatus: "LOADED_EVENTS"});
 		}.bind(this));
+
 	}
 
 	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId) => {
 
+		this.setState({runStatus: "LOADING"});
 		this.setState({selectevent:id});
 		const outputFilename = "output.json";
 
@@ -106,6 +112,7 @@ class UserEvents extends Component {
 								withoutCoverCropResultFile,
 								userInputJson
 							);
+							that.setState({runStatus: "LOADED_RESULT"});
 						})
 					})
 				})
@@ -127,6 +134,12 @@ class UserEvents extends Component {
 
 
 	render(){
+
+		let spinner;
+		if(this.state.runStatus === "INIT" || this.state.runStatus === "LOADING"){
+			spinner = <Spinner/>;
+		}
+
 		let {pagenumber, totalpage} = this.state;
         let eventsList =  this.state.events.slice((pagenumber-1) * eventPageSize, pagenumber*eventPageSize).map( event =>
 			<EventCard event={event} selectevent={this.state.selectevent} viewResult={this.viewResult}/>
@@ -166,6 +179,7 @@ class UserEvents extends Component {
 		</div>);
 		return(
 			<div>
+				{spinner}
 				<div className="event-list-header" key="event-list-header">
 					{/*<Button className="bold-text"*/}
 					{/*	onClick={() => {*/}
