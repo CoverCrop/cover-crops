@@ -723,7 +723,8 @@ class DashboardResults extends Component {
 									<h3> Notes </h3>
 									<sup>*</sup> Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization. <br/>
 									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization. <br/>
-									<sup>*</sup> N immobilization happens above the yellow region in the graph.
+									<sup>*</sup> N immobilization happens above the yellow region in the graph. <br/>
+									<sup>*</sup> Cereal Rye referred to as CR
 								</div>
 
 							</TableCell>
