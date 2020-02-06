@@ -64,6 +64,7 @@ const DateSlider = withStyles ({
 	},
 })(Slider);
 
+//TODO: Replace all references to "harvest" to "cashCropPlanting". ex: harvestDate to cashCropPlantingDate
 class DashboardResults extends Component {
 
 	constructor(props) {
@@ -499,19 +500,19 @@ class DashboardResults extends Component {
 				xshift: -22
 
 			},
-			{
-				text: "Immobilization Begins<sup>*</sup>",
-				showarrow: true,
-				x: 0.5,
-				y: 20.25,
-				valign: "top",
-				xref:"paper",
-				yref: "y2",
-				// borderwidth: 1,
-				// bordercolor: "black",
-				// hovertext: "Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization <br>" +
-				// 	"Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization",
-			}
+			// {
+			// 	text: "Immobilization Begins<sup>*</sup>",
+			// 	showarrow: true,
+			// 	x: 0.5,
+			// 	y: 20.25,
+			// 	valign: "top",
+			// 	xref:"paper",
+			// 	yref: "y2",
+			// 	// borderwidth: 1,
+			// 	// bordercolor: "black",
+			// 	// hovertext: "Termination of CR with a C:N ratio ranging from 0-20 has the potential to result in soil N mineralization <br>" +
+			// 	// 	"Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization",
+			// }
 		];
 
 		let layout = {
@@ -595,9 +596,6 @@ class DashboardResults extends Component {
 						this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["TWAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
 
 			</TableRow>
 		);
@@ -611,9 +609,6 @@ class DashboardResults extends Component {
 					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
 			</TableRow>
 		);
 		rowElems.push(
@@ -626,24 +621,20 @@ class DashboardResults extends Component {
 					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NUAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NUAD"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
 			</TableRow>
 		);
 		rowElems.push(
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Loss </span> <br/>
+					<span style={{fontWeight: "bold"}}>Nitrogen Decomposition </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
-				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate): "NA"
+				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
+						this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
+						roundResults(this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
+								- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate), 2) : "NA"
 				}
 				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
 			</TableRow>
 		);
 
@@ -657,9 +648,6 @@ class DashboardResults extends Component {
 					this.getYfromArray(this.state.ccDataArray["NIAD"].chartData.datasets[0].data, harvestDate): "NA"
 				}
 				</TableCell>
-				<TableCell>{(this.state.noccDataArray !== null && this.state.noccDataArray["NIAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.noccDataArray["NIAD"].chartData.datasets[0].data, harvestDate): "NA"
-				}</TableCell>
 			</TableRow>
 		);
 
@@ -669,9 +657,7 @@ class DashboardResults extends Component {
 
 				<TableHead>
 					<TableRow style={{height: "64px"}}>
-						<TableCell  className="dashboardTableHeader">Cover Crop?</TableCell>
-						<TableCell >YES</TableCell>
-						<TableCell >NO</TableCell>
+						<TableCell style={{textAlign: "center", fontWeight:700}} colSpan={2}>Results with Cover Crop</TableCell>
 					</TableRow>
 				</TableHead>
 
@@ -689,16 +675,18 @@ class DashboardResults extends Component {
 		return (
 			<div>
 
-				<Table style={{maxWidth: "1200px", borderStyle: "solid",
+				<Table style={{ borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
 
 					<TableHead>
 						<TableRow style={{height: "64px", backgroundColor: "#EDEBEB"}}>
-							<TableCell  />
-							<TableCell ><h3>Cover Crop Termination on {convertDateToUSFormat(this.state.selHarvestDate)} </h3></TableCell>
+
+							<TableCell colSpan={2} style={{textAlign: "right"}}>
+								<h3>Cash Crop Planting on {convertDateToUSFormat(this.state.selHarvestDate)} </h3>
+							</TableCell>
 						</TableRow>
 						<TableRow style={{}}>
-							<TableCell  style={{minWidth: "500px", padding: 0, margin: 0}}>
+							<TableCell  style={{width: "100%", padding: 0, margin: 0}}>
 								<div style={{textAlign: "center"}}>
 									{this.generateChartsHTML()}
 
@@ -716,7 +704,7 @@ class DashboardResults extends Component {
 
 								</div>
 							</TableCell>
-							<TableCell style={{maxWidth: "300px", padding: 0, margin: 0,
+							<TableCell style={{minWidth: "300px", padding: 0, margin: 0,
 								borderLeftStyle: "solid", borderColor: "#D8D8D8", borderWidth: "1px",
 								verticalAlign: "top"
 							}}>

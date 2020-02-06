@@ -244,7 +244,12 @@ h1, h2, h3, h5, h6, p, ul {
 }
 
 .dashboardTableHeader {
-	width: 180px !important;
+	width: 200px !important;
+	padding: 10px !important;
+}
+
+.dashboardTableResult {
+	width: 80px !important;
 	padding: 10px !important;
 }
 

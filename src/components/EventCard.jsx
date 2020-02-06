@@ -71,14 +71,14 @@ class EventCard extends Component {
 
 						<Grid container item style={{paddingTop: "5px"}}>
 							<Grid item>
-								<span className="eventCardLabelTitle">In</span> <span className="eventCardLabelValue">{this.state.inDate} </span>
+								<span className="eventCardLabelTitle">Cover Crop</span> <span className="eventCardLabelValue">{this.state.inDate} </span>
 							</Grid>
 						</Grid>
 
 
 						<Grid container item style={{paddingTop: "3px"}}>
 							<Grid item>
-								<span className="eventCardLabelTitle">Out</span> <span className="eventCardLabelValue">{this.state.outDate} </span>
+								<span className="eventCardLabelTitle">Cash Crop</span> <span className="eventCardLabelValue">{this.state.outDate} </span>
 							</Grid>
 						</Grid>
 
