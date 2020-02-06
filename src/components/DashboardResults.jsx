@@ -274,7 +274,7 @@ class DashboardResults extends Component {
 
 			harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
 			harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
-			rangeSelectorMin = new Date(plantingYear, 0, plantingDOY - windowDurationDays);
+			rangeSelectorMin = new Date(plantingYear, 0, plantingDOY - 1);
 			rangeSelectorMax = new Date(harvestYear, 0, harvestDOY + windowDurationDays);
 		}
 
@@ -633,14 +633,23 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Reduction </span> <br/>
+					<span style={{fontWeight: "bold"}}>Nitrogen Loss Reduction </span> <br/>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
-				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
-						this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null) ?
-						"-" + roundResults(this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
-								- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate), 2) : "NA"
-				}
+				<TableCell>
+					{(() => {
+						if((this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
+								this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null)){
+							let diff = this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
+									- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate);
+							let percent = diff/this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)*100;
+							return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+						}
+						else{
+							return "NA";
+						}
+					})()}
+
 				</TableCell>
 			</TableRow>
 		);
@@ -677,7 +686,6 @@ class DashboardResults extends Component {
 
 
 	render() {
-		console.log(this.state.runStatus);
 		let spinner;
 		if(this.state.runStatus === "INIT"){
 			spinner = <Spinner/>;
