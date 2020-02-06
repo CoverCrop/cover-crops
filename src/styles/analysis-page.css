@@ -76,7 +76,13 @@
 	color: white;
 }
 
-.select-date .select-date-div  {
+.select-date {
+	float: left;
+	padding-right: 12px;
+	height: 110px;
+}
+
+.select-date-div {
 	float: left;
 	padding-right: 12px;
 }

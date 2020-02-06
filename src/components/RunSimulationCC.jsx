@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
-import {Button, Body1, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
+import {Button, Body1, Subheading2, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
 import "babel-polyfill";
@@ -18,7 +18,7 @@ import {
 import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
 import Select from "react-select";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults, handleFlexibleDatesChange,
+import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
 
 
@@ -29,7 +29,6 @@ class RunSimulationCC extends Component {
 		this.runSimulation = this.runSimulation.bind(this);
 		this.handleStartDateChange = this.handleStartDateChange.bind(this);
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
-		this.handleFlexibleDatesChange = this.handleFlexibleDatesChange.bind(this);
 		this.handleCoverCropChange = this.handleCoverCropChange.bind(this);
 
 		this.state = {
@@ -58,6 +57,8 @@ class RunSimulationCC extends Component {
 		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
 		let objStartDate = startDate.toDate();
 		let objEndDate = endDate.toDate();
+		// Calculate cover crop termination date based on the cash crop planting date
+		objEndDate.setDate(objEndDate.getDate() + config.coverCropTerminationOffsetDays);
 		let plantingYear = objStartDate.getFullYear();
 		let plantingDoy = calculateDayOfYear(objStartDate);
 		let harvestDoy = calculateDayOfYear(objEndDate);
@@ -182,10 +183,6 @@ class RunSimulationCC extends Component {
 		this.props.handleEndDateChange(date);
 	}
 
-	handleFlexibleDatesChange({target: {checked}}) {
-		this.props.handleFlexibleDatesChange(checked);
-	}
-
 	handleWeatherPatternChange(weatherPattern){
 		this.props.handleWeatherPatternChange(weatherPattern);
 	}
@@ -230,36 +227,29 @@ class RunSimulationCC extends Component {
 				</div>
 				<div className="black-bottom select-date">
 
-					<Title>Cover Crop Dates</Title>
+					<Title>Planting Dates</Title>
 					<div className="select-date-div">
-						<Body1>Establishment </Body1>
+						<Subheading2>Cover Crop </Subheading2>
 						<DatePicker className="date-picker-cc" selected={this.props.startDate}
 									selectsStart
 									showYearDropdown
 									scrollableYearDropdown
-									placeholderText="Select an establishment date"
+									placeholderText="Select cover crop plant date"
 									startDate={this.props.startDate}
 									endDate={this.props.endDate}
 									onSelect={this.handleStartDateChange}/>
 					</div>
 					<div className="select-date-div">
-						<Body1 >Termination </Body1>
+						<Subheading2>Cash Crop </Subheading2>
 						<DatePicker className="date-picker-cc" selected={this.props.endDate}
 									selectsEnd
 									showYearDropdown
 									scrollableYearDropdown
-									placeholderText="Select a termination date"
+									placeholderText="Select following cash crop plant date"
 									startDate={this.props.startDate}
 									endDate={this.props.endDate}
 									onChange={this.handleEndDateChange}/>
-
 					</div>
-					<FormField id="checkbox-label">
-						<Checkbox
-							onChange={this.handleFlexibleDatesChange}
-							checked={this.props.isFlexibleDatesChecked}/>
-						<label>Flexible termination dates (+/- two weeks)</label>
-					</FormField>
 				</div>
 				{this.state.selectedFutureWeatherEndDate === false ? null : <div className="black-bottom weather-pattern-div">
 					<Title> Weather Pattern</Title>
@@ -269,7 +259,8 @@ class RunSimulationCC extends Component {
 				<div className="run-button">
 					<Button disabled={isButtonDisabled} raised onClick={() => this.runSimulation()} >Run Simulation</Button>
 
-				</div></div>
+				</div>
+			</div>
 		);
 	}
 }
@@ -283,7 +274,6 @@ const mapStateToProps = (state) => {
 		cluname: state.analysis.cluname,
 		expfile: state.analysis.expfile,
 		weatherPattern: state.analysis.weatherPattern,
-		isFlexibleDatesChecked: state.analysis.isFlexibleDatesChecked,
 		coverCrop: state.analysis.coverCrop
 	};
 };
@@ -298,9 +288,6 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleWeatherPatternChange: (weatherPattern) => {
 			dispatch(handleWeatherPatternChange(weatherPattern));
-		},
-		handleFlexibleDatesChange: (checked) =>{
-			dispatch(handleFlexibleDatesChange(checked));
 		},
 		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson) => {
 			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson));

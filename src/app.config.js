@@ -7,7 +7,8 @@ const devConfig = {
 	CLUapi: "http://localhost:5000",
 	latestWeatherDate: "2019-09-30",
 	defaultCenterLongLat: [-88.2, 40.14],
-	defaultZoom: 10
+	defaultZoom: 10,
+	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
 };
 
 const prodConfig = {
@@ -19,7 +20,8 @@ const prodConfig = {
 	CLUapi: "https://fd-postgres.ncsa.illinois.edu",
 	latestWeatherDate: "2019-09-30",
 	defaultCenterLongLat: [-88.2, 40.14],
-	defaultZoom: 10
+	defaultZoom: 10,
+	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
 };
 
 const config = getConfig();
