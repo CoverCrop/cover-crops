@@ -136,6 +136,7 @@ class DashboardResults extends Component {
 
 			this.setState({ccDataArray: ccDataArray});
 			this.setState({noccDataArray: noccDataArray});
+			this.setState({selHarvestDateId: harvestDay});
 			this.setState({runStatus: "RECEIVED"});
 		}
 	}
