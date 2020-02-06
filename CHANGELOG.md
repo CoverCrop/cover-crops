@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Text on analysis page related to date selection. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)
+- Calculate cover crop termination date based on cash crop planting date. [CCROP-244](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-244)
 
 ### Removed
 - Flexible dates check box from analysis page, related handler methods, and relevant code. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)

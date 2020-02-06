@@ -57,6 +57,8 @@ class RunSimulationCC extends Component {
 		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
 		let objStartDate = startDate.toDate();
 		let objEndDate = endDate.toDate();
+		// Calculate cover crop termination date based on the cash crop planting date
+		objEndDate.setDate(objEndDate.getDate() + config.coverCropTerminationOffsetDays);
 		let plantingYear = objStartDate.getFullYear();
 		let plantingDoy = calculateDayOfYear(objStartDate);
 		let harvestDoy = calculateDayOfYear(objEndDate);
