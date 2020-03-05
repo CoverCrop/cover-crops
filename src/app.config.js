@@ -5,7 +5,7 @@ const devConfig = {
 	semanticServer: "",
 	domain: "localhost",
 	CLUapi: "http://localhost:5000",
-	latestWeatherDate: "2019-09-30",
+	latestWeatherDate: "2019-12-31",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
 	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
@@ -18,7 +18,7 @@ const prodConfig = {
 	semanticServer: "",
 	domain: ".ncsa.illinois.edu",
 	CLUapi: "https://fd-postgres.ncsa.illinois.edu",
-	latestWeatherDate: "2019-09-30",
+	latestWeatherDate: "2019-12-31",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
 	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
