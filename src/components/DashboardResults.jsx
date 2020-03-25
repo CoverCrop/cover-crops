@@ -14,8 +14,12 @@ import Spinner from "./Spinner";
 // instead and decrease size by 3 MB
 import Plotly from "plotly.js/dist/plotly.min";
 import createPlotlyComponent from "react-plotly.js/factory";
-import styles from "../styles/main.css";
+import style from "../styles/main.css";
 import Slider from "@material-ui/core/Slider";
+import InsertChartIcon from "@material-ui/icons/InsertChart";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import Modal from "@material-ui/core/Modal";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -27,13 +31,24 @@ import {
 	TableHead,
 
 } from "@material-ui/core";
-
+import CCComponentGraphs from "./CCComponentGraphs";
 
 const Plot = createPlotlyComponent(Plotly);
 
 const windowDurationDays = 28; // must be even. Can be moved to config
 const harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
 const day = 60 * 60 * 24 * 1000; //day in millisecs
+
+const styles = theme => ({
+	paper: {
+		position: "absolute",
+		paddingTop: "0px",
+		backgroundColor: theme.palette.background.paper,
+		boxShadow: theme.shadows[5],
+		padding: theme.spacing.unit * 4,
+		outline: "none"
+	}
+});
 
 const DateSlider = withStyles ({
 	root: {
@@ -66,6 +81,23 @@ const DateSlider = withStyles ({
 	},
 })(Slider);
 
+function getModalStyle() {
+	const top = 50; //+ rand();
+	const left = 50;// + rand();
+
+	return {
+		top: `${top}%`,
+		left: `${left}%`,
+		transform: `translate(-${top}%, -${left}%)`,
+		display: "inline-block",
+		borderRadius: 12,
+		position: "absolute",
+		backgroundColor: "#fff",
+		outline: "none",
+		padding: "0px 32px 32px 32px"
+	};
+}
+
 //TODO: Replace all references to "harvest" to "cashCropPlanting". ex: harvestDate to cashCropPlantingDate
 class DashboardResults extends Component {
 
@@ -82,7 +114,8 @@ class DashboardResults extends Component {
 			harvestDateStr: "",
 			harvestDates: [],
 			selHarvestDateId: harvestDay,
-			selHarvestDate: new Date()
+			selHarvestDate: new Date(),
+			openGraphs: false
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
@@ -622,7 +655,9 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="3">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Uptake </span> <br/>
+					<span className="dashboardTableHeaderSpan">Nitrogen Uptake
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGraphsOpen} />
+					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NUAD"].chartData.datasets[0] != null) ?
@@ -634,7 +669,9 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
-					<span style={{fontWeight: "bold"}}>Nitrogen Loss Reduction </span> <br/>
+					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGraphsOpen} />
+					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell>
@@ -672,8 +709,18 @@ class DashboardResults extends Component {
 		return html;
 	}
 
+	handleGraphsOpen = (i) => {
+		this.setState({openGraphs: true});
+	};
+
+	handleGraphsClose = () => {
+		this.setState({openGraphs: false});
+	};
+
 
 	render() {
+		const {classes} = this.props;
+		console.log(classes);
 		let spinner;
 		if(this.state.runStatus === "INIT"){
 			spinner = <Spinner/>;
@@ -682,6 +729,23 @@ class DashboardResults extends Component {
 		return (
 			<div>
 				{spinner}
+
+				<Modal open={this.state.openGraphs} onClose={this.handleGraphsClose}>
+					<div style={getModalStyle()}>
+						<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
+							<CloseIcon />
+						</IconButton>
+						<br/>
+						<br/>
+						<br/>
+
+						<div style={{minWidth: "1100px"}}>
+							<CCComponentGraphs/>
+						</div>
+
+					</div>
+				</Modal>
+
 				<Table style={{ borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
 
