@@ -8,7 +8,8 @@ const devConfig = {
 	latestWeatherDate: "2019-12-31",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
-	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
+	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
+	useCroplandDataLayer: true // Use Cropland data layer to get crop rotation history
 };
 
 const prodConfig = {
@@ -21,7 +22,8 @@ const prodConfig = {
 	latestWeatherDate: "2019-12-31",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
-	coverCropTerminationOffsetDays: 14 // Cover crop termination = Cash crop planting + 14 days
+	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
+	useCroplandDataLayer: true // Use Cropland data layer to get crop rotation history
 };
 
 const config = getConfig();
