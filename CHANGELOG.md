@@ -4,12 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Added
+- Feature to use Cropland Data Layer for gathering crop rotation history. [CCROP-210](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-210)
+
 ## [0.5.0] - 2020-03-05
 
 ### Added
 - Slider selection on dashboard to pick the cover crop harvest date. [CCROP-240](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-240)
 - Added loading spinners on Dashboard and "Runs" selection event [CCROP-242](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-242)
-- Feature to use Cropland Data Layer for gathering crop rotation history. [CCROP-210](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-210)
 
 ### Changed
 - Text on analysis page related to date selection. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)
