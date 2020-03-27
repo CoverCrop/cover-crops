@@ -737,10 +737,12 @@ class DashboardResults extends Component {
 						</IconButton>
 						<br/>
 						<br/>
-						<br/>
+						<div className="graphsHeader">
+							Component Results
+						</div>
 
 						<div style={{minWidth: "1100px"}}>
-							<CCComponentGraphs/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray}/>
 						</div>
 
 					</div>

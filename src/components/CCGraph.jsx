@@ -35,7 +35,7 @@ class CCGraph extends Component {
 
 			let datasets = [];
 
-			if(withcc.length >= 0 ){
+			if(withcc.length > 0 ){
 				datasets.push({
 					label: "w/ Cover Crop",
 					data: withcc,
@@ -48,7 +48,7 @@ class CCGraph extends Component {
 				});
 			}
 
-			if(nocc.length >= 0){
+			if(nocc.length > 0){
 				datasets.push({
 					label: "w/o Cover Crop",
 					data: nocc,
