@@ -115,7 +115,8 @@ class DashboardResults extends Component {
 			harvestDates: [],
 			selHarvestDateId: harvestDay,
 			selHarvestDate: new Date(),
-			openGraphs: false
+			openGraphs: false,
+			graphType: ""
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
@@ -211,9 +212,6 @@ class DashboardResults extends Component {
 		let chartDataArray = {};
 		let minTime = plantingDate.getTime();
 		let maxTime = harvestDate.getTime();
-		//
-		// console.log(new Date(minTime));
-		// console.log(new Date(maxTime));
 
 		let chartOptions = {};
 
@@ -313,8 +311,6 @@ class DashboardResults extends Component {
 		}
 
 		ccChartDataArray = this.state.ccDataArray;// generate charts for with cover crop case
-		// console.log("dashboard array: ");
-		// console.log(ccChartDataArray);
 		for (let key in ccChartDataArray) {
 			if(key.toString() === "C:N ratio"){
 				if(ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
@@ -656,7 +652,7 @@ class DashboardResults extends Component {
 			<TableRow key="3">
 				<TableCell className="dashboardTableHeader">
 					<span className="dashboardTableHeaderSpan">Nitrogen Uptake
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGraphsOpen} />
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleUptakeGraphsOpen} />
 					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
@@ -670,7 +666,7 @@ class DashboardResults extends Component {
 			<TableRow key="4">
 				<TableCell className="dashboardTableHeader">
 					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGraphsOpen} />
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleLossGraphsOpen} />
 					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
@@ -709,7 +705,13 @@ class DashboardResults extends Component {
 		return html;
 	}
 
-	handleGraphsOpen = (i) => {
+	handleLossGraphsOpen = () => {
+		this.setState({graphType: "lossReduction"});
+		this.setState({openGraphs: true});
+	};
+
+	handleUptakeGraphsOpen = () => {
+		this.setState({graphType: "uptake"});
 		this.setState({openGraphs: true});
 	};
 
@@ -720,7 +722,6 @@ class DashboardResults extends Component {
 
 	render() {
 		const {classes} = this.props;
-		console.log(classes);
 		let spinner;
 		if(this.state.runStatus === "INIT"){
 			spinner = <Spinner/>;
@@ -737,12 +738,12 @@ class DashboardResults extends Component {
 						</IconButton>
 						<br/>
 						<br/>
-						<div className="graphsHeader">
-							Component Results
-						</div>
+						{/*<div className="graphsHeader">*/}
+						{/*	Component Results*/}
+						{/*</div>*/}
 
-						<div style={{minWidth: "1100px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray}/>
+						<div style={{ width: "700px"}}>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType}/>
 						</div>
 
 					</div>
