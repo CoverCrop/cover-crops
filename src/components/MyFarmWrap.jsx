@@ -7,6 +7,7 @@ import {handleUserLogout} from "../actions/user";
 import MyFarmSummary from "./MyFarmSummary";
 import UploadFieldSummary from "./UploadFieldSummary";
 import CropHistory from "./CropHistory";
+import CoverCropHistory from "./CoverCropHistory";
 
 class MyFarmWrap extends Component {
 
@@ -22,6 +23,7 @@ class MyFarmWrap extends Component {
 			case 1:
 				return <UploadFieldSummary {...this.props} />;
 			case 2: return <CropHistory {...this.props} />;
+			case 3: return <CoverCropHistory {...this.props} />;
 			//case 4
 			default:
 				return <MyFarmSummary {...this.props} />;
@@ -49,12 +51,12 @@ class MyFarmWrap extends Component {
 							Crop History
 
 						</Tab>
-						{/*<Tab*/}
-							{/*active={activeTab===3}*/}
-							{/*onClick={() => {this.setState({activeTab:2})}}*/}
-						{/*>*/}
-							{/*CoverCrop History*/}
-						{/*</Tab>*/}
+						<Tab
+							active={activeTab===3}
+							onClick={() => {this.setState({activeTab:3})}}
+						>
+							CoverCrop History
+						</Tab>
 						<Tab
 							active={activeTab===4}
 							onClick={() => {this.setState({activeTab:4})}}

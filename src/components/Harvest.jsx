@@ -70,7 +70,14 @@ class Harvest extends Component {
 		let newHarvest = {};
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 09-22
-		newHarvest["HDATE"] = new Date(pureyear, 8, 22).toISOString();
+		if ( this.props.title === "HARVEST"){
+			// set default date as 09-21
+			newHarvest["HDATE"] = new Date(pureyear, 8, 21).toISOString();
+		} else {
+			// set default date as 04-21
+			newHarvest["HDATE"] = new Date(parseInt(pureyear)+1, 3, 21).toISOString();
+		}
+
 		this.setState(newHarvest);
 	}
 
@@ -82,7 +89,7 @@ class Harvest extends Component {
 		return (
 			(this.state.HDATE) ?
 				<div className="black-top-crop" key="harvest">
-					<Title>Harvest </Title>
+					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="date" title="DATE HARVESTED" cropyear={this.state.year}
 								  firstField="MP" secondField="HDATE"

@@ -69,7 +69,13 @@ class Planting extends Component {
 		let newPlanting = Object.assign({}, defaultPlanting);
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 04-22
-		newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
+		if (this.props.title === "Planting") {
+			// set default date as 04-22
+			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
+		} else {
+			// set default date as 09-22
+			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
+		}
 		this.setState(newPlanting);
 	}
 
@@ -80,8 +86,8 @@ class Planting extends Component {
 	render() {
 		return (
 			(this.state.PDATE) ?
-				<div className="black-top-crop planting-div" key="planting">
-					<Title>Planting </Title>
+				<div className="black-top-crop" key="planting">
+					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="select" title="DISTRIBUTION" cropyear={this.state.year}
 								  firstField="MP" secondField="PLDS" options={PLDS}

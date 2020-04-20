@@ -1,18 +1,11 @@
 import React, {Component} from "react";
-import {
-	Button,
-	Dialog,
-	DialogBody,
-	DialogFooter,
-	Icon,
-	Title
-} from "react-mdc-web";
+import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-web";
 import Select from 'react-select';
 import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
 import config from "../app.config";
-import {convertFullDate, getExperimentSQX, isCrop} from "../public/utils";
+import {getExperimentSQX, isCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
@@ -214,7 +207,7 @@ class CropHistory extends Component {
 		}
 
 		let options = defaultCropYears.map(function(key){
-			let yearName = years.find(s => s.includes(key));
+			let yearName = years.find(s => s.includes(key) && (s.includes("Corn") || s.includes("Soybean")));
 			if (yearName){
 				return {value: yearName, label:key}
 			} else {
@@ -263,9 +256,9 @@ class CropHistory extends Component {
 						</div>
 					</div>}
 					{this.state.crop !== "None" &&
-					<Planting year={this.state.year} onRef={ref => (this.planting = ref)}/>}
+					<Planting title="Planting" year={this.state.year} onRef={ref => (this.planting = ref)}/>}
 					{this.state.crop !== "None" &&
-					<Harvest year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
+					<Harvest title="Harvest" year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
 					{this.state.year && <div className="black-top-crop" key="fertilizer">
 
 						<Title>Fertilizer </Title>
