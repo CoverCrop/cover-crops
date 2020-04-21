@@ -1,7 +1,7 @@
 
 const defaultState = {
 	email: "",
-	isAuthenticated: sessionStorage.getItem("personId") !== null,
+	isAuthenticated: localStorage.getItem("personId") !== null,
 	userId: "",
 	//used in add field page, not used in my farm page.
 	clu: 0,

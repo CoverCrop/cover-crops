@@ -33,6 +33,7 @@
     "hex-to-rgba": "0.2.0",
     "highcharts": "5.0.7",
     "jstat": "1.5.3",
+    "keycloak-js": "6.0.1",
     "mathjs": "3.9.1",
     "nice-color-palettes": "2.0.0",
     "object-assign": "4.1.1",

@@ -1,15 +1,13 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
-import HomePage from "./HomePage";
+import { connect } from "react-redux";
+import {browserHistory} from "react-router";
 
 class AuthorizedWrap extends Component {
 	render() {
-		let unauthorizedDiv =
-			<HomePage message="Please login."/>;
 		return (
-			<div>
-			{this.props.isAuthenticated ? this.props.children : unauthorizedDiv}
-			</div>
+				<div>
+					{ localStorage.getItem("isAuthenticated") === "true" ? this.props.children : browserHistory.push("/login")}
+				</div>
 		);
 	}
 }
@@ -17,7 +15,7 @@ class AuthorizedWrap extends Component {
 const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.user.isAuthenticated
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(AuthorizedWrap);
