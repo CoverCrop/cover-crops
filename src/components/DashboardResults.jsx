@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { connect } from "react-redux";
 
 import {convertDateToUSFormat, convertDateToUSFormatShort,
-	roundResults, calculateDayDifference} from "../public/utils";
+	roundResults, calculateDayDifference, addDays} from "../public/utils";
 import config from "../app.config";
 import Spinner from "./Spinner";
 
@@ -159,7 +159,7 @@ class DashboardResults extends Component {
 					date: stepDate
 				});
 
-				stepDate = new Date(stepDate.getTime() + day);
+				stepDate = addDays(stepDate, 1);
 				val++;
 			}
 
@@ -334,7 +334,7 @@ class DashboardResults extends Component {
 			if(prevCnDate != null){
 				let dayDiff = calculateDayDifference(prevCnDate, dt);
 				while(dayDiff > 1){
-					let newDate = new Date(prevCnDate.getTime() + day);
+					let newDate = addDays(prevCnDate, 1);
 					cnDates.push(newDate);
 					cnValues.push(null);
 					dayDiff--;
@@ -360,7 +360,7 @@ class DashboardResults extends Component {
 			if(prevBiomassDate != null){
 				let dayDiff = calculateDayDifference(prevBiomassDate, dt);
 				while(dayDiff > 1){
-					let newDate = new Date(prevBiomassDate.getTime() + day);
+					let newDate = addDays(prevBiomassDate, 1);
 					biomassDates.push(newDate);
 					biomassValues.push(null);
 					dayDiff--;

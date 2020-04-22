@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Graphs showing individual cover crop parameter results (N Loss, N Uptake etc.) [CCROP-233](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-233)
 - Feature to use Cropland Data Layer for gathering crop rotation history. [CCROP-210](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-210)
 
+### Fixed
+- Dashboard now shows correct numbers even when the selected date had a change due to daylight savings. [CCROP-253](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-253)
+
 ## [0.5.0] - 2020-03-05
 
 ### Added

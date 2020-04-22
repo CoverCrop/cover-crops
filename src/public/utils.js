@@ -518,3 +518,14 @@ export function convertKgPerHaToLbPerAcre(kg_ha){
 	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 2);
 }
 
+export function addDays(date, days) {
+	let result = new Date(date);
+	result.setDate(result.getDate() + days);
+	return result;
+}
+
+export function subtractDays(date, days) {
+	let result = new Date(date);
+	result.setDate(result.getDate() - days);
+	return result;
+}
