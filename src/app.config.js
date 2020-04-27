@@ -1,3 +1,8 @@
+import Keycloak from "keycloak-js";
+
+
+const prodDomain = "covercrop.ncsa.illinois.edu";
+
 const devConfig = {
 	basePath: "/",
 	fragilityServer: "",
@@ -9,7 +14,8 @@ const devConfig = {
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
-	useCroplandDataLayer: true // Use Cropland data layer to get crop rotation history
+	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
+	keycloak: Keycloak("http://localhost:3000/keycloak.json"),
 };
 
 const prodConfig = {
@@ -23,7 +29,8 @@ const prodConfig = {
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
-	useCroplandDataLayer: true // Use Cropland data layer to get crop rotation history
+	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
+	keycloak: Keycloak(`https://${ prodDomain }/keycloak.json`)
 };
 
 const config = getConfig();

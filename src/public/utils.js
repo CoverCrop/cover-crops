@@ -518,3 +518,70 @@ export function convertKgPerHaToLbPerAcre(kg_ha){
 	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 2);
 }
 
+export function checkIfDatawolfUserExists(email) {
+	let token = localStorage.getItem("kcToken");
+	let token_header = `Bearer ${token}`;
+
+	return fetch(`${datawolfURL}/persons?email=${email}`, {
+		method: "GET",
+		headers: {
+			"Content-Type": "application/json",
+			"Access-Control-Origin": "http://localhost:3000"
+		},
+		credentials: "include"
+		// headers: {
+		// 	"Authorization": token_header
+		// },
+	}).then(function(response){
+		return response;
+	});
+}
+
+export function createDatawolfUser(email, fname, lname){
+	let token = localStorage.getItem("kcToken");
+	let token_header = `Bearer ${token}` ;
+
+	return fetch(`${datawolfURL}/persons?email=${email}&firstname=${fname}&lastname=${lname}`, {
+		method: "POST",
+		headers: {
+			// "Content-Type": "application/json",
+			"Access-Control-Origin": "http://localhost:3000"
+		},
+		credentials: "include"
+		// headers: {
+		// 	"Authorization": token_header
+		// }
+	}).then(function(response) {
+		return response;
+	});
+}
+
+export function clearKeycloakStorage(){
+	localStorage.removeItem("dwPersonId");
+	localStorage.removeItem("kcEmail");
+	localStorage.removeItem("kcToken");
+	localStorage.removeItem("kcRefreshToken");
+	localStorage.removeItem("kcTokenExpiry");
+	localStorage.setItem("isAuthenticated", "false");
+}
+
+export function checkForTokenExpiry(){
+	let expUtcSeconds = 0;
+
+	if (localStorage.getItem("kcTokenExpiry") != null){
+		expUtcSeconds = localStorage.getItem("kcTokenExpiry");
+	}
+
+	let expDateTime = new Date(0);
+	expDateTime.setUTCSeconds(expUtcSeconds);
+
+	let curDate = new Date();
+
+	if (curDate >= expDateTime){
+		console.log("Keycloak Token Expired. Logging out in a few seconds..");
+		return true;
+	}
+
+	return false;
+}
+
