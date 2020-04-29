@@ -13,6 +13,7 @@ import RegistrationPage from "./RegistrationPage";
 import {handleUserLogin} from "../actions/user";
 import {connect} from "react-redux";
 import Dashboard from "./Dashboard";
+import Login from "./Login";
 
 global.__base = __dirname + "/";
 const theme = createMuiTheme();
@@ -21,8 +22,8 @@ class App extends Component {
 
 	componentWillMount() {
 		console.log("App did mount");
-		this.props.handleUserLogin(sessionStorage.getItem("email"),
-			sessionStorage.getItem("personId"), sessionStorage.getItem("email") !== null);
+		this.props.handleUserLogin(localStorage.getItem("kcEmail"),
+				localStorage.getItem("dwPersonId"), localStorage.getItem("kcEmail") !== null);
 	}
 
 	render() {
@@ -31,6 +32,7 @@ class App extends Component {
 			<MuiThemeProvider theme={theme}>
 				<Router history={browserHistory}>
 					<Route path="/" component={HomePage}/>
+					<Route path="/login" component={Login}/>
 					<Route path="/analysis" component={AnalysisPage}/>
 					<Route path="/addfield" component={AddFieldPage}/>
 					<Route path="/profile" component={MyFarmPage}/>
