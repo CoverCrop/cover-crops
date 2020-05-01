@@ -51,14 +51,22 @@ class MyFarmSummary extends Component {
 				"Content-Type": "application/json",
 				"Authorization": getKeycloakHeader()
 			}
-		}).then(response =>
+		}).then(response => {
+			if(response.status === 200) {
 				response.blob().then(blob => {
 					let url = window.URL.createObjectURL(blob);
 					let a = document.createElement("a");
 					a.href = url;
 					a.download = "experiment_file_" + this.props.selectedCLU.clu + ".sqx";
 					a.click();
-		}));
+				});
+			}
+			else {
+				//TODO: Handle error. Add error handling to show errors
+				console.log("API failed when trying to download the experiment " +
+						"file. API URL: "+ expFileUrl);
+			}
+		});
 	};
 
 	render() {
