@@ -6,6 +6,7 @@ import { convertDate, convertCmToInches, convertMetersToFeet,
 import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
+import IconButton from "@material-ui/core/IconButton";
 
 class MyFarmSummary extends Component {
 
@@ -39,6 +40,26 @@ class MyFarmSummary extends Component {
 	componentWillReceiveProps() {
 		this.getInfo();
 	}
+
+	downloadExpFile = ()  => {
+		let expFileUrl = config.CLUapi + "/users/" + this.props.selectedCLU.userid +
+				"/CLUs/" + this.props.selectedCLU.clu + "/experiment_file_sqx?download=true";
+
+		fetch(expFileUrl, {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+				"Authorization": getKeycloakHeader()
+			}
+		}).then(response =>
+				response.blob().then(blob => {
+					let url = window.URL.createObjectURL(blob);
+					let a = document.createElement("a");
+					a.href = url;
+					a.download = "experiment_file_" + this.props.selectedCLU.clu + ".sqx";
+					a.click();
+		}));
+	};
 
 	render() {
 
@@ -125,12 +146,9 @@ class MyFarmSummary extends Component {
 					<p className="myfarm-summary-header">
 						<span className="south-field">{this.props.selectedCLUName + "   "}</span>
 						<span>
-							{/*TODO: This should break*/}
-							<a className="download-exp" href={
-								config.CLUapi + "/users/" + this.props.selectedCLU.userid + "/CLUs/" +
-								this.props.selectedCLU.clu + "/experiment_file_sqx?download=true"}>
+							<IconButton onClick={this.downloadExpFile}>
 								<Icon name="file_download"/>
-							</a>
+							</IconButton>
 					</span>
 
 					</p>
