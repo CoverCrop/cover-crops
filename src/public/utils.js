@@ -12,33 +12,6 @@ const HA_TO_ACRE = 2.47105;
 const KGPERHA_TO_LBPERACRE = KG_TO_LB/HA_TO_ACRE; // ~ 0.893
 
 
-/***
- * Checks if user
- * @returns {Promise.<*>}
- */
-export async function checkAuthentication() {
-
-	let personId = sessionStorage.getItem("personId");
-
-	return await fetch(datawolfURL + "/persons/" + personId, {
-		method: "GET",
-		headers: {
-			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
-		},
-		credentials: "include"
-	});
-}
-
-
-export function isUserAuthenticated() {
-
-	// Return true if the user is authenticated, else return false.
-	checkAuthentication().then(function (checkAuthResponse) {
-		return checkAuthResponse.status === 200;
-	});
-}
-
 export function groupBy(list, keyGetter) {
 	const map = new Map();
 	list.forEach((item) => {
@@ -77,15 +50,14 @@ export async function getOutputFileTxt(datasetId, outputFileName = null) {
 async function getOutputFile(datasetId, outputFileName = null, filetype) {
 	let headers = {
 		"Content-Type": "application/json",
-		"Access-Control-Origin": "http://localhost:3000"
+		"Authorization": getKeycloakHeader()
 	};
 
 	// Get - Result Dataset
 	const datasetResponse = await
 		fetch(datawolfURL + "/datasets/" + datasetId, {
 			method: "GET",
-			headers: headers,
-			credentials: "include"
+			headers: headers
 		});
 
 	const resultDataset = await datasetResponse.json();
@@ -113,8 +85,7 @@ async function getOutputFile(datasetId, outputFileName = null, filetype) {
 		const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetId + "/" + fileId + "/file",
 			{
 				method: "GET",
-				headers: headers,
-				credentials: "include"
+				headers: headers
 			});
 		if (filetype === "json") {
 			return await fileDownloadResponse.json();
@@ -228,11 +199,11 @@ export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest,
 
 export async function uploadDatasetToDataWolf(filedata) {
 	let headers = {
-		"Access-Control-Origin": "http://localhost:3000"
+		"Authorization": getKeycloakHeader()
 	};
 
 	let data = new FormData();
-	data.append("useremail", sessionStorage.getItem("email"));
+	data.append("useremail", localStorage.getItem("kcEmail"));
 	data.append("uploadedFile", filedata);
 
 	let uploadDatasetResponse = await fetch(
@@ -241,7 +212,6 @@ export async function uploadDatasetToDataWolf(filedata) {
 			method: "POST",
 			headers: headers,
 			body: data,
-			credentials: "include",
 			contentType: false,
 			processData: false
 		});
@@ -252,15 +222,13 @@ export async function uploadDatasetToDataWolf(filedata) {
 }
 
 export async function getExperimentSQX(email, CLU_id) {
-	let experiment_URL = config.CLUapi + "/api/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
+	let experiment_URL = config.CLUapi + "/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
 	const Response = await fetch(experiment_URL, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000",
-			"Cache-Control": "no-cache"
-		},
-		credentials: "include"
+			"Authorization": getKeycloakHeader()
+		}
 	});
 
 	return Response.text().then(function (expTxt) {
@@ -274,10 +242,10 @@ export async function getExperimentSQX(email, CLU_id) {
 }
 
 export async function getMyFieldList(email) {
-	const CLUapi = config.CLUapi + "/api/userfield?userid=" + email;
+	const CLUapi = config.CLUapi + "/userfield?userid=" + email;
 	let headers = {
 		"Content-Type": "application/json",
-		"Access-Control-Origin": "http://localhost:3000"
+		"Authorization": getKeycloakHeader()
 	};
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
@@ -290,11 +258,11 @@ export async function getMyFieldList(email) {
  */
 export async function getCLUGeoJSON(cluId) {
 
-	const response = await fetch(config.CLUapi + "/api/CLUs/" + cluId, {
+	const response = await fetch(config.CLUapi + "/CLUs/" + cluId, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
+			"Authorization": getKeycloakHeader()
 		}
 	});
 	return await response.json();
@@ -519,38 +487,26 @@ export function convertKgPerHaToLbPerAcre(kg_ha){
 }
 
 export function checkIfDatawolfUserExists(email) {
-	let token = localStorage.getItem("kcToken");
-	let token_header = `Bearer ${token}`;
 
 	return fetch(`${datawolfURL}/persons?email=${email}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
-		},
-		credentials: "include"
-		// headers: {
-		// 	"Authorization": token_header
-		// },
+			"Authorization": getKeycloakHeader()
+		}
 	}).then(function(response){
 		return response;
 	});
 }
 
 export function createDatawolfUser(email, fname, lname){
-	let token = localStorage.getItem("kcToken");
-	let token_header = `Bearer ${token}` ;
 
 	return fetch(`${datawolfURL}/persons?email=${email}&firstname=${fname}&lastname=${lname}`, {
 		method: "POST",
 		headers: {
 			// "Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
-		},
-		credentials: "include"
-		// headers: {
-		// 	"Authorization": token_header
-		// }
+			"Authorization": getKeycloakHeader()
+		}
 	}).then(function(response) {
 		return response;
 	});
@@ -583,5 +539,10 @@ export function checkForTokenExpiry(){
 	}
 
 	return false;
+}
+
+export function getKeycloakHeader() {
+	let token = localStorage.getItem("kcToken");
+	return `Bearer ${token}`;
 }
 

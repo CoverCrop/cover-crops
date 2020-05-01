@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import { convertDate, convertCmToInches, convertMetersToFeet,
-	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCrop, isCoverCrop} from "../public/utils";
+	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCrop,
+	isCoverCrop, getKeycloakHeader} from "../public/utils";
 import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
@@ -18,11 +19,11 @@ class MyFarmSummary extends Component {
 	async getInfo() {
 		let that = this;
 
-		fetch(config.CLUapi + "/api/soils?lat=" + that.props.lat + "&lon=" + that.props.lon, {
+		fetch(config.CLUapi + "/soils?lat=" + that.props.lat + "&lon=" + that.props.lon, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
-				"Access-Control-Origin": "http://localhost:3000"
+				"Authorization": getKeycloakHeader()
 			}
 		}).then(res => res.json())
 			.catch(error => console.error('Error:', error))
@@ -124,8 +125,9 @@ class MyFarmSummary extends Component {
 					<p className="myfarm-summary-header">
 						<span className="south-field">{this.props.selectedCLUName + "   "}</span>
 						<span>
+							{/*TODO: This should break*/}
 							<a className="download-exp" href={
-								config.CLUapi + "/api/users/" + this.props.selectedCLU.userid + "/CLUs/" +
+								config.CLUapi + "/users/" + this.props.selectedCLU.userid + "/CLUs/" +
 								this.props.selectedCLU.clu + "/experiment_file_sqx?download=true"}>
 								<Icon name="file_download"/>
 							</a>

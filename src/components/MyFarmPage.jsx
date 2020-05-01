@@ -9,7 +9,11 @@ import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getExperimentSQX, getMyFieldList, getOutputFileTxt} from "../public/utils";
+import {
+	getExperimentSQX,
+	getKeycloakHeader,
+	getMyFieldList
+} from "../public/utils";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
 import ol from "openlayers";
@@ -47,9 +51,14 @@ class MyFarmPage extends Component {
 		this.props.handleExptxtGet("");
 		this.setState({openclu: cluIndex});
 		let {clus} = this.state;
-		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + clus[cluIndex].lat + "&lon=" + clus[cluIndex].lon + "&soil=false";
+		const CLUapi = config.CLUapi + "/CLUs?lat=" + clus[cluIndex].lat + "&lon=" + clus[cluIndex].lon + "&soil=false";
 		let that = this;
-			fetch(CLUapi).then(response => {
+			fetch(CLUapi, {
+				method: "GET",
+				headers: {
+					"Authorization": getKeycloakHeader()
+				}
+			}).then(response => {
 				let geojson = response.json();
 				return geojson;
 			}).then(geojson => {

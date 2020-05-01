@@ -9,7 +9,12 @@ import {
 } from "../datawolf.config";
 import styles from "../styles/history-page.css";
 import { handleResults} from "../actions/analysis";
-import {groupBy, getOutputFileJson, sortByDateInDescendingOrder} from "../public/utils";
+import {
+	groupBy,
+	getOutputFileJson,
+	sortByDateInDescendingOrder,
+	getKeycloakHeader,
+} from "../public/utils";
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
 import Spinner from "./Spinner";
@@ -33,10 +38,8 @@ class UserEvents extends Component {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Access-Control-Origin": "http://localhost:3000"
+				"Authorization": getKeycloakHeader()
 			},
-			credentials: "include"
-
 		});
 
 		const events = await eventRequest.json();

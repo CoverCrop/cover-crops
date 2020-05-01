@@ -9,7 +9,11 @@ import AnalyzerWrap from "./AnalyzerWrap";
 import AddFieldBox from "./AddFieldBox"
 import {connect} from "react-redux";
 import config from "../app.config";
-import {getCLUGeoJSON, getExtentOfFieldsForUser, getMyFieldList} from "../public/utils";
+import {
+	getExtentOfFieldsForUser,
+	getKeycloakHeader,
+	getMyFieldList,
+} from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import {handleUserCLUChange} from "../actions/user";
 
@@ -50,11 +54,16 @@ class AddFieldPage extends Component {
 
 
 
-			const CLUapi = config.CLUapi + "/api/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
+			const CLUapi = config.CLUapi + "/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
 
 			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 			let that = this;
-			fetch(CLUapi).then(response => {
+			fetch(CLUapi, {
+				method: "GET",
+				headers: {
+					"Authorization": getKeycloakHeader()
+				}
+			}).then(response => {
 				return response.json();
 			}).then(geojson => {
 

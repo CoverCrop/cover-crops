@@ -1,4 +1,4 @@
-export const datawolfURL = "https://fd-datawolf-dev.ncsa.illinois.edu/datawolf";
+export const datawolfURL = "https://fd-api.ncsa.illinois.edu/datawolf";
 
 export const steps ={
 	Weather_Converter: "456edbfe-74ee-4a56-ba31-3b2750c8e5fe",

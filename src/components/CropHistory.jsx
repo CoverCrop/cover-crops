@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
 import config from "../app.config";
-import {getExperimentSQX, isCrop} from "../public/utils";
+import {getExperimentSQX, isCrop, getKeycloakHeader} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
@@ -170,14 +170,13 @@ class CropHistory extends Component {
 		}
 
 		// console.log(JSON.stringify(jsonBody, null, 2));
-		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
+		fetch(config.CLUapi + "/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
 			headers: {
 				'Content-Type': 'application/json',
-				"Access-Control-Origin": "http://localhost:3000"
-			},
-			credentials: "include"
+				"Authorization": getKeycloakHeader()
+			}
 		}).then(updateResponse => {
 			if (updateResponse.status == 200) {
 				//to make sure the response is a json. a is not called but should be kept

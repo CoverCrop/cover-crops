@@ -16,7 +16,8 @@ import {
 	userInputJSONDatasetID,
 } from "../datawolf.config";
 import config from "../app.config";
-import {ID, getOutputFileJson, wait, uploadUserInputFile, calculateDayOfYear} from "../public/utils";
+import {ID, getOutputFileJson, wait, uploadUserInputFile,
+	calculateDayOfYear, getKeycloakHeader} from "../public/utils";
 import Select from "react-select";
 import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
@@ -41,7 +42,7 @@ class RunSimulationCC extends Component {
 	async runSimulation() {
 		let that = this;
 		let status = "STARTED";
-		let personId = sessionStorage.getItem("personId"); // Read person Id from session storage
+		let personId = localStorage.getItem("kcEmail"); // Read person Id from session storage
 		this.setState({
 			simulationStatus: status,
 			runSimulationButtonDisabled: true
@@ -50,7 +51,7 @@ class RunSimulationCC extends Component {
 
 		let headers = {
 			"Content-Type": "application/json",
-			"Access-Control-Origin": "http://localhost:3000"
+			"Authorization": getKeycloakHeader()
 		};
 
 		let id = ID();
@@ -72,14 +73,12 @@ class RunSimulationCC extends Component {
 		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: "POST",
 			headers: headers,
-			credentials: "include",
 			body: JSON.stringify(withCoverCropExecutionRequest)
 		});
 
 		let withoutCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
 			method: "POST",
 			headers: headers,
-			credentials: "include",
 			body: JSON.stringify(withoutCoverCropExecutionRequest)
 		});
 
@@ -99,14 +98,12 @@ class RunSimulationCC extends Component {
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
 				method: "GET",
-				headers: headers,
-				credentials: "include"
+				headers: headers
 			});
 
 			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
 				method: "GET",
-				headers: headers,
-				credentials: "include"
+				headers: headers
 			});
 			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();

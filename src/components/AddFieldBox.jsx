@@ -9,6 +9,7 @@ import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
 import {existCLUNote} from "../app.messages.js";
+import {getKeycloakHeader} from "../public/utils";
 
 class AddFieldBox extends Component {
 
@@ -36,28 +37,25 @@ class AddFieldBox extends Component {
 	};
 
 	handleAddCLU() {
-		const CLUapi = config.CLUapi + "/api/userfield";
+		const CLUapi = config.CLUapi + "/userfield";
 		const {clu, latitude, longitude} = this.props;
 		let headers = {
 			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
+			"Authorization": getKeycloakHeader()
 		};
-		let bodyjson = '{"userid":"'+ sessionStorage.getItem("email") +'", "clu":' + clu
+		let bodyjson = '{"userid":"'+ localStorage.getItem("kcEmail") +'", "clu":' + clu
 			+ ', "cluname":"' + this.state.cluname + '", "lat":'+ latitude + ', "lon":' + longitude
 			+ ', "expfile": ""}';
-		// console.log(bodyjson)
 		fetch(CLUapi,{
 			method: 'POST',
 			headers: headers,
-			// credentials: "include",
 			body: bodyjson
 		}).then(response => {
-			const postJSONapi = config.CLUapi + "/api/users/"+ sessionStorage.getItem("email") + "/CLUs/" + clu
+			const postJSONapi = config.CLUapi + "/users/"+ localStorage.getItem("kcEmail") + "/CLUs/" + clu
 				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer;
 			fetch(postJSONapi,{
 				method: 'POST',
 				headers: headers,
-				credentials: "include",
 			}).then(response => {
 				window.location = "/profile";
 			});

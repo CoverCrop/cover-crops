@@ -6,7 +6,7 @@ import MapCC from "./MapCC";
 import { connect } from "react-redux";
 import ol from "openlayers";
 import config from "../app.config";
-import {getExtentOfFieldsForUser} from "../public/utils";
+import {getExtentOfFieldsForUser, getKeycloakHeader} from "../public/utils";
 import Spinner from "./Spinner";
 
 class RightPaneCC extends Component {
@@ -21,7 +21,7 @@ class RightPaneCC extends Component {
 			extent: null,
 			showModal: false
 		};
-		
+
 		this.startShowingModal = this.startShowingModal.bind(this);
 	}
 
@@ -35,10 +35,15 @@ class RightPaneCC extends Component {
 		let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], "EPSG:4326", "EPSG:3857" );
 		this.setState({markercoordinate: coordinate});
 
-		const CLUapi = config.CLUapi + "/api/CLUs?lat=" + analysis_latitude + "&lon=" + analysis_longitude + "&soil=false";
+		const CLUapi = config.CLUapi + "/CLUs?lat=" + analysis_latitude + "&lon=" + analysis_longitude + "&soil=false";
 
 		if(analysis_latitude !== "") {
-			fetch(CLUapi).then(response => {
+			fetch(CLUapi, {
+				method: "GET",
+				headers: {
+					"Authorization": getKeycloakHeader()
+				}
+			}).then(response => {
 				let geojson = response.json();
 				return geojson;
 			}).then(geojson => {

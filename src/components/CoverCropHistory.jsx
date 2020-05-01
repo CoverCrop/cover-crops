@@ -3,7 +3,7 @@ import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-w
 import Select from 'react-select';
 import {connect} from "react-redux";
 import Planting from "./Planting";
-import {isCoverCrop} from "../public/utils";
+import {getKeycloakHeader, isCoverCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import {COVERCROP, defaultCropYears} from "../experimentFile";
@@ -52,14 +52,13 @@ class CoverCropHistory extends Component {
 		let {email, clu} = this.props;
 		let jsonBody = [plantingJson, harvestJson];
 		console.log(jsonBody);
-		fetch(config.CLUapi + "/api/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
+		fetch(config.CLUapi + "/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
 			headers: {
 				'Content-Type': 'application/json',
-				"Access-Control-Origin": "http://localhost:3000"
-			},
-			credentials: "include"
+				"Authorization": getKeycloakHeader()
+			}
 		}).then(updateResponse => {
 			if (updateResponse.status == 200) {
 				//to make sure the response is a json. a is not called but should be kept

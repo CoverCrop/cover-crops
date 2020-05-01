@@ -17,7 +17,7 @@ import {
 } from "react-mdc-web";
 import config from "../app.config";
 import {deletefail, expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf} from "../public/utils";
+import {uploadDatasetToDataWolf, getKeycloakHeader} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import {connect} from "react-redux";
 
@@ -43,10 +43,10 @@ class UploadFieldSummary extends Component {
 		updatedUserCLU.expfile = id;
 		let headers = {
 			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
+			"Authorization": getKeycloakHeader()
 		};
 
-		const CLUapi = config.CLUapi + "/api/userfield";
+		const CLUapi = config.CLUapi + "/userfield";
 		let that = this;
 		fetch(CLUapi,{
 			method: 'POST',
@@ -80,11 +80,9 @@ class UploadFieldSummary extends Component {
 
 	async handleDelete(e) {
 		e.preventDefault();
-		const CLUapi = config.CLUapi + "/api/userfield?userid="+ this.props.email + "&clu=" + this.props.selectedCLU.clu;
-		console.log(CLUapi);
+		const CLUapi = config.CLUapi + "/userfield?userid="+ this.props.email + "&clu=" + this.props.selectedCLU.clu;
 		let headers = {
-			'Content-Type': 'application/json',
-			'Access-Control-Origin': 'http://localhost:3000'
+			"Authorization": getKeycloakHeader()
 		};
 		let that = this;
 		fetch(CLUapi,{
