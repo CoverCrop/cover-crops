@@ -9,7 +9,7 @@ const devConfig = {
 	fragilityMappingServer: "",
 	semanticServer: "",
 	domain: "localhost",
-	CLUapi: "http://localhost:5000",
+	CLUapi: "http://localhost:5000/api",
 	latestWeatherDate: "2019-12-31",
 	defaultCenterLongLat: [-88.2, 40.14],
 	defaultZoom: 10,
