@@ -12,6 +12,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Keycloak for authentication and user registration. This obsoletes authentication through datawolf [CCROP-221](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-221)
 - Updated all API headers to use keycloak token for authentication [CCROP-254](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-254)
 
+### Fixed
+- Dashboard now shows correct numbers even when the selected date had a change due to daylight savings. [CCROP-253](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-253)
+
 ## [0.5.0] - 2020-03-05
 
 ### Added
