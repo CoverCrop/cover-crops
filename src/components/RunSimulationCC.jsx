@@ -42,7 +42,7 @@ class RunSimulationCC extends Component {
 	async runSimulation() {
 		let that = this;
 		let status = "STARTED";
-		let personId = localStorage.getItem("kcEmail"); // Read person Id from session storage
+		let personId = localStorage.getItem("dwPersonId"); // Read person Id from session storage
 		this.setState({
 			simulationStatus: status,
 			runSimulationButtonDisabled: true
