@@ -1,9 +1,4 @@
 // List of messages
-export const genericRegistrationErrorMessage = "An error occurred while trying to register your account. Please try again later.";
-export const userNotActiveMessage = "Registration is successful, but your account is not active yet. " +
-	"Please contact an administrator.";
-export const invalidLoginCredentials = "We do not recognize your username and/or password. Please try again.";
-export const dataWolfGetTokenCallFailed = "An internal error occurred while logging in. Please try again later.";
 export const selectedEventNotSuccessful = "The selected job did not complete successfully and hence results are not available for displaying.";
 export const expsuccess = "Experiment template file added/updated successfully.";
 export const expfail = "Experiment template file added/updated failed. Please try again.";
@@ -19,6 +14,4 @@ export const welcometext = ["The objective of this project is to provide farmers
 ];
 export const register = "Creating an account allows you to save the simulation data" +
 	" and information about your farm and fields.";
-export const unlogin = ["We are glad you want to check out CoverCrop Analyzer! " ,
-	"For the best experience, login or register for a free account."];
 export const existCLUNote = "Selected field already available in your profile, continuing will overwrite the name, lat/long and management file.";

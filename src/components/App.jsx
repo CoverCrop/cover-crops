@@ -9,7 +9,6 @@ import MyFarmPage from "./MyFarmPage";
 import RouteMismatch from "./RouteMismatch";
 import "material-components-web/dist/material-components-web.min.css";
 import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
-import RegistrationPage from "./RegistrationPage";
 import {handleUserLogin} from "../actions/user";
 import {connect} from "react-redux";
 import Dashboard from "./Dashboard";
@@ -21,7 +20,6 @@ const theme = createMuiTheme();
 class App extends Component {
 
 	componentWillMount() {
-		console.log("App did mount");
 		this.props.handleUserLogin(localStorage.getItem("kcEmail"),
 				localStorage.getItem("dwPersonId"), localStorage.getItem("kcEmail") !== null);
 	}
@@ -39,7 +37,6 @@ class App extends Component {
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>
 					<Route path="/dashboard" component={Dashboard}/>
-					<Route path="/register" component={RegistrationPage}/>
 					<Route path="*" component={RouteMismatch}/>
 				</Router>
 			</MuiThemeProvider>
