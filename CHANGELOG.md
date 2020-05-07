@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Dashboard now shows correct numbers even when the selected date had a change due to daylight savings. [CCROP-253](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-253)
+- Map tiles now loaded over https to fix mixed content warnings. [CCROP-257](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-257)
 
 ## [0.5.0] - 2020-03-05
 
