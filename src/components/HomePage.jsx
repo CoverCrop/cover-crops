@@ -27,8 +27,7 @@ class HomePage extends Component {
 				<span className="home-line" />
 
 				<div className="home-content"
-							style={{backgroundImage: "url(\"../images/ground.jpg\")", backgroundSize: "cover",
-								backgroundPosition: "center"}}>
+							style={{backgroundSize: "cover", backgroundPosition: "center"}}>
 					{window.innerWidth > 1300 ?
 						<Grid>
 							<Cell col={4}>
