@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import ol from 'openlayers';
-import PropTypes from 'prop-types';
+import ol from "openlayers";
+import PropTypes from "prop-types";
 import config from "../app.config.js";
 require("openlayers/css/ol.css");
 
@@ -17,8 +17,8 @@ class MapCC extends Component {
 		this.iconStyle = new ol.style.Style({
 			image: new ol.style.Icon(({
 				anchor: [0.5, 46],
-				anchorXUnits: 'fraction',
-				anchorYUnits: 'pixels',
+				anchorXUnits: "fraction",
+				anchorYUnits: "pixels",
 				opacity: 0.80,
 				src: "../images/map-marker.png"
 			}))
@@ -36,15 +36,15 @@ class MapCC extends Component {
 				layers: [
 					new ol.layer.Tile({
 						source: new ol.source.BingMaps({
-							key: 'Ahkpb-yLsjXtJQVJmVQ1RT2V4Yt-mmAmxyfYAbDyUY20cNWB2XNJjLVPqxtW3l9Y',
-							imagerySet: 'AerialWithLabels'
+							key: "Ahkpb-yLsjXtJQVJmVQ1RT2V4Yt-mmAmxyfYAbDyUY20cNWB2XNJjLVPqxtW3l9Y",
+							imagerySet: "AerialWithLabels"
 						})
 					}),
 					new ol.layer.Tile({
 						source: new ol.source.TileWMS({
-							url: 'http://fd-geoserver.ncsa.illinois.edu:8080/geoserver/wms',
-							params: {'LAYERS': 'covercrop:clu', 'TILED': true},
-							serverType: 'geoserver'
+							url: "http://fd-geoserver.ncsa.illinois.edu:8080/geoserver/wms",
+							params: {"LAYERS": "covercrop:clu", "TILED": true},
+							serverType: "geoserver"
 						}),
 						opacity: 0.7
 					}),
@@ -66,11 +66,11 @@ class MapCC extends Component {
 				style:
 					new ol.style.Style({
 						stroke: new ol.style.Stroke({
-							color: '#1AB146',
+							color: "#1AB146",
 							width: 4
 						}),
 						fill: new ol.style.Fill({
-							color: 'rgba(225, 225, 255, 0.4)'
+							color: "rgba(225, 225, 255, 0.4)"
 						})
 					})
 				,
@@ -112,7 +112,7 @@ class MapCC extends Component {
 				that.state.map.getView().fit(that.props.extent, that.state.map.getSize());
 			}
 			that.state.map.updateSize();
-		})
+		});
 	}
 
 	componentDidUpdate() {
@@ -138,7 +138,7 @@ class MapCC extends Component {
 	render(){
 		return(
 				<div id={this.props.mapId} className="fullmap"/>
-		)
+		);
 	}
 }
 

@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-web";
-import Select from 'react-select';
+import Select from "react-select";
 import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
@@ -24,23 +24,23 @@ class CropHistory extends Component {
 		// this.fertilizer is filter by isDefined, cause the fertilizer number
 		// is not all the same, and may get undefined error when switching from
 		// a long list to a short list
-		this.fertilizer = []
+		this.fertilizer = [];
 	}
 
 	componentDidUpdate(prevProps) {
 		//change to a new CLU
 		if (this.props.clu !== prevProps.clu) {
-			this.setState({year: undefined})
+			this.setState({year: undefined});
 		}
 		// update for fertilizer, planting and harvest is updated in the child component.
-		if (this.props.cropobj != prevProps.cropobj) {
+		if (this.props.cropobj !== prevProps.cropobj) {
 			let year = this.state.year;
 			if(year) {
 				let flist = [
 					{FMCD: "None", addnew: true}
 				];
 				if(this.props.cropobj[year]){
-					flist = this.props.cropobj[year]["MF"].concat(flist)
+					flist = this.props.cropobj[year]["MF"].concat(flist);
 				}
 				this.setState({flist: flist});
 			}
@@ -70,7 +70,7 @@ class CropHistory extends Component {
 			// this.planting.setDefault();
 			// this.harvest.setDefault();
 		}
-		this.setState({crop: crop})
+		this.setState({crop: crop});
 	}
 
 	handleClick = () => {
@@ -106,10 +106,10 @@ class CropHistory extends Component {
 					"TNAME": oldName,
 					"CONTENT": []
 				},
-			]
+			];
 			if (tillageJson["CONTENT"].length > 0) {
 				tillageJson["TNAME"] = newName;
-				jsonBody.push(tillageJson)
+				jsonBody.push(tillageJson);
 			}
 			let fContent = this.fertilizer.filter(f => f).map(f => f.getBodyJson())
 				.filter(jsonBody => jsonBody["FMCD"] !== "None");
@@ -120,7 +120,7 @@ class CropHistory extends Component {
 						"FERNAME": newName,
 						"CONTENT": fContent
 					};
-				jsonBody.push(fbody)
+				jsonBody.push(fbody);
 			}
 
 		} else {
@@ -165,7 +165,7 @@ class CropHistory extends Component {
 						"CONTENT": []
 					},
 					fertilizerJson, plantingJson, harvestJson, tillageJson
-				]
+				];
 			}
 		}
 
@@ -174,19 +174,19 @@ class CropHistory extends Component {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				"Authorization": getKeycloakHeader()
 			}
 		}).then(updateResponse => {
-			if (updateResponse.status == 200) {
+			if (updateResponse.status === 200) {
 				//to make sure the response is a json. a is not called but should be kept
 				let a = updateResponse.json();
 				getExperimentSQX(email, clu).then(exptxt => {
 					this.props.handleExptxtGet(exptxt);
-					this.setState({isOpen: true, year: this.state.year.slice(0, 5) + this.state.crop})
-				})
+					this.setState({isOpen: true, year: this.state.year.slice(0, 5) + this.state.crop});
+				});
 			}
-		}).catch(error => console.error('Error:', error))
+		}).catch(error => console.error("Error:", error));
 	}
 
 	addFertilizer = (newFertilizer) => {
@@ -199,7 +199,7 @@ class CropHistory extends Component {
 
 	render() {
 		let years =[];
-		for(var key in this.props.cropobj){
+		for(let key in this.props.cropobj){
 			if (isCrop(this.props.cropobj[key])){
 				years.push(key);
 			}
@@ -208,14 +208,14 @@ class CropHistory extends Component {
 		let options = defaultCropYears.map(function(key){
 			let yearName = years.find(s => s.includes(key) && (s.includes("Corn") || s.includes("Soybean")));
 			if (yearName){
-				return {value: yearName, label:key}
+				return {value: yearName, label:key};
 			} else {
-				return {value: key +" None", label:key}
+				return {value: key +" None", label:key};
 			}
 		});
 
 		let CROPoptions = CROP.map(function (key) {
-			return {value: key, label: key}
+			return {value: key, label: key};
 		});
 
 		let fertilizerUI = this.state.flist.map((crop, index) =>
@@ -271,7 +271,7 @@ class CropHistory extends Component {
 				</div>
 				<Dialog
 					open={this.state.isOpen}
-					onClose={() => {this.setState({isOpen:false})}}
+					onClose={() => {this.setState({isOpen:false});}}
 					className="unlogin"
 				>
 					<DialogBody>
@@ -280,12 +280,12 @@ class CropHistory extends Component {
 						<p className="bold-text" key="keyword">Experiment file update success.</p>
 					</DialogBody>
 					<DialogFooter>
-						<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+						<Button compact onClick={()=> { this.setState({isOpen: false}); }}>Close</Button>
 					</DialogFooter>
 				</Dialog>
 			</div>
 
-		)
+		);
 	}
 }
 
@@ -294,7 +294,7 @@ const mapStateToProps = (state) => {
 		cropobj: state.user.cropobj,
 		email: state.user.email,
 		clu: state.user.clu,
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -302,7 +302,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CropHistory);

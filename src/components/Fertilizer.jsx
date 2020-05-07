@@ -1,7 +1,5 @@
 import React, {Component} from "react";
-import {Title} from "react-mdc-web";
-import config from "../app.config";
-import {convertFullDate, getExperimentSQX} from "../public/utils";
+import {convertFullDate} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultFertilizer, FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
@@ -37,10 +35,10 @@ class Fertilizer extends Component {
 	}
 
 	getBodyJson(){
-		var jsonBody = Object.assign({}, this.state);
+		let jsonBody = Object.assign({}, this.state);
 
 		if(jsonBody["FMCD"] !== "None"){
-			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, "").substring(0, 8);
 		}
 		return jsonBody;
 	}
@@ -64,7 +62,7 @@ class Fertilizer extends Component {
 		}
 		// delete fertilizer
 		if(field_name === "FMCD" && field_value ==="None"){
-			this.setState({FDATE:undefined})
+			this.setState({FDATE:undefined});
 		}
 	}
 
@@ -73,32 +71,32 @@ class Fertilizer extends Component {
 			(this.state.FMCD) ?
 			<div className="fertilizer-box-left">
 				<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
-							  firstField="MF" secondField="FMCD" options={FMCD}
-							  defaultValue={this.state.FMCD} handler = {this.handler}
+											firstField="MF" secondField="FMCD" options={FMCD}
+											defaultValue={this.state.FMCD} handler = {this.handler}
 				/>
 				{this.state.FDATE? <div>
 					<MyFarmUpdate elementType="select" title="APPLICATION" cropyear={this.state.year}
-								  firstField="MF" secondField="FACD" options={FACD}
-								  defaultValue={this.state.FACD} handler={this.handler}
+												firstField="MF" secondField="FACD" options={FACD}
+												defaultValue={this.state.FACD} handler={this.handler}
 					/>
 
 						< MyFarmUpdate elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
-									   firstField="MF" secondField="FAMN"
-									   defaultValue={this.state.FAMN} handler = {this.handler}
+												firstField="MF" secondField="FAMN"
+												defaultValue={this.state.FAMN} handler = {this.handler}
 						/>
 						<MyFarmUpdate elementType="input" title="DEPTH, in" cropyear={this.state.year}
-									  firstField="MF" secondField="FDEP"
-									  defaultValue={this.state.FDEP} handler = {this.handler}
+													firstField="MF" secondField="FDEP"
+													defaultValue={this.state.FDEP} handler = {this.handler}
 						/>
 
 					<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
-								  firstField="MF" secondField="FDATE"
-								  defaultValue={this.state.FDATE} handler = {this.handler}
+												firstField="MF" secondField="FDATE"
+												defaultValue={this.state.FDATE} handler = {this.handler}
 					/>
 
 				</div>: null}
-			</div>:<div></div>
-		)
+			</div>:<div />
+		);
 	}
 }
 
@@ -107,7 +105,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}
-	}
+	};
 };
 
 export default connect(null, mapDispatchToProps)(Fertilizer);

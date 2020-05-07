@@ -1,15 +1,14 @@
 import React, {Component} from "react";
-import Header from './Header'
-import Footer from './Footer'
-import styles from '../styles/main.css'
-import {Cell, Grid, Title, Textfield, Card, CardHeader, CardMedia, CardTitle, CardText, GridList, Tile, TileTitle, TilePrimary,TileSecondary, TileContent, Icon} from "react-mdc-web";
+import Header from "./Header";
+import Footer from "./Footer";
+import styles from "../styles/main.css";
 
 class AboutPage extends Component {
 
 	render() {
 		return (
 			<div>
-				<Header selected='about'/>
+				<Header selected="about"/>
 				<div className="contentcenter">
 						<p>This is a prototype of Cover Crops using React,
 						Redux, and react-mdc-web.
@@ -20,7 +19,7 @@ class AboutPage extends Component {
 						Cover Crops Wiki</a>.
 						</p>
 					</div>
-				<Footer selected='about'/>
+				<Footer selected="about"/>
 			</div>
 		);
 	}

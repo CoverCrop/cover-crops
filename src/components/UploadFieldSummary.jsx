@@ -1,19 +1,10 @@
 import React, {Component} from "react";
 import {
-	Body1,
-	Body2,
 	Button,
-	Cell,
-	Checkbox,
 	Dialog,
 	DialogBody,
 	DialogFooter,
-	Fab,
-	FormField,
-	Grid,
-	Icon,
-	Textfield,
-	Title
+	Textfield
 } from "react-mdc-web";
 import config from "../app.config";
 import {deletefail, expfail, expsuccess} from "../app.messages";
@@ -42,29 +33,24 @@ class UploadFieldSummary extends Component {
 		let updatedUserCLU = Object.assign({}, this.props.selectedCLU);
 		updatedUserCLU.expfile = id;
 		let headers = {
-			'Content-Type': 'application/json',
+			"Content-Type": "application/json",
 			"Authorization": getKeycloakHeader()
 		};
 
 		const CLUapi = config.CLUapi + "/userfield";
 		let that = this;
 		fetch(CLUapi,{
-			method: 'POST',
+			method: "POST",
 			headers: headers,
 			body: JSON.stringify(updatedUserCLU)
 		}).then(response => response.json())
 			.then((responseJson) => {
 				if(responseJson.status_code !== 200){
 					this.setState({file:null, message: expfail, isOpen: true });
-					console.log("set experiment file failed: " + responseJson.message)
+					console.log("set experiment file failed: " + responseJson.message);
 				} else {
 					this.setState({file:null, isOpen: true, message: expsuccess });
 					console.log(responseJson);
-					// old code for submit a SQX
-					// var reader = new FileReader();
-					// reader.onload = (function(theFile) {
-					// 	return function(e) { console.log(e.target.result)}})(this.state.file);
-					// handleExptxtGet(reader.readAsText(this.state.file))
 				}
 				this.fileInput.value = "";
 			}).catch(function(e) {
@@ -75,7 +61,7 @@ class UploadFieldSummary extends Component {
 	}
 
 	onChange(e) {
-		this.setState({file:e.target.files[0]})
+		this.setState({file:e.target.files[0]});
 	}
 
 	async handleDelete(e) {
@@ -86,13 +72,13 @@ class UploadFieldSummary extends Component {
 		};
 		let that = this;
 		fetch(CLUapi,{
-			method: 'DELETE',
+			method: "DELETE",
 			headers: headers
 		}).then(response => response.json())
 			.then((responseJson) => {
 				if(responseJson.status_code !== 200){
 					this.setState({file:null, message: deletefail, isOpen: true });
-					console.log("set experiment file failed: " + responseJson.message)
+					console.log("set experiment file failed: " + responseJson.message);
 				} else {
 					window.location.reload();
 				}
@@ -116,21 +102,20 @@ class UploadFieldSummary extends Component {
 					<form onSubmit={this.onFormSubmit}>
 						<h1>Upload Experiment File JSON for {this.props.selectedCLUName}</h1>
 						<br />
-						<input ref={ref=> this.fileInput = ref}
-							   type="file"
-							   onChange={this.onChange} />
+						<input ref={ref=> this.fileInput = ref} type="file"
+										onChange={this.onChange} />
 						<button type="submit">Upload</button>
 					</form>
 					<Dialog
 						open={this.state.isOpen}
-						onClose={() => {this.setState({isOpen:false})}}
+						onClose={() => {this.setState({isOpen:false});}}
 						className="unlogin"
 					>
 						<DialogBody>
 							<p className="bold-text" key="keyword"> {this.state.message}</p>
 						</DialogBody>
 						<DialogFooter>
-							<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+							<Button compact onClick={()=> { this.setState({isOpen: false}); }}>Close</Button>
 						</DialogFooter>
 					</Dialog>
 				</div>
@@ -158,14 +143,14 @@ class UploadFieldSummary extends Component {
 					</div>
 				</div>
 			</div>
-		)
+		);
 	}
 }
 
 const mapStateToProps = (state) => {
 	return {
 		email: state.user.email
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -173,7 +158,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadFieldSummary);

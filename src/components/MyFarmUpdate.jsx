@@ -1,9 +1,9 @@
 import React, {Component} from "react";
-import {Button, Checkbox, Dialog, DialogBody, DialogFooter, Textfield, Title} from "react-mdc-web";
+import {Textfield} from "react-mdc-web";
 import DatePicker from "react-datepicker";
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import Select from 'react-select';
+import "react-datepicker/dist/react-datepicker.css";
+import moment from "moment";
+import Select from "react-select";
 import {dictToOptions} from "../public/utils";
 
 class MyFarmUpdate extends Component {
@@ -49,18 +49,18 @@ class MyFarmUpdate extends Component {
 									step="1"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
-										this.props.handler(secondField, updateValue == "" ? 1: updateValue)
+										this.props.handler(secondField, updateValue === "" ? 1: updateValue);
 									}}
 								/>);
 							default :
-								null
+								null;
 						}
 					})()}
 
 			</div>}
 			</div>
 
-		)
+		);
 	}
 }
 

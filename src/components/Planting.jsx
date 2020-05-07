@@ -19,7 +19,7 @@ class Planting extends Component {
 	}
 
 	componentWillUnmount() {
-		this.props.onRef(undefined)
+		this.props.onRef(undefined);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -36,24 +36,23 @@ class Planting extends Component {
 				// console.log(convertFullDate(pdate));
 				this.setState({"PDATE": convertFullDate(pdate)});
 			} else{
-				this.setDefault()
+				this.setDefault();
 			}
 
 		}
 	}
 
 	getBodyJson(){
-		var jsonBody= {};
+		let jsonBody= {};
 		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
 		let {email, clu, year } =  this.props;
-		let requestStatus = false;
 		if(jsonBody["CONTENT"][0]["PDATE"]) {
 
 			jsonBody["PLNAME"] = year;
 			jsonBody["CONTENT"][0]["PPOE"] = jsonBody["CONTENT"][0]["PPOP"];
-			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, "").substring(0, 8);
 			jsonBody["EVENT"] = "planting";
-			return jsonBody
+			return jsonBody;
 
 		} else {
 			return {
@@ -90,34 +89,34 @@ class Planting extends Component {
 					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="select" title="DISTRIBUTION" cropyear={this.state.year}
-								  firstField="MP" secondField="PLDS" options={PLDS}
-								  defaultValue={this.state.PLDS} handler = {this.handler}
+												firstField="MP" secondField="PLDS" options={PLDS}
+												defaultValue={this.state.PLDS} handler = {this.handler}
 					/>
 
 					<div className="update-box-div">
 					<MyFarmUpdate isLeft elementType="input" title="ROW SPACING, inch" cropyear={this.state.year}
-								  firstField="MP" secondField="PLRS"
-								  defaultValue={this.state.PLRS} handler = {this.handler}
+												firstField="MP" secondField="PLRS"
+												defaultValue={this.state.PLRS} handler = {this.handler}
 					/>
 					<MyFarmUpdate isLeft elementType="input" title="DEPTH, inch" cropyear={this.state.year}
-								  firstField="MP" secondField="PLDP"
-								  defaultValue={this.state.PLDP} handler = {this.handler}
+												firstField="MP" secondField="PLDP"
+												defaultValue={this.state.PLDP} handler = {this.handler}
 					/>
 					<MyFarmUpdate isLeft elementType="input" title="POP, seeds/acre" cropyear={this.state.year}
-								  firstField="MP" secondField="PPOP"
-								  defaultValue={this.state.PPOP} handler = {this.handler}
+												firstField="MP" secondField="PPOP"
+												defaultValue={this.state.PPOP} handler = {this.handler}
 					/>
 					</div>
 					<div>
 					<MyFarmUpdate elementType="date" title="DATE PLANTED" cropyear={this.state.year}
-								  firstField="MP" secondField="PDATE"
-								  defaultValue={this.state.PDATE} handler = {this.handler}
+												firstField="MP" secondField="PDATE"
+												defaultValue={this.state.PDATE} handler = {this.handler}
 					/>
 					</div>
 
-				</div>:<div></div>
+				</div>:<div />
 
-		)
+		);
 	}
 }
 
@@ -126,7 +125,7 @@ const mapStateToProps = (state) => {
 		email: state.user.email,
 		clu: state.user.clu,
 		cropobj: state.user.cropobj,
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(Planting);

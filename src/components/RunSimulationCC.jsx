@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
-import {Button, Body1, Subheading2, Checkbox, Title,  Card,  CardTitle, CardText, FormField} from "react-mdc-web";
+import {Button, Subheading2, Title,  Card,  CardTitle, CardText} from "react-mdc-web";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
 import "babel-polyfill";
@@ -19,7 +19,7 @@ import config from "../app.config";
 import {ID, getOutputFileJson, wait, uploadUserInputFile,
 	calculateDayOfYear, getKeycloakHeader} from "../public/utils";
 import Select from "react-select";
-import {handleStartDateChange, handleEndDateChange, handleCardChange, handleResults,
+import {handleStartDateChange, handleEndDateChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
 
 

@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {Button, Title} from "react-mdc-web";
+import {Title} from "react-mdc-web";
 import {convertFullDate} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultFertilizer, defaultPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Harvest extends Component {
@@ -19,7 +18,7 @@ class Harvest extends Component {
 	}
 
 	componentWillUnmount() {
-		this.props.onRef(undefined)
+		this.props.onRef(undefined);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -43,7 +42,7 @@ class Harvest extends Component {
 	}
 
 	getBodyJson(){
-		var jsonBody= {};
+		let jsonBody= {};
 		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
 		let {email, clu, year } =  this.props;
 		let requestStatus = false;
@@ -52,9 +51,9 @@ class Harvest extends Component {
 			jsonBody["HNAME"] = year;
 			jsonBody["CONTENT"][0]["HPC"] = "100";
 			jsonBody["CONTENT"][0]["HSTG"] = "GS000";
-			jsonBody["CONTENT"][0]["HDATE"] = jsonBody["CONTENT"][0]["HDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["HDATE"] = jsonBody["CONTENT"][0]["HDATE"].replace(/-/g, "").substring(0, 8);
 			jsonBody["EVENT"] = "harvest";
-			return jsonBody
+			return jsonBody;
 
 		} else {
 			return {
@@ -83,7 +82,7 @@ class Harvest extends Component {
 
 	handler = (field_name, field_value) => {
 		this.setState({[field_name] : field_value});
-	}
+	};
 
 	render() {
 		return (
@@ -92,14 +91,12 @@ class Harvest extends Component {
 					<Title>{this.props.title} </Title>
 
 					<MyFarmUpdate elementType="date" title="DATE HARVESTED" cropyear={this.state.year}
-								  firstField="MP" secondField="HDATE"
-								  defaultValue={this.state.HDATE} handler = {this.handler}
+												firstField="MP" secondField="HDATE"
+												defaultValue={this.state.HDATE} handler = {this.handler}
 					/>
-				</div> : <div>
+				</div> : <div />
 
-				</div>
-
-		)
+		);
 	}
 }
 
@@ -108,7 +105,7 @@ const mapStateToProps = (state) => {
 		email: state.user.email,
 		clu: state.user.clu,
 		cropobj: state.user.cropobj,
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(Harvest);

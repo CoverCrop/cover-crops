@@ -1,9 +1,7 @@
 import React, {Component} from "react";
-import {Link} from "react-router";
 import styles from "../styles/header.css";
-import {Button, Tabbar, Tab, ToolbarSection, ToolbarTitle, Grid, Cell, Textfield, Caption, Icon, MenuAnchor, Menu, MenuItem, MenuDivider} from 'react-mdc-web';
+import {Tabbar, Tab} from "react-mdc-web";
 import {connect} from "react-redux";
-import {handleUserLogout} from "../actions/user";
 import MyFarmSummary from "./MyFarmSummary";
 import UploadFieldSummary from "./UploadFieldSummary";
 import CropHistory from "./CropHistory";
@@ -15,7 +13,7 @@ class MyFarmWrap extends Component {
 		super(props);
 		this.state = {
 			activeTab:1
-		}
+		};
 	}
 
 	renderContent(activeTab) {
@@ -40,26 +38,26 @@ class MyFarmWrap extends Component {
 					<Tabbar>
 						<Tab
 							active={activeTab===1}
-							onClick={() => {this.setState({activeTab:1})}}
+							onClick={() => {this.setState({activeTab:1});}}
 						>
 							Field Profile
 						</Tab>
 						<Tab
 							active={activeTab===2}
-							onClick={() => {this.setState({activeTab:2})}}
+							onClick={() => {this.setState({activeTab:2});}}
 						>
 							Crop History
 
 						</Tab>
 						<Tab
 							active={activeTab===3}
-							onClick={() => {this.setState({activeTab:3})}}
+							onClick={() => {this.setState({activeTab:3});}}
 						>
 							CoverCrop History
 						</Tab>
 						<Tab
 							active={activeTab===4}
-							onClick={() => {this.setState({activeTab:4})}}
+							onClick={() => {this.setState({activeTab:4});}}
 						>
 							Summary
 						</Tab>

@@ -14,20 +14,20 @@ class MyFarmSummary extends Component {
 		super(props);
 		this.state = {
 			soilobj: []
-		}
+		};
 	}
 
 	async getInfo() {
 		let that = this;
 
 		fetch(config.CLUapi + "/soils?lat=" + that.props.lat + "&lon=" + that.props.lon, {
-			method: 'GET',
+			method: "GET",
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				"Authorization": getKeycloakHeader()
 			}
 		}).then(res => res.json())
-			.catch(error => console.error('Error:', error))
+			.catch(error => console.error("Error:", error))
 			.then(soilobj => {
 				this.setState({soilobj});
 			});
@@ -169,8 +169,8 @@ class MyFarmSummary extends Component {
 							<thead>
 							<tr>
 								<th>DRAINAGE</th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
 
 							</tr>
 							</thead>
@@ -189,13 +189,13 @@ class MyFarmSummary extends Component {
 							<thead>
 							<tr>
 								<th>SOIL</th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
+								<th />
+								<th />
+								<th />
+								<th />
+								<th />
 
 							</tr>
 							</thead>
@@ -224,23 +224,23 @@ class MyFarmSummary extends Component {
 							<thead>
 
 							<tr>
-								<th></th>
+								<th />
 								<th>Cultivar</th>
-								<th></th>
+								<th />
 								<th>Planting</th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
+								<th />
+								<th />
 								<th>Harvest</th>
 								<th>Fertilizer</th>
-								<th></th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
+								<th />
+								<th />
 								<th>Tillage</th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
 							</tr>
 
 							<tr>
@@ -275,13 +275,13 @@ class MyFarmSummary extends Component {
 						<table>
 							<thead>
 							<tr>
-								<th></th>
+								<th />
 								<th>Cultivar</th>
-								<th></th>
+								<th />
 								<th>Establishment</th>
-								<th></th>
-								<th></th>
-								<th></th>
+								<th />
+								<th />
+								<th />
 								<th>Termination</th>
 
 							</tr>
@@ -313,7 +313,7 @@ const mapStateToProps = (state) => {
 	return {
 		cropobj: state.user.cropobj,
 		fieldobj: state.user.fieldobj,
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(MyFarmSummary);

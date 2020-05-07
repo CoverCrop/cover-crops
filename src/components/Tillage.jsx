@@ -1,8 +1,8 @@
 import React, {Component} from "react";
-import {Button, Title} from "react-mdc-web";
+import {Title} from "react-mdc-web";
 import {convertFullDate} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultFertilizer, defaultTillage, FACD, PLDS, TIMPL} from "../experimentFile";
+import {defaultTillage, TIMPL} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Tillage extends Component {
@@ -19,7 +19,7 @@ class Tillage extends Component {
 	}
 
 	componentWillUnmount() {
-		this.props.onRef(undefined)
+		this.props.onRef(undefined);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -40,16 +40,16 @@ class Tillage extends Component {
 	}
 
 	getBodyJson() {
-		var jsonBody = {};
+		let jsonBody = {};
 		jsonBody["CONTENT"] = [Object.assign({}, this.state)];
 		let {email, clu, year} = this.props;
 		let requestStatus = false;
 		if (jsonBody["CONTENT"][0]["TDATE"]) {
 
 			jsonBody["TNAME"] = year;
-			jsonBody["CONTENT"][0]["TDATE"] = jsonBody["CONTENT"][0]["TDATE"].replace(/-/g, '').substring(0, 8);
+			jsonBody["CONTENT"][0]["TDATE"] = jsonBody["CONTENT"][0]["TDATE"].replace(/-/g, "").substring(0, 8);
 			jsonBody["EVENT"] = "tillage";
-			return jsonBody
+			return jsonBody;
 
 		} else {
 			return {
@@ -75,7 +75,7 @@ class Tillage extends Component {
 		}
 		// delete tillage
 		if (field_name === "TIMPL" && field_value === "None") {
-			this.setState({TDATE: undefined})
+			this.setState({TDATE: undefined});
 		}
 	}
 
@@ -87,27 +87,25 @@ class Tillage extends Component {
 					<Title>Tillage </Title>
 
 					<MyFarmUpdate elementType="select" title="IMPLEMENT" cropyear={this.state.year}
-								  firstField="MT" secondField="TIMPL" options={TIMPL}
-								  defaultValue={this.state.TIMPL} handler={this.handler}
+												firstField="MT" secondField="TIMPL" options={TIMPL}
+												defaultValue={this.state.TIMPL} handler={this.handler}
 					/>
 
 					{this.state.TDATE && <div>
 						<MyFarmUpdate elementType="date" title="DATE" cropyear={this.state.year}
-									  firstField="MT" secondField="TDATE"
-									  defaultValue={this.state.TDATE} handler={this.handler}
+													firstField="MT" secondField="TDATE"
+													defaultValue={this.state.TDATE} handler={this.handler}
 						/>
 						<MyFarmUpdate elementType="input" title="DEPTH" cropyear={this.state.year}
-									  firstField="MT" secondField="TDEP"
-									  defaultValue={this.state.TDEP} handler={this.handler}
+													firstField="MT" secondField="TDEP"
+													defaultValue={this.state.TDEP} handler={this.handler}
 						/>
 
 					</div>}
 
-				</div> : <div>
+				</div> : <div />
 
-				</div>
-
-		)
+		);
 	}
 }
 
@@ -116,7 +114,7 @@ const mapStateToProps = (state) => {
 		email: state.user.email,
 		clu: state.user.clu,
 		cropobj: state.user.cropobj,
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(Tillage);

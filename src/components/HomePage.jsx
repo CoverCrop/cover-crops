@@ -15,8 +15,7 @@ class HomePage extends Component {
 			</div>);
 
 
-		let howwork =
-        	(<div>
+		let howwork = (<div>
 				<h1 className="secondary-color">How does the simulation work?</h1>
 				<br/>
 				<img src={require("../images/cover-crop-rep-image.png")} width="100%" />
@@ -28,11 +27,8 @@ class HomePage extends Component {
 				<span className="home-line" />
 
 				<div className="home-content"
-					 style={{backgroundImage: "url(\"../images/ground.jpg\")",
-						 backgroundSize: "cover",
-					backgroundPosition: "center",
-
-					 }}>
+							style={{backgroundImage: "url(\"../images/ground.jpg\")", backgroundSize: "cover",
+								backgroundPosition: "center"}}>
 					{window.innerWidth > 1300 ?
 						<Grid>
 							<Cell col={4}>

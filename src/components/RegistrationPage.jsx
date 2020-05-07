@@ -45,7 +45,7 @@ class RegistrationPage extends Component {
 				"&lastName=" + this.state.lastName +
 				"&email=" + this.state.email,
 				{
-					method: 'POST',
+					method: "POST",
 					headers: {
 						"Content-Type": "text/plain",
 						"Access-Control-Origin": "http://localhost:3000"
@@ -60,7 +60,7 @@ class RegistrationPage extends Component {
 					"email=" + this.state.email +
 					"&password=" + this.state.password,
 					{
-						method: 'POST',
+						method: "POST",
 						headers: {
 							"Content-Type": "text/plain",
 							"Access-Control-Origin": "http://localhost:3000"
@@ -165,13 +165,13 @@ class RegistrationPage extends Component {
 															value={this.state.firstName}
 															size="40"
 															onChange={({target: {value: firstName}}) => {
-																this.setState({firstName: firstName})
+																this.setState({firstName: firstName});
 															}}/></div>
 											<div><Textfield floatingLabel="Last name" value={this.state.lastName}
 															required
 															size="40"
 															onChange={({target: {value: lastName}}) => {
-																this.setState({lastName: lastName})
+																this.setState({lastName: lastName});
 															}}/></div>
 											<div><Textfield floatingLabel="Email ID" value={this.state.email}
 															required
@@ -180,7 +180,7 @@ class RegistrationPage extends Component {
 															helptext="Please enter a valid email address."
 															helptextValidation
 															onChange={({target: {value: email}}) => {
-																this.setState({email: email})
+																this.setState({email: email});
 															}}/></div>
 											<div><Textfield floatingLabel="Password" type="password"
 															value={this.state.password}
@@ -191,7 +191,7 @@ class RegistrationPage extends Component {
 															helptext="Your password must be contain at least 6 letters."
 															helptextValidation
 															onChange={({target: {value: password}}) => {
-																this.setState({password: password})
+																this.setState({password: password});
 															}}
 															onKeyUp={this.verifyPasswords}/></div>
 											<div><Textfield floatingLabel="Confirm Password" type="password"
@@ -203,7 +203,7 @@ class RegistrationPage extends Component {
 															helptext={"Passwords do not match."}
 															helptextValidation
 															onChange={({target: {value: passwordConfirm}}) => {
-																this.setState({passwordConfirm: passwordConfirm})
+																this.setState({passwordConfirm: passwordConfirm});
 															}}
 															onKeyUp={this.verifyPasswords}/></div>
 										</CardText>
@@ -229,7 +229,7 @@ class RegistrationPage extends Component {
 				</div>
 				<Footer/>
 			</div>
-		)
+		);
 	}
 }
 

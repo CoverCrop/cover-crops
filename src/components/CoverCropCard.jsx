@@ -18,16 +18,14 @@ class CoverCropCard extends Component {
 			<div>
 				<Card onClick={this.props.onClick} id={this.props.cardId} className={this.props.className}>
 					<CardHeader>
-						<CardTitle>{this.props.cardTitle}<Icon className="rightmap" name='edit'/></CardTitle>
+						<CardTitle>{this.props.cardTitle}<Icon className="rightmap" name="edit"/></CardTitle>
 						<CardSubtitle>{this.props.cardSubtitle}</CardSubtitle>
 					</CardHeader>
 					<CardText/>
-					<CardActions>
-
-					</CardActions>
+					<CardActions />
 				</Card>
 			</div>
-		)
+		);
 	}
 }
 

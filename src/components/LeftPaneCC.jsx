@@ -1,7 +1,7 @@
 import React, {Component} from "react";
-import {connect} from 'react-redux';
+import {connect} from "react-redux";
 import CoverCropCard from "./CoverCropCard";
-import {handleCardClick} from "../actions/analysis"
+import {handleCardClick} from "../actions/analysis";
 
 class LeftPaneCC extends Component {
 
@@ -12,7 +12,7 @@ class LeftPaneCC extends Component {
 	}
 
 	handleClick(selectedCardIndex) {
-		this.props.handleCardClick(selectedCardIndex)
+		this.props.handleCardClick(selectedCardIndex);
 	}
 
 	renderCard(cardIndex){
@@ -20,29 +20,29 @@ class LeftPaneCC extends Component {
 		// Active Card
 		if (cardIndex === this.props.activeCardIndex){
 
-			return <CoverCropCard
+			return (<CoverCropCard
 				className="cover-crop-card-active"
 				cardId={this.props.cards[cardIndex].cardId}
 				onClick={this.handleClick.bind(this, cardIndex)}
 				cardTitle={this.props.cards[cardIndex].cardTitle}
-				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>;
+				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>);
 		}
 		// Previously visited card
 		else if (cardIndex < this.props.activeCardIndex){
-			return <CoverCropCard
+			return (<CoverCropCard
 				className="cover-crop-card-disabled"
 				cardId={this.props.cards[cardIndex].cardId}
 				onClick={this.handleClick.bind(this, cardIndex)}
 				cardTitle={this.props.cards[cardIndex].cardTitle}
-				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>;
+				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>);
 		}
 		// Unvisited card
 		else {
-			return <CoverCropCard
+			return (<CoverCropCard
 				className="cover-crop-card"
 				cardId={this.props.cards[cardIndex].cardId}
 				cardTitle={this.props.cards[cardIndex].cardTitle}
-				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>;
+				cardSubtitle={this.props.cards[cardIndex].cardSubtitle}/>);
 		}
 	}
 
@@ -70,7 +70,7 @@ const mapStateToProps = (state) => {
 	return {
 		activeCardIndex: state.analysis.activeCardIndex,
 		cards: state.analysis.cards,
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -78,7 +78,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleCardClick: (selectedCardIndex) => {
 			dispatch(handleCardClick(selectedCardIndex));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LeftPaneCC);

@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
-import {Button, Textfield, Body1, Grid, Cell, Icon} from "react-mdc-web";
-import Select from 'react-select';
-import {handleLatFieldChange, handleLongFieldChange, handleCardChange, handleCLUChange} from "../actions/analysis"
-import styles from '../styles/analysis-page.css';
+import { connect } from "react-redux";
+import Select from "react-select";
+import {handleLatFieldChange, handleLongFieldChange, handleCardChange, handleCLUChange} from "../actions/analysis";
+import styles from "../styles/analysis-page.css";
 import {getMyFieldList, wait} from "../public/utils";
 import {defaultExpDatasetID} from "../datawolf.config";
 
@@ -15,7 +14,7 @@ class SelectFieldsCC extends Component {
 			clus: [],
 			cluname: "",
 			fetchError: false,
-		}
+		};
 	}
 
 	componentWillMount() {
@@ -27,7 +26,7 @@ class SelectFieldsCC extends Component {
 		}, function(err) {
 			console.log(err);
 			that.setState({fetchError: true});
-		})
+		});
 	}
 
 	handleChange = (selectedOption) => {
@@ -41,11 +40,11 @@ class SelectFieldsCC extends Component {
 	};
 
 	handleLatFieldChange = (lat) => {
-		this.props.handleLatFieldChange(lat)
+		this.props.handleLatFieldChange(lat);
 	};
 
 	handleLongFieldChange = (lon) =>  {
-		this.props.handleLongFieldChange(lon)
+		this.props.handleLongFieldChange(lon);
 	};
 
 	handleSubmit = () =>{
@@ -75,7 +74,7 @@ class SelectFieldsCC extends Component {
 				<div className="search-bg-error" >
 					<p className="error-message">Failed to get your farm list.</p>
 				</div>
-			)
+			);
 		}
 
 		return(
@@ -98,7 +97,7 @@ const mapStateToProps = (state) => {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
 		email: state.user.email
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -110,13 +109,13 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(handleLongFieldChange(lon));
 		},
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
-			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData))
+			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData));
 		},
 		handleCLUChange: (clu, cluname, expfile) => {
 			dispatch(handleCLUChange(clu, cluname, expfile));
 		}
 
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectFieldsCC);

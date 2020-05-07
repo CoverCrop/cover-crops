@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import { connect } from 'react-redux';
-import {Line} from 'react-chartjs-2';
+import { connect } from "react-redux";
+import {Line} from "react-chartjs-2";
 
 class ChartCC extends Component {
 
@@ -17,7 +17,7 @@ class ChartCC extends Component {
 
 	generateColors() {
 
-		const colorPalette = require('nice-color-palettes');
+		const colorPalette = require("nice-color-palettes");
 		const hexToRgba = require("hex-to-rgba");
 		const colorPaletteIndex = 42; // Specific palette to choose
 
@@ -74,7 +74,7 @@ class ChartCC extends Component {
 		let maxTime = harvestDate.getTime();
 
 		if (this.props.hasOwnProperty(chartArrayTypeName) && this.props[chartArrayTypeName] !== null) {
-			if(this.props[chartArrayTypeName].hasOwnProperty('charts')){
+			if(this.props[chartArrayTypeName].hasOwnProperty("charts")){
 				// Iterate over each chart
 				let charts =  this.props[chartArrayTypeName].charts;
 				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
@@ -96,14 +96,14 @@ class ChartCC extends Component {
 								gridLines: {
 									lineWidth: 2
 								},
-								type: 'time',
+								type: "time",
 								time: {
 									unit: chartRawData.xAxisUnit.toLowerCase(),
 									unitStepSize: 4,
 									displayFormats: {
-										month: 'YYYY MMM',
+										month: "YYYY MMM",
 									},
-									tooltipFormat: 'MM/DD/YYYY',
+									tooltipFormat: "MM/DD/YYYY",
 									min: minTime, // TODO: Check what needs to be the default value
 									max: maxTime // TODO: Check what needs to be the default value
 								}
@@ -111,7 +111,7 @@ class ChartCC extends Component {
 							yAxes: [{
 								scaleLabel: {
 									display: true,
-									labelString: chartRawData.yAxis + ' (' + chartRawData.yAxisUnit + ')'
+									labelString: chartRawData.yAxis + " (" + chartRawData.yAxisUnit + ")"
 								}
 							}],
 						}
@@ -133,7 +133,7 @@ class ChartCC extends Component {
 								parsedData.push({
 									x: new Date(rawData[dataIndex].YEAR, 0, rawData[dataIndex].DOY),
 									y: rawData[dataIndex].value
-								})
+								});
 							}
 						}
 
@@ -147,13 +147,13 @@ class ChartCC extends Component {
 							lineTension: 0.1,
 							backgroundColor: datasetColor,
 							borderColor: datasetColor,
-							borderCapStyle: 'butt',
+							borderCapStyle: "butt",
 							borderDash: [],
 							borderDashOffset: 0.0,
-							borderJoinStyle: 'miter',
+							borderJoinStyle: "miter",
 							borderWidth: 1,
 							pointBorderColor: datasetColor,
-							pointBackgroundColor: '#fff',
+							pointBackgroundColor: "#fff",
 							pointBorderWidth: 1,
 							pointHoverRadius: 3,
 							pointHoverBackgroundColor: datasetColor,
@@ -175,7 +175,7 @@ class ChartCC extends Component {
 
 					// Chart for this variable has been already created
 					if (chartDataArray.hasOwnProperty(chartRawData.variable)) {
-						chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(parsedDatasets)
+						chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(parsedDatasets);
 					}
 					// Chart for this variable has to be created
 					else {
@@ -234,7 +234,7 @@ class ChartCC extends Component {
 	render() {
 		return (
 				<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
-		)
+		);
 	}
 }
 
@@ -243,7 +243,7 @@ const mapStateToProps = (state) => {
 		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson,
 		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson,
 		userInputJson: state.analysis.userInputJson
-	}
+	};
 };
 
 export default connect(mapStateToProps, null)(ChartCC);

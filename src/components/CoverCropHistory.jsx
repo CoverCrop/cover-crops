@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-web";
-import Select from 'react-select';
+import Select from "react-select";
 import {connect} from "react-redux";
 import Planting from "./Planting";
 import {getKeycloakHeader, isCoverCrop} from "../public/utils";
@@ -42,7 +42,7 @@ class CoverCropHistory extends Component {
 	}
 
 	handleSelectCoverCrop = (covercrop) => {
-		this.setState({covercrop})
+		this.setState({covercrop});
 	}
 
 	handleClick = () => {
@@ -56,24 +56,24 @@ class CoverCropHistory extends Component {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
 			headers: {
-				'Content-Type': 'application/json',
+				"Content-Type": "application/json",
 				"Authorization": getKeycloakHeader()
 			}
 		}).then(updateResponse => {
-			if (updateResponse.status == 200) {
+			if (updateResponse.status === 200) {
 				//to make sure the response is a json. a is not called but should be kept
 				let a = updateResponse.json();
 				getExperimentSQX(email, clu).then(exptxt => {
 					this.props.handleExptxtGet(exptxt);
-					this.setState({isOpen: true})
-				})
+					this.setState({isOpen: true});
+				});
 			}
-		}).catch(error => console.error('Error:', error));
+		}).catch(error => console.error("Error:", error));
 	};
 
 	render() {
 		let years =[];
-		for(var key in this.props.cropobj){
+		for(let key in this.props.cropobj){
 			if (isCoverCrop(this.props.cropobj[key])){
 				years.push(key);
 			}
@@ -82,14 +82,14 @@ class CoverCropHistory extends Component {
 		let options = defaultCropYears.map(function(key){
 			let yearName = years.find(s => s.includes(key)  && (s.includes("Rye")));
 			if (yearName){
-				return {value: yearName, label:key}
+				return {value: yearName, label:key};
 			} else {
-				return {value: key +" None", label:key}
+				return {value: key +" None", label:key};
 			}
 		});
 
 		let COVERCROPoptions = COVERCROP.map(function (key) {
-			return {value: key, label: key}
+			return {value: key, label: key};
 		});
 
 		return (
@@ -129,7 +129,7 @@ class CoverCropHistory extends Component {
 				</div>
 				<Dialog
 					open={this.state.isOpen}
-					onClose={() => {this.setState({isOpen:false})}}
+					onClose={() => {this.setState({isOpen:false});}}
 					className="unlogin"
 				>
 					<DialogBody>
@@ -138,12 +138,12 @@ class CoverCropHistory extends Component {
 						<p className="bold-text" key="keyword">Experiment file update success.</p>
 					</DialogBody>
 					<DialogFooter>
-						<Button compact onClick={()=> { this.setState({isOpen: false}) }}>Close</Button>
+						<Button compact onClick={()=> { this.setState({isOpen: false}); }}>Close</Button>
 					</DialogFooter>
 				</Dialog>
 			</div>
 
-		)
+		);
 	}
 }
 
@@ -152,7 +152,7 @@ const mapStateToProps = (state) => {
 		cropobj: state.user.cropobj,
 		email: state.user.email,
 		clu: state.user.clu,
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -160,7 +160,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(CoverCropHistory);

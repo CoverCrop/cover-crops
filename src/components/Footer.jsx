@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import {IndexLink, Link} from "react-router";
-import {Cell, Grid, Title, Textfield, Button, Caption, Body1, Subheading2} from "react-mdc-web";
+import {Cell, Grid} from "react-mdc-web";
 
 class Footer extends Component {
 

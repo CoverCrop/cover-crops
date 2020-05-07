@@ -1,10 +1,10 @@
 import React, {Component} from "react";
 import {Link} from "react-router";
-import Header from './Header';
-import Footer from './Footer';
+import Header from "./Header";
+import Footer from "./Footer";
 import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
-import styles from '../styles/main.css';
-import styles2 from '../styles/main.css';
+import styles from "../styles/main.css";
+import styles2 from "../styles/main.css";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import {connect} from "react-redux";
@@ -30,7 +30,7 @@ class MyFarmPage extends Component {
 			areafeatures: [],
 			openclu: 0,
 			fetchError: false
-		}
+		};
 	}
 
 	componentWillMount() {
@@ -44,7 +44,7 @@ class MyFarmPage extends Component {
 		}, function(err) {
 			console.log(err);
 			that.setState({fetchError: true});
-		})
+		});
 	}
 
 	handleCLUChange = (cluIndex) =>{
@@ -64,7 +64,7 @@ class MyFarmPage extends Component {
 			}).then(geojson => {
 
 				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
-					dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857'
+					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 				that.setState({areafeatures:features});
 			}).catch(function (e) {
@@ -76,7 +76,7 @@ class MyFarmPage extends Component {
 		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
 		getExperimentSQX(this.props.email, clus[cluIndex].clu).then(exptxt => {
 			this.props.handleExptxtGet(exptxt);
-		})
+		});
 
 	}
 
@@ -88,44 +88,41 @@ class MyFarmPage extends Component {
 		let cluList = clus.map((c, i) => {
 			if (openclu === i){
 				selectCLU = c;
-				return <div className="select-my-field" key={c.clu}>
-					<Card onClick={() => {this.handleCLUChange(i)}}>
+				return (<div className="select-my-field" key={c.clu}>
+					<Card onClick={() => {this.handleCLUChange(i);}}>
 						<CardText>
 							<CardTitle>{c.cluname}</CardTitle>
 							{c.lat + " " + c.lon}
 						</CardText>
 					</Card>
-					<div className='minimap'>
+					<div className="minimap">
 						<MapCC mapId={c.cluname}
-							   markercoordinate={ ol.proj.transform([c.lon, c.lat], 'EPSG:4326', 'EPSG:3857' )}
-							   areafeatures={this.state.areafeatures}
-							   fitmap
-							   zoomlevel="15"
-						/>
+											markercoordinate={ol.proj.transform([c.lon, c.lat], "EPSG:4326", "EPSG:3857")}
+											areafeatures={this.state.areafeatures} fitmap zoomlevel="15"/>
 					</div>
-				</div>
+				</div>);
 
 
 			} else {
-				return <div className="unselect-my-field" key={c.clu}>
-					<Card onClick={() => {this.handleCLUChange(i)}}>
+				return (<div className="unselect-my-field" key={c.clu}>
+					<Card onClick={() => {this.handleCLUChange(i);}}>
 						<CardText>
 							<CardTitle>{c.cluname}</CardTitle>
 							{c.lat + " " + c.lon}
 						</CardText>
 					</Card>
-				</div>
+				</div>);
 			}
 		}
 	);
-		let addField = 	<div  className="add-field-title">
+		let addField = 	(<div  className="add-field-title">
 			<Link to="/addfield" >
 				<Fab >
 					<Icon name="add" />
 				</Fab>
 			</Link>
 			<Title>Add a Field</Title>
-		</div>;
+		</div>);
 
 		return (
 			<AuthorizedWrap>
@@ -174,7 +171,7 @@ class MyFarmPage extends Component {
 const mapStateToProps = (state) => {
 	return {
 		email: state.user.email
-	}
+	};
 };
 
 const mapDispatchToProps = (dispatch) => {
@@ -185,7 +182,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleExptxtGet: (exptxt) => {
 			dispatch(handleExptxtGet(exptxt));
 		}
-	}
+	};
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyFarmPage);
