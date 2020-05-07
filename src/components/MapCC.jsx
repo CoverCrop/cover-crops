@@ -42,7 +42,7 @@ class MapCC extends Component {
 					}),
 					new ol.layer.Tile({
 						source: new ol.source.TileWMS({
-							url: 'http://fd-geoserver.ncsa.illinois.edu:8080/geoserver/wms',
+							url: config.geoServer,
 							params: {'LAYERS': 'covercrop:clu', 'TILED': true},
 							serverType: 'geoserver'
 						}),

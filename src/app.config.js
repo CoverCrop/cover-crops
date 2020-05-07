@@ -16,6 +16,7 @@ const devConfig = {
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
 	keycloak: Keycloak("http://localhost:3000/keycloak.json"),
+	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms"
 };
 
 const prodConfig = {
