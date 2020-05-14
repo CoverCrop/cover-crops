@@ -51,7 +51,8 @@ class RunSimulationCC extends Component {
 
 		let headers = {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		};
 
 		let id = ID();

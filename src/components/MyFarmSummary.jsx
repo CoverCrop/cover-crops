@@ -24,7 +24,8 @@ class MyFarmSummary extends Component {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": getKeycloakHeader()
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
 			}
 		}).then(res => res.json())
 			.catch(error => console.error("Error:", error))
@@ -49,7 +50,8 @@ class MyFarmSummary extends Component {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": getKeycloakHeader()
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
 			}
 		}).then(response => {
 			if(response.status === 200) {

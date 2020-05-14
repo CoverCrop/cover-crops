@@ -34,7 +34,8 @@ class UploadFieldSummary extends Component {
 		updatedUserCLU.expfile = id;
 		let headers = {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		};
 
 		const CLUapi = config.CLUapi + "/userfield";
@@ -68,7 +69,8 @@ class UploadFieldSummary extends Component {
 		e.preventDefault();
 		const CLUapi = config.CLUapi + "/userfield?userid="+ this.props.email + "&clu=" + this.props.selectedCLU.clu;
 		let headers = {
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		};
 		let that = this;
 		fetch(CLUapi,{

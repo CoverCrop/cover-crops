@@ -38,7 +38,8 @@ class UserEvents extends Component {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": getKeycloakHeader()
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
 			},
 		});
 

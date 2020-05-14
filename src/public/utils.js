@@ -50,7 +50,8 @@ export async function getOutputFileTxt(datasetId, outputFileName = null) {
 async function getOutputFile(datasetId, outputFileName = null, filetype) {
 	let headers = {
 		"Content-Type": "application/json",
-		"Authorization": getKeycloakHeader()
+		"Authorization": getKeycloakHeader(),
+		"Cache-Control": "no-cache"
 	};
 
 	// Get - Result Dataset
@@ -199,7 +200,8 @@ export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest,
 
 export async function uploadDatasetToDataWolf(filedata) {
 	let headers = {
-		"Authorization": getKeycloakHeader()
+		"Authorization": getKeycloakHeader(),
+		"Cache-Control": "no-cache"
 	};
 
 	let data = new FormData();
@@ -227,7 +229,8 @@ export async function getExperimentSQX(email, CLU_id) {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		}
 	});
 
@@ -245,7 +248,8 @@ export async function getMyFieldList(email) {
 	const CLUapi = config.CLUapi + "/userfield?userid=" + email;
 	let headers = {
 		"Content-Type": "application/json",
-		"Authorization": getKeycloakHeader()
+		"Authorization": getKeycloakHeader(),
+		"Cache-Control": "no-cache"
 	};
 	const Response = await fetch(CLUapi, {headers: headers});
 	return await Response.json();
@@ -262,7 +266,8 @@ export async function getCLUGeoJSON(cluId) {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		}
 	});
 	return await response.json();
@@ -492,7 +497,8 @@ export function checkIfDatawolfUserExists(email) {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		}
 	}).then(function(response){
 		return response;
@@ -505,7 +511,8 @@ export function createDatawolfUser(email, fname, lname){
 		method: "POST",
 		headers: {
 			// "Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		}
 	}).then(function(response) {
 		return response;

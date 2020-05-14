@@ -41,7 +41,8 @@ class AddFieldBox extends Component {
 		const {clu, latitude, longitude} = this.props;
 		let headers = {
 			"Content-Type": "application/json",
-			"Authorization": getKeycloakHeader()
+			"Authorization": getKeycloakHeader(),
+			"Cache-Control": "no-cache"
 		};
 		let bodyjson = "{\"userid\":\""+ localStorage.getItem("kcEmail") +"\", \"clu\":" + clu
 			+ ", \"cluname\":\"" + this.state.cluname + "\", \"lat\":"+ latitude + ", \"lon\":" + longitude

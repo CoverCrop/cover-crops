@@ -57,7 +57,8 @@ class CoverCropHistory extends Component {
 			body: JSON.stringify(jsonBody),
 			headers: {
 				"Content-Type": "application/json",
-				"Authorization": getKeycloakHeader()
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
 			}
 		}).then(updateResponse => {
 			if (updateResponse.status === 200) {

@@ -59,7 +59,8 @@ class AddFieldPage extends Component {
 			fetch(CLUapi, {
 				method: "GET",
 				headers: {
-					"Authorization": getKeycloakHeader()
+					"Authorization": getKeycloakHeader(),
+					"Cache-Control": "no-cache"
 				}
 			}).then(response => {
 				return response.json();
