@@ -130,6 +130,7 @@ class CropHistory extends Component {
 			fertilizerJson["CONTENT"] = this.fertilizer.filter(f => f).map(f => f.getBodyJson())
 				.filter(jsonBody => jsonBody["FMCD"] !== "None");
 			let plantingJson = this.planting.getBodyJson();
+			plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.crop]; // Add CNAME field to planting JSON
 			let harvestJson = this.harvest.getBodyJson();
 			let tillageJson = this.tillage.getBodyJson();
 
@@ -140,7 +141,6 @@ class CropHistory extends Component {
 				newName = this.state.year.slice(0, 5) + this.state.crop;
 				fertilizerJson["FERNAME"] = newName;
 				plantingJson["PLNAME"] = newName;
-				plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.crop];
 				harvestJson["HNAME"] = newName;
 				tillageJson["TNAME"] = newName;
 				jsonBody = [
