@@ -16,11 +16,11 @@ import {
 	userInputJSONDatasetID,
 } from "../datawolf.config";
 import config from "../app.config";
-import {ID, getOutputFileJson, wait, uploadUserInputFile,
-	calculateDayOfYear, getKeycloakHeader} from "../public/utils";
+import {ID, getOutputFileJson, wait, uploadUserInputFile, getKeycloakHeader} from "../public/utils";
 import Select from "react-select";
 import {handleStartDateChange, handleEndDateChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
+import {getDayOfYear} from "date-fns";
 
 
 class RunSimulationCC extends Component {
@@ -62,8 +62,8 @@ class RunSimulationCC extends Component {
 		// Calculate cover crop termination date based on the cash crop planting date
 		objEndDate.setDate(objEndDate.getDate() + config.coverCropTerminationOffsetDays);
 		let plantingYear = objStartDate.getFullYear();
-		let plantingDoy = calculateDayOfYear(objStartDate);
-		let harvestDoy = calculateDayOfYear(objEndDate);
+		let plantingDoy = getDayOfYear(objStartDate);
+		let harvestDoy = getDayOfYear(objEndDate);
 
 		let withCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, true);
 		let withoutCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, false);
