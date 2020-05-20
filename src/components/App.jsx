@@ -13,6 +13,7 @@ import {handleUserLogin} from "../actions/user";
 import {connect} from "react-redux";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import DecompositionGraph from "./DecompositionGraph";
 
 global.__base = __dirname + "/";
 const theme = createMuiTheme();
@@ -37,6 +38,7 @@ class App extends Component {
 					<Route path="/about" component={AboutPage}/>
 					<Route path="/history" component={UserPage}/>
 					<Route path="/dashboard" component={Dashboard}/>
+					<Route path="/de" component={DecompositionGraph}/>
 					<Route path="*" component={RouteMismatch}/>
 				</Router>
 			</MuiThemeProvider>
