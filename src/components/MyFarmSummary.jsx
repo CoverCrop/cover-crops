@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import {Cell, Grid, Icon} from "react-mdc-web";
 import { convertDate, convertCmToInches, convertMetersToFeet,
-	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCrop,
+	convertKgPerHaToLbPerAcre, convertPerSqMeterToPerAcre, isCashCrop,
 	isCoverCrop, getKeycloakHeader} from "../public/utils";
 import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
@@ -78,7 +78,7 @@ class MyFarmSummary extends Component {
 
         // cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
-			.filter(obj => isCrop(obj)).map(obj =>
+			.filter(obj => isCashCrop(obj)).map(obj =>
 				<tbody>
 				<tr key={obj["YEAR"]}>
 					<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>

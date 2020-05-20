@@ -458,8 +458,10 @@ export function cropObjToExptxt(text, cropobj) {
 	return textlines.join("\n");
 }
 
-export function isCrop(cropobj){
-	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
+//TODO: Create globals to store list of cash crop and cover crop names
+export function isCashCrop(cropobj){
+	return cropobj["CROP"].toLowerCase() === "corn"
+			|| cropobj["CROP"].toLowerCase() === "soybean";
 }
 
 export function isCoverCrop(cropobj) {
