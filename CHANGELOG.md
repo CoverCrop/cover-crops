@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Added no-cache directive to all api calls to workaround a bug that was not updating 'Crop History' in real-time [CCROP-260](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-260)
 - Missing cultivar detail in the summary page after updating crop details. [CCROP-267](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-267)
-
+- Incorrect calculation of day of the year when the current date is different in local time and GMT. [CCROP-268](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-268)
 
 ### Updated
 - Headers of all APIs to use keycloak token for authentication [CCROP-254](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-254)
