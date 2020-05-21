@@ -5,11 +5,15 @@ import {connect} from "react-redux";
 import Fertilizer from "./Fertilizer";
 import Planting from "./Planting";
 import config from "../app.config";
-import {getExperimentSQX, isCrop, getKeycloakHeader} from "../public/utils";
+import {
+	getExperimentSQX,
+	getKeycloakHeader,
+	isCashCrop,
+} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
-import {CROP, cultivars, defaultCropYears} from "../experimentFile";
+import {cashCropOptions, cultivars, defaultCropYears} from "../experimentFile";
 
 class CropHistory extends Component {
 
@@ -201,7 +205,7 @@ class CropHistory extends Component {
 	render() {
 		let years =[];
 		for(let key in this.props.cropobj){
-			if (isCrop(this.props.cropobj[key])){
+			if (isCashCrop(this.props.cropobj[key])){
 				years.push(key);
 			}
 		}
@@ -215,7 +219,7 @@ class CropHistory extends Component {
 			}
 		});
 
-		let CROPoptions = CROP.map(function (key) {
+		let cropOptions = cashCropOptions.map(function (key) {
 			return {value: key, label: key};
 		});
 
@@ -249,7 +253,7 @@ class CropHistory extends Component {
 								<Select
 									name="CROP"
 									value={this.state.crop}
-									options={CROPoptions}
+									options={cropOptions}
 									onChange={selectedOption => this.handleSelectCrop( selectedOption.value)}
 								/>
 							</div>
