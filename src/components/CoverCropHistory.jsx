@@ -3,7 +3,7 @@ import {Button, Dialog, DialogBody, DialogFooter, Icon, Title} from "react-mdc-w
 import Select from "react-select";
 import {connect} from "react-redux";
 import Planting from "./Planting";
-import {getKeycloakHeader, isCoverCrop} from "../public/utils";
+import {getKeycloakHeader, isCoverCrop, getCoverCropForYear} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import {coverCropOptions, defaultCropYears} from "../experimentFile";
@@ -15,9 +15,12 @@ class CoverCropHistory extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0],
+			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(0, 4),
 			isOpen: false,
-			covercrop: null,
+			covercrop: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
+			yearCrop: this.props.cropobj ? undefined :
+					this.props.cropobj.keys()[0].substr(0, 4) + " " + this.props.cropobj.keys()[0].substr(5)
+
 		};
 	}
 
@@ -29,21 +32,18 @@ class CoverCropHistory extends Component {
 
 	handleSelectYear = (year) => {
 		this.setState({year: year});
-		if(this.props.cropobj[year]){
-			this.setState({
-				covercrop: this.props.cropobj[year]["CROP"]
-			});
-		} else{
-			this.setState({
-				covercrop: "None"
-			});
+		let ccrop = getCoverCropForYear(this.props.cropobj, year);
+		if(ccrop === null){
+			ccrop = "None";
 		}
-
-	}
+		this.setState({covercrop: ccrop});
+		this.setState({yearCrop: year + " " + ccrop});
+	};
 
 	handleSelectCoverCrop = (covercrop) => {
 		this.setState({covercrop});
-	}
+		this.setState({yearCrop: this.state.year + " " + covercrop});
+	};
 
 	handleClick = () => {
 
@@ -51,7 +51,6 @@ class CoverCropHistory extends Component {
 		let harvestJson = this.harvest.getBodyJson();
 		let {email, clu} = this.props;
 		let jsonBody = [plantingJson, harvestJson];
-		console.log(jsonBody);
 		fetch(config.CLUapi + "/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
@@ -81,17 +80,13 @@ class CoverCropHistory extends Component {
 		}
 
 		let options = defaultCropYears.map(function(key){
-			let yearName = years.find(s => s.includes(key)  && (s.includes("Rye")));
-			if (yearName){
-				return {value: yearName, label:key};
-			} else {
-				return {value: key +" None", label:key};
-			}
+			return {value: key, label: key};
 		});
 
 		let ccOptions = coverCropOptions.map(function (key) {
 			return {value: key, label: key};
 		});
+
 
 		return (
 			<div>
@@ -108,7 +103,7 @@ class CoverCropHistory extends Component {
 							/>
 						</div>
 					</div>
-					{this.state.year && <div className="no-bottom-crop" key="cultivars">
+					{this.state.yearCrop && <div className="no-bottom-crop" key="cultivars">
 						<Title>Cultivars </Title>
 						<div className="update-box-div">
 							<div className="update-box update-box-left">
@@ -123,9 +118,9 @@ class CoverCropHistory extends Component {
 						</div>
 					</div>}
 					{this.state.covercrop !== "None" &&
-					<Planting title="Establishment" year={this.state.year} onRef={ref => (this.planting = ref)}/> }
+					<Planting title="Establishment" year={this.state.yearCrop} onRef={ref => (this.planting = ref)}/> }
 					{this.state.covercrop !== "None" &&
-					<Harvest title="Termination" year={this.state.year} onRef={ref => (this.harvest = ref)}/> }
+					<Harvest title="Termination" year={this.state.yearCrop} onRef={ref => (this.harvest = ref)}/> }
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
 				<Dialog

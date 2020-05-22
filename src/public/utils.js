@@ -430,6 +430,21 @@ export function getFieldObj(text) {
 	return readTable(textlines, "FIELDS")[1];
 }
 
+export function getCoverCropForYear(cropObj, year){
+	let keys = Object.keys(cropObj);
+
+	for (let key of keys) {
+		let crop = null;
+		if (key.includes(year)){
+			crop = key.substr(5);
+			if(coverCrops.includes(crop)){
+				return crop;
+			}
+		}
+	}
+	return null;
+}
+
 export function cropObjToExptxt(text, cropobj) {
 	// let tmptext = text.replace("TNAME....................", "YEAR CROP");
 	let textlines = text.split("\n");
