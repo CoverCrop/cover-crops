@@ -12,17 +12,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Keycloak for authentication and user registration. This obsoletes authentication through datawolf [CCROP-221](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-221)
 
 ### Fixed
+- Dashboard now shows correct numbers even when the selected date had a change due to daylight savings. [CCROP-253](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-253)
+- Map tiles now loaded over https to fix mixed content warnings. [CCROP-257](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-257)
 - Added no-cache directive to all api calls to workaround a bug that was not updating 'Crop History' in real-time [CCROP-260](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-260)
 - Missing cultivar detail in the summary page after updating crop details. [CCROP-267](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-267)
 - Improved the condition to check if a crop is cash crop. Now first fallow will not show on Summary tab [CCROP-261](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-261)
-
+- Adding or updating cover crops from 'My Farm' page [CCROP-265](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-265)
 
 ### Updated
 - Headers of all APIs to use keycloak token for authentication [CCROP-254](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-254)
 
-### Fixed
-- Dashboard now shows correct numbers even when the selected date had a change due to daylight savings. [CCROP-253](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-253)
-- Map tiles now loaded over https to fix mixed content warnings. [CCROP-257](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-257)
 
 ## [0.5.0] - 2020-03-05
 
