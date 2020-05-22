@@ -1,7 +1,7 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
 import ol from "openlayers";
-import {CULTIVARS} from "../experimentFile";
+import {CULTIVARS, cashCrops, coverCrops} from "../experimentFile";
 
 const SQUARE_METER_TO_ACRE = 0.000247105;
 const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.86
@@ -451,12 +451,12 @@ export function cropObjToExptxt(text, cropobj) {
 	return textlines.join("\n");
 }
 
-export function isCrop(cropobj){
-	return (cropobj["MP"]["PDATE"] && parseInt(cropobj["MP"]["PDATE"])% 1000 < 200) || cropobj["MF"].length >0;
+export function isCashCrop(cropobj){
+	return cashCrops.includes(cropobj["CROP"]);
 }
 
 export function isCoverCrop(cropobj) {
-	return cropobj["CROP"] === "Rye";
+	return coverCrops.includes(cropobj["CROP"]);
 }
 
 export function roundResults(val, decimalPlaces){

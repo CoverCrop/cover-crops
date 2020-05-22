@@ -6,7 +6,7 @@ import Planting from "./Planting";
 import {getKeycloakHeader, isCoverCrop} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
-import {COVERCROP, defaultCropYears} from "../experimentFile";
+import {coverCropOptions, defaultCropYears} from "../experimentFile";
 import config from "../app.config";
 import {getExperimentSQX} from "../public/utils";
 
@@ -89,7 +89,7 @@ class CoverCropHistory extends Component {
 			}
 		});
 
-		let COVERCROPoptions = COVERCROP.map(function (key) {
+		let ccOptions = coverCropOptions.map(function (key) {
 			return {value: key, label: key};
 		});
 
@@ -116,7 +116,7 @@ class CoverCropHistory extends Component {
 								<Select
 									name="CROP"
 									value={this.state.covercrop}
-									options={COVERCROPoptions}
+									options={ccOptions}
 									onChange={selectedOption => this.handleSelectCoverCrop( selectedOption.value)}
 								/>
 							</div>
