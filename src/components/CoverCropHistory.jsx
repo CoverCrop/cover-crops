@@ -50,16 +50,15 @@ class CoverCropHistory extends Component {
 		let jsonBody;
 		let {email, clu} = this.props;
 		if (this.state.covercrop === "None") {
-			let cropName = this.state.year;
 			jsonBody = [
 				{
 					"EVENT": "planting",
-					"PLNAME": cropName,
+					"PLNAME": this.state.yearCrop,
 					"CONTENT": []
 				},
 				{
 					"EVENT": "harvest",
-					"HNAME": cropName,
+					"HNAME": this.state.yearCrop,
 					"CONTENT": []
 				}
 			];
