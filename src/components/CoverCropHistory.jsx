@@ -6,7 +6,7 @@ import Planting from "./Planting";
 import {getKeycloakHeader, isCoverCrop, getCoverCropForYear} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
-import {coverCropOptions, defaultCropYears} from "../experimentFile";
+import {coverCropOptions, cultivars, defaultCropYears} from "../experimentFile";
 import config from "../app.config";
 import {getExperimentSQX} from "../public/utils";
 
@@ -47,10 +47,29 @@ class CoverCropHistory extends Component {
 
 	handleClick = () => {
 
-		let plantingJson = this.planting.getBodyJson();
-		let harvestJson = this.harvest.getBodyJson();
+		let jsonBody;
 		let {email, clu} = this.props;
-		let jsonBody = [plantingJson, harvestJson];
+		if (this.state.covercrop === "None") {
+			let cropName = this.state.year;
+			jsonBody = [
+				{
+					"EVENT": "planting",
+					"PLNAME": cropName,
+					"CONTENT": []
+				},
+				{
+					"EVENT": "harvest",
+					"HNAME": cropName,
+					"CONTENT": []
+				}
+			];
+		}
+		else {
+			let plantingJson = this.planting.getBodyJson();
+			plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.covercrop]; // Add CNAME field to planting JSON
+			let harvestJson = this.harvest.getBodyJson();
+			jsonBody = [plantingJson, harvestJson];
+		}
 		fetch(config.CLUapi + "/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
@@ -72,12 +91,6 @@ class CoverCropHistory extends Component {
 	};
 
 	render() {
-		let years =[];
-		for(let key in this.props.cropobj){
-			if (isCoverCrop(this.props.cropobj[key])){
-				years.push(key);
-			}
-		}
 
 		let options = defaultCropYears.map(function(key){
 			return {value: key, label: key};

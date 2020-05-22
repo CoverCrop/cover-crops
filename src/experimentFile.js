@@ -1,4 +1,4 @@
-export const CULTIVARS = {"WH": "NEWTON", "MZ": "DEKALB 591", "SB": "M GROUP 2", "FA": "FALLOW"};
+export const CULTIVARS = {"WH": "IB0488 NEWTON", "MZ": "DEKALB 591", "SB": "M GROUP 2", "FA": "FALLOW"};
 
 export const drainage_type = {
 	"DR000": "No drainage",
@@ -63,4 +63,4 @@ export const coverCrops = ["Rye"];
 export const cashCropOptions = cashCrops.concat(["None"]);
 export const coverCropOptions = coverCrops.concat(["None"]);
 export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];
-export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "None":"None"};
+export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
