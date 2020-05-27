@@ -580,7 +580,7 @@ export function subtractDays(date, days) {
 }
 
 // To workaround a bug that only shows crop history for first 9 treatments CCROP-269
-// Takes start trimmed treatment line and add a space after first character if it's not found.
+// Takes start trimmed treatment line and adds a space after first character if it's not found.
 // This fix will work as long as @N is single digit.
 // @N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM
 // 110 1 0 2018 Fallow                1  1  0  1 10  0  0  0  0  0  0 10 10
