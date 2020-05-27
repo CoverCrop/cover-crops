@@ -400,7 +400,10 @@ export function getCropObj(text) {
 		const exp = {"CU": CULTIVARS, "MF": FERTILIZER, "MP": PLANTING, "MH": HARVEST, "MT": TILLAGE};
 
 		let linenumber = 2;
-		let crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
+
+		let treatmentLine = textlines[treaments_line_number + linenumber].trimStart();
+		treatmentLine = reformatTreatmentLine(treatmentLine);
+		let crop = treatmentLine.split(" ").filter(word => word !== "");
 
 		while (crop.length > 1) {
 			let obj = {};
@@ -412,7 +415,10 @@ export function getCropObj(text) {
 			let objkey = obj["YEAR"] + " " + obj["CROP"];
 			cropobj[objkey] = obj;
 			linenumber = linenumber + 1;
-			crop = textlines[treaments_line_number + linenumber].split(" ").filter(word => word !== "");
+
+			treatmentLine = textlines[treaments_line_number + linenumber].trimStart();
+			treatmentLine = reformatTreatmentLine(treatmentLine);
+			crop = treatmentLine.split(" ").filter(word => word !== "");
 		}
 		return cropobj;
 	}
@@ -571,4 +577,18 @@ export function subtractDays(date, days) {
 	let result = new Date(date);
 	result.setDate(result.getDate() - days);
 	return result;
+}
+
+// To workaround a bug that only shows crop history for first 9 treatments CCROP-269
+// Takes start trimmed treatment line and add a space after first character if it's not found.
+// This fix will work as long as @N is single digit.
+// @N R O C TNAME.................... CU FL SA IC MP MI MF MR MC MT ME MH SM
+// 110 1 0 2018 Fallow                1  1  0  1 10  0  0  0  0  0  0 10 10
+// Translates to below
+// 1 10 1 0 2018 Fallow                1  1  0  1 10  0  0  0  0  0  0 10 10
+export function reformatTreatmentLine(treatmentLine){
+	if (treatmentLine.charAt(1) !== " "){
+		treatmentLine = treatmentLine.substring(0, 1) + " " + treatmentLine.substring(1);
+	}
+	return treatmentLine;
 }
