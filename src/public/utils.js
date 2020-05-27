@@ -146,13 +146,6 @@ export function convertFullDate(dayString) {
 	}
 }
 
-export function calculateDayOfYear(date) {
-	let timeStamp = new Date().setFullYear(date.getFullYear(), 0, 1);
-	let yearFirstDay = Math.floor(timeStamp / 86400000);
-	let today = Math.ceil((date.getTime()) / 86400000);
-	return today - yearFirstDay;
-}
-
 export function calculateDayDifference(from, to){
 	let diffTime = to.getTime() - from.getTime();
 
