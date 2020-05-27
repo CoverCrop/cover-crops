@@ -18,7 +18,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Missing cultivar detail in the summary page after updating crop details. [CCROP-267](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-267)
 - Improved the condition to check if a crop is cash crop. Now first fallow will not show on Summary tab [CCROP-261](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-261)
 - Adding or updating cover crops from 'My Farm' page [CCROP-265](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-265)
-- Incorrect calculation of day of the year when the current date is different in local time and GMT. [CCROP-268](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-268)
+- Incorrect calculation of day of the year when the current date is different in local time and GMT. [CCROP-268](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-269)
+- Summary page will now display more than 10 crops [CCROP-269](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-268)
 
 ### Updated
 - Headers of all APIs to use keycloak token for authentication [CCROP-254](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-254)
