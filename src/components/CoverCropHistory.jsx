@@ -17,9 +17,11 @@ class CoverCropHistory extends Component {
 		this.state = {
 			year: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(0, 4),
 			isOpen: false,
-			covercrop: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
+			covercropSel: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 			yearCrop: this.props.cropobj ? undefined :
-					this.props.cropobj.keys()[0].substr(0, 4) + " " + this.props.cropobj.keys()[0].substr(5)
+					this.props.cropobj.keys()[0].substr(0, 4) + " " +
+					this.props.cropobj.keys()[0].substr(5),
+			covercropSaved: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 
 		};
 	}
@@ -36,36 +38,37 @@ class CoverCropHistory extends Component {
 		if(ccrop === null){
 			ccrop = "None";
 		}
-		this.setState({covercrop: ccrop});
+		this.setState({covercropSaved: ccrop});
+		this.setState({covercropSel: ccrop});
 		this.setState({yearCrop: year + " " + ccrop});
 	};
 
-	handleSelectCoverCrop = (covercrop) => {
-		this.setState({covercrop});
-		this.setState({yearCrop: this.state.year + " " + covercrop});
+	handleSelectCoverCrop = (covercropSel) => {
+		this.setState({covercropSel});
+		this.setState({yearCrop: this.state.year + " " + covercropSel});
 	};
 
 	handleClick = () => {
 
 		let jsonBody;
 		let {email, clu} = this.props;
-		if (this.state.covercrop === "None") {
+		if (this.state.covercropSel === "None") {
 			jsonBody = [
 				{
 					"EVENT": "planting",
-					"PLNAME": this.state.yearCrop,
+					"PLNAME": this.state.year + " " + this.state.covercropSaved,
 					"CONTENT": []
 				},
 				{
 					"EVENT": "harvest",
-					"HNAME": this.state.yearCrop,
+					"HNAME": this.state.year + " " + this.state.covercropSaved,
 					"CONTENT": []
 				}
 			];
 		}
 		else {
 			let plantingJson = this.planting.getBodyJson();
-			plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.covercrop]; // Add CNAME field to planting JSON
+			plantingJson["CONTENT"][0]["CNAME"] = cultivars[this.state.covercropSel]; // Add CNAME field to planting JSON
 			let harvestJson = this.harvest.getBodyJson();
 			jsonBody = [plantingJson, harvestJson];
 		}
@@ -122,16 +125,16 @@ class CoverCropHistory extends Component {
 								<p>CROP</p>
 								<Select
 									name="CROP"
-									value={this.state.covercrop}
+									value={this.state.covercropSel}
 									options={ccOptions}
 									onChange={selectedOption => this.handleSelectCoverCrop( selectedOption.value)}
 								/>
 							</div>
 						</div>
 					</div>}
-					{this.state.covercrop !== "None" &&
+					{this.state.covercropSel !== "None" &&
 					<Planting title="Establishment" year={this.state.yearCrop} onRef={ref => (this.planting = ref)}/> }
-					{this.state.covercrop !== "None" &&
+					{this.state.covercropSel !== "None" &&
 					<Harvest title="Termination" year={this.state.yearCrop} onRef={ref => (this.harvest = ref)}/> }
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}
 				</div>
