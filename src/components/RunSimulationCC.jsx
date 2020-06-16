@@ -93,8 +93,8 @@ class RunSimulationCC extends Component {
 		let withoutStatus = "";
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 		// check the status until two progresses are finished
-		while( withStatus === "" || withStatus === "WAITING" || withStatus === "RUNNING"
-		|| withoutStatus === "" || withoutStatus === "WAITING" || withoutStatus === "RUNNING" ){
+		while( withStatus === "" || withStatus === "WAITING" || withStatus === "RUNNING" || withStatus === "QUEUED"
+		|| withoutStatus === "" || withoutStatus === "WAITING" || withoutStatus === "RUNNING" || withoutStatus === "QUEUED"){
 			await wait(300);
 			// Get Execution Result
 			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
