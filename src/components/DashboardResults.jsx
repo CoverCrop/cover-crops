@@ -796,19 +796,24 @@ class DashboardResults extends Component {
 					</div>
 				</Modal>
 
-				<Modal open={this.state.openDecompGraph} onClose={this.handleGraphsClose}>
-					<div style={getModalStyle()}>
-						<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
-							<CloseIcon />
-						</IconButton>
-						<br/>
-						<br/>
-						<div>
-							{ !config.hideDecompOutputs ? <DecompositionGraph/> : null }
-						</div>
 
-					</div>
-				</Modal>
+				{ !config.hideDecompOutputs ?
+						<Modal open={this.state.openDecompGraph} onClose={this.handleGraphsClose}>
+							<div style={getModalStyle()}>
+								<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
+									<CloseIcon />
+								</IconButton>
+								<br/>
+								<br/>
+								<div>
+									<DecompositionGraph/>
+								</div>
+
+							</div>
+						</Modal>
+						:
+						null
+				}
 
 				<Table style={{ borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
