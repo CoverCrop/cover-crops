@@ -692,32 +692,47 @@ class DashboardResults extends Component {
 			</TableRow>
 		);
 
-		rowElems.push(
-				<TableRow key="5">
-					<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Decomposition
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleDecompGraphOpen} />
-					</span>
-						<span style={{fontWeight: "light", fontStyle: "italic"}}>(kg/ha/day)</span>
-					</TableCell>
-					<TableCell>
-						{(() => {
-							if((this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
-									this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null)){
-								let diff = this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
-										- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate);
-								let percent = diff/this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)*100;
-								// return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
-								return "66.34" + " (83.71%)";
-							}
-							else{
-								return "NA";
-							}
-						})()}
+		if (!config.hideDecompOutputs) {
 
-					</TableCell>
-				</TableRow>
-		);
+			rowElems.push(
+					<TableRow key="5">
+						<TableCell className="dashboardTableHeader">
+					<span className="dashboardTableHeaderSpan">Decomposition
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleDecompGraphOpen}/>
+					</span>
+							<span style={{
+								fontWeight: "light",
+								fontStyle: "italic"
+							}}>(kg/ha/day)</span>
+						</TableCell>
+						<TableCell>
+							{(() => {
+								if ((this.state.ccDataArray !== null &&
+										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
+										null &&
+										this.state.noccDataArray !== null &&
+										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
+										null)) {
+									let diff = this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate)
+											- this.getYfromArray(
+													this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+													harvestDate);
+									let percent = diff / this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate) * 100;
+									// return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+									return "66.34" + " (83.71%)";
+								} else {
+									return "NA";
+								}
+							})()}
+
+						</TableCell>
+					</TableRow>
+			);
+		}
 
 		html.push(
 			<Table style={{borderStyle: "solid",
@@ -789,8 +804,7 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div>
-							{/*style={{ width: "700px"}}*/}
-							<DecompositionGraph/>
+							{ !config.hideDecompOutputs ? <DecompositionGraph/> : null }
 						</div>
 
 					</div>
