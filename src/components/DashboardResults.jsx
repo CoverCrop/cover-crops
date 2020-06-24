@@ -681,7 +681,13 @@ class DashboardResults extends Component {
 							let diff = this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
 									- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate);
 							let percent = diff/this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)*100;
-							return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+							if(percent) {
+								return "-" + roundResults(diff, 2) + " (" +
+										roundResults(percent, 2) + "%)";
+							}
+							else {
+								return "NA";
+							}
 						}
 						else{
 							return "NA";
