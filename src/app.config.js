@@ -34,7 +34,7 @@ const prodConfig = {
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
 	keycloak: Keycloak(`https://${ prodDomain }/keycloak.json`),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
-	hideDecompOutputs: true
+	hideDecompOutputs: false
 };
 
 const config = getConfig();
