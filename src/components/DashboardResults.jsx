@@ -850,9 +850,14 @@ class DashboardResults extends Component {
 											value={this.state.selHarvestDateId}
 									/>
 
-									<Divider/>
-
-									<DecompositionGraph/>
+									{!config.hideDecompOutputs ?
+											<div>
+												<Divider/>
+												<DecompositionGraph/>
+											</div>
+											:
+											null
+									}
 
 								</div>
 							</TableCell>
