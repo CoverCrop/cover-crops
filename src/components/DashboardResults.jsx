@@ -6,13 +6,13 @@ import {convertDateToUSFormat, convertDateToUSFormatShort,
 import config from "../app.config";
 import Spinner from "./Spinner";
 
-// import Plot from "react-plotly.js";
+import Plot from "react-plotly.js";
 //TODO: Performance took a hit. Bundle size increased from 6 MB to 13 MB
 
 // customizable method: use your own `Plotly` object - Improve performance
 //plotly-basic.min is supposed to have most features we need, we can use it
 // instead and decrease size by 3 MB
-import Plotly from "plotly.js/dist/plotly.min";
+// import Plotly from "plotly.js/dist/plotly.min";
 import createPlotlyComponent from "react-plotly.js/factory";
 import style from "../styles/main.css";
 import Slider from "@material-ui/core/Slider";
@@ -20,6 +20,8 @@ import InsertChartIcon from "@material-ui/icons/InsertChart";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import Modal from "@material-ui/core/Modal";
+
+import Divider from "@material-ui/core/Divider";
 
 import { withStyles } from "@material-ui/core/styles";
 
@@ -32,8 +34,9 @@ import {
 
 } from "@material-ui/core";
 import CCComponentGraphs from "./CCComponentGraphs";
+import DecompositionGraph from "./DecompositionGraph";
 
-const Plot = createPlotlyComponent(Plotly);
+// const Plot = createPlotlyComponent(Plotly);
 
 const windowDurationDays = 28; // must be even. Can be moved to config
 const harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
@@ -116,7 +119,8 @@ class DashboardResults extends Component {
 			selHarvestDateId: harvestDay,
 			selHarvestDate: new Date(),
 			openGraphs: false,
-			graphType: ""
+			graphType: "",
+			openDecompGraph: false
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
@@ -677,7 +681,13 @@ class DashboardResults extends Component {
 							let diff = this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
 									- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate);
 							let percent = diff/this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)*100;
-							return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+							if(percent) {
+								return "-" + roundResults(diff, 2) + " (" +
+										roundResults(percent, 2) + "%)";
+							}
+							else {
+								return "NA";
+							}
 						}
 						else{
 							return "NA";
@@ -687,6 +697,48 @@ class DashboardResults extends Component {
 				</TableCell>
 			</TableRow>
 		);
+
+		if (!config.hideDecompOutputs) {
+
+			rowElems.push(
+					<TableRow key="5">
+						<TableCell className="dashboardTableHeader">
+					<span className="dashboardTableHeaderSpan">Decomposition
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleDecompGraphOpen}/>
+					</span>
+							<span style={{
+								fontWeight: "light",
+								fontStyle: "italic"
+							}}>(kg/ha/day)</span>
+						</TableCell>
+						<TableCell>
+							{(() => {
+								if ((this.state.ccDataArray !== null &&
+										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
+										null &&
+										this.state.noccDataArray !== null &&
+										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
+										null)) {
+									let diff = this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate)
+											- this.getYfromArray(
+													this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+													harvestDate);
+									let percent = diff / this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate) * 100;
+									// return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+									return "66.34" + " (83.71%)";
+								} else {
+									return "NA";
+								}
+							})()}
+
+						</TableCell>
+					</TableRow>
+			);
+		}
 
 		html.push(
 			<Table style={{borderStyle: "solid",
@@ -715,8 +767,13 @@ class DashboardResults extends Component {
 		this.setState({openGraphs: true});
 	};
 
+	handleDecompGraphOpen = () => {
+		this.setState({openDecompGraph: true});
+	};
+
 	handleGraphsClose = () => {
 		this.setState({openGraphs: false});
+		this.setState({openDecompGraph: false});
 	};
 
 
@@ -738,16 +795,31 @@ class DashboardResults extends Component {
 						</IconButton>
 						<br/>
 						<br/>
-						{/*<div className="graphsHeader">*/}
-						{/*	Component Results*/}
-						{/*</div>*/}
-
 						<div style={{ width: "700px"}}>
 							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType}/>
 						</div>
 
 					</div>
 				</Modal>
+
+
+				{ !config.hideDecompOutputs ?
+						<Modal open={this.state.openDecompGraph} onClose={this.handleGraphsClose}>
+							<div style={getModalStyle()}>
+								<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
+									<CloseIcon />
+								</IconButton>
+								<br/>
+								<br/>
+								<div>
+									<DecompositionGraph/>
+								</div>
+
+							</div>
+						</Modal>
+						:
+						null
+				}
 
 				<Table style={{ borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
@@ -777,6 +849,15 @@ class DashboardResults extends Component {
 											onChange={this.handleMuiChange("selHarvestDateId")}
 											value={this.state.selHarvestDateId}
 									/>
+
+									{!config.hideDecompOutputs ?
+											<div>
+												<Divider/>
+												<DecompositionGraph/>
+											</div>
+											:
+											null
+									}
 
 								</div>
 							</TableCell>
