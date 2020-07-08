@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Graphs showing individual cover crop parameter results (N Loss, N Uptake etc.) [CCROP-233](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-233)
 - Feature to use Cropland Data Layer for gathering crop rotation history. [CCROP-210](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-210)
 - Keycloak for authentication and user registration. This obsoletes authentication through datawolf [CCROP-221](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-221)
-- Mockup decomposition results and graph with a flag to hide in from dashboard [CCROP-255](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-255)
+- Mockup decomposition results and graph with a flag to hide it from dashboard [CCROP-255](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-255)
 
 ### Fixed
 - Added no-cache directive to all api calls to workaround a bug that was not updating 'Crop History' in real-time [CCROP-260](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-260)
