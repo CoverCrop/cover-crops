@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Loading spinner will always be cleared when transitioning from 'Run A Job' page to 'Dashboard'. Added missing condition check for 'Queued' datawolf state [CCROP-270](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-270)
-
+- Issue with dashboard showing only the first cover crop chart. [CCROP-251](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-251)
 
 ## [0.6.0] - 2020-05-29
 
