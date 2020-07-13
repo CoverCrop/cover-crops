@@ -5,7 +5,7 @@ import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, 
 import "babel-polyfill";
 import {
 	datawolfURL, latId, lonId, weatherId, workflowId, resultDatasetId,
-	userInputJSONDatasetID, eventPageSize
+	userInputJSONDatasetID, eventPageSize, weatherDatasetId
 } from "../datawolf.config";
 import styles from "../styles/history-page.css";
 import { handleResults} from "../actions/analysis";
@@ -82,7 +82,8 @@ class UserEvents extends Component {
 				if (event.status === "execution-success") {
 					this.props.setSelectedUserEventStatus(true);
 					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
-						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID]);
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
+							event[0].datasets[weatherDatasetId]);
 				}
 				// Else, set status to display an error message in the chart display area
 				else {
@@ -94,7 +95,7 @@ class UserEvents extends Component {
 
 	}
 
-	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId) => {
+	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId, weatherDatasetId) => {
 
 		this.setState({runStatus: "LOADING"});
 		this.setState({selectevent:id});
@@ -114,7 +115,8 @@ class UserEvents extends Component {
 								withCoverCropResultFile,
 								withoutCoverCropDatasetResultGUID,
 								withoutCoverCropResultFile,
-								userInputJson
+								userInputJson,
+								weatherDatasetId
 							);
 							that.setState({runStatus: "LOADED_RESULT"});
 						});
@@ -132,8 +134,8 @@ class UserEvents extends Component {
 		let selectEvent =  this.state.events[(pagenumber-1) * eventPageSize];
 		this.setState({pagenumber, selectevent: selectEvent.id });
 		this.viewResult(selectEvent.id, selectEvent.status, selectEvent[0].datasets[resultDatasetId],
-			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID]);
-
+			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID],
+				selectEvent[0].datasets[weatherDatasetId]);
 	};
 
 
@@ -222,8 +224,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson));
+		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson, weatherDatasetId) => {
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson, weatherDatasetId));
 		},
 		setSelectedUserEventStatus: (isSelectedEventSuccessful) => {
 			dispatch(setSelectedUserEventStatus(isSelectedEventSuccessful));

@@ -889,7 +889,8 @@ const mapStateToProps = (state) => {
 	return {
 		withCoverCropChartDataArray: state.analysis.withCoverCropResultJson,
 		withoutCoverCropChartDataArray: state.analysis.withoutCoverCropResultJson,
-		userInputJson: state.analysis.userInputJson
+		userInputJson: state.analysis.userInputJson,
+		weatherDatasetId: state.analysis.weatherDatasetId,
 	};
 };
 

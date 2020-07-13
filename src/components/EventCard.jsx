@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import {Card, CardText, Icon} from "react-mdc-web";
-import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId} from "../datawolf.config";
+import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId, weatherDatasetId} from "../datawolf.config";
 import {
 	convertDateToUSFormat,
 	getWeatherName,
@@ -52,7 +52,9 @@ class EventCard extends Component {
 			<Card
 				className={(event.id === this.props.selectevent? "choose-card":"") + " event-list " +(event.status)}
 				key={event[0].id}
-				onClick={() => this.props.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])}
+				onClick={() => this.props.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
+						event[0].datasets[weatherDatasetId])}
 			>
 				<CardText >
 

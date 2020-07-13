@@ -74,7 +74,8 @@ const analysis = (state = defaultState, action) => {
 				withCoverCropResultJson: action.withCoverCropResultJson,
 				withoutCoverCropExecutionId: action.withoutCoverCropExecutionId,
 				withoutCoverCropResultJson: action.withoutCoverCropResultJson,
-				userInputJson: action.userInputJson
+				userInputJson: action.userInputJson,
+				weatherDatasetId: action.weatherDatasetId
 			});
 		case "CHANGE_CARD": {
 			// let newState =
