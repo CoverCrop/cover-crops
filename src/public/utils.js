@@ -10,7 +10,7 @@ const METER_TO_FT = 3.28084167;
 const KG_TO_LB = 2.20462;
 const HA_TO_ACRE = 2.47105;
 const KGPERHA_TO_LBPERACRE = KG_TO_LB/HA_TO_ACRE; // ~ 0.893
-
+const LBPERACRE_TO_KGPERHA = HA_TO_ACRE/KG_TO_LB; // ~ 1.12
 
 export function groupBy(list, keyGetter) {
 	const map = new Map();
@@ -502,7 +502,11 @@ export function convertPerSqMeterToPerAcre(sq_meters){
 }
 
 export function convertKgPerHaToLbPerAcre(kg_ha){
-	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 2);
+	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE);
+}
+
+export function convertLbPerAcreToKgPerHa(lb_acre){
+	return roundResults(lb_acre * LBPERACRE_TO_KGPERHA);
 }
 
 export function checkIfDatawolfUserExists(email) {
