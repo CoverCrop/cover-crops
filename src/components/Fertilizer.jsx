@@ -21,6 +21,10 @@ class Fertilizer extends Component {
 		this.setState(this.props.crop);
 		let fdate = this.props.crop["FDATE"];
 		this.setState({"FDATE":convertFullDate(fdate)});
+		if(this.props.crop["FAMN"]){
+			this.setState({"FAMN" :
+						convertKgPerHaToLbPerAcre(this.props.crop["FAMN"]).toString()});
+		}
 	}
 
 	componentWillUnmount() {
