@@ -1,10 +1,17 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 
-import {convertDateToUSFormat, convertDateToUSFormatShort,
-	roundResults, calculateDayDifference, addDays} from "../public/utils";
+import {
+	convertDateToUSFormat,
+	convertDateToUSFormatShort,
+	roundResults,
+	calculateDayDifference,
+	addDays,
+	getKeycloakHeader
+} from "../public/utils";
 import config from "../app.config";
 import Spinner from "./Spinner";
+import {format} from "date-fns";
 
 import Plot from "react-plotly.js";
 //TODO: Performance took a hit. Bundle size increased from 6 MB to 13 MB
@@ -120,7 +127,8 @@ class DashboardResults extends Component {
 			selHarvestDate: new Date(),
 			openGraphs: false,
 			graphType: "",
-			openDecompGraph: false
+			openDecompGraph: false,
+			decompositionGraphInfo: null
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
@@ -175,8 +183,77 @@ class DashboardResults extends Component {
 			this.setState({ccDataArray: ccDataArray});
 			this.setState({noccDataArray: noccDataArray});
 			this.setState({selHarvestDateId: harvestDay});
+
+			// Get Decomposition Results
+			this.getDecompositionResults(ccDataArray, harvestDate);
+
 			this.setState({runStatus: "RECEIVED"});
 		}
+	}
+
+	getDecompositionResults(ccDataArray, harvestDate){
+		if(harvestDate == null){
+			harvestDate = this.state.harvestDate;
+		}
+
+		let terminationDt = format(harvestDate, "yyyy-MM-dd");
+		let biomass = 0;
+		let cnRatio = 0;
+		let wthDatasetId = null;
+
+		biomass = (ccDataArray !== null && ccDataArray["TWAD"].chartData.datasets[0] != null) ?
+				this.getYfromArray(ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA";
+
+		cnRatio = (ccDataArray !== null && ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
+				this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA";
+
+		wthDatasetId = this.props["weatherDatasetId"];
+
+		const decompApi = config.CLUapi + "/decomposition?termination_date=" + terminationDt +
+				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&dw_dataset_id=" + wthDatasetId;
+
+		let dates = [];
+		let percentWithTillageData = [];
+		let percentWoTillageData = [];
+		let rateWithTillageData = [];
+		let rateWoTillageData = [];
+
+		let that = this;
+		fetch(decompApi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			if (response.status === 200) {
+				return response.json();
+			}
+		}).then(decompJson => {
+			if(decompJson) {
+				decompJson.forEach(function(element) {
+					dates.push(element.date);
+					percentWithTillageData.push(element.percent_till);
+					percentWoTillageData.push(element.percent_no_till);
+					rateWithTillageData.push(element.smoothed_rate_till);
+					rateWoTillageData.push(element.smoothed_rate_no_till);
+				});
+				that.setState({
+					decompositionGraphInfo: {
+						"dates": dates,
+						"percentWithTillageData": percentWithTillageData,
+						"percentWoTillageData": percentWoTillageData,
+						"rateWithTillageData": rateWithTillageData,
+						"rateWoTillageData": rateWoTillageData
+					}
+				});
+			}
+			else {
+				that.setState({decompositionGraphInfo: null });
+			}
+		}).catch(function (e) {
+			console.log("Get Decomposition endpoint failed: " + e);
+		});
 	}
 
 	getHarvestDateFromId(harvestDates, id){
@@ -208,6 +285,8 @@ class DashboardResults extends Component {
 		this.setState({[name]:  value });
 		let selHarvestDate = this.getHarvestDateFromId(this.state.harvestDates, value);
 		this.setState({selHarvestDate: selHarvestDate});
+
+		this.getDecompositionResults(this.state.ccDataArray, selHarvestDate);
 	};
 
 	// Generates charts array object containing individual charts and datasets
@@ -698,46 +777,49 @@ class DashboardResults extends Component {
 			</TableRow>
 		);
 
+		// This will always be 100% at the start if termination. Doesn't make sense
+		// to have this row in table. Confirm and delete
+
 		if (!config.hideDecompOutputs) {
-
-			rowElems.push(
-					<TableRow key="5">
-						<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Decomposition
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleDecompGraphOpen}/>
-					</span>
-							<span style={{
-								fontWeight: "light",
-								fontStyle: "italic"
-							}}>(kg/ha/day)</span>
-						</TableCell>
-						<TableCell>
-							{(() => {
-								if ((this.state.ccDataArray !== null &&
-										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
-										null &&
-										this.state.noccDataArray !== null &&
-										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
-										null)) {
-									let diff = this.getYfromArray(
-											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
-											harvestDate)
-											- this.getYfromArray(
-													this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
-													harvestDate);
-									let percent = diff / this.getYfromArray(
-											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
-											harvestDate) * 100;
-									// return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
-									return "66.34" + " (83.71%)";
-								} else {
-									return "NA";
-								}
-							})()}
-
-						</TableCell>
-					</TableRow>
-			);
+			// rowElems.push(
+			// 		<TableRow key="5">
+			// 			<TableCell className="dashboardTableHeader">
+			// 		<span className="dashboardTableHeaderSpan">Decomposition
+			// 			<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleDecompGraphOpen}/>
+			// 		</span>
+			// 				<span style={{
+			// 					fontWeight: "light",
+			// 					fontStyle: "italic"
+			// 				}}>(kg/ha/day)</span>
+			//
+			// 			</TableCell>
+			// 			<TableCell>
+			// 				{(() => {
+			// 					if ((this.state.ccDataArray !== null &&
+			// 							this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
+			// 							null &&
+			// 							this.state.noccDataArray !== null &&
+			// 							this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
+			// 							null)) {
+			// 						let diff = this.getYfromArray(
+			// 								this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+			// 								harvestDate)
+			// 								- this.getYfromArray(
+			// 										this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+			// 										harvestDate);
+			// 						let percent = diff / this.getYfromArray(
+			// 								this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+			// 								harvestDate) * 100;
+			// 						// return "-"+ roundResults(diff, 2) + " (" + roundResults(percent, 2) + "%)";
+			// 						return "66.34" + " (83.71%)";
+			// 					} else {
+			// 						return "NA";
+			// 					}
+			// 				})()}
+			//
+			// 			</TableCell>
+			// 		</TableRow>
+			// );
 		}
 
 		html.push(
@@ -812,7 +894,7 @@ class DashboardResults extends Component {
 								<br/>
 								<br/>
 								<div>
-									<DecompositionGraph/>
+									<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
 								</div>
 
 							</div>
@@ -853,7 +935,7 @@ class DashboardResults extends Component {
 									{!config.hideDecompOutputs ?
 											<div>
 												<Divider/>
-												<DecompositionGraph/>
+												<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
 											</div>
 											:
 											null
