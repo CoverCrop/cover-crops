@@ -185,13 +185,15 @@ class DashboardResults extends Component {
 			this.setState({selHarvestDateId: harvestDay});
 
 			// Get Decomposition Results
-			this.getDecompositionResults(ccDataArray, harvestDate);
+			if(nextProps["weatherDatasetId"]) {
+				this.getDecompositionResults(ccDataArray, harvestDate, nextProps["weatherDatasetId"]);
+			}
 
 			this.setState({runStatus: "RECEIVED"});
 		}
 	}
 
-	getDecompositionResults(ccDataArray, harvestDate){
+	getDecompositionResults(ccDataArray, harvestDate, wthDatasetId){
 		this.setState({runStatus: "FETCH_DECOMP"});
 		if(harvestDate == null){
 			harvestDate = this.state.harvestDate;
@@ -200,15 +202,12 @@ class DashboardResults extends Component {
 		let terminationDt = format(harvestDate, "yyyy-MM-dd");
 		let biomass = 0;
 		let cnRatio = 0;
-		let wthDatasetId = null;
 
 		biomass = (ccDataArray !== null && ccDataArray["TWAD"].chartData.datasets[0] != null) ?
 				this.getYfromArray(ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA";
 
 		cnRatio = (ccDataArray !== null && ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
 				this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA";
-
-		wthDatasetId = this.props["weatherDatasetId"];
 
 		const decompApi = config.CLUapi + "/decomposition?termination_date=" + terminationDt +
 				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&dw_dataset_id=" + wthDatasetId;
@@ -288,7 +287,7 @@ class DashboardResults extends Component {
 		let selHarvestDate = this.getHarvestDateFromId(this.state.harvestDates, value);
 		this.setState({selHarvestDate: selHarvestDate});
 
-		this.getDecompositionResults(this.state.ccDataArray, selHarvestDate);
+		this.getDecompositionResults(this.state.ccDataArray, selHarvestDate, this.props["weatherDatasetId"]);
 	};
 
 	// Generates charts array object containing individual charts and datasets
