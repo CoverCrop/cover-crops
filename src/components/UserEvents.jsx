@@ -69,7 +69,7 @@ class UserEvents extends Component {
 
 	componentWillMount(){
 		// avoid displaying selectedEventNotSuccessful while the history page is loading
-		this.props.setSelectedUserEventStatus(true);
+		this.props.setSelectedUserEventStatus(null);
 		this.setState({runStatus: "LOADING"});
 		this.getEvents().then(function success() {
 			console.log("Fetched events.");
@@ -125,7 +125,9 @@ class UserEvents extends Component {
 		else if(status ==="execution-error")
 		{
 			this.props.setSelectedUserEventStatus(false);
+			this.setState({runStatus: "FAILED_RESULT"});
 		}
+
 	};
 
 	handlePageChange = (pagenumber) => {

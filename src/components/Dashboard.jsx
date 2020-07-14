@@ -5,7 +5,7 @@ import UserEvents from "./UserEvents";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import DashboardResults from "./DashboardResults";
-import {selectedEventNotSuccessful} from "../app.messages";
+import {selectedEventNotSuccessful, noJobsFound} from "../app.messages";
 import {connect} from "react-redux";
 
 class Dashboard extends Component {
@@ -15,6 +15,15 @@ class Dashboard extends Component {
 	}
 
 	render() {
+
+		let dashboardOutput = <p className="error-message">{noJobsFound}</p>;
+
+		if (this.props.isSelectedEventSuccessful === true){
+			dashboardOutput = <DashboardResults />;
+		}
+		else if (this.props.isSelectedEventSuccessful === false){
+			dashboardOutput = <p className="error-message">{selectedEventNotSuccessful}</p>;
+		}
 		return (
 			<AuthorizedWrap>
 				<div>
@@ -27,7 +36,7 @@ class Dashboard extends Component {
 								<UserEvents />
 							</Cell>
 							<Cell col={10}>
-								{this.props.isSelectedEventSuccessful ? <DashboardResults /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
+								{dashboardOutput}
 							</Cell>
 						</Grid>
 					</div>
