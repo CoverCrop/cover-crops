@@ -192,6 +192,7 @@ class DashboardResults extends Component {
 	}
 
 	getDecompositionResults(ccDataArray, harvestDate){
+		this.setState({runStatus: "FETCH_DECOMP"});
 		if(harvestDate == null){
 			harvestDate = this.state.harvestDate;
 		}
@@ -254,6 +255,7 @@ class DashboardResults extends Component {
 		}).catch(function (e) {
 			console.log("Get Decomposition endpoint failed: " + e);
 		});
+		this.setState({runStatus: "RECEIVED"});
 	}
 
 	getHarvestDateFromId(harvestDates, id){
@@ -862,7 +864,7 @@ class DashboardResults extends Component {
 	render() {
 		const {classes} = this.props;
 		let spinner;
-		if(this.state.runStatus === "INIT"){
+		if(this.state.runStatus !== "RECEIVED"){
 			spinner = <Spinner/>;
 		}
 
