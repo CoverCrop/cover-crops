@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Loading spinner will always be cleared when transitioning from 'Run A Job' page to 'Dashboard'. Added missing condition check for 'Queued' datawolf state [CCROP-270](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-270)
-
+- Handled cases when the user has no jobs and when selected job failed, so the Dashboard will show appropriate message instead of spinning indefinitely [CCROP-281](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-281)
 
 ## [0.6.0] - 2020-05-29
 
