@@ -10,6 +10,8 @@ class ViewResultsCC extends Component {
 			<div>
 				<h1>Results</h1>
 				<br/>
+				{/*TODO: This is going to not work due to change in isSelectedEventSuccessful data type from boolean to string.
+				TODO: Can this component be removed altogether?*/}
 				{this.props.isSelectedEventSuccessful ? <ChartCC /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
 			</div>
 		);

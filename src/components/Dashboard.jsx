@@ -16,13 +16,16 @@ class Dashboard extends Component {
 
 	render() {
 
-		let dashboardOutput = <p className="error-message">{noJobsFound}</p>;
+		let dashboardOutput = "";
 
-		if (this.props.isSelectedEventSuccessful === true){
+		if (this.props.isSelectedEventSuccessful === "success"){
 			dashboardOutput = <DashboardResults />;
 		}
-		else if (this.props.isSelectedEventSuccessful === false){
+		else if (this.props.isSelectedEventSuccessful === "error"){
 			dashboardOutput = <p className="error-message">{selectedEventNotSuccessful}</p>;
+		}
+		else if (this.props.isSelectedEventSuccessful === "noRuns"){
+			dashboardOutput = <p className="error-message">{noJobsFound}</p>;
 		}
 		return (
 			<AuthorizedWrap>
