@@ -69,26 +69,28 @@ class UserEvents extends Component {
 
 	componentWillMount(){
 		// avoid displaying selectedEventNotSuccessful while the history page is loading
-		this.props.setSelectedUserEventStatus(true);
+		this.props.setSelectedUserEventStatus(null);
 		this.setState({runStatus: "LOADING"});
 		this.getEvents().then(function success() {
 			console.log("Fetched events.");
-
 			if (this.state.events.length > 0) {
 				let event = this.state.events[0];
 				this.setState({selectevent: event.id});
 
 				// If the latest simulation is successful, view results
 				if (event.status === "execution-success") {
-					this.props.setSelectedUserEventStatus(true);
+					this.props.setSelectedUserEventStatus("success");
 					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
 						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
 							event[0].datasets[weatherDatasetId]);
 				}
 				// Else, set status to display an error message in the chart display area
 				else {
-					this.props.setSelectedUserEventStatus(false);
+					this.props.setSelectedUserEventStatus("error");
 				}
+			}
+			else{
+				this.props.setSelectedUserEventStatus("noRuns");
 			}
 			this.setState({runStatus: "LOADED_EVENTS"});
 		}.bind(this));
@@ -102,7 +104,7 @@ class UserEvents extends Component {
 		const outputFilename = "output.json";
 
 		if(status ==="execution-success") {
-			this.props.setSelectedUserEventStatus(true);
+			this.props.setSelectedUserEventStatus("success");
 
 			let that = this;
 			if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
@@ -126,8 +128,10 @@ class UserEvents extends Component {
 		}
 		else if(status ==="execution-error")
 		{
-			this.props.setSelectedUserEventStatus(false);
+			this.props.setSelectedUserEventStatus("error");
+			this.setState({runStatus: "FAILED_RESULT"});
 		}
+
 	};
 
 	handlePageChange = (pagenumber) => {

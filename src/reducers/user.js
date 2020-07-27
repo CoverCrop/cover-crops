@@ -11,7 +11,7 @@ const defaultState = {
 	exptxt:"",
 	cropobj: {},
 	fieldobj: {},
-	isSelectedEventSuccessful: false,
+	isSelectedEventSuccessful: "error",
 	isExperimentUpdate: false
 };
 
