@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {Button, Title} from "react-mdc-web";
-import {convertFullDate} from "../public/utils";
+import {convertFullDate,
+	convertPerSqMeterToPerAcre,
+	convertPerAcreToPerSqMeter} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
@@ -35,6 +37,8 @@ class Planting extends Component {
 				let pdate = selectcrop["PDATE"];
 				// console.log(convertFullDate(pdate));
 				this.setState({"PDATE": convertFullDate(pdate)});
+
+				this.setState({"PPOP": convertPerSqMeterToPerAcre(selectcrop["PPOP"]).toString()});
 			} else{
 				this.setDefault();
 			}
@@ -49,6 +53,7 @@ class Planting extends Component {
 		if(jsonBody["CONTENT"][0]["PDATE"]) {
 
 			jsonBody["PLNAME"] = year;
+			jsonBody["CONTENT"][0]["PPOP"] = convertPerAcreToPerSqMeter(jsonBody["CONTENT"][0]["PPOP"]);
 			jsonBody["CONTENT"][0]["PPOE"] = jsonBody["CONTENT"][0]["PPOP"];
 			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, "").substring(0, 8);
 			jsonBody["EVENT"] = "planting";
@@ -102,7 +107,7 @@ class Planting extends Component {
 												firstField="MP" secondField="PLDP"
 												defaultValue={this.state.PLDP} handler = {this.handler}
 					/>
-					<MyFarmUpdate isLeft elementType="input" title="POP, seeds/acre" cropyear={this.state.year}
+					<MyFarmUpdate isLeft elementType="inputSeeds" title="POP, seeds/acre" cropyear={this.state.year}
 												firstField="MP" secondField="PPOP"
 												defaultValue={this.state.PPOP} handler = {this.handler}
 					/>

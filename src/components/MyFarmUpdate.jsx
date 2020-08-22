@@ -4,13 +4,81 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Select from "react-select";
-import {dictToOptions} from "../public/utils";
+import {dictToOptions, isNumeric} from "../public/utils";
 
 class MyFarmUpdate extends Component {
 
 	constructor(props) {
 		super(props);
 	}
+
+	validateInchInput = (e, secondField) => {
+		let updateValue = e.target.value;
+		let roundedVal;
+
+		if(!isNumeric(updateValue)) {
+			roundedVal = 1000;
+		}
+		else {
+			if (updateValue < 1000) {
+				roundedVal = 1000;
+			} else if (updateValue >= 1000000) {
+				roundedVal = 1000000;
+			} else {
+				roundedVal = Math.round(updateValue / 1000) * 1000;
+			}
+		}
+		e.target.value = roundedVal;
+		this.props.handler(secondField, e.target.value);
+	};
+
+	validateLbsInput = (e, secondField) => {
+		let updateValue = e.target.value;
+		let roundedVal;
+
+		if(!isNumeric(updateValue)) {
+			roundedVal = 1000;
+		}
+		else {
+			if (updateValue < 1000) {
+				roundedVal = 1000;
+			} else if (updateValue >= 1000000) {
+				roundedVal = 1000000;
+			} else {
+				roundedVal = Math.round(updateValue / 1000) * 1000;
+			}
+		}
+		e.target.value = roundedVal;
+		this.props.handler(secondField, e.target.value);
+	};
+
+	validateSeedsInput = (e, secondField) => {
+		let updateValue = e.target.value;
+		let roundedVal;
+
+		if(!isNumeric(updateValue)) {
+			roundedVal = 1000;
+		}
+		else {
+			if (updateValue < 1000) {
+				roundedVal = 1000;
+			} else if (updateValue >= 1000000) {
+				roundedVal = 1000000;
+			} else {
+				roundedVal = Math.round(updateValue / 1000) * 1000;
+			}
+		}
+		e.target.value = roundedVal;
+		this.props.handler(secondField, e.target.value);
+	};
+
+	validateEmptyInput = (e, secondField) => {
+		if (!isNumeric(e.target.value)) {
+			e.target.value = 1;
+			this.props.handler(secondField, e.target.value);
+		}
+	};
+
 
 	render() {
 		const {elementType, firstField, secondField, defaultValue} = this.props;
@@ -21,7 +89,7 @@ class MyFarmUpdate extends Component {
 
 		return (
 			<div>
-			{defaultValue && <div className={divClasses}>
+			{defaultValue != null && <div className={divClasses}>
 				<p  className={this.props.elementType}>{this.props.title}</p>
 
 				{(() => {
@@ -42,16 +110,50 @@ class MyFarmUpdate extends Component {
 														this.props.handler(secondField, moment.toISOString())
 													}
 								/>);
-							case "input":
-								return (<Textfield
+						case "input":
+							return (<Textfield
 									min="0"
 									type="number"
 									step="1"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
-										this.props.handler(secondField, updateValue === "" ? 1: updateValue);
+										this.props.handler(secondField, updateValue);
 									}}
-								/>);
+									onBlur={(e) => this.validateEmptyInput(e, secondField)}
+							/>);
+						case "inputInch":
+							return (<Textfield
+									min="0"
+									type="number"
+									step="1"
+									value={defaultValue}
+									onChange={({target: {value: updateValue}}) => {
+										this.props.handler(secondField, updateValue);
+									}}
+									onBlur={(e) => this.validateInchInput(e, secondField)}
+							/>);
+						case "inputLbs":
+							return (<Textfield
+									min="0"
+									type="number"
+									step="1"
+									value={defaultValue}
+									onChange={({target: {value: updateValue}}) => {
+										this.props.handler(secondField, updateValue);
+									}}
+									onBlur={(e) => this.validateLbsInput(e, secondField)}
+							/>);
+						case "inputSeeds":
+							return (<Textfield
+									min="1000"
+									type="number"
+									step="1000"
+									value={defaultValue}
+									onChange={({target: {value: updateValue}}) => {
+										this.props.handler(secondField, updateValue);
+									}}
+									onBlur={(e) => this.validateSeedsInput(e, secondField)}
+							/>);
 							default :
 								null;
 						}

@@ -497,8 +497,12 @@ export function convertMetersToFeet(meters){
 	return roundResults(meters * METER_TO_FT, 2);
 }
 
-export function convertPerSqMeterToPerAcre(sq_meters){
-	return roundResults(sq_meters * QTY_PER_SQUARE_METER_TO_ACRE, 0);
+export function convertPerSqMeterToPerAcre(per_sq_meters){
+	return roundResults(Math.round((per_sq_meters * QTY_PER_SQUARE_METER_TO_ACRE)/1000) * 1000, 0);
+}
+
+export function convertPerAcreToPerSqMeter(per_acres){
+	return roundResults(per_acres * SQUARE_METER_TO_ACRE, 2);
 }
 
 export function convertKgPerHaToLbPerAcre(kg_ha){
@@ -595,4 +599,8 @@ export function reformatTreatmentLine(treatmentLine){
 		treatmentLine = treatmentLine.substring(0, 1) + " " + treatmentLine.substring(1);
 	}
 	return treatmentLine;
+}
+
+export function isNumeric(n) {
+	return !isNaN(parseFloat(n)) && isFinite(n);
 }
