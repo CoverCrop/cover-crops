@@ -4,7 +4,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Select from "react-select";
-import {dictToOptions, isNumeric} from "../public/utils";
+import {dictToOptions, isNumeric, roundResults} from "../public/utils";
 
 class MyFarmUpdate extends Component {
 
@@ -17,38 +17,37 @@ class MyFarmUpdate extends Component {
 		let roundedVal;
 
 		if(!isNumeric(updateValue)) {
-			roundedVal = 1000;
+			roundedVal = 1;
 		}
 		else {
-			if (updateValue < 1000) {
-				roundedVal = 1000;
-			} else if (updateValue >= 1000000) {
-				roundedVal = 1000000;
+			if (updateValue >= 392) {
+				roundedVal = 392;
 			} else {
-				roundedVal = Math.round(updateValue / 1000) * 1000;
+				roundedVal = updateValue;
 			}
 		}
-		e.target.value = roundedVal;
+
+		e.target.value = roundResults(roundedVal, 2);
 		this.props.handler(secondField, e.target.value);
 	};
+
 
 	validateLbsInput = (e, secondField) => {
 		let updateValue = e.target.value;
 		let roundedVal;
 
 		if(!isNumeric(updateValue)) {
-			roundedVal = 1000;
+			roundedVal = 1;
 		}
 		else {
-			if (updateValue < 1000) {
-				roundedVal = 1000;
-			} else if (updateValue >= 1000000) {
-				roundedVal = 1000000;
+			if (updateValue >= 892) {
+				roundedVal = 892;
 			} else {
-				roundedVal = Math.round(updateValue / 1000) * 1000;
+				roundedVal = updateValue;
 			}
 		}
-		e.target.value = roundedVal;
+
+		e.target.value = roundResults(roundedVal, 1);
 		this.props.handler(secondField, e.target.value);
 	};
 

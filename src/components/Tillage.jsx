@@ -96,7 +96,7 @@ class Tillage extends Component {
 													firstField="MT" secondField="TDATE"
 													defaultValue={this.state.TDATE} handler={this.handler}
 						/>
-						<MyFarmUpdate elementType="input" title="DEPTH" cropyear={this.state.year}
+						<MyFarmUpdate elementType="inputInch" title="DEPTH" cropyear={this.state.year}
 													firstField="MT" secondField="TDEP"
 													defaultValue={this.state.TDEP} handler={this.handler}
 						/>

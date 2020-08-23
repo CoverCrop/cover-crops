@@ -99,11 +99,11 @@ class Planting extends Component {
 					/>
 
 					<div className="update-box-div">
-					<MyFarmUpdate isLeft elementType="input" title="ROW SPACING, inch" cropyear={this.state.year}
+					<MyFarmUpdate isLeft elementType="inputInch" title="ROW SPACING, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLRS"
 												defaultValue={this.state.PLRS} handler = {this.handler}
 					/>
-					<MyFarmUpdate isLeft elementType="input" title="DEPTH, inch" cropyear={this.state.year}
+					<MyFarmUpdate isLeft elementType="inputInch" title="DEPTH, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLDP"
 												defaultValue={this.state.PLDP} handler = {this.handler}
 					/>

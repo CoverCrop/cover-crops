@@ -506,11 +506,11 @@ export function convertPerAcreToPerSqMeter(per_acres){
 }
 
 export function convertKgPerHaToLbPerAcre(kg_ha){
-	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE);
+	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 1);
 }
 
 export function convertLbPerAcreToKgPerHa(lb_acre){
-	return roundResults(lb_acre * LBPERACRE_TO_KGPERHA);
+	return roundResults(lb_acre * LBPERACRE_TO_KGPERHA, 1);
 }
 
 export function checkIfDatawolfUserExists(email) {

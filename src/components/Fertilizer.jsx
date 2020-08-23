@@ -89,11 +89,11 @@ class Fertilizer extends Component {
 												defaultValue={this.state.FACD} handler={this.handler}
 					/>
 
-						< MyFarmUpdate elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
+						< MyFarmUpdate elementType="inputLbs" title="AMOUNT, lb/acre" cropyear={this.state.year}
 												firstField="MF" secondField="FAMN"
 												defaultValue={this.state.FAMN} handler = {this.handler}
 						/>
-						<MyFarmUpdate elementType="input" title="DEPTH, in" cropyear={this.state.year}
+						<MyFarmUpdate elementType="inputInch" title="DEPTH, in" cropyear={this.state.year}
 													firstField="MF" secondField="FDEP"
 													defaultValue={this.state.FDEP} handler = {this.handler}
 						/>
