@@ -6,6 +6,7 @@ import {CULTIVARS, cashCrops, coverCrops} from "../experimentFile";
 const SQUARE_METER_TO_ACRE = 0.000247105;
 const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.86
 const CM_TO_INCH = 0.393701;
+const INCH_TO_CM = 1/CM_TO_INCH;
 const METER_TO_FT = 3.28084167;
 const KG_TO_LB = 2.20462;
 const HA_TO_ACRE = 2.47105;
@@ -491,6 +492,10 @@ export function roundResults(val, decimalPlaces){
 
 export function convertCmToInches(cm){
 	return roundResults(cm * CM_TO_INCH, 2);
+}
+
+export function convertInchesToCm(inches){
+	return roundResults(inches * INCH_TO_CM, 2);
 }
 
 export function convertMetersToFeet(meters){

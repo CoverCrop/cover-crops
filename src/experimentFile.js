@@ -24,23 +24,26 @@ export const FACD = {
 	"AP004": "Banded beneath surface", "AP009": "Injected"
 };
 
+// All fertilizer defaults should be in SI units. This is different to planting & tillage
+// defaults due to different implementation of default value parsing in the Fertilizer component.
 export const defaultFertilizer = {
 	"FDATE": "0402",
 	// "FMCD": "FE004",
 	"FACD": "AP009",
-	"FDEP": "20",
-	"FAMN": "193",
+	"FDEP": "20.00",
+	"FAMN": "193.0"
 };
 
+// All planting defaults should be in Imperial format
 export const defaultPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"8",
-	"PPOE":"8",
+	"PPOP":"32000",
+	"PPOE":"32000",
 	"PLME":"S",
 	"PLDS":"R",
-	"PLRS": "76",
+	"PLRS": "29.92",
 	"PLRD": "0",
-	"PLDP": "4"
+	"PLDP": "1.57"
 };
 
 export const defaultHarvest = {
@@ -56,7 +59,7 @@ export const TIMPL = {
 	"TI019": "Fertilizer applicator, anhydrous"
 };
 
-export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
+export const defaultTillage = {"TDATE": "0922", "TDEP": "5.91"}; // default in SI
 // export const CROP = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
 export const cashCrops = ["Corn", "Soybean"];
 export const coverCrops = ["Rye"];

@@ -1,8 +1,10 @@
 import React, {Component} from "react";
 import {Button, Title} from "react-mdc-web";
-import {convertFullDate,
+import {
+	convertFullDate,
 	convertPerSqMeterToPerAcre,
-	convertPerAcreToPerSqMeter} from "../public/utils";
+	convertPerAcreToPerSqMeter, convertCmToInches, convertInchesToCm,
+} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
@@ -39,6 +41,8 @@ class Planting extends Component {
 				this.setState({"PDATE": convertFullDate(pdate)});
 
 				this.setState({"PPOP": convertPerSqMeterToPerAcre(selectcrop["PPOP"]).toString()});
+				this.setState({"PLRS": convertCmToInches(selectcrop["PLRS"]).toString()});
+				this.setState({"PLDP": convertCmToInches(selectcrop["PLDP"]).toString()});
 			} else{
 				this.setDefault();
 			}
@@ -56,6 +60,10 @@ class Planting extends Component {
 			jsonBody["CONTENT"][0]["PPOP"] = convertPerAcreToPerSqMeter(jsonBody["CONTENT"][0]["PPOP"]);
 			jsonBody["CONTENT"][0]["PPOE"] = jsonBody["CONTENT"][0]["PPOP"];
 			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, "").substring(0, 8);
+
+			jsonBody["CONTENT"][0]["PLRS"] = convertInchesToCm(jsonBody["CONTENT"][0]["PLRS"]);
+			jsonBody["CONTENT"][0]["PLDP"] = convertInchesToCm(jsonBody["CONTENT"][0]["PLDP"]);
+
 			jsonBody["EVENT"] = "planting";
 			return jsonBody;
 

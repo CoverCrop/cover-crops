@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import {convertFullDate,
+import {
+	convertFullDate,
 	convertLbPerAcreToKgPerHa,
-	convertKgPerHaToLbPerAcre} from "../public/utils";
+	convertKgPerHaToLbPerAcre, convertCmToInches, convertInchesToCm,
+} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultFertilizer, FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
@@ -25,6 +27,9 @@ class Fertilizer extends Component {
 			this.setState({"FAMN" :
 						convertKgPerHaToLbPerAcre(this.props.crop["FAMN"]).toString()});
 		}
+		if(this.props.crop["FDEP"]){
+			this.setState({"FDEP" : convertCmToInches(this.props.crop["FDEP"]).toString()});
+		}
 	}
 
 	componentWillUnmount() {
@@ -37,10 +42,12 @@ class Fertilizer extends Component {
 		let fdate = nextProps.crop["FDATE"];
 		this.setState({"FDATE": convertFullDate(fdate)});
 		this.setState({"FAMN" : convertKgPerHaToLbPerAcre(nextProps.crop["FAMN"]).toString()});
+		this.setState({"FDEP" : convertCmToInches(nextProps.crop["FDEP"]).toString()});
 	}
 
 	getBodyJson(){
 		let jsonBody = Object.assign({}, this.state);
+		console.log(jsonBody);
 
 		if(jsonBody["FMCD"] !== "None"){
 			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, "").substring(0, 8);
@@ -49,6 +56,11 @@ class Fertilizer extends Component {
 		if(jsonBody["FAMN"] !== undefined && jsonBody["FAMN"]){
 			jsonBody["FAMN"] = convertLbPerAcreToKgPerHa(jsonBody["FAMN"]).toString();
 		}
+
+		if(jsonBody["FDEP"] !== undefined && jsonBody["FDEP"]){
+			jsonBody["FDEP"] = convertInchesToCm(jsonBody["FDEP"]).toString();
+		}
+
 		return jsonBody;
 	}
 
