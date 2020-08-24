@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Loading spinner will always be cleared when transitioning from 'Run A Job' page to 'Dashboard'. Added missing condition check for 'Queued' datawolf state [CCROP-270](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-270)
 - Handled cases when the user has no jobs and when selected job failed, so the Dashboard will show appropriate message instead of spinning indefinitely [CCROP-281](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-281)
 - Fertilizer amount units to show lb/acre in both Crop History & Summary tabs, but it's updates through PATCH endpoint will get converted to kg/ha [CCROP-279](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-279)
+- Unit conversions and precision of the fields in inches, lbs/acre and seeds/acre are fixed so they conform to DSSAT specifications [CCROP-291](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-291)
 
 ### Changed
 - Replaced decomposition mock data with real api call [CCROP-282](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-282)
