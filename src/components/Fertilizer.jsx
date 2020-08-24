@@ -47,7 +47,6 @@ class Fertilizer extends Component {
 
 	getBodyJson(){
 		let jsonBody = Object.assign({}, this.state);
-		console.log(jsonBody);
 
 		if(jsonBody["FMCD"] !== "None"){
 			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, "").substring(0, 8);
