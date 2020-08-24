@@ -37,8 +37,8 @@ export const defaultFertilizer = {
 // All planting defaults should be in Imperial format
 export const defaultPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"32400",
-	"PPOE":"32400",
+	"PPOP":"32000",
+	"PPOE":"32000",
 	"PLME":"S",
 	"PLDS":"R",
 	"PLRS": "29.92",
