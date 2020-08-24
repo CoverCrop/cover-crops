@@ -503,7 +503,7 @@ export function convertMetersToFeet(meters){
 }
 
 export function convertPerSqMeterToPerAcre(per_sq_meters){
-	return roundResults(Math.round((per_sq_meters * QTY_PER_SQUARE_METER_TO_ACRE)/1000) * 1000, 0);
+	return roundResults(Math.round((per_sq_meters * QTY_PER_SQUARE_METER_TO_ACRE)/100) * 100, 0);
 }
 
 export function convertPerAcreToPerSqMeter(per_acres){

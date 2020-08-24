@@ -64,7 +64,7 @@ class MyFarmUpdate extends Component {
 			} else if (updateValue >= 1000000) {
 				roundedVal = 1000000;
 			} else {
-				roundedVal = Math.round(updateValue / 1000) * 1000;
+				roundedVal = Math.round(updateValue / 100) * 100;
 			}
 		}
 		e.target.value = roundedVal;
