@@ -68,7 +68,8 @@ export const coverCropOptions = coverCrops.concat(["None"]);
 export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
 
-export const INCH_LIMIT = 393;
+// actual inch limit should have been 393, but 385 is the max value where rounding error does not occur
+export const INCH_LIMIT = 385;
 export const LBS_LIMIT = 892;
 export const SEEDS_LIMIT = 10000000;
 export const SEEDS_ROUND_TO = 1000;
