@@ -5,6 +5,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import moment from "moment";
 import Select from "react-select";
 import {dictToOptions, isNumeric, roundResults} from "../public/utils";
+import {INCH_LIMIT, LBS_LIMIT, SEEDS_LIMIT, SEEDS_ROUND_TO} from "../experimentFile";
 
 class MyFarmUpdate extends Component {
 
@@ -20,8 +21,8 @@ class MyFarmUpdate extends Component {
 			roundedVal = 1;
 		}
 		else {
-			if (updateValue >= 392) {
-				roundedVal = 392;
+			if (updateValue >= INCH_LIMIT) {
+				roundedVal = INCH_LIMIT;
 			} else {
 				roundedVal = updateValue;
 			}
@@ -40,8 +41,8 @@ class MyFarmUpdate extends Component {
 			roundedVal = 1;
 		}
 		else {
-			if (updateValue >= 892) {
-				roundedVal = 892;
+			if (updateValue >= LBS_LIMIT) {
+				roundedVal = LBS_LIMIT;
 			} else {
 				roundedVal = updateValue;
 			}
@@ -61,10 +62,10 @@ class MyFarmUpdate extends Component {
 		else {
 			if (updateValue < 1000) {
 				roundedVal = 1000;
-			} else if (updateValue >= 10000000) {
-				roundedVal = 10000000;
+			} else if (updateValue >= SEEDS_LIMIT) {
+				roundedVal = SEEDS_LIMIT;
 			} else {
-				roundedVal = Math.round(updateValue / 1000) * 1000;
+				roundedVal = Math.round(updateValue / SEEDS_ROUND_TO) * SEEDS_ROUND_TO;
 			}
 		}
 		e.target.value = roundedVal;

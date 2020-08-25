@@ -1,7 +1,12 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
 import ol from "openlayers";
-import {CULTIVARS, cashCrops, coverCrops} from "../experimentFile";
+import {
+	CULTIVARS,
+	cashCrops,
+	coverCrops,
+	SEEDS_ROUND_TO,
+} from "../experimentFile";
 
 const SQUARE_METER_TO_ACRE = 0.000247105;
 const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.8626697
@@ -503,7 +508,8 @@ export function convertMetersToFeet(meters){
 }
 
 export function convertPerSqMeterToPerAcre(per_sq_meters){
-	return roundResults(Math.round((per_sq_meters * QTY_PER_SQUARE_METER_TO_ACRE)/1000) * 1000, 0);
+	return roundResults(Math.round((per_sq_meters *
+			QTY_PER_SQUARE_METER_TO_ACRE)/SEEDS_ROUND_TO) * SEEDS_ROUND_TO, 0);
 }
 
 export function convertPerAcreToPerSqMeter(per_acres){
