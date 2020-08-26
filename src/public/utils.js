@@ -195,7 +195,7 @@ export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest,
 	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
 }
 
-//Pass file name when filedata is a Blob, if the file needs to be named on the server.
+// Pass file name when filedata is a Blob, if the file needs to be named on the server.
 // Not need for file uploads that are done on My Farm page.
 export async function uploadDatasetToDataWolf(filedata, fileName=null) {
 	let headers = {
