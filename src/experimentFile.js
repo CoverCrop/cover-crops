@@ -65,7 +65,7 @@ export const cashCrops = ["Corn", "Soybean"];
 export const coverCrops = ["Rye"];
 export const cashCropOptions = cashCrops.concat(["None"]);
 export const coverCropOptions = coverCrops.concat(["None"]);
-export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];
+export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019", "2020"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
 
 // actual inch limit should have been 393, but 385 is the max value where rounding error does not occur

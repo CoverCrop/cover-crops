@@ -16,6 +16,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Replaced decomposition mock data with real api call [CCROP-282](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-282)
+- Included year 2020 for crop selections [CCROP-294](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
+
 
 ## [0.6.0] - 2020-05-29
 
