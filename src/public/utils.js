@@ -193,20 +193,20 @@ export function convertDayString(moment) {
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
-	let userInputFile = new File([
-			"{\"with_cover_crop\": " + isWithCoverCrop + "," +
-			"\"year_planting\": " + yearPlanting + "," +
-			"\"doy_planting\": " + doyPlanting + "," +
-			"\"doy_harvest\": " + doyHarvest +
-			"}"],
-		"user_input.json",
-		{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+	let userInputFile = new Blob([
+				"{\"with_cover_crop\": " + isWithCoverCrop + "," +
+				"\"year_planting\": " + yearPlanting + "," +
+				"\"doy_planting\": " + doyPlanting + "," +
+				"\"doy_harvest\": " + doyHarvest +
+				"}"],
+			{type: "text/plain;charset=utf-8", lastModified: Date.now()});
 
-
-	return uploadDatasetToDataWolf(userInputFile);
+	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
 }
 
-export async function uploadDatasetToDataWolf(filedata) {
+// Pass file name when filedata is a Blob, if the file needs to be named on the server.
+// Not need for file uploads that are done on My Farm page.
+export async function uploadDatasetToDataWolf(filedata, fileName=null) {
 	let headers = {
 		"Authorization": getKeycloakHeader(),
 		"Cache-Control": "no-cache"
@@ -214,7 +214,11 @@ export async function uploadDatasetToDataWolf(filedata) {
 
 	let data = new FormData();
 	data.append("useremail", localStorage.getItem("kcEmail"));
-	data.append("uploadedFile", filedata);
+	if (fileName) {
+		data.append("uploadedFile", filedata, fileName);
+	} else {
+		data.append("uploadedFile", filedata);
+	}
 
 	let uploadDatasetResponse = await fetch(
 		datawolfURL + "/datasets",
