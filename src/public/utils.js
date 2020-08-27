@@ -33,11 +33,15 @@ export function groupBy(list, keyGetter) {
 }
 
 export function sortByDateInDescendingOrder(a, b) {
+	console.log(a);
 	let aDate = new Date(updateTimezoneInDateStr(a.date));
 	let bDate = new Date(updateTimezoneInDateStr(b.date));
 	return bDate.getTime() - aDate.getTime();
 }
 
+// Adds colon in the timezone part of the date string to be compatible with ECMA262 format
+// https://tc39.es/ecma262/#sec-date-time-string-format
+// Without this, the date parsing fails in Safari
 export function updateTimezoneInDateStr(dateStr){
 	return dateStr.trim().substring(0,22) + ":" + dateStr.trim().substring(22,24);
 }
