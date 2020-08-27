@@ -33,7 +33,6 @@ export function groupBy(list, keyGetter) {
 }
 
 export function sortByDateInDescendingOrder(a, b) {
-	console.log(a);
 	let aDate = new Date(updateTimezoneInDateStr(a.date));
 	let bDate = new Date(updateTimezoneInDateStr(b.date));
 	return bDate.getTime() - aDate.getTime();
