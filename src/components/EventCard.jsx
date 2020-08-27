@@ -5,7 +5,7 @@ import {
 	convertDateToUSFormat,
 	getWeatherName,
 	convertDateToUSFormatWithMins,
-	getOutputFileJson,
+	getOutputFileJson, updateTimezoneInDateStr,
 } from "../public/utils";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
@@ -93,7 +93,10 @@ class EventCard extends Component {
 
 						<Grid container item style={{paddingTop: "3px"}}>
 							<Grid item >
-								<span className="eventCardLabelTitle">Run Time</span> <span className="eventCardLabelValue">{convertDateToUSFormatWithMins(new Date(event[0].date))} </span>
+								<span className="eventCardLabelTitle">Run Time</span>
+								<span className="eventCardLabelValue">
+									{convertDateToUSFormatWithMins(new Date(updateTimezoneInDateStr(event[0].date)))}
+								</span>
 							</Grid>
 
 						</Grid>

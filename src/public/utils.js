@@ -33,7 +33,13 @@ export function groupBy(list, keyGetter) {
 }
 
 export function sortByDateInDescendingOrder(a, b) {
-	return new Date(b.date).getTime() - new Date(a.date).getTime();
+	let aDate = new Date(updateTimezoneInDateStr(a.date));
+	let bDate = new Date(updateTimezoneInDateStr(b.date));
+	return bDate.getTime() - aDate.getTime();
+}
+
+export function updateTimezoneInDateStr(dateStr){
+	return dateStr.trim().substring(0,22) + ":" + dateStr.trim().substring(22,24);
 }
 
 export const ID = function () {
