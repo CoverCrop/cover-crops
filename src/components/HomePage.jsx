@@ -11,7 +11,17 @@ class HomePage extends Component {
         let welcome = (<div>
 			<h1 className="secondary-color">Welcome to the Cover Crop Project</h1>
 			<br/>
-			{welcometext.map((paragraph, index) => <p key={index} className="secondary-color">{paragraph}</p>)}
+			{welcometext.map((paragraph, index) => <p key={index} className="secondary-color">{paragraph}</p> )}
+			<br/>
+			<p>
+				<a href="https://www.vpaa.uillinois.edu/resources/web_privacy" target="_blank" className="cc-link"> Privacy Policy </a>
+			</p>
+					<br/>
+			<p>
+				Need Help? Check out our
+				<a href="https://opensource.ncsa.illinois.edu/confluence/display/FD/Frequently+Asked+Questions" target="_blank" className="cc-link">FAQ</a>s
+			</p>
+
 			</div>);
 
 

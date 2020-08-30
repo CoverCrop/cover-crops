@@ -100,7 +100,7 @@ class AddFieldBox extends Component {
 							<br/>
 							<p>
 								Read more about the cropland data layer&nbsp;
-								<a style={{color: "blue", textDecoration: "underline"}}
+								<a className="cc-link"
 										href="https://nass.usda.gov/Research_and_Science/Cropland/SARS1a.php" target="_blank">
 									here
 								</a>

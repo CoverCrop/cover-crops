@@ -123,3 +123,8 @@
 .registration button{
 	width: 160px;
 }
+
+.cc-link{
+	text-decoration: underline !important;
+	color: Blue;
+}
