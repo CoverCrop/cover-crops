@@ -125,7 +125,7 @@ class MyFarmUpdate extends Component {
 							return (<Textfield
 									min="0"
 									type="number"
-									step="1"
+									step="0.01"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
 										this.props.handler(secondField, updateValue);
@@ -136,7 +136,7 @@ class MyFarmUpdate extends Component {
 							return (<Textfield
 									min="0"
 									type="number"
-									step="1"
+									step="0.1"
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
 										this.props.handler(secondField, updateValue);
