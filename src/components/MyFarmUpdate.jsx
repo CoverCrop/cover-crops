@@ -81,7 +81,8 @@ class MyFarmUpdate extends Component {
 
 
 	render() {
-		const {elementType, firstField, secondField, defaultValue} = this.props;
+		const {elementType, firstField, secondField, defaultValue,
+			helpText, helpTextPersistence} = this.props;
 		const options = (elementType !== "select" || Array.isArray(this.props.options)) ? this.props.options : dictToOptions(this.props.options);
 		// const defaultValue = cropobj[cropyear][firstField][secondField];
 		let divClasses = "update-box";
@@ -148,6 +149,8 @@ class MyFarmUpdate extends Component {
 									min="1000"
 									type="number"
 									step="1000"
+									helptext={helpText}
+									helptextPersistent={helpTextPersistence}
 									value={defaultValue}
 									onChange={({target: {value: updateValue}}) => {
 										this.props.handler(secondField, updateValue);

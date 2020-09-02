@@ -81,12 +81,14 @@ class Planting extends Component {
 		let newPlanting = Object.assign({}, defaultPlanting);
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 04-22
-		if (this.props.title === "Planting") {
+		if (this.props.type === "cashcrop") {
 			// set default date as 04-22
 			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
-		} else {
+			this.setState({helpText: ""});
+		} else { //covercrop
 			// set default date as 09-22
 			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
+			this.setState({helpText: "For cereal rye, 1 lb ≈ 18000 seeds"});
 		}
 		this.setState(newPlanting);
 	}
@@ -116,7 +118,7 @@ class Planting extends Component {
 												defaultValue={this.state.PLDP} handler = {this.handler}
 					/>
 					<MyFarmUpdate isLeft elementType="inputSeeds" title="POP, seeds/acre" cropyear={this.state.year}
-												firstField="MP" secondField="PPOP"
+												firstField="MP" secondField="PPOP" helpText={this.state.helpText} helpTextPersistence={true}
 												defaultValue={this.state.PPOP} handler = {this.handler}
 					/>
 					</div>
