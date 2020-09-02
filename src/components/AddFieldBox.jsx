@@ -96,7 +96,9 @@ class AddFieldBox extends Component {
 						<DialogContentText id="alert-dialog-description">
 							<p>
 								We will be creating a new field with crop rotation details populated from USDA
-								cropland data layer and other default management data for this region. Please click 'Continue' to proceed.
+								cropland data layer and other default management data for this region.
+								Please update your actual cash crop and cover crop details using the "My Farm" section.
+								Please click 'Continue' to proceed.
 							</p>
 							<br/>
 							<p>
