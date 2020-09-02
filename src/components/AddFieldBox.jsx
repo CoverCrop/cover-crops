@@ -14,6 +14,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
+import {croplandUrl} from "../public/config";
 
 class AddFieldBox extends Component {
 
@@ -101,7 +102,7 @@ class AddFieldBox extends Component {
 							<p>
 								Read more about the cropland data layer&nbsp;
 								<a className="cc-link"
-										href="https://nass.usda.gov/Research_and_Science/Cropland/SARS1a.php" target="_blank">
+										href={croplandUrl} target="_blank">
 									here
 								</a>
 							</p>
