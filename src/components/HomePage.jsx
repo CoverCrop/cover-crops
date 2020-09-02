@@ -4,6 +4,7 @@ import styles from "../styles/main.css";
 import styles2 from "../styles/home-page.css";
 import {Cell, Grid} from "react-mdc-web";
 import {welcometext} from "../app.messages";
+import {privacyUrl, faqUrl} from "../public/config";
 
 class HomePage extends Component {
 
@@ -14,12 +15,12 @@ class HomePage extends Component {
 			{welcometext.map((paragraph, index) => <p key={index} className="paras">{paragraph}</p> )}
 			<br/>
 			<p>
-				<a href="https://www.vpaa.uillinois.edu/resources/web_privacy" target="_blank" className="cc-link"> Privacy Policy </a>
+				<a href={privacyUrl} target="_blank" className="cc-link"> Privacy Policy </a>
 			</p>
 					<br/>
 			<p>
 				Need Help? Check out our&nbsp;
-				<a href="https://opensource.ncsa.illinois.edu/confluence/display/FD/Frequently+Asked+Questions" target="_blank" className="cc-link">FAQ</a>s
+				<a href={faqUrl} target="_blank" className="cc-link">FAQ</a>s
 			</p>
 
 			</div>);
