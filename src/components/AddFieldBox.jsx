@@ -111,6 +111,9 @@ class AddFieldBox extends Component {
 						</DialogContentText>
 					</DialogContent>
 					<DialogActions>
+						<Button onClick={this.handlePopupClose} color="primary" autoFocus>
+							Cancel
+						</Button>
 						<Button onClick={this.handleContinue} color="primary" autoFocus>
 							Continue
 						</Button>
