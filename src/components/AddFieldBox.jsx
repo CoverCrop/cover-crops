@@ -14,7 +14,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
-import {croplandUrl} from "../public/config";
+import {croplandUrl, privacyUrl} from "../public/config";
 
 class AddFieldBox extends Component {
 
@@ -95,17 +95,20 @@ class AddFieldBox extends Component {
 					<DialogContent>
 						<DialogContentText id="alert-dialog-description">
 							<p>
-								We will be creating a new field with crop rotation details populated from USDA
-								cropland data layer and other default management data for this region.
+								We will be creating a new field with crop rotation details populated from USDA&nbsp;
+								<a className="cc-link" href={croplandUrl} target="_blank">
+									cropland data layer
+								</a>
+								&nbsp;and other default management data for this region.
 								Please update your actual cash crop and cover crop details using the "My Farm" section.
 								Please click 'Continue' to proceed.
 							</p>
 							<br/>
+
 							<p>
-								Read more about the cropland data layer&nbsp;
-								<a className="cc-link"
-										href={croplandUrl} target="_blank">
-									here
+								Read about our&nbsp;
+								<a className="cc-link" href={privacyUrl} target="_blank">
+									Privacy Policy
 								</a>
 							</p>
 						</DialogContentText>
