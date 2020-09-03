@@ -97,7 +97,7 @@ class AddFieldBox extends Component {
 							<p>
 								We will be creating a new field with crop rotation details populated from USDA&nbsp;
 								<a className="cc-link" href={croplandUrl} target="_blank">
-									cropland data layer
+									Cropland Data Layer
 								</a>
 								&nbsp;and other default management data for this region.
 								Please update your actual cash crop and cover crop details using the "My Farm" section.
