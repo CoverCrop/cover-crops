@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Tooltip to show conversion of 1 lb cereal rye to seed count [CCROP-303](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-303)
 - Popup when adding a new field to let users know that we are populating defaults from cropland datalayer [CCROP-300](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-300)
+- Popup to warn IE users that the tool is not supported in their browser [CCROP-197](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-197)
 
 ### Changed
 - Replaced decomposition mock data with real api call [CCROP-282](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-282)
