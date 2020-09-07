@@ -5,6 +5,8 @@ export const expsuccess = "Experiment template file added/updated successfully."
 export const expfail = "Experiment template file added/updated failed. Please try again.";
 export const deletefail = "Deleting the user field failed. Please try again.";
 export const addFieldHelper = "Hi! Looks like you haven't added any information about your farm yet.\nClick on \"Add a Field\" button to get started:";
+export const browserWarning = ["Your browser does not support all features of the Cover Crop Tool. " +
+"You will not be able to login or run the application. Please use Google Chrome, Edge, Firefox or Safari"];
 export const welcometext = ["The objective of this project is to provide farmers with a practical web-based decision support tool that they can use in " +
 "their fields to effectively manage cover crops. It will use existing and future research to demonstrate the potential" +
 " of cover crops and help farmers manage the cover crops in their fields.  Better information, and functional" +

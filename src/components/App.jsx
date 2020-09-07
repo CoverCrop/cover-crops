@@ -13,6 +13,7 @@ import {handleUserLogin} from "../actions/user";
 import {connect} from "react-redux";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import {isIE} from "react-device-detect";
 
 global.__base = __dirname + "/";
 const theme = createMuiTheme();
@@ -25,6 +26,10 @@ class App extends Component {
 	}
 
 	render() {
+		sessionStorage.setItem("isIE", JSON.stringify(isIE));
+		if (sessionStorage.getItem("firstVisit") == null){
+			sessionStorage.setItem("firstVisit", "true");
+		}
 
 		return (
 			<MuiThemeProvider theme={theme}>
