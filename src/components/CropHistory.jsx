@@ -83,7 +83,7 @@ class CropHistory extends Component {
 		let {email, clu} = this.props;
 		let newName = this.state.year;
 		if (this.state.crop === "None") {
-			newName = this.state.year.slice(0, 5) + "Fallow";
+			newName = this.state.year.slice(0, 5) + "Fallow-1";
 			let oldName = this.state.year;
 			let tillageJson = this.tillage.getBodyJson();
 
