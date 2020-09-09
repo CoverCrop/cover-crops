@@ -69,11 +69,11 @@ class Harvest extends Component {
 		let newHarvest = {};
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 09-22
-		if ( this.props.title === "HARVEST"){
+		if ( this.props.type === "cashcrop"){
 			// set default date as 09-21
 			newHarvest["HDATE"] = new Date(pureyear, 8, 21).toISOString();
 		} else {
-			// set default date as 04-21
+			// for cover crop, set default date as 04-21 of next year
 			newHarvest["HDATE"] = new Date(parseInt(pureyear)+1, 3, 21).toISOString();
 		}
 
