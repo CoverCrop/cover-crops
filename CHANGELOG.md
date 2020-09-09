@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Unit conversions and precision of the fields in inches, lbs/acre and seeds/acre are fixed so they conform to DSSAT specifications [CCROP-291](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-291)
 - Replace File() with Blob() so the tool is comptaible with Microsoft Edge versions under 79. [CCROP-290](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-290)
 - Formatted timezone in dates as per ECMA262 standard so dashboard results will show in correct order and job run time in Safari. [CCROP-227](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-227)
+- Fix setting default harvest dates for cash and cover-crops. [CCROP-304](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-304)
+- Fix displaying fertilizer and crop tillage if there are no crops in the crop history page. [CCROP-305](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-305)
+
 
 ## [0.6.0] - 2020-05-29
 
