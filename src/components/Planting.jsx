@@ -33,7 +33,8 @@ class Planting extends Component {
 
 	setInitialState(nextProps, year) {
 		if (year) {
-			if(nextProps.cropobj[year]){
+			// Display current planting and harvest dates only for cash or cover crops.
+			if(nextProps.cropobj[year] && year.includes("Fallow") === false){
 				let selectcrop = nextProps.cropobj[year]["MP"] ;
 				this.setState(selectcrop);
 				let pdate = selectcrop["PDATE"];

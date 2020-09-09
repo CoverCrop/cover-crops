@@ -37,18 +37,18 @@ class CropHistory extends Component {
 			this.setState({year: undefined});
 		}
 		// update for fertilizer, planting and harvest is updated in the child component.
-		if (this.props.cropobj !== prevProps.cropobj) {
-			let year = this.state.year;
-			if(year) {
-				let flist = [
-					{FMCD: "None", addnew: true}
-				];
-				if(this.props.cropobj[year]){
-					flist = this.props.cropobj[year]["MF"].concat(flist);
-				}
-				this.setState({flist: flist});
-			}
-		}
+		// if (this.props.cropobj !== prevProps.cropobj) {
+		// 	let year = this.state.year;
+		// 	if(year) {
+		// 		let flist = [
+		// 			{FMCD: "None", addnew: true}
+		// 		];
+		// 		if(this.props.cropobj[year]){
+		// 			flist = this.props.cropobj[year]["MF"].concat(flist);
+		// 		}
+		// 		this.setState({flist: flist});
+		// 	}
+		// }
 	}
 
 	handleSelectYear = (year) => {
@@ -59,7 +59,7 @@ class CropHistory extends Component {
 				{FMCD: "None", addnew: true}
 			];
 			this.setState({flist: flist,
-				crop: this.props.cropobj[year]["CROP"] !== "Fallow" ? this.props.cropobj[year]["CROP"] : "None"
+				crop: this.props.cropobj[year]["CROP"] !== "Fallow-1" ? this.props.cropobj[year]["CROP"] : "None"
 			});
 		} else{
 			this.setState({flist: [{FMCD: "None", addnew: true}],
@@ -215,7 +215,7 @@ class CropHistory extends Component {
 			if (yearName){
 				return {value: yearName, label:key};
 			} else {
-				return {value: key +" None", label:key};
+				return {value: key +" Fallow-1", label:key};
 			}
 		});
 
@@ -262,7 +262,7 @@ class CropHistory extends Component {
 					{this.state.crop !== "None" &&
 					<Planting type="cashcrop" title="Planting" year={this.state.year} onRef={ref => (this.planting = ref)}/>}
 					{this.state.crop !== "None" &&
-					<Harvest title="Harvest" year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
+					<Harvest type="cashcrop" year={this.state.year} onRef={ref => (this.harvest = ref)}/>}
 					{this.state.year && <div className="black-top-crop" key="fertilizer">
 
 						<Title>Fertilizer </Title>
