@@ -3,6 +3,7 @@ import ChartCC from "./ChartCC";
 import { connect } from "react-redux";
 import {noJobsFound, selectedEventNotSuccessful} from "../app.messages";
 
+// This page is not used anymore. Need to remove it and it's references
 class ViewResultsCC extends Component {
 
 	render() {
