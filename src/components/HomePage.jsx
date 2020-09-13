@@ -4,10 +4,18 @@ import styles from "../styles/main.css";
 import styles2 from "../styles/home-page.css";
 import {Cell, Grid} from "react-mdc-web";
 import {privacyUrl, faqUrl, nrecUrl} from "../public/config";
+import {loginMessage, usageMessage} from "../app.messages";
 
 class HomePage extends Component {
 
 	render() {
+		let notificationDiv = null;
+		notificationDiv = (<div className="notification_div">
+			<span className="isa_warning">
+				{(localStorage.getItem("isAuthenticated") === "true")? usageMessage: loginMessage}
+			</span>
+		</div>);
+
         let welcome = (<div>
 			<h1 className="secondary-color">Welcome to the Cover Crop Project</h1>
 			<br/>
@@ -69,6 +77,8 @@ class HomePage extends Component {
 			<div >
 				<Header selected="home"/>
 				<span className="home-line" />
+
+				{notificationDiv}
 
 				<div className="home-content"
 							style={{backgroundSize: "cover", backgroundPosition: "center"}}>

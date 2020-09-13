@@ -10,3 +10,7 @@ export const browserWarning = ["Your browser does not support all features of th
 export const register = "Creating an account allows you to save the simulation data" +
 	" and information about your farm and fields.";
 export const existCLUNote = "Selected field already available in your profile, continuing will overwrite the name, lat/long and management file.";
+export const loginMessage = "Please login with your account to access the cover crop tool. If you don't have" +
+		" an account yet, use the 'REGISTER' button to create one. If you are having trouble receiving the verification" +
+		" email in your inbox, please check your spam/junk folder.";
+export const usageMessage = "Click the 'CoverCrop Analyzer' tab to see the tool. From the Analyzer, you can use 'My Farm' to manage your fields";
