@@ -6,7 +6,7 @@ import {
 	convertPerAcreToPerSqMeter, convertCmToInches, convertInchesToCm,
 } from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultPlanting, PLDS} from "../experimentFile";
+import {defaultCashcropPlanting, defaultCovercropPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Planting extends Component {
@@ -78,14 +78,16 @@ class Planting extends Component {
 	}
 
 	setDefault(){
-		let newPlanting = Object.assign({}, defaultPlanting);
+		let newPlanting;
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 04-22
 		if (this.props.type === "cashcrop") {
+			newPlanting = Object.assign({}, defaultCashcropPlanting);
 			// set default date as 04-22
 			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
 			this.setState({helpText: ""});
 		} else { //covercrop
+			newPlanting = Object.assign({}, defaultCovercropPlanting);
 			// set default date as 09-22
 			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
 			this.setState({helpText: "For cereal rye, 1 lb ≈ 18000 seeds"});
