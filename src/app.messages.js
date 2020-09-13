@@ -13,4 +13,4 @@ export const existCLUNote = "Selected field already available in your profile, c
 export const loginMessage = "Please login with your account to access the cover crop tool. If you don't have" +
 		" an account yet, use the 'REGISTER' button to create one. If you are having trouble receiving the verification" +
 		" email in your inbox, please check your spam/junk folder.";
-export const usageMessage = "Click the 'CoverCrop Analyzer' tab to see the tool. From the Analyzer, you can use 'My Farm' to manage your fields";
+export const usageMessage = "Click the 'CoverCrop Analyzer' tab to see the tool. From the Analyzer, you can use 'My Farm' to add or manage your fields";
