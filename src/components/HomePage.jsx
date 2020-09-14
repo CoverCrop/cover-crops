@@ -61,7 +61,7 @@ class HomePage extends Component {
 					<br/>
 			<p>
 				Need Help? Check out our&nbsp;
-				<a href={faqUrl} target="_blank" className="cc-link">FAQ</a>s
+				<a href={faqUrl} target="_blank" className="cc-link">FAQ</a> section
 			</p>
 
 			</div>);

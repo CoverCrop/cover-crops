@@ -30,7 +30,8 @@ class Dashboard extends Component {
 						dates between the cash crop and the cover crop. Please check the field in 'My Farm' to
 						verify that the cover crop planting date does not overlap the cash crop harvest date and
 						the cover crop termination date does not overlap the next cash crop planting date.
-						For additional help, please see the <a href={faqUrl} target="_blank" className="cc-link">FAQ</a>s.
+						For additional help, please see the
+							<a href={faqUrl} target="_blank" className="cc-link">FAQ</a> section.
 						</p>
 					</div>
 			);
