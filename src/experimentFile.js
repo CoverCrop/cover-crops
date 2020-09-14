@@ -48,13 +48,13 @@ export const defaultCashcropPlanting = {
 
 export const defaultCovercropPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"1080000",
-	"PPOE":"1080000",
+	"PPOP":"900000",
+	"PPOE":"900000",
 	"PLME":"S",
 	"PLDS":"R",
-	"PLRS": "3.50",
+	"PLRS": "7.50",
 	"PLRD": "0",
-	"PLDP": "0.50"
+	"PLDP": "1.50"
 };
 
 export const defaultHarvest = {
