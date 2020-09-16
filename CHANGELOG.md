@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Updated text and image on the homepage. Scaled the grid sizes  [CCROP-299](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
 - Included year 2020 for crop selections [CCROP-294](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
 - Text on the home page and the job failure error message [CCROP-307](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-307)
+- Planting defaults for cereal rye [CCROP-309](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-309)
 
 ### Fixed
 - Loading spinner will always be cleared when transitioning from 'Run A Job' page to 'Dashboard'. Added missing condition check for 'Queued' datawolf state [CCROP-270](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-270)
