@@ -10,10 +10,20 @@ import {
 	clearKeycloakStorage,
 	checkForTokenExpiry
 } from "../public/utils";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import {browserWarning} from "../app.messages";
+import DialogActions from "@material-ui/core/DialogActions";
 
 const keycloak = config.keycloak;
 
 class Header extends Component {
+
+	state = {
+		IEPopup: false
+	};
 
 	constructor(props) {
 		super(props);
@@ -24,6 +34,13 @@ class Header extends Component {
 	}
 
 	componentDidMount(): void {
+		if (sessionStorage.getItem("firstVisit") === "true"){
+			if (sessionStorage.getItem("isIE") === "true") {
+				this.handleIEPopupOpen();
+			}
+			sessionStorage.setItem("firstVisit", "false");
+		}
+
 		if (localStorage.getItem("isAuthenticated") === "true") {
 			// if authenticated flag is set, re-check for token expiry. Reload page if expired
 			if (checkForTokenExpiry()) {
@@ -47,6 +64,14 @@ class Header extends Component {
 		}
 	}
 
+	handleIEPopupOpen = () => {
+		this.setState({IEPopup: true});
+	};
+
+	handleIEPopupClose = () => {
+		this.setState({IEPopup: false});
+	};
+
 	handleLogin(){
 		browserHistory.push("/login");
 	}
@@ -68,6 +93,28 @@ class Header extends Component {
 	render() {
 		return(
 			<div>
+
+				<Dialog
+						open={this.state.IEPopup}
+						onClose={this.handleIEPopupClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+				>
+					<DialogTitle id="alert-dialog-title" >
+						<span style={{fontWeight: "bolder"}}> Unsupported Browser Detected</span>
+					</DialogTitle>
+					<DialogContent>
+						<DialogContentText id="alert-dialog-description">
+							{browserWarning}
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={this.handleIEPopupClose} color="primary" autoFocus>
+							Continue
+						</Button>
+					</DialogActions>
+				</Dialog>
+
 				<Toolbar>
 					<ToolbarRow className="banner">
 						<ToolbarSection className="cover-crop" align="start">

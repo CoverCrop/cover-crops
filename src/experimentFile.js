@@ -35,7 +35,7 @@ export const defaultFertilizer = {
 };
 
 // All planting defaults should be in Imperial format
-export const defaultPlanting = {
+export const defaultCashcropPlanting = {
 	// "PDATE":"0513",
 	"PPOP":"32000",
 	"PPOE":"32000",
@@ -44,6 +44,17 @@ export const defaultPlanting = {
 	"PLRS": "29.92",
 	"PLRD": "0",
 	"PLDP": "1.57"
+};
+
+export const defaultCovercropPlanting = {
+	// "PDATE":"0513",
+	"PPOP":"900000",
+	"PPOE":"900000",
+	"PLME":"S",
+	"PLDS":"R",
+	"PLRS": "7.50",
+	"PLRD": "0",
+	"PLDP": "1.50"
 };
 
 export const defaultHarvest = {

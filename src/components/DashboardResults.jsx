@@ -305,47 +305,37 @@ class DashboardResults extends Component {
 				let charts =  properties[chartArrayTypeName].charts;
 				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
 					let chartRawData = charts[dataIndex];
-
 					let rawDatasets = chartRawData.datasets;
-					let parsedDatasets = [];
-
-					// Iterate over each dataset in the chart
+					let parsedData = [];
+					// Iterate over each dataset in the chart. Combine data from all datasets belonging to same type together.
 					for (let datasetIndex = 0; datasetIndex < rawDatasets.length; datasetIndex++) {
-
 						let rawData = rawDatasets[datasetIndex].data;
-						let parsedData = [];
-
 						// Generate data to be added to the dataset
-						for (let dataIndex = 0; dataIndex < rawData.length; dataIndex++) {
+						for (let rawDataIndex = 0; rawDataIndex < rawData.length; rawDataIndex++) {
 							// TODO: Remove the if condition. Temporary fix till server-side bug is fixed.
-							if (!(chartRawData.title === "Carbon : Nitrogen" && dataIndex === 0)) {
+							if (!(chartRawData.title === "Carbon : Nitrogen" && rawDataIndex === 0)) {
 								parsedData.push({
-									x: new Date(rawData[dataIndex].YEAR, 0, rawData[dataIndex].DOY),
-									y: rawData[dataIndex].value
+									x: new Date(rawData[rawDataIndex].YEAR, 0, rawData[rawDataIndex].DOY),
+									y: rawData[rawDataIndex].value
 								});
 							}
 						}
-
-						// Create dataset object with appropriate options and data
-						let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
-						let dataset = {
-							label: datasetLabel,
-
-							data: parsedData
-						};
-
-						parsedDatasets.push(dataset);
 					}
-
+					// Create dataset object with appropriate options and data
+					let datasetLabel = (chartArrayTypeName === "withCoverCropChartDataArray") ? "w/ Cover Crop" : "w/o Cover Crop";
+					let dataset = {
+						label: datasetLabel,
+						data: parsedData
+					};
+					// Create chart data object
 					let chartData = {
 						// TODO: Check with team on this. Having fixed labels vs dynamic labels selected by chart.js based on input data
 						// labels: labelArray,
-						datasets: parsedDatasets
+						datasets: [dataset]
 					};
-
 					// Chart for this variable has been already created
 					if (chartDataArray.hasOwnProperty(chartRawData.variable)) {
-						chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(parsedDatasets);
+						chartDataArray[chartRawData.variable].chartData.datasets = chartDataArray[chartRawData.variable].chartData.datasets.concat(dataset);
 					}
 					// Chart for this variable has to be created
 					else {

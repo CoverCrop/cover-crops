@@ -9,11 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Tooltip to show conversion of 1 lb cereal rye to seed count [CCROP-303](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-303)
 - Popup when adding a new field to let users know that we are populating defaults from cropland datalayer [CCROP-300](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-300)
+- Popup to warn IE users that the tool is not supported in their browser [CCROP-197](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-197)
+- Banner on the home page to indicate that a login is needed and tips on how to use the tool [CCROP-308](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-308)
 
 ### Changed
 - Replaced decomposition mock data with real api call [CCROP-282](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-282)
 - Updated text and image on the homepage. Scaled the grid sizes  [CCROP-299](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
 - Included year 2020 for crop selections [CCROP-294](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
+- Text on the home page and the job failure error message [CCROP-307](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-307)
+- Planting defaults for cereal rye [CCROP-309](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-309)
 - Set Fallow event name to "\<year\> Fallow-1". [CCROP-295](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-295)
 
 ### Fixed
@@ -25,7 +29,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Formatted timezone in dates as per ECMA262 standard so dashboard results will show in correct order and job run time in Safari. [CCROP-227](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-227)
 - Fix setting default harvest dates for cash and cover-crops. [CCROP-304](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-304)
 - Fix displaying fertilizer and crop tillage if there are no crops in the crop history page. [CCROP-305](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-305)
+- Issue with dashboard showing only the first cover crop chart. [CCROP-251](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-251)
 
+### Removed
+- Remove "None" from cash crop drop down options. [CCROP-311](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-311)
 
 ## [0.6.0] - 2020-05-29
 
