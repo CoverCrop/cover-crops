@@ -123,3 +123,30 @@
 .registration button{
 	width: 160px;
 }
+
+.cc-link{
+	text-decoration: underline !important;
+	color: Blue;
+}
+
+
+.paras {
+	color: #455A64;
+	padding-bottom: 10px;
+	text-align: justify;
+}
+
+.notification_div {
+	position: relative;
+	top: 6px;
+	padding:4px 8px;
+	text-align: center;
+}
+
+.isa_warning {
+	max-width: 860px;
+	display: inline-block;
+	color: #9F6000;
+	background-color: #FEEFB3;
+	padding: 1px 4px;
+}

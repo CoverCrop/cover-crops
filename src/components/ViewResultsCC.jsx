@@ -1,16 +1,30 @@
 import React, {Component} from "react";
 import ChartCC from "./ChartCC";
 import { connect } from "react-redux";
-import {selectedEventNotSuccessful} from "../app.messages";
+import {noJobsFound, selectedEventNotSuccessful} from "../app.messages";
 
+// This page is not used anymore. Need to remove it and it's references
 class ViewResultsCC extends Component {
 
 	render() {
+
+		let chartsOutput = "";
+
+		if (this.props.isSelectedEventSuccessful === "success"){
+			chartsOutput = <ChartCC />;
+		}
+		else if (this.props.isSelectedEventSuccessful === "error"){
+			chartsOutput = <p className="error-message">{selectedEventNotSuccessful}</p>;
+		}
+		else if (this.props.isSelectedEventSuccessful === "noRuns"){
+			chartsOutput = <p className="error-message">{noJobsFound}</p>;
+		}
+
 		return (
 			<div>
 				<h1>Results</h1>
 				<br/>
-				{this.props.isSelectedEventSuccessful ? <ChartCC /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
+				{chartsOutput}
 			</div>
 		);
 	}

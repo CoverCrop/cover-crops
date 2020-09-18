@@ -76,7 +76,7 @@ class MyFarmSummary extends Component {
 		let {cropobj, fieldobj} = this.props;
 		let {soilobj} = this.state;
 
-        // cropComponent will get a warning about div but has no choice.
+		// cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
 			.filter(obj => isCashCrop(obj)).map(obj =>
 				<tbody>
@@ -95,9 +95,9 @@ class MyFarmSummary extends Component {
 					<td>{obj["MF"].length >0 && convertDate(obj["MF"][0]["FDATE"])}</td>
 					<td>{obj["MF"].length >0 && convertKgPerHaToLbPerAcre(obj["MF"][0]["FAMN"])}</td>
 					<td>{obj["MF"].length >0 && convertCmToInches(obj["MF"][0]["FDEP"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && obj["MT"]["TIMPL"]}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertDate(obj["MT"]["TDATE"])}</td>
-					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && convertCmToInches(obj["MT"]["TDEP"])}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && obj["MT"]["TIMPL"]}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertDate(obj["MT"]["TDATE"])}</td>
+					<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertCmToInches(obj["MT"]["TDEP"])}</td>
 				</tr>
 				{
 					obj["MF"].slice(1).map(MFObj =>

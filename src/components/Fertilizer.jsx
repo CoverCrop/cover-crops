@@ -1,5 +1,9 @@
 import React, {Component} from "react";
-import {convertFullDate} from "../public/utils";
+import {
+	convertFullDate,
+	convertLbPerAcreToKgPerHa,
+	convertKgPerHaToLbPerAcre, convertCmToInches, convertInchesToCm,
+} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultFertilizer, FACD, FMCD} from "../experimentFile";
 import {connect} from "react-redux";
@@ -18,8 +22,14 @@ class Fertilizer extends Component {
 		this.setState({FMCD: "None"});
 		this.setState(this.props.crop);
 		let fdate = this.props.crop["FDATE"];
-		console.log(convertFullDate(fdate));
 		this.setState({"FDATE":convertFullDate(fdate)});
+		if(this.props.crop["FAMN"]){
+			this.setState({"FAMN" :
+						convertKgPerHaToLbPerAcre(this.props.crop["FAMN"]).toString()});
+		}
+		if(this.props.crop["FDEP"]){
+			this.setState({"FDEP" : convertCmToInches(this.props.crop["FDEP"]).toString()});
+		}
 	}
 
 	componentWillUnmount() {
@@ -30,8 +40,9 @@ class Fertilizer extends Component {
 		this.setState({FMCD: "None"});
 		this.setState(nextProps.crop);
 		let fdate = nextProps.crop["FDATE"];
-		console.log(convertFullDate(fdate));
 		this.setState({"FDATE": convertFullDate(fdate)});
+		this.setState({"FAMN" : convertKgPerHaToLbPerAcre(nextProps.crop["FAMN"]).toString()});
+		this.setState({"FDEP" : convertCmToInches(nextProps.crop["FDEP"]).toString()});
 	}
 
 	getBodyJson(){
@@ -40,6 +51,15 @@ class Fertilizer extends Component {
 		if(jsonBody["FMCD"] !== "None"){
 			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, "").substring(0, 8);
 		}
+
+		if(jsonBody["FAMN"] !== undefined && jsonBody["FAMN"]){
+			jsonBody["FAMN"] = convertLbPerAcreToKgPerHa(jsonBody["FAMN"]).toString();
+		}
+
+		if(jsonBody["FDEP"] !== undefined && jsonBody["FDEP"]){
+			jsonBody["FDEP"] = convertInchesToCm(jsonBody["FDEP"]).toString();
+		}
+
 		return jsonBody;
 	}
 
@@ -80,11 +100,11 @@ class Fertilizer extends Component {
 												defaultValue={this.state.FACD} handler={this.handler}
 					/>
 
-						< MyFarmUpdate elementType="input" title="AMOUNT, lb/acre" cropyear={this.state.year}
+						< MyFarmUpdate elementType="inputLbs" title="AMOUNT, lb/acre" cropyear={this.state.year}
 												firstField="MF" secondField="FAMN"
 												defaultValue={this.state.FAMN} handler = {this.handler}
 						/>
-						<MyFarmUpdate elementType="input" title="DEPTH, in" cropyear={this.state.year}
+						<MyFarmUpdate elementType="inputInch" title="DEPTH, in" cropyear={this.state.year}
 													firstField="MF" secondField="FDEP"
 													defaultValue={this.state.FDEP} handler = {this.handler}
 						/>

@@ -1,11 +1,11 @@
 import React, {Component} from "react";
 import {Card, CardText, Icon} from "react-mdc-web";
-import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId} from "../datawolf.config";
+import {latId, lonId, resultDatasetId, userInputJSONDatasetID, weatherId, weatherDatasetId} from "../datawolf.config";
 import {
 	convertDateToUSFormat,
 	getWeatherName,
 	convertDateToUSFormatWithMins,
-	getOutputFileJson,
+	getOutputFileJson, updateTimezoneInDateStr,
 } from "../public/utils";
 import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
@@ -52,7 +52,9 @@ class EventCard extends Component {
 			<Card
 				className={(event.id === this.props.selectevent? "choose-card":"") + " event-list " +(event.status)}
 				key={event[0].id}
-				onClick={() => this.props.viewResult(event.id, event.status, event[0].datasets[resultDatasetId], event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID])}
+				onClick={() => this.props.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
+						event[0].datasets[weatherDatasetId])}
 			>
 				<CardText >
 
@@ -91,7 +93,10 @@ class EventCard extends Component {
 
 						<Grid container item style={{paddingTop: "3px"}}>
 							<Grid item >
-								<span className="eventCardLabelTitle">Run Time</span> <span className="eventCardLabelValue">{convertDateToUSFormatWithMins(new Date(event[0].date))} </span>
+								<span className="eventCardLabelTitle">Run Time</span>
+								<span className="eventCardLabelValue">
+									{convertDateToUSFormatWithMins(new Date(updateTimezoneInDateStr(event[0].date)))}
+								</span>
 							</Grid>
 
 						</Grid>

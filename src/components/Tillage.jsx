@@ -1,6 +1,10 @@
 import React, {Component} from "react";
 import {Title} from "react-mdc-web";
-import {convertFullDate} from "../public/utils";
+import {
+	convertCmToInches,
+	convertFullDate,
+	convertInchesToCm,
+} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
 import {defaultTillage, TIMPL} from "../experimentFile";
 import {connect} from "react-redux";
@@ -35,6 +39,8 @@ class Tillage extends Component {
 			if (nextProps.cropobj[year] && nextProps.cropobj[year]["MT"]) {
 				let tdate = selectcrop["TDATE"];
 				this.setState({"TDATE": convertFullDate(tdate)});
+				this.setState({"TDEP": convertCmToInches(selectcrop["TDEP"]).toString()});
+
 			}
 		}
 	}
@@ -48,6 +54,7 @@ class Tillage extends Component {
 
 			jsonBody["TNAME"] = year;
 			jsonBody["CONTENT"][0]["TDATE"] = jsonBody["CONTENT"][0]["TDATE"].replace(/-/g, "").substring(0, 8);
+			jsonBody["CONTENT"][0]["TDEP"] = convertInchesToCm(jsonBody["CONTENT"][0]["TDEP"]);
 			jsonBody["EVENT"] = "tillage";
 			return jsonBody;
 
@@ -96,7 +103,7 @@ class Tillage extends Component {
 													firstField="MT" secondField="TDATE"
 													defaultValue={this.state.TDATE} handler={this.handler}
 						/>
-						<MyFarmUpdate elementType="input" title="DEPTH" cropyear={this.state.year}
+						<MyFarmUpdate elementType="inputInch" title="DEPTH, in" cropyear={this.state.year}
 													firstField="MT" secondField="TDEP"
 													defaultValue={this.state.TDEP} handler={this.handler}
 						/>

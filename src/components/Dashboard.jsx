@@ -5,8 +5,9 @@ import UserEvents from "./UserEvents";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
 import DashboardResults from "./DashboardResults";
-import {selectedEventNotSuccessful} from "../app.messages";
+import {noJobsFound} from "../app.messages";
 import {connect} from "react-redux";
+import {faqUrl} from "../public/config";
 
 class Dashboard extends Component {
 
@@ -15,6 +16,29 @@ class Dashboard extends Component {
 	}
 
 	render() {
+
+		let dashboardOutput = "";
+
+		if (this.props.isSelectedEventSuccessful === "success"){
+			dashboardOutput = <DashboardResults />;
+		}
+		else if (this.props.isSelectedEventSuccessful === "error"){
+			dashboardOutput = (
+					<div style={{display: "flex", justifyContent: "center"}}>
+						<p className="error-message">
+						The selected job did not complete successfully. The most common cause is overlapping
+						dates between the cash crop and the cover crop. Please check the field in 'My Farm' to
+						verify that the cover crop planting date does not overlap the cash crop harvest date and
+						the cover crop termination date does not overlap the next cash crop planting date.
+						For additional help, please see
+						the <a href={faqUrl} target="_blank" className="cc-link">FAQ</a> section.
+						</p>
+					</div>
+			);
+		}
+		else if (this.props.isSelectedEventSuccessful === "noRuns"){
+			dashboardOutput = <p className="error-message">{noJobsFound}</p>;
+		}
 		return (
 			<AuthorizedWrap>
 				<div>
@@ -27,7 +51,7 @@ class Dashboard extends Component {
 								<UserEvents />
 							</Cell>
 							<Cell col={10}>
-								{this.props.isSelectedEventSuccessful ? <DashboardResults /> : <p className="error-message">{selectedEventNotSuccessful}</p>}
+								{dashboardOutput}
 							</Cell>
 						</Grid>
 					</div>

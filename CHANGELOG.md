@@ -6,9 +6,28 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Tooltip to show conversion of 1 lb cereal rye to seed count [CCROP-303](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-303)
+- Popup when adding a new field to let users know that we are populating defaults from cropland datalayer [CCROP-300](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-300)
+- Popup to warn IE users that the tool is not supported in their browser [CCROP-197](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-197)
+- Banner on the home page to indicate that a login is needed and tips on how to use the tool [CCROP-308](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-308)
+
+### Changed
+- Replaced decomposition mock data with real api call [CCROP-282](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-282)
+- Updated text and image on the homepage. Scaled the grid sizes  [CCROP-299](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
+- Included year 2020 for crop selections [CCROP-294](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-294)
+- Text on the home page and the job failure error message [CCROP-307](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-307)
+- Planting defaults for cereal rye [CCROP-309](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-309)
+
 ### Fixed
 - Loading spinner will always be cleared when transitioning from 'Run A Job' page to 'Dashboard'. Added missing condition check for 'Queued' datawolf state [CCROP-270](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-270)
+- Handled cases when the user has no jobs and when selected job failed, so the Dashboard will show appropriate message instead of spinning indefinitely [CCROP-281](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-281)
+- Fertilizer amount units to show lb/acre in both Crop History & Summary tabs, but it's updates through PATCH endpoint will get converted to kg/ha [CCROP-279](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-279)
+- Unit conversions and precision of the fields in inches, lbs/acre and seeds/acre are fixed so they conform to DSSAT specifications [CCROP-291](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-291)
+- Replace File() with Blob() so the tool is comptaible with Microsoft Edge versions under 79. [CCROP-290](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-290)
+- Formatted timezone in dates as per ECMA262 standard so dashboard results will show in correct order and job run time in Safari. [CCROP-227](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-227)
 - Issue with dashboard showing only the first cover crop chart. [CCROP-251](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-251)
+>>>>>>> develop
 
 ## [0.6.0] - 2020-05-29
 

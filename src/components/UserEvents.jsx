@@ -5,7 +5,7 @@ import {Button, Title, MenuAnchor, Menu, MenuItem, MenuDivider,Textfield, Card, 
 import "babel-polyfill";
 import {
 	datawolfURL, latId, lonId, weatherId, workflowId, resultDatasetId,
-	userInputJSONDatasetID, eventPageSize
+	userInputJSONDatasetID, eventPageSize, weatherDatasetId
 } from "../datawolf.config";
 import styles from "../styles/history-page.css";
 import { handleResults} from "../actions/analysis";
@@ -69,39 +69,42 @@ class UserEvents extends Component {
 
 	componentWillMount(){
 		// avoid displaying selectedEventNotSuccessful while the history page is loading
-		this.props.setSelectedUserEventStatus(true);
+		this.props.setSelectedUserEventStatus(null);
 		this.setState({runStatus: "LOADING"});
 		this.getEvents().then(function success() {
 			console.log("Fetched events.");
-
 			if (this.state.events.length > 0) {
 				let event = this.state.events[0];
 				this.setState({selectevent: event.id});
 
 				// If the latest simulation is successful, view results
 				if (event.status === "execution-success") {
-					this.props.setSelectedUserEventStatus(true);
+					this.props.setSelectedUserEventStatus("success");
 					this.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
-						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID]);
+						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
+							event[0].datasets[weatherDatasetId]);
 				}
 				// Else, set status to display an error message in the chart display area
 				else {
-					this.props.setSelectedUserEventStatus(false);
+					this.props.setSelectedUserEventStatus("error");
 				}
+			}
+			else{
+				this.props.setSelectedUserEventStatus("noRuns");
 			}
 			this.setState({runStatus: "LOADED_EVENTS"});
 		}.bind(this));
 
 	}
 
-	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId) => {
+	viewResult = (id, status, withCoverCropDatasetResultGUID, withoutCoverCropDatasetResultGUID, withCoverCropUserInputJSONDatasetId, weatherDatasetId) => {
 
 		this.setState({runStatus: "LOADING"});
 		this.setState({selectevent:id});
 		const outputFilename = "output.json";
 
 		if(status ==="execution-success") {
-			this.props.setSelectedUserEventStatus(true);
+			this.props.setSelectedUserEventStatus("success");
 
 			let that = this;
 			if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
@@ -114,7 +117,8 @@ class UserEvents extends Component {
 								withCoverCropResultFile,
 								withoutCoverCropDatasetResultGUID,
 								withoutCoverCropResultFile,
-								userInputJson
+								userInputJson,
+								weatherDatasetId
 							);
 							that.setState({runStatus: "LOADED_RESULT"});
 						});
@@ -124,16 +128,18 @@ class UserEvents extends Component {
 		}
 		else if(status ==="execution-error")
 		{
-			this.props.setSelectedUserEventStatus(false);
+			this.props.setSelectedUserEventStatus("error");
+			this.setState({runStatus: "FAILED_RESULT"});
 		}
+
 	};
 
 	handlePageChange = (pagenumber) => {
 		let selectEvent =  this.state.events[(pagenumber-1) * eventPageSize];
 		this.setState({pagenumber, selectevent: selectEvent.id });
 		this.viewResult(selectEvent.id, selectEvent.status, selectEvent[0].datasets[resultDatasetId],
-			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID]);
-
+			selectEvent[1].datasets[resultDatasetId], selectEvent[0].datasets[userInputJSONDatasetID],
+				selectEvent[0].datasets[weatherDatasetId]);
 	};
 
 
@@ -222,8 +228,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => {
-			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson));
+		handleResults: (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson, weatherDatasetId) => {
+			dispatch(handleResults(withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson, weatherDatasetId));
 		},
 		setSelectedUserEventStatus: (isSelectedEventSuccessful) => {
 			dispatch(setSelectedUserEventStatus(isSelectedEventSuccessful));

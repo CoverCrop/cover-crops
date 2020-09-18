@@ -24,23 +24,37 @@ export const FACD = {
 	"AP004": "Banded beneath surface", "AP009": "Injected"
 };
 
+// All fertilizer defaults should be in SI units. This is different to planting & tillage
+// defaults due to different implementation of default value parsing in the Fertilizer component.
 export const defaultFertilizer = {
 	"FDATE": "0402",
 	// "FMCD": "FE004",
 	"FACD": "AP009",
-	"FDEP": "20",
-	"FAMN": "193",
+	"FDEP": "20.00",
+	"FAMN": "193.0"
 };
 
-export const defaultPlanting = {
+// All planting defaults should be in Imperial format
+export const defaultCashcropPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"8",
-	"PPOE":"8",
+	"PPOP":"32000",
+	"PPOE":"32000",
 	"PLME":"S",
 	"PLDS":"R",
-	"PLRS": "76",
+	"PLRS": "29.92",
 	"PLRD": "0",
-	"PLDP": "4"
+	"PLDP": "1.57"
+};
+
+export const defaultCovercropPlanting = {
+	// "PDATE":"0513",
+	"PPOP":"900000",
+	"PPOE":"900000",
+	"PLME":"S",
+	"PLDS":"R",
+	"PLRS": "7.50",
+	"PLRD": "0",
+	"PLDP": "1.50"
 };
 
 export const defaultHarvest = {
@@ -56,11 +70,17 @@ export const TIMPL = {
 	"TI019": "Fertilizer applicator, anhydrous"
 };
 
-export const defaultTillage = {"TDATE": "0922", "TDEP": "15"};
+export const defaultTillage = {"TDATE": "0922", "TDEP": "5.91"}; // default in SI
 // export const CROP = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
 export const cashCrops = ["Corn", "Soybean"];
 export const coverCrops = ["Rye"];
 export const cashCropOptions = cashCrops.concat(["None"]);
 export const coverCropOptions = coverCrops.concat(["None"]);
-export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019"];
+export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019", "2020"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
+
+// actual inch limit should have been 393, but 385 is the max value where rounding error does not occur
+export const INCH_LIMIT = 385;
+export const LBS_LIMIT = 892;
+export const SEEDS_LIMIT = 10000000;
+export const SEEDS_ROUND_TO = 1000;

@@ -43,13 +43,14 @@ export const handleCardChange = (oldCardIndex, newCardIndex, oldCardData) => ({
 
 });
 
-export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson) => ({
+export const handleResults = (withCoverCropExecutionId, withCoverCropResultJson, withoutCoverCropExecutionId, withoutCoverCropResultJson, userInputJson, weatherDatasetId) => ({
 	type: "ADD_RESULT",
 	withCoverCropExecutionId,
 	withCoverCropResultJson,
 	withoutCoverCropExecutionId,
 	withoutCoverCropResultJson,
-	userInputJson
+	userInputJson,
+	weatherDatasetId
 });
 
 export const handleCoverCropChange = (coverCrop) => ({

@@ -1,8 +1,12 @@
 import React, {Component} from "react";
 import {Button, Title} from "react-mdc-web";
-import {convertFullDate} from "../public/utils";
+import {
+	convertFullDate,
+	convertPerSqMeterToPerAcre,
+	convertPerAcreToPerSqMeter, convertCmToInches, convertInchesToCm,
+} from "../public/utils";
 import MyFarmUpdate from "./MyFarmUpdate";
-import {defaultPlanting, PLDS} from "../experimentFile";
+import {defaultCashcropPlanting, defaultCovercropPlanting, PLDS} from "../experimentFile";
 import {connect} from "react-redux";
 
 class Planting extends Component {
@@ -35,6 +39,10 @@ class Planting extends Component {
 				let pdate = selectcrop["PDATE"];
 				// console.log(convertFullDate(pdate));
 				this.setState({"PDATE": convertFullDate(pdate)});
+
+				this.setState({"PPOP": convertPerSqMeterToPerAcre(selectcrop["PPOP"]).toString()});
+				this.setState({"PLRS": convertCmToInches(selectcrop["PLRS"]).toString()});
+				this.setState({"PLDP": convertCmToInches(selectcrop["PLDP"]).toString()});
 			} else{
 				this.setDefault();
 			}
@@ -49,8 +57,13 @@ class Planting extends Component {
 		if(jsonBody["CONTENT"][0]["PDATE"]) {
 
 			jsonBody["PLNAME"] = year;
+			jsonBody["CONTENT"][0]["PPOP"] = convertPerAcreToPerSqMeter(jsonBody["CONTENT"][0]["PPOP"]);
 			jsonBody["CONTENT"][0]["PPOE"] = jsonBody["CONTENT"][0]["PPOP"];
 			jsonBody["CONTENT"][0]["PDATE"] = jsonBody["CONTENT"][0]["PDATE"].replace(/-/g, "").substring(0, 8);
+
+			jsonBody["CONTENT"][0]["PLRS"] = convertInchesToCm(jsonBody["CONTENT"][0]["PLRS"]);
+			jsonBody["CONTENT"][0]["PLDP"] = convertInchesToCm(jsonBody["CONTENT"][0]["PLDP"]);
+
 			jsonBody["EVENT"] = "planting";
 			return jsonBody;
 
@@ -65,15 +78,19 @@ class Planting extends Component {
 	}
 
 	setDefault(){
-		let newPlanting = Object.assign({}, defaultPlanting);
+		let newPlanting;
 		let pureyear = this.props.year.split(" ")[0];
 		// set default date as 04-22
-		if (this.props.title === "Planting") {
+		if (this.props.type === "cashcrop") {
+			newPlanting = Object.assign({}, defaultCashcropPlanting);
 			// set default date as 04-22
 			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
-		} else {
+			this.setState({helpText: ""});
+		} else { //covercrop
+			newPlanting = Object.assign({}, defaultCovercropPlanting);
 			// set default date as 09-22
 			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
+			this.setState({helpText: "For cereal rye, 1 lb ≈ 18000 seeds"});
 		}
 		this.setState(newPlanting);
 	}
@@ -94,16 +111,16 @@ class Planting extends Component {
 					/>
 
 					<div className="update-box-div">
-					<MyFarmUpdate isLeft elementType="input" title="ROW SPACING, inch" cropyear={this.state.year}
+					<MyFarmUpdate isLeft elementType="inputInch" title="ROW SPACING, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLRS"
 												defaultValue={this.state.PLRS} handler = {this.handler}
 					/>
-					<MyFarmUpdate isLeft elementType="input" title="DEPTH, inch" cropyear={this.state.year}
+					<MyFarmUpdate isLeft elementType="inputInch" title="DEPTH, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLDP"
 												defaultValue={this.state.PLDP} handler = {this.handler}
 					/>
-					<MyFarmUpdate isLeft elementType="input" title="POP, seeds/acre" cropyear={this.state.year}
-												firstField="MP" secondField="PPOP"
+					<MyFarmUpdate isLeft elementType="inputSeeds" title="POP, seeds/acre" cropyear={this.state.year}
+												firstField="MP" secondField="PPOP" helpText={this.state.helpText} helpTextPersistence={true}
 												defaultValue={this.state.PPOP} handler = {this.handler}
 					/>
 					</div>

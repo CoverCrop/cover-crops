@@ -2,8 +2,7 @@ import React, {Component} from "react";
 import {Link} from "react-router";
 import styles from "../styles/header.css";
 import styles2 from "../styles/main.css";
-import {Textfield, Button, Fab, Grid, Cell, Title, Caption, Icon, MenuAnchor, Menu,
-	MenuItem, MenuDivider} from "react-mdc-web";
+import {Textfield, Button, Fab, Grid, Cell, Title, Icon} from "react-mdc-web";
 import {connect} from "react-redux";
 import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
@@ -11,13 +10,19 @@ import config from "../app.config";
 import {existCLUNote} from "../app.messages.js";
 import {getKeycloakHeader} from "../public/utils";
 
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import {croplandUrl, privacyUrl} from "../public/config";
+
 class AddFieldBox extends Component {
 
 	constructor(props) {
 		super(props);
 
 		this.state = {
-			open: false,
+			popupOpen: false,
 			cluname: ""
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
@@ -35,6 +40,18 @@ class AddFieldBox extends Component {
 	handleLongFieldChange = (e) =>  {
 		this.props.handleLongFieldChange(e.target.value);
 	};
+
+	handlePopupOpen = () => {
+		this.setState({popupOpen: true});
+	};
+
+	handlePopupClose = () => {
+		this.setState({popupOpen: false});
+	};
+
+	handleContinue = () => {
+		this.handleAddCLU();
+	}
 
 	handleAddCLU() {
 		const CLUapi = config.CLUapi + "/userfield";
@@ -68,6 +85,45 @@ class AddFieldBox extends Component {
 	render() {
 		return(
 			<div>
+
+				<Dialog
+						open={this.state.popupOpen}
+						onClose={this.handlePopupClose}
+						aria-labelledby="alert-dialog-title"
+						aria-describedby="alert-dialog-description"
+				>
+					<DialogContent>
+						<DialogContentText id="alert-dialog-description">
+							<p>
+								We will be creating a new field with crop rotation details populated from USDA&nbsp;
+								<a className="cc-link" href={croplandUrl} target="_blank">
+									Cropland Data Layer
+								</a>
+								&nbsp;and other default management data for this region.
+								Please update your actual cash crop and cover crop details using the "My Farm" section.
+								Please click 'Continue' to proceed.
+							</p>
+							<br/>
+
+							<p>
+								Read about our&nbsp;
+								<a className="cc-link" href={privacyUrl} target="_blank">
+									Privacy Policy
+								</a>
+							</p>
+						</DialogContentText>
+					</DialogContent>
+					<DialogActions>
+						<Button onClick={this.handlePopupClose} color="primary" autoFocus>
+							Cancel
+						</Button>
+						<Button onClick={this.handleContinue} color="primary" autoFocus>
+							Continue
+						</Button>
+					</DialogActions>
+				</Dialog>
+
+
 				<div className="add-field-box add-field-title">
 
 					<Fab >
@@ -116,7 +172,7 @@ class AddFieldBox extends Component {
 					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
 					<button type="submit" className="blue-button add-button"
 							disabled={this.state.cluname ==="" || this.props.clu ===0}
-							onClick={this.handleAddCLU}
+							onClick={this.handlePopupOpen}
 					>ADD FIELD</button>
 				</div>
 			</div>

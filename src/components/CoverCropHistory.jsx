@@ -133,7 +133,7 @@ class CoverCropHistory extends Component {
 						</div>
 					</div>}
 					{this.state.covercropSel !== "None" &&
-					<Planting title="Establishment" year={this.state.yearCrop} onRef={ref => (this.planting = ref)}/> }
+					<Planting type="covercrop" title="Establishment" year={this.state.yearCrop} onRef={ref => (this.planting = ref)}/> }
 					{this.state.covercropSel !== "None" &&
 					<Harvest title="Termination" year={this.state.yearCrop} onRef={ref => (this.harvest = ref)}/> }
 					{this.state.year && <Button raised onClick={() => this.handleClick()}>UPDATE</Button>}

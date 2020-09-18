@@ -1,16 +1,22 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
 import ol from "openlayers";
-import {CULTIVARS, cashCrops, coverCrops} from "../experimentFile";
+import {
+	CULTIVARS,
+	cashCrops,
+	coverCrops,
+	SEEDS_ROUND_TO,
+} from "../experimentFile";
 
 const SQUARE_METER_TO_ACRE = 0.000247105;
-const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.86
+const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.8626697
 const CM_TO_INCH = 0.393701;
+const INCH_TO_CM = 1/CM_TO_INCH;
 const METER_TO_FT = 3.28084167;
 const KG_TO_LB = 2.20462;
 const HA_TO_ACRE = 2.47105;
 const KGPERHA_TO_LBPERACRE = KG_TO_LB/HA_TO_ACRE; // ~ 0.893
-
+const LBPERACRE_TO_KGPERHA = HA_TO_ACRE/KG_TO_LB; // ~ 1.12
 
 export function groupBy(list, keyGetter) {
 	const map = new Map();
@@ -27,7 +33,16 @@ export function groupBy(list, keyGetter) {
 }
 
 export function sortByDateInDescendingOrder(a, b) {
-	return new Date(b.date).getTime() - new Date(a.date).getTime();
+	let aDate = new Date(updateTimezoneInDateStr(a.date));
+	let bDate = new Date(updateTimezoneInDateStr(b.date));
+	return bDate.getTime() - aDate.getTime();
+}
+
+// Adds colon in the timezone part of the date string to be compatible with ECMA262 format
+// https://tc39.es/ecma262/#sec-date-time-string-format
+// Without this, the date parsing fails in Safari
+export function updateTimezoneInDateStr(dateStr){
+	return dateStr.trim().substring(0,22) + ":" + dateStr.trim().substring(22,24);
 }
 
 export const ID = function () {
@@ -178,20 +193,20 @@ export function convertDayString(moment) {
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
-	let userInputFile = new File([
-			"{\"with_cover_crop\": " + isWithCoverCrop + "," +
-			"\"year_planting\": " + yearPlanting + "," +
-			"\"doy_planting\": " + doyPlanting + "," +
-			"\"doy_harvest\": " + doyHarvest +
-			"}"],
-		"user_input.json",
-		{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+	let userInputFile = new Blob([
+				"{\"with_cover_crop\": " + isWithCoverCrop + "," +
+				"\"year_planting\": " + yearPlanting + "," +
+				"\"doy_planting\": " + doyPlanting + "," +
+				"\"doy_harvest\": " + doyHarvest +
+				"}"],
+			{type: "text/plain;charset=utf-8", lastModified: Date.now()});
 
-
-	return uploadDatasetToDataWolf(userInputFile);
+	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
 }
 
-export async function uploadDatasetToDataWolf(filedata) {
+// Pass file name when filedata is a Blob, if the file needs to be named on the server.
+// Not need for file uploads that are done on My Farm page.
+export async function uploadDatasetToDataWolf(filedata, fileName=null) {
 	let headers = {
 		"Authorization": getKeycloakHeader(),
 		"Cache-Control": "no-cache"
@@ -199,7 +214,11 @@ export async function uploadDatasetToDataWolf(filedata) {
 
 	let data = new FormData();
 	data.append("useremail", localStorage.getItem("kcEmail"));
-	data.append("uploadedFile", filedata);
+	if (fileName) {
+		data.append("uploadedFile", filedata, fileName);
+	} else {
+		data.append("uploadedFile", filedata);
+	}
 
 	let uploadDatasetResponse = await fetch(
 		datawolfURL + "/datasets",
@@ -493,16 +512,29 @@ export function convertCmToInches(cm){
 	return roundResults(cm * CM_TO_INCH, 2);
 }
 
+export function convertInchesToCm(inches){
+	return roundResults(inches * INCH_TO_CM, 2);
+}
+
 export function convertMetersToFeet(meters){
 	return roundResults(meters * METER_TO_FT, 2);
 }
 
-export function convertPerSqMeterToPerAcre(sq_meters){
-	return roundResults(sq_meters * QTY_PER_SQUARE_METER_TO_ACRE, 0);
+export function convertPerSqMeterToPerAcre(per_sq_meters){
+	return roundResults(Math.round((per_sq_meters *
+			QTY_PER_SQUARE_METER_TO_ACRE)/SEEDS_ROUND_TO) * SEEDS_ROUND_TO, 0);
+}
+
+export function convertPerAcreToPerSqMeter(per_acres){
+	return roundResults(per_acres * SQUARE_METER_TO_ACRE, 1);
 }
 
 export function convertKgPerHaToLbPerAcre(kg_ha){
-	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 2);
+	return roundResults(kg_ha * KGPERHA_TO_LBPERACRE, 1);
+}
+
+export function convertLbPerAcreToKgPerHa(lb_acre){
+	return roundResults(lb_acre * LBPERACRE_TO_KGPERHA, 1);
 }
 
 export function checkIfDatawolfUserExists(email) {
@@ -591,4 +623,8 @@ export function reformatTreatmentLine(treatmentLine){
 		treatmentLine = treatmentLine.substring(0, 1) + " " + treatmentLine.substring(1);
 	}
 	return treatmentLine;
+}
+
+export function isNumeric(n) {
+	return !isNaN(parseFloat(n)) && isFinite(n);
 }
