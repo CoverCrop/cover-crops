@@ -1,8 +1,29 @@
 import React, {Component} from "react";
-import ol from "openlayers";
 import PropTypes from "prop-types";
 import config from "../app.config.js";
-require("openlayers/css/ol.css");
+require("ol/ol.css");
+import {
+	View as OlView,
+	Feature as OlFeature,
+	Map as OlMap
+} from "ol";
+import {Point as OlPoint} from "ol/geom";
+import {fromLonLat} from "ol/proj";
+import {Style as OlStyle} from "ol/style";
+import {
+	Icon as OlIcon,
+	Stroke as OlStroke,
+	Fill as OlFill
+} from "ol/style";
+import {
+	Vector as VectorLayer,
+	Tile as LayerTile
+} from "ol/layer";
+import {
+	Vector as VectorSource,
+	BingMaps,
+	TileWMS
+} from "ol/source";
 
 class MapCC extends Component {
 
@@ -10,38 +31,37 @@ class MapCC extends Component {
 		super(props);
 
 		this.defaultCenter = (this.props.defaultCenter !== undefined && this.props.defaultCenter !== null) ?
-			this.props.defaultCenter : ol.proj.fromLonLat(config.defaultCenterLongLat);
+			this.props.defaultCenter : fromLonLat(config.defaultCenterLongLat);
 		this.defaultZoom = (this.props.defaultZoom !== undefined && this.props.defaultZoom !== null) ?
 			this.props.defaultZoom : config.defaultZoom;
-
-		this.iconStyle = new ol.style.Style({
-			image: new ol.style.Icon(({
+		this.iconStyle = new OlStyle({
+			image: new OlIcon({
 				anchor: [0.5, 46],
 				anchorXUnits: "fraction",
 				anchorYUnits: "pixels",
 				opacity: 0.80,
 				src: "../images/map-marker.png"
-			}))
+			})
 		});
 
-		this.markerSource = new ol.source.Vector({
+		this.markerSource = new VectorSource({
 			features: []
 		});
-		this.marker = new ol.layer.Vector({
+		this.marker = new VectorLayer({
 			source: this.markerSource
 		});
 
 		this.state = {
-			map: new ol.Map({
+			map: new OlMap({
 				layers: [
-					new ol.layer.Tile({
-						source: new ol.source.BingMaps({
+					new LayerTile({
+						source: new BingMaps({
 							key: "Ahkpb-yLsjXtJQVJmVQ1RT2V4Yt-mmAmxyfYAbDyUY20cNWB2XNJjLVPqxtW3l9Y",
 							imagerySet: "AerialWithLabels"
 						})
 					}),
-					new ol.layer.Tile({
-						source: new ol.source.TileWMS({
+					new LayerTile({
+						source: new TileWMS({
 							url: config.geoServer,
 							params: {"LAYERS": "covercrop:clu", "TILED": true},
 							serverType: "geoserver"
@@ -50,26 +70,26 @@ class MapCC extends Component {
 					}),
 					this.marker
 				],
-				view: new ol.View({
+				view: new OlView({
 					center: this.defaultCenter,
 					zoom: this.defaultZoom,
 					maxZoom: 19
 				})
 			}),
-			areaPolygonLayer: new ol.layer.Vector({
+			areaPolygonLayer: new VectorLayer({
 				id: "areaPolygon",
-				source: new ol.source.Vector({
+				source: new VectorSource({
 					features: [
-						new ol.Feature({})
+						new OlFeature({})
 					]
 				}),
 				style:
-					new ol.style.Style({
-						stroke: new ol.style.Stroke({
+					new OlStyle({
+						stroke: new OlStroke({
 							color: "#1AB146",
 							width: 4
 						}),
-						fill: new ol.style.Fill({
+						fill: new OlFill({
 							color: "rgba(225, 225, 255, 0.4)"
 						})
 					})
@@ -82,8 +102,8 @@ class MapCC extends Component {
 
 	dropMarker(coordinate) {
 
-		let iconFeature = new ol.Feature({
-			geometry: new ol.geom.Point(coordinate)
+		let iconFeature = new OlFeature({
+			geometry: new OlPoint(coordinate)
 		});
 		iconFeature.setStyle(this.iconStyle);
 
