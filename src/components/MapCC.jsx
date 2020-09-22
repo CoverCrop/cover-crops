@@ -72,8 +72,9 @@ class MapCC extends Component {
 				],
 				view: new OlView({
 					center: this.defaultCenter,
-					zoom: this.defaultZoom,
-					maxZoom: 19
+					zoom: 14,
+					minZoom: 0,
+					maxZoom: 28
 				})
 			}),
 			areaPolygonLayer: new VectorLayer({
