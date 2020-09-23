@@ -101,7 +101,7 @@ class MyFarmPage extends Component {
 					<div className="minimap">
 						<MapCC mapId={c.cluname}
 											markercoordinate={OlTransform([c.lon, c.lat], "EPSG:4326", "EPSG:3857")}
-											areafeatures={this.state.areafeatures} fitmap zoomlevel="4"/>
+											areafeatures={this.state.areafeatures} fitmap zoomlevel="15"/>
 					</div>
 				</div>);
 
