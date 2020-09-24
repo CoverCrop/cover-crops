@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix setting default harvest dates for cash and cover-crops. [CCROP-304](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-304)
 - Fix displaying fertilizer and crop tillage if there are no crops in the crop history page. [CCROP-305](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-305)
 - Issue with dashboard showing only the first cover crop chart. [CCROP-251](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-251)
+- Nitrogen Loss Reduction graphs to not exclude 0 values. [CCROP-313](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-313)
 
 ### Removed
 - Remove "None" from cash crop drop down options. [CCROP-311](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-311)
