@@ -12,7 +12,7 @@ const devConfig = {
 	CLUapi: "http://localhost:5000/api",
 	latestWeatherDate: "2020-07-31",
 	defaultCenterLongLat: [-88.2, 40.14],
-	defaultZoom: 10,
+	defaultZoom: 14,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
 	keycloak: Keycloak("http://localhost:3000/keycloak.json"),
@@ -29,7 +29,7 @@ const prodConfig = {
 	CLUapi: "https://fd-api.ncsa.illinois.edu/covercrop/api",
 	latestWeatherDate: "2020-07-31",
 	defaultCenterLongLat: [-88.2, 40.14],
-	defaultZoom: 10,
+	defaultZoom: 14,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
 	keycloak: Keycloak(`https://${ prodDomain }/keycloak.json`),

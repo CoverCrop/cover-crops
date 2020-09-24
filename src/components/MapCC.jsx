@@ -72,7 +72,7 @@ class MapCC extends Component {
 				],
 				view: new OlView({
 					center: this.defaultCenter,
-					zoom: 14,
+					zoom: this.defaultZoom,
 					minZoom: 0,
 					maxZoom: 28
 				})
