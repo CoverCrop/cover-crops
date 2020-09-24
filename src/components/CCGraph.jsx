@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {roundResults} from "../public/utils.js";
+import {roundResults, isNumeric} from "../public/utils.js";
 
 import {Line} from "react-chartjs-2";
 
@@ -25,10 +25,10 @@ class CCGraph extends Component {
 
 			graphInfo.forEach(function(e){
 				dates.push(e["date"]);
-				if(e["with-cc"]) {
+				if(isNumeric(e["with-cc"])) {
 					withcc.push(roundResults(e["with-cc"], 2));
 				}
-				if(e["no-cc"]) {
+				if(isNumeric(e["no-cc"])) {
 					nocc.push(roundResults(e["no-cc"], 2));
 				}
 			});
