@@ -16,7 +16,9 @@ import {
 } from "../public/utils";
 import {addFieldHelper} from "../app.messages";
 import MapCC from "./MapCC";
-import ol from "openlayers";
+import {transform as OlTransform} from "ol/proj";
+import {Feature as OlFeature} from "ol";
+import {GeoJSON} from "ol/format";
 
 import MyFarmWrap from "./MyFarmWrap";
 import {handleExptxtGet, handleUserCLUChange} from "../actions/user";
@@ -64,14 +66,14 @@ class MyFarmPage extends Component {
 				return geojson;
 			}).then(geojson => {
 
-				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+				let features = (new GeoJSON()).readFeatures(geojson, {
 					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 				that.setState({areafeatures:features});
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
 				that.setState({areafeatures:[
-						new ol.Feature({})
+						new OlFeature({})
 					]});
 			});
 		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
@@ -98,7 +100,7 @@ class MyFarmPage extends Component {
 					</Card>
 					<div className="minimap">
 						<MapCC mapId={c.cluname}
-											markercoordinate={ol.proj.transform([c.lon, c.lat], "EPSG:4326", "EPSG:3857")}
+											markercoordinate={OlTransform([c.lon, c.lat], "EPSG:4326", "EPSG:3857")}
 											areafeatures={this.state.areafeatures} fitmap zoomlevel="15"/>
 					</div>
 				</div>);

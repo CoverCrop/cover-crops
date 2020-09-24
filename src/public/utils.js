@@ -1,6 +1,14 @@
 import {datawolfURL, weatherPatterns} from "../datawolf.config";
 import config from "../app.config";
-import ol from "openlayers";
+import {Vector as VectorLayer} from "ol/layer";
+import {Vector as VectorSource} from "ol/source";
+import {Feature as OlFeature} from "ol";
+import {GeoJSON} from "ol/format";
+import {
+	createEmpty,
+	extend as olExtend
+} from "ol/extent";
+
 import {
 	CULTIVARS,
 	cashCrops,
@@ -291,17 +299,17 @@ export async function getCLUGeoJSON(cluId) {
  */
 export function getExtentOfFieldsForUser(emailId) {
 
-	let fieldsPolygonLayer = new ol.layer.Vector({
+	let fieldsPolygonLayer = new VectorLayer({
 		id: "fieldsPolygon",
-		source: new ol.source.Vector({
+		source: new VectorSource({
 			features: [
-				new ol.Feature({})
+				new OlFeature({})
 			]
 		}),
 		visible: true
 	});
 	let fieldPolygonSource = fieldsPolygonLayer.getSource();
-	let currentExtent = ol.extent.createEmpty();
+	let currentExtent = createEmpty();
 
 	getMyFieldList(emailId).then(function (clus) {
 
@@ -309,14 +317,13 @@ export function getExtentOfFieldsForUser(emailId) {
 
 			getCLUGeoJSON(clu.clu).then(function (geoJSON) {
 
-
-				let features = new ol.format.GeoJSON().readFeatures(geoJSON, {
+				let features = new GeoJSON().readFeatures(geoJSON, {
 					dataProjection: "EPSG:4326",
 					featureProjection: "EPSG:3857"
 				});
 
 				fieldPolygonSource.addFeatures(features);
-				currentExtent = ol.extent.extend(currentExtent, fieldPolygonSource.getExtent());
+				currentExtent = olExtend(currentExtent, fieldPolygonSource.getExtent());
 				fieldPolygonSource.clear();
 
 			}, function (err) {

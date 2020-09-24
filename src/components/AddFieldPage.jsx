@@ -1,6 +1,5 @@
 import React, {Component} from "react";
 import Header from "./Header";
-import ol from "openlayers";
 import MapCC from "./MapCC";
 import AuthorizedWrap from "./AuthorizedWrap";
 import AnalyzerWrap from "./AnalyzerWrap";
@@ -14,7 +13,9 @@ import {
 } from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import {handleUserCLUChange} from "../actions/user";
-
+import {transform as olTransform} from "ol/proj";
+import {Feature as OlFeature} from "ol";
+import {GeoJSON} from "ol/format";
 
 class AddFieldPage extends Component {
 
@@ -25,7 +26,7 @@ class AddFieldPage extends Component {
 			exist_clu: false,
 			markercoordinate: [],
 			areafeatures: [
-				new ol.Feature({})
+				new OlFeature({})
 			],
 			extent: null
 		};
@@ -42,7 +43,7 @@ class AddFieldPage extends Component {
 
 	handleClick = (e) => {
             this.setState({markercoordinate: e.coordinate});
-			let lonLatCoordinates = ol.proj.transform(e.coordinate, "EPSG:3857", "EPSG:4326");
+			let lonLatCoordinates = olTransform(e.coordinate, "EPSG:3857", "EPSG:4326");
 
 			// Format number to a string with 6 digits after decimal point
 			lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
@@ -66,7 +67,7 @@ class AddFieldPage extends Component {
 				return response.json();
 			}).then(geojson => {
 
-				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+				let features = (new GeoJSON()).readFeatures(geojson, {
 					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 
@@ -85,7 +86,7 @@ class AddFieldPage extends Component {
 			}).catch(function (e) {
 				console.log("Get CLU failed: " + e);
 				that.setState({areafeatures:[
-						new ol.Feature({})
+						new OlFeature({})
 					]});
 				that.props.handleUserCLUChange(0, "");
 			});

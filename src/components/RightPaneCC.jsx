@@ -4,10 +4,12 @@ import RunSimulationCC from "./RunSimulationCC";
 import ViewResultsCC from "./ViewResultsCC";
 import MapCC from "./MapCC";
 import { connect } from "react-redux";
-import ol from "openlayers";
 import config from "../app.config";
 import {getExtentOfFieldsForUser, getKeycloakHeader} from "../public/utils";
 import Spinner from "./Spinner";
+import {transform as olTransform} from "ol/proj";
+import {Feature as OlFeature} from "ol";
+import {GeoJSON} from "ol/format";
 
 class RightPaneCC extends Component {
 
@@ -16,7 +18,7 @@ class RightPaneCC extends Component {
 		this.state = {
 			markercoordinate: [],
 			areafeatures: [
-				new ol.Feature({})
+				new OlFeature({})
 			],
 			extent: null,
 			showModal: false
@@ -32,7 +34,7 @@ class RightPaneCC extends Component {
 		} = nextProps;
 
 		// add marker
-		let coordinate = ol.proj.transform([analysis_longitude, analysis_latitude], "EPSG:4326", "EPSG:3857" );
+		let coordinate = olTransform([analysis_longitude, analysis_latitude], "EPSG:4326", "EPSG:3857" );
 		this.setState({markercoordinate: coordinate});
 
 		const CLUapi = config.CLUapi + "/CLUs?lat=" + analysis_latitude + "&lon=" + analysis_longitude + "&soil=false";
@@ -49,7 +51,7 @@ class RightPaneCC extends Component {
 				return geojson;
 			}).then(geojson => {
 
-				let features = (new ol.format.GeoJSON()).readFeatures(geojson, {
+				let features = (new GeoJSON()).readFeatures(geojson, {
 					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
 				});
 				this.setState({areafeatures:features});
