@@ -1,6 +1,6 @@
 {
   "name": "cover-crops",
-  "version": "0.6.0",
+  "version": "1.0.0",
   "description": "A Web Based Decision Support Tool for Cover Crop Management.",
   "engines": {
     "npm": ">=3.10",
