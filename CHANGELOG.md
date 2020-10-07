@@ -36,7 +36,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Remove "None" from cash crop drop down options. [CCROP-311](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-311)
 
 ### Security
-- Fix some npm packages vulnerabilities. Also, updated "openlayers" to "ol" and all its reference methods [CCROP-312](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-312)
+- Fix some npm package vulnerabilities. Also, updated "openlayers" to "ol" and all its reference methods [CCROP-312](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-312)
 
 ## [0.6.0] - 2020-05-29
 
