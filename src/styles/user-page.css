@@ -9,17 +9,23 @@
 	width: 100%;
 }
 
-.add-field-box {
+.add-field-div {
+	width: 405px;
+	min-height: 300px;
 	position: absolute;
 	top: 22px;
 	left: 46px;
-	height: 310px;
+}
+
+.add-field-box {
+	position: relative;
+	min-height: 250px;
 	width: 405px;
 	background-color: #FFFFFF;
 	padding-left: 22px;
 	padding-right: 22px;
 	padding-top: 12px;
-	/*padding-bottom: 25px;*/
+	padding-bottom: 25px;
 }
 
 .add-help .add-field-title{
@@ -115,9 +121,7 @@
 .add-field-bottom {
 	background-color: #DEE4E8;
 	/*relative position to the map*/
-	position: absolute;
-	top: 310px;
-	left: 46px;
+	position: relative;
 	height: 50px;
 	width: 405px;
 }
@@ -140,6 +144,16 @@
 
 .exist-message{
 	width: 330px;
+	float: right;
+}
+
+.soil-unavailable-message-div{
+	width: fit-content;
+}
+
+.soil-unavailable-message{
+	margin-top: 5px;
+	margin-left: 5px;
 	float: right;
 }
 
