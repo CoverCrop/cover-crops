@@ -14,3 +14,4 @@ export const loginMessage = "Please login with your account to access the cover 
 		" an account yet, use the 'REGISTER' button to create one. If you are having trouble receiving the verification" +
 		" email in your inbox, please check your spam/junk folder.";
 export const usageMessage = "Click the 'CoverCrop Analyzer' tab to see the tool. From the Analyzer, you can use 'My Farm' to add or manage your fields";
+export const soilDataUnavailableMessage = "Soil data is unavailable for this field. You will not be able to run jobs on this field until soil data is added.";
