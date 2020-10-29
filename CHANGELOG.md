@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Fixed
+- Summary page breaking when soil data unavailable for a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
+
+### Added
+- Display warning message when user tries to add a field without soil data as well as in the summary page for such a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
+
 ## [1.0.0] - 2020-09-30
 
 ### Added
