@@ -20,8 +20,8 @@ import {ID, getOutputFileJson, wait, uploadUserInputFile, getKeycloakHeader} fro
 import Select from "react-select";
 import {handleStartDateChange, handleEndDateChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
-import {getDayOfYear} from "date-fns";
-
+import {getDayOfYear, addMonths} from "date-fns";
+import {CURR_YEAR, START_YEAR} from "../experimentFile";
 
 class RunSimulationCC extends Component {
 
@@ -167,6 +167,22 @@ class RunSimulationCC extends Component {
 		}
 	}
 
+	isCovercropPlantingDate(date){
+		let month = date.getMonth();
+		let year = date.getFullYear();
+
+		return (month === 7 || month === 8 || month === 9 || month === 10) &&
+				( (year >= START_YEAR) && (year <= CURR_YEAR + 1) );
+	}
+
+	isCashcropPlantingDate(date){
+		let month = date.getMonth();
+		let day = date.getDate();
+		let year = date.getFullYear();
+		return ((month === 2 || month === 3 || month === 4 || (month === 5 && day <= 15)) &&
+				( (year >= START_YEAR) && (year <= CURR_YEAR + 1) ));
+	}
+
 	handleStartDateChange(date) {
 		this.props.handleStartDateChange(date);
 	}
@@ -175,8 +191,8 @@ class RunSimulationCC extends Component {
 
 		// Set selectedFutureWeatherEndDate to true if selected termination date if greater than the latest date for
 		// which we have weather data
-		let endDateString = date.toDate().toISOString().split("T")[0]; // Get YYYY-MM-DD format date string
-		this.setState({selectedFutureWeatherEndDate: new Date(endDateString) > new Date(config.latestWeatherDate)});
+		this.setState({selectedFutureWeatherEndDate: date > new Date(
+				config.latestWeatherDate + " 00:00:00")});
 
 		this.props.handleEndDateChange(date);
 	}
@@ -229,13 +245,11 @@ class RunSimulationCC extends Component {
 					<div className="select-date-div">
 						<Subheading2>Cover Crop </Subheading2>
 						<DatePicker className="date-picker-cc" selected={this.props.startDate}
-									selectsStart
 									showYearDropdown
 									scrollableYearDropdown
 									placeholderText="Select cover crop plant date"
-									startDate={this.props.startDate}
-									endDate={this.props.endDate}
-									onSelect={this.handleStartDateChange}/>
+									filterDate={this.isCovercropPlantingDate}
+									onChange={this.handleStartDateChange}/>
 					</div>
 					<div className="select-date-div">
 						<Subheading2>Cash Crop </Subheading2>
@@ -244,8 +258,8 @@ class RunSimulationCC extends Component {
 									showYearDropdown
 									scrollableYearDropdown
 									placeholderText="Select following cash crop plant date"
-									startDate={this.props.startDate}
-									endDate={this.props.endDate}
+									startDate={this.props.startDate ? addMonths(this.props.startDate, 6) : null}
+									filterDate={this.isCashcropPlantingDate}
 									onChange={this.handleEndDateChange}/>
 					</div>
 				</div>

@@ -1,3 +1,6 @@
+export const CURR_YEAR = (new Date()).getFullYear();
+export const START_YEAR = 2015;
+
 export const CULTIVARS = {"WH": "IB0488 NEWTON", "MZ": "DEKALB 591", "SB": "M GROUP 2", "FA": "FALLOW"};
 
 export const drainage_type = {
