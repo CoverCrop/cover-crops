@@ -7,7 +7,7 @@ import {
 	roundResults,
 	calculateDayDifference,
 	addDays,
-	getKeycloakHeader
+	getKeycloakHeader, convertKgPerHaToLbPerAcre,
 } from "../public/utils";
 import config from "../app.config";
 import Spinner from "./Spinner";
@@ -128,7 +128,8 @@ class DashboardResults extends Component {
 			openGraphs: false,
 			graphType: "",
 			openDecompGraph: false,
-			decompositionGraphInfo: null
+			decompositionGraphInfo: null,
+			gdd: null
 		};
 
 		this.generateChartsHTML = this.generateChartsHTML.bind(this);
@@ -217,6 +218,7 @@ class DashboardResults extends Component {
 		let percentWoTillageData = [];
 		let rateWithTillageData = [];
 		let rateWoTillageData = [];
+		let gdd = [];
 
 		let that = this;
 		fetch(decompApi, {
@@ -235,8 +237,9 @@ class DashboardResults extends Component {
 					dates.push(element.date);
 					percentWithTillageData.push(element.percent_till);
 					percentWoTillageData.push(element.percent_no_till);
-					rateWithTillageData.push(element.smoothed_rate_till);
-					rateWoTillageData.push(element.smoothed_rate_no_till);
+					rateWithTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_till));
+					rateWoTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_no_till));
+					gdd.push({x: new Date(element.date + " 00:00:00"), y: element.GDD});
 				});
 				that.setState({
 					decompositionGraphInfo: {
@@ -244,12 +247,13 @@ class DashboardResults extends Component {
 						"percentWithTillageData": percentWithTillageData,
 						"percentWoTillageData": percentWoTillageData,
 						"rateWithTillageData": rateWithTillageData,
-						"rateWoTillageData": rateWoTillageData
-					}
+						"rateWoTillageData": rateWoTillageData,
+					},
+					gdd: gdd
 				});
 			}
 			else {
-				that.setState({decompositionGraphInfo: null });
+				that.setState({decompositionGraphInfo: null, gdd: null});
 			}
 		}).catch(function (e) {
 			console.log("Get Decomposition endpoint failed: " + e);
@@ -268,6 +272,7 @@ class DashboardResults extends Component {
 	}
 
 	getYfromArray(arr, x){
+		console.log(arr, x);
 		let ret = "NA";
 		arr.map(function(item){
 			if(item.x.getTime() === x.getTime()){
@@ -768,6 +773,21 @@ class DashboardResults extends Component {
 			</TableRow>
 		);
 
+		rowElems.push(
+				<TableRow key="5">
+					<TableCell className="dashboardTableHeader">
+					<span className="dashboardTableHeaderSpan">Growing Degree Days
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGddGraphsOpen} />
+					</span>
+						{/*<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>*/}
+					</TableCell>
+					<TableCell> {(this.state.gdd !== null) ?
+							this.getYfromArray(this.state.gdd, harvestDate): "NA"
+					}
+					</TableCell>
+				</TableRow>
+		);
+
 		// This will always be 100% at the start if termination. Doesn't make sense
 		// to have this row in table. Confirm and delete
 
@@ -840,6 +860,11 @@ class DashboardResults extends Component {
 		this.setState({openGraphs: true});
 	};
 
+	handleGddGraphsOpen = () => {
+		this.setState({graphType: "gdd"});
+		this.setState({openGraphs: true});
+	};
+
 	handleDecompGraphOpen = () => {
 		this.setState({openDecompGraph: true});
 	};
@@ -869,7 +894,7 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div style={{ width: "700px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType}/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd}/>
 						</div>
 
 					</div>
