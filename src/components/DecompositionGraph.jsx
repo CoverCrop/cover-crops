@@ -24,7 +24,7 @@ class DecompositionGraph extends Component {
 		}
 
 		let startDate = dates[0];
-		let breakDate = dates[24]; // TODO: need to define this logic for transition to gradual decomposition
+		let breakDate = dates[21]; // TODO: need to define this logic for transition to gradual decomposition
 		let endDate = dates[dates.length - 1];
 
 		let percentWithTillage = {
@@ -169,7 +169,7 @@ class DecompositionGraph extends Component {
 			},
 			yaxis2: {
 				title: {
-					text: "Decomposition Rate (kg/ha/day)", //TODO: convert to lb/acre?
+					text: "Decomposition Rate (lb/acre/day)",
 					font: {
 						color: "Teal"
 					}
