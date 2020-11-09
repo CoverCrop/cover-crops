@@ -132,6 +132,20 @@ class AddFieldBox extends Component {
 					</Fab>
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
+					<div className="warning-div">
+						{this.props.exist_clu  && (
+							<div className="warning-message-div">
+								<Icon className="warning-message" name="warning"/>
+								<p className="exist-message">{existCLUNote}</p>
+							</div>
+						)}
+						{this.props.soil_data_unavailable && (
+							<div className="warning-message-div">
+								<Icon className="warning-message" name="warning"/>
+								<p className="exist-message">{soilDataUnavailableMessage}</p>
+							</div>
+						)}
+					</div>
 					<Grid className="no-padding-grid">
 						<Cell col={6}>
 							<CoordinateFieldCC
@@ -156,20 +170,6 @@ class AddFieldBox extends Component {
 								floatingLabel="Longitude"/>
 						</Cell>
 					</Grid>
-					<div className="go-up">
-						{this.props.exist_clu  && (
-							<div className="warning-message-div">
-								<Icon className="warning-message" name="warning"/>
-								<p className="exist-message">{existCLUNote}</p>
-							</div>
-						)}
-						{this.props.soil_data_unavailable && (
-							<div className="warning-message-div">
-								<Icon className="warning-message" name="warning"/>
-								<p className="exist-message">{soilDataUnavailableMessage}</p>
-							</div>
-						)}
-					</div>
 					<Textfield
 						required
 						floatingLabel="CLU name"
