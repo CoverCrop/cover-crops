@@ -15,6 +15,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {croplandUrl, privacyUrl} from "../public/config";
+import {soilDataUnavailableMessage} from "../app.messages";
 
 class AddFieldBox extends Component {
 
@@ -84,7 +85,7 @@ class AddFieldBox extends Component {
 
 	render() {
 		return(
-			<div>
+			<div className="add-field-div">
 
 				<Dialog
 						open={this.state.popupOpen}
@@ -131,6 +132,20 @@ class AddFieldBox extends Component {
 					</Fab>
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
+					<div className="warning-div">
+						{this.props.exist_clu  && (
+							<div className="warning-message-div">
+								<Icon className="warning-message" name="warning"/>
+								<p className="exist-message">{existCLUNote}</p>
+							</div>
+						)}
+						{this.props.soil_data_unavailable && (
+							<div className="warning-message-div">
+								<Icon className="warning-message" name="warning"/>
+								<p className="exist-message">{soilDataUnavailableMessage}</p>
+							</div>
+						)}
+					</div>
 					<Grid className="no-padding-grid">
 						<Cell col={6}>
 							<CoordinateFieldCC
@@ -155,10 +170,6 @@ class AddFieldBox extends Component {
 								floatingLabel="Longitude"/>
 						</Cell>
 					</Grid>
-					{this.props.exist_clu  && <div className="go-up ">
-						<Icon className="warning-message" name="warning"/>
-						<p className="exist-message">{existCLUNote}</p>
-					</div>}
 					<Textfield
 						required
 						floatingLabel="CLU name"
