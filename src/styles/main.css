@@ -155,8 +155,13 @@ h1, h2, h3, h5, h6, p, ul {
 	color: #fac312;
 }
 
-.go-up {
-	margin-top: -35px;
+.warning-message-div{
+	width: 360px;
+	height: 60px;
+}
+
+.warning-div {
+	margin-top: 10px;
 }
 
 

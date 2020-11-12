@@ -24,6 +24,7 @@ class AddFieldPage extends Component {
 		this.state = {
 			clus:[],
 			exist_clu: false,
+			soil_data_unavailable: false,
 			markercoordinate: [],
 			areafeatures: [
 				new OlFeature({})
@@ -54,6 +55,7 @@ class AddFieldPage extends Component {
 
 
 			const CLUapi = config.CLUapi + "/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
+			const soilApi = config.CLUapi + "/soils?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0];
 
 			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 			let that = this;
@@ -90,11 +92,31 @@ class AddFieldPage extends Component {
 					]});
 				that.props.handleUserCLUChange(0, "");
 			});
+
+			// Call to check if soil data is available.
+			fetch(soilApi, {
+				method: "GET",
+				headers: {
+					"Authorization": getKeycloakHeader(),
+					"Cache-Control": "no-cache"
+				}
+			}).then(response => {
+				return response.json();
+			}).then(soilJson => {
+				if(soilJson.length === 0) {
+					//Soil data unavailable
+					that.setState({soil_data_unavailable: true});
+				}
+				else {
+					//Soil data available
+					that.setState({soil_data_unavailable: false});
+				}
+			});
 	};
 
 
 	render() {
-		let {markercoordinate, areafeatures, exist_clu} = this.state;
+		let {markercoordinate, areafeatures, exist_clu, soil_data_unavailable} = this.state;
 		return (
 			<AuthorizedWrap>
 			<div>
@@ -105,7 +127,7 @@ class AddFieldPage extends Component {
 						<MapCC mapId="choose-clu" markercoordinate={markercoordinate} areafeatures={areafeatures}
 										handleClick={this.handleClick} extent={this.state.extent}
 						/>
-						<AddFieldBox exist_clu={exist_clu}/>
+						<AddFieldBox exist_clu={exist_clu} soil_data_unavailable={soil_data_unavailable}/>
 					</div>
 
 			</div>

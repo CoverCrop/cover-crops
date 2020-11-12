@@ -7,6 +7,7 @@ import {drainage_type, CULTIVARS, PLDS, FMCD, FACD} from "../experimentFile";
 import config from "../app.config";
 import {connect} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
+import {soilDataUnavailableMessage} from "../app.messages";
 
 class MyFarmSummary extends Component {
 
@@ -215,6 +216,12 @@ class MyFarmSummary extends Component {
 							{soilComponent}
 							</tbody>
 						</table>
+						{this.state.soilobj.length === 0 && (
+							<div className="soil-unavailable-message-div">
+								<Icon className="warning-message" name="warning"/>
+								<div className="soil-unavailable-message">{soilDataUnavailableMessage}</div>
+							</div>
+						)}
 
 					</div>
 
