@@ -971,7 +971,8 @@ class DashboardResults extends Component {
 									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization. <br/>
 									<sup>*</sup> N immobilization happens above the yellow region in the graph. <br/>
 									<sup>*</sup> Cereal Rye referred to as CR <br/>
-									<sup>*</sup> Rapid Decomposition Period is defined as 21 days. ##Add more decomposition disclaimer text here##
+									<sup>*</sup> Rapid Decomposition Period is defined as 21 days. The rapid decomposition region
+									is intended for informational purpose since it is still being validated with field data.
 								</div>
 
 							</TableCell>
