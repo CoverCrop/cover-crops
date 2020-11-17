@@ -85,7 +85,7 @@ class CCComponentGraphs extends Component {
 						</div>
 
 						<div style={{display: (popupSrc === "gdd")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="GDD" title="Growing Degree Days" graphInfo={gddData}/>
+							<CCGraph xlabel="date" ylabel="Celsius" title="Growing Degree Days" graphInfo={gddData}/>
 						</div>
 
 				</div>

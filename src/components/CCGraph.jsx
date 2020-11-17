@@ -106,11 +106,11 @@ class CCGraph extends Component {
 						label: function(item, data) {
 							let datasetLabel = data.datasets[item.datasetIndex].label || "";
 							let dataPoint = item.yLabel;
-							if(ylabel !== "GDD") {
+							if(ylabel !== "Celsius") {
 								return `${datasetLabel}: ${roundResults(dataPoint,
 										1)} ${ylabel}`;
 							} else {
-								return `${datasetLabel}: ${roundResults(dataPoint, 1)}`;
+								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °C`;
 							}
 						}
 					}
