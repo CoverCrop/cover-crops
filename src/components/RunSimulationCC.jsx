@@ -57,13 +57,12 @@ class RunSimulationCC extends Component {
 
 		let id = ID();
 		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
-		let objStartDate = startDate.toDate();
-		let objEndDate = endDate.toDate();
+
 		// Calculate cover crop termination date based on the cash crop planting date
-		objEndDate.setDate(objEndDate.getDate() + config.coverCropTerminationOffsetDays);
-		let plantingYear = objStartDate.getFullYear();
-		let plantingDoy = getDayOfYear(objStartDate);
-		let harvestDoy = getDayOfYear(objEndDate);
+		endDate.setDate(endDate.getDate() + config.coverCropTerminationOffsetDays);
+		let plantingYear = startDate.getFullYear();
+		let plantingDoy = getDayOfYear(startDate);
+		let harvestDoy = getDayOfYear(endDate);
 
 		let withCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, true);
 		let withoutCoverCropDatasetId = await uploadUserInputFile(plantingYear, plantingDoy, harvestDoy, false);
