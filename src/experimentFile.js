@@ -74,8 +74,7 @@ export const defaultTillage = {"TDATE": "0922", "TDEP": "5.91"}; // default in S
 // export const CROP = {"MZ": "Corn", "SB": "Soybean", "FA": "Fallow"};
 export const cashCrops = ["Corn", "Soybean"];
 export const coverCrops = ["Rye"];
-// TODO: Re-introduce "None" option below after fixing gap filling.
-export const cashCropOptions = cashCrops.concat([]);
+export const cashCropOptions = cashCrops.concat(["None"]);
 export const coverCropOptions = coverCrops.concat(["None"]);
 export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019", "2020"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
