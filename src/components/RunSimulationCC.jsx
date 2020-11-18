@@ -258,7 +258,13 @@ class RunSimulationCC extends Component {
 									showYearDropdown
 									scrollableYearDropdown
 									placeholderText="Select following cash crop plant date"
-									startDate={this.props.startDate ? addMonths(this.props.startDate, 6) : null}
+									startDate={
+										this.props.startDate ?
+											(this.props.startDate.getMonth() === 7 ?
+													addMonths(this.props.startDate, 7):
+													addMonths(this.props.startDate, 6)
+											):
+											null}
 									filterDate={this.isCashcropPlantingDate}
 									onChange={this.handleEndDateChange}/>
 					</div>
