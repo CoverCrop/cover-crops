@@ -22,6 +22,7 @@ class CCGraph extends Component {
 			let dates = [];
 			let withcc = [];
 			let nocc = [];
+			let gdd = [];
 
 			graphInfo.forEach(function(e){
 				dates.push(e["date"]);
@@ -30,6 +31,9 @@ class CCGraph extends Component {
 				}
 				if(isNumeric(e["no-cc"])) {
 					nocc.push(roundResults(e["no-cc"], 2));
+				}
+				if(isNumeric(e["gdd"])) {
+					gdd.push(roundResults(e["gdd"], 1));
 				}
 			});
 
@@ -54,6 +58,19 @@ class CCGraph extends Component {
 					data: nocc,
 					borderColor: "red",
 					backgroundColor: "red",
+					fill: false,
+					pointRadius: 0,
+					borderRadius: 2,
+					borderWidth: 2
+				});
+			}
+
+			if(gdd.length > 0){
+				datasets.push({
+					label: "GDD",
+					data: gdd,
+					borderColor: "orange",
+					backgroundColor: "orange",
 					fill: false,
 					pointRadius: 0,
 					borderRadius: 2,
@@ -89,7 +106,12 @@ class CCGraph extends Component {
 						label: function(item, data) {
 							let datasetLabel = data.datasets[item.datasetIndex].label || "";
 							let dataPoint = item.yLabel;
-							return `${datasetLabel }: ${ roundResults(dataPoint, 1) } lbs/acre`;
+							if(ylabel !== "Celsius") {
+								return `${datasetLabel}: ${roundResults(dataPoint,
+										1)} ${ylabel}`;
+							} else {
+								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °C`;
+							}
 						}
 					}
 				},

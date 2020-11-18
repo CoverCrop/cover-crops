@@ -8,6 +8,7 @@ class CCComponentGraphs extends Component {
 		let ccData = this.props.ccData;
 		let noccData = this.props.noCCData;
 		let popupSrc = this.props.source;
+		let gdd = this.props.gdd;
 
 		let ccNitrogenLossData = ccData["NLTD"].chartData.datasets[0].data;
 		let ccNitrogenUptakeData = ccData["NUAD"].chartData.datasets[0].data;
@@ -18,6 +19,7 @@ class CCComponentGraphs extends Component {
 		let nUptake = [];
 		let nLeached = [];
 		let nSoil = [];
+		let gddData = [];
 
 		let i = 0;
 		ccNitrogenLossData.forEach(function(e) {
@@ -56,6 +58,13 @@ class CCComponentGraphs extends Component {
 			});
 		});
 
+		gdd.forEach(function(e) {
+			gddData.push({
+				"date": convertDateToUSFormat(e["x"]),
+				"gdd": e["y"],
+			});
+		});
+
 		return (
 
 				<div>
@@ -73,6 +82,10 @@ class CCComponentGraphs extends Component {
 
 						<div style={{display: (popupSrc === "uptake")? "block": "none"}}>
 							<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
+						</div>
+
+						<div style={{display: (popupSrc === "gdd")? "block": "none"}}>
+							<CCGraph xlabel="date" ylabel="Celsius" title="Growing Degree Days" graphInfo={gddData}/>
 						</div>
 
 				</div>
