@@ -210,9 +210,6 @@ class ChartCC extends Component {
 			this.generateCharts("withCoverCropChartDataArray", chartDataArray, plantingDate, harvestDate); // generate charts for with cover crop case
 			this.generateCharts("withoutCoverCropChartDataArray", chartDataArray, plantingDate, harvestDate); // generate charts for without cover crop case
 
-			console.log("Charts array: ");
-			console.log(chartDataArray);
-
 			let chartIndex = 0;
 			for (let key in chartDataArray) {
 
