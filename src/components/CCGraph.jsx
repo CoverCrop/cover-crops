@@ -110,7 +110,7 @@ class CCGraph extends Component {
 								return `${datasetLabel}: ${roundResults(dataPoint,
 										1)} ${ylabel}`;
 							} else {
-								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °C`;
+								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °F)`;
 							}
 						}
 					}

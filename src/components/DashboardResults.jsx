@@ -7,7 +7,7 @@ import {
 	roundResults,
 	calculateDayDifference,
 	addDays,
-	getKeycloakHeader, convertKgPerHaToLbPerAcre,
+	getKeycloakHeader, convertKgPerHaToLbPerAcre, convertCelsiusToFahrenheit,
 } from "../public/utils";
 import config from "../app.config";
 import Spinner from "./Spinner";
@@ -239,7 +239,7 @@ class DashboardResults extends Component {
 					percentWoTillageData.push(element.percent_no_till);
 					rateWithTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_till));
 					rateWoTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_no_till));
-					gdd.push({x: new Date(element.date + " 00:00:00"), y: element.GDD});
+					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
 				});
 				that.setState({
 					decompositionGraphInfo: {
@@ -779,7 +779,7 @@ class DashboardResults extends Component {
 					<span className="dashboardTableHeaderSpan">Growing Degree Days
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGddGraphsOpen} />
 					</span>
-						<span style={{fontWeight: "light", fontStyle: "italic"}}>(°C)</span>
+						<span style={{fontWeight: "light", fontStyle: "italic"}}>(°F)</span>
 					</TableCell>
 					<TableCell> {(this.state.gdd !== null) ?
 							this.getYfromArray(this.state.gdd, harvestDate): "NA"

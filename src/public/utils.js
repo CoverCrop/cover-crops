@@ -635,3 +635,7 @@ export function reformatTreatmentLine(treatmentLine){
 export function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
 }
+
+export function convertCelsiusToFahrenheit(c){
+	return (c * 9/5) + 32;
+}
