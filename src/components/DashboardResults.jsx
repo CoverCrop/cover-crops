@@ -778,7 +778,7 @@ class DashboardResults extends Component {
 					<span className="dashboardTableHeaderSpan">Growing Degree Days
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGddGraphsOpen} />
 					</span>
-						<span style={{fontWeight: "light", fontStyle: "italic"}}>(°F)</span>
+						<span style={{fontWeight: "light", fontStyle: "italic"}}>(Cumulative °F)</span>
 					</TableCell>
 					<TableCell> {(this.state.gdd !== null) ?
 							this.getYfromArray(this.state.gdd, harvestDate): "NA"
@@ -970,8 +970,9 @@ class DashboardResults extends Component {
 									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization. <br/>
 									<sup>*</sup> N immobilization happens above the yellow region in the graph. <br/>
 									<sup>*</sup> Cereal Rye referred to as CR <br/>
-									<sup>*</sup> Rapid Decomposition Period is defined as 21 days. The decomposition data is intended for informational
-									purpose since it is still being validated with field data.
+									<sup>*</sup> Rapid Decomposition Period is defined as 21 days after cover crop termination.
+									This cover crop residue decomposition demonstration is generated from field research and will
+									continue to be validated through ongoing research efforts and collaborations.
 								</div>
 
 							</TableCell>
