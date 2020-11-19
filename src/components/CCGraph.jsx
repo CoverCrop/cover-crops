@@ -106,7 +106,7 @@ class CCGraph extends Component {
 						label: function(item, data) {
 							let datasetLabel = data.datasets[item.datasetIndex].label || "";
 							let dataPoint = item.yLabel;
-							if(ylabel !== "Celsius") {
+							if(ylabel !== "Fahrenheit") {
 								return `${datasetLabel}: ${roundResults(dataPoint,
 										1)} ${ylabel}`;
 							} else {
@@ -155,6 +155,14 @@ class CCGraph extends Component {
 						<div style={{margin: "0 auto", padding: "15px"}}>
 							<Line data={graphData} options={graphOptions}/>
 						</div>
+						{
+							(ylabel === "Fahrenheit")?
+									<div style={{fontSize: "14px"}}>
+										<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates
+									</div>
+									: null
+						}
+
 					</div>
 			);
 		}
