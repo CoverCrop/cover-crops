@@ -272,7 +272,6 @@ class DashboardResults extends Component {
 	}
 
 	getYfromArray(arr, x){
-		console.log(arr, x);
 		let ret = "NA";
 		arr.map(function(item){
 			if(item.x.getTime() === x.getTime()){
