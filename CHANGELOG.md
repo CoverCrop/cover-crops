@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Fixed
 - Summary page breaking when soil data unavailable for a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
-
+- Summary page displaying values in SI when there are multiple fertlizers [CCROP-321](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-321)
 
 ## [1.0.0] - 2020-09-30
 
