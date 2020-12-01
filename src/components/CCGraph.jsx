@@ -158,7 +158,7 @@ class CCGraph extends Component {
 						{
 							(ylabel === "Fahrenheit")?
 									<div style={{fontSize: "14px"}}>
-										<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates
+										<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates.
 									</div>
 									: null
 						}
