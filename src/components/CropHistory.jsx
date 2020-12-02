@@ -37,18 +37,18 @@ class CropHistory extends Component {
 			this.setState({year: undefined});
 		}
 		// update for fertilizer, planting and harvest is updated in the child component.
-		// if (this.props.cropobj !== prevProps.cropobj) {
-		// 	let year = this.state.year;
-		// 	if(year) {
-		// 		let flist = [
-		// 			{FMCD: "None", addnew: true}
-		// 		];
-		// 		if(this.props.cropobj[year]){
-		// 			flist = this.props.cropobj[year]["MF"].concat(flist);
-		// 		}
-		// 		this.setState({flist: flist});
-		// 	}
-		// }
+		if (this.props.cropobj !== prevProps.cropobj) {
+			let year = this.state.year;
+			if(year) {
+				let flist = [
+					{FMCD: "None", addnew: true}
+				];
+				if(this.props.cropobj[year]){
+					flist = this.props.cropobj[year]["MF"].concat(flist);
+				}
+				this.setState({flist: flist});
+			}
+		}
 	}
 
 	handleSelectYear = (year) => {
