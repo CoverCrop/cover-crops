@@ -188,10 +188,54 @@ class DashboardResults extends Component {
 			// Get Decomposition Results
 			if(nextProps["weatherDatasetId"]) {
 				this.getDecompositionResults(ccDataArray, harvestDate, nextProps["weatherDatasetId"]);
+				this.getGddResults(plantingDate, nextProps["weatherDatasetId"]);
 			}
 
 			this.setState({runStatus: "RECEIVED"});
 		}
+	}
+
+	getGddResults(startDate, wthDatasetId) {
+		this.setState({runStatus: "FETCH_GDD"});
+		if(startDate == null){
+			startDate = this.state.plantingDate;
+		}
+
+		startDate = format(startDate, "yyyy-MM-dd");
+
+		const gddApi = config.CLUapi + "/growing-degree-days?start_date=" + startDate +
+				"&weather_dataset_id=" + wthDatasetId;
+
+		let gdd = [];
+
+		let that = this;
+		fetch(gddApi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			if (response.status === 200) {
+				return response.json();
+			}
+		}).then(gddJson => {
+			if(gddJson) {
+				gddJson.forEach(function(element) {
+					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
+				});
+				that.setState({
+					gdd: gdd
+				});
+			}
+			else {
+				that.setState({gdd: null});
+			}
+		}).catch(function (e) {
+			console.log("Get GDD endpoint failed: " + e);
+		});
+		this.setState({runStatus: "RECEIVED"});
+
 	}
 
 	getDecompositionResults(ccDataArray, harvestDate, wthDatasetId){
@@ -248,12 +292,11 @@ class DashboardResults extends Component {
 						"percentWoTillageData": percentWoTillageData,
 						"rateWithTillageData": rateWithTillageData,
 						"rateWoTillageData": rateWoTillageData,
-					},
-					gdd: gdd
+					}
 				});
 			}
 			else {
-				that.setState({decompositionGraphInfo: null, gdd: null});
+				that.setState({decompositionGraphInfo: null});
 			}
 		}).catch(function (e) {
 			console.log("Get Decomposition endpoint failed: " + e);
@@ -893,7 +936,7 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div style={{ width: "700px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd}/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd} cashCropPlantingDate={this.state.selHarvestDate}/>
 						</div>
 
 					</div>
