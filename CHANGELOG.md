@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - The app will now redirect to "Start A Job" page after logging in [CCROP-321](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-321)
+- Home Page text and updates to GDD graph [CCROP-327](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-327)
 
 ### Fixed
 - Summary page breaking when soil data unavailable for a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
