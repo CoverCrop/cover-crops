@@ -255,7 +255,7 @@ class DashboardResults extends Component {
 				this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA";
 
 		const decompApi = config.CLUapi + "/decomposition?termination_date=" + terminationDt +
-				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&dw_dataset_id=" + wthDatasetId;
+				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&weather_dataset_id=" + wthDatasetId;
 
 		let dates = [];
 		let percentWithTillageData = [];
