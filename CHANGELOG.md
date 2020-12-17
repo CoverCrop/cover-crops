@@ -6,8 +6,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [1.1.1] - 2020-12-18
 
-### Removed
-- "Nitrogen Loss Reduction" section results on the dashboard and replaced it with "In Review" [CCROP-330](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-330)
+### Added
+- Added a flag to conditionally show/hide Nitrogen Loss Reduction. Production will be configured to hide them until the results are validated [CCROP-330](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-330)
 
 ## [1.1.0] - 2020-12-15
 
