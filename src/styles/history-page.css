@@ -111,7 +111,11 @@
 
 .event-list-header {
 	position: relative;
-	height: 45px;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 45px;
+	padding-left: 10px;
+	color: white;
 	width: 100%;
 	background-color: #1AB146;
 }

@@ -49,15 +49,12 @@ class EventCard extends Component {
 		let {event} = this.props;
 
 		let cluName = "";
-		let latlon = "";
 
 		if (this.props.hasOwnProperty("clus") && this.props.clus.length > 0 ){
 			cluName = getFieldNameFromLatLon(this.props.clus, event[0].parameters[latId], event[0].parameters[lonId]);
-			latlon = "("+event[0].parameters[latId] + "," +event[0].parameters[lonId]+")";
 			// When the clu for the run has been deleted, just show lat,lon instead of name
 			if (cluName === ""){
 				cluName = +event[0].parameters[latId] + " " +event[0].parameters[lonId];
-				latlon = "";
 			}
 		}
 
@@ -76,7 +73,6 @@ class EventCard extends Component {
 						<Grid container item spacing={0}>
 							<Grid item xs={10}>
 								<h2> {cluName}</h2>
-								<div style={{fontSize: "11px"}}>{latlon}</div>
 							</Grid>
 
 							<Grid item xs={2}>
