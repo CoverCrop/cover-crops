@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- Run Cards of Dashboard will show farm name instead of farm coordinates [CCROP-220](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-220)
+
 ## [1.1.0] - 2020-12-15
 
 ### Added
