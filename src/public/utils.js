@@ -645,3 +645,15 @@ export function isNumeric(n) {
 export function convertCelsiusToFahrenheit(c){
 	return (c * 9/5) + 32;
 }
+
+export function getFieldNameFromLatLon(clus, lat, lon){
+	let cluName = "";
+	clus.every(item => {
+		if(item.lat === parseFloat(lat) && item.lon === parseFloat(lon)){
+			cluName = item.name;
+			return false;
+		}
+		return true;
+	});
+	return cluName;
+}
