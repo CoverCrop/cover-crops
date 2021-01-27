@@ -30,7 +30,6 @@ class SelectFieldsCC extends Component {
 	}
 
 	handleChange = (selectedOption) => {
-		console.log(selectedOption);
 		this.setState({ cluname: selectedOption.label });
 		this.handleLatFieldChange(selectedOption.value.lat);
 		this.handleLongFieldChange(selectedOption.value.lon);

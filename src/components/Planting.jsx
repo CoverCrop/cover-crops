@@ -38,7 +38,6 @@ class Planting extends Component {
 				let selectcrop = nextProps.cropobj[year]["MP"] ;
 				this.setState(selectcrop);
 				let pdate = selectcrop["PDATE"];
-				// console.log(convertFullDate(pdate));
 				this.setState({"PDATE": convertFullDate(pdate)});
 
 				this.setState({"PPOP": convertPerSqMeterToPerAcre(selectcrop["PPOP"]).toString()});

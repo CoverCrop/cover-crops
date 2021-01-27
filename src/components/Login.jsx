@@ -79,7 +79,7 @@ class Login extends Component {
 				});
 
 				that.props.handleUserLogin(profile["username"], profile["username"], true);
-				browserHistory.push("/");
+				browserHistory.push("/analysis");
 
 			}).error(function() {
 				console.log("Failed to load user profile");

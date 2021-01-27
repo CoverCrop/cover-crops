@@ -106,9 +106,10 @@ class MyFarmUpdate extends Component {
 							case "date":
 								return (<DatePicker className="date-picker-cc"
 													showYearDropdown
-													selected={moment((defaultValue))}
-													onChange={moment =>
-														this.props.handler(secondField, moment.toISOString())
+													selected={new Date(defaultValue)}
+													onChange={dt =>
+														this.props.handler(secondField, dt.toISOString()
+														)
 													}
 								/>);
 						case "input":

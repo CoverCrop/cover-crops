@@ -156,6 +156,8 @@ export function convertDate(dayString) {
 	}
 }
 
+// Converts 16001 to "2016-01-01 00:00:00"; "20160101" to "2016-01-01 00:00:00"
+// TODO: Remove this patch and fix the source date format to be uniform
 export function convertFullDate(dayString) {
 	if (dayString) {
 		if (dayString.length === 5) {
@@ -163,7 +165,11 @@ export function convertFullDate(dayString) {
 			let yearcount = parseInt(dayString.substring(dayString.length - 3));
 			let date = new Date(year, 0, yearcount);
 			return date.toISOString();
-		} else {
+		}
+		else if(dayString.length === 8){
+			return [dayString.slice(0, 4), dayString.slice(4, 6) , dayString.slice(6, 8)].join("-") + " 00:00:00";
+		}
+		else {
 			return dayString;
 		}
 	}
@@ -634,4 +640,8 @@ export function reformatTreatmentLine(treatmentLine){
 
 export function isNumeric(n) {
 	return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+export function convertCelsiusToFahrenheit(c){
+	return (c * 9/5) + 32;
 }

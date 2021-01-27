@@ -7,7 +7,6 @@ class CCGraph extends Component {
 
 	render() {
 
-
 		let graphInfo = [];
 		if (this.props.graphInfo){
 			graphInfo = this.props.graphInfo;
@@ -16,6 +15,7 @@ class CCGraph extends Component {
 		let xlabel = this.props.xlabel;
 		let ylabel = this.props.ylabel;
 		let title = this.props.title;
+		let cashCropPlantingDate = this.props.cashCropPlantingDate;
 
 		if (graphInfo !== null) {
 
@@ -25,7 +25,6 @@ class CCGraph extends Component {
 			let gdd = [];
 
 			graphInfo.forEach(function(e){
-				dates.push(e["date"]);
 				if(isNumeric(e["with-cc"])) {
 					withcc.push(roundResults(e["with-cc"], 2));
 				}
@@ -33,7 +32,15 @@ class CCGraph extends Component {
 					nocc.push(roundResults(e["no-cc"], 2));
 				}
 				if(isNumeric(e["gdd"])) {
-					gdd.push(roundResults(e["gdd"], 1));
+					let curDate = new Date(e["date"] + " 00:00:00");
+					// Only show dates till cash crop planting
+					if(curDate <= cashCropPlantingDate) {
+						gdd.push(roundResults(e["gdd"], 1));
+						dates.push(e["date"]);
+					}
+				}
+				else {
+					dates.push(e["date"]);
 				}
 			});
 
@@ -106,11 +113,11 @@ class CCGraph extends Component {
 						label: function(item, data) {
 							let datasetLabel = data.datasets[item.datasetIndex].label || "";
 							let dataPoint = item.yLabel;
-							if(ylabel !== "Celsius") {
+							if(ylabel !== "Fahrenheit") {
 								return `${datasetLabel}: ${roundResults(dataPoint,
 										1)} ${ylabel}`;
 							} else {
-								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °C`;
+								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °F)`;
 							}
 						}
 					}
@@ -138,7 +145,7 @@ class CCGraph extends Component {
 						},
 						scaleLabel: {
 							display: true,
-							labelString: ylabel
+							labelString: ylabel === "Fahrenheit" ? "Cumulative °F" : ylabel
 						}
 					}],
 					xAxes: [{
@@ -155,6 +162,14 @@ class CCGraph extends Component {
 						<div style={{margin: "0 auto", padding: "15px"}}>
 							<Line data={graphData} options={graphOptions}/>
 						</div>
+						{
+							(ylabel === "Fahrenheit")?
+									<div style={{fontSize: "14px"}}>
+										<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates.
+									</div>
+									: null
+						}
+
 					</div>
 			);
 		}

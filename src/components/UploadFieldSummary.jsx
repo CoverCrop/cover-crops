@@ -51,7 +51,6 @@ class UploadFieldSummary extends Component {
 					console.log("set experiment file failed: " + responseJson.message);
 				} else {
 					this.setState({file:null, isOpen: true, message: expsuccess });
-					console.log(responseJson);
 				}
 				this.fileInput.value = "";
 			}).catch(function(e) {

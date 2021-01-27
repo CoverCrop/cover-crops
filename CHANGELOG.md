@@ -4,13 +4,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-### Fixed
-- Summary page breaking when soil data unavailable for a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
+## [1.1.0] - 2020-12-15
 
 ### Added
 - Display warning message when user tries to add a field without soil data as well as in the summary page for such a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
+- Validation on cover crop and cash crop planting dates when running a job [CCROP-316](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-316)
 - "Growing Degree Days" popup graph to the Dashboard [CCROP-319](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-319)
+
+### Changed
+- The app will now redirect to "Start A Job" page after logging in [CCROP-321](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-321)
+- Home Page text and updates to GDD graph [CCROP-327](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-327)
+
+### Fixed
+- Summary page breaking when soil data unavailable for a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
+- Summary page displaying values in SI when there are multiple fertilizers [CCROP-321](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-321)
+- Fertilizer value changes are not being displaying after saving, a manual refresh was needed to see the correct values. [CCROP-324](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-324)
 
 ## [1.0.0] - 2020-09-30
 

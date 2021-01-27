@@ -106,8 +106,8 @@ class MyFarmSummary extends Component {
 							<td>{FMCD[MFObj["FMCD"]]}</td>
 							<td>{FACD[MFObj["FACD"]]}</td>
 							<td>{convertDate(MFObj["FDATE"])}</td>
-							<td>{MFObj["FAMN"]}</td>
-							<td>{MFObj["FDEP"]}</td>
+							<td>{convertKgPerHaToLbPerAcre(MFObj["FAMN"])}</td>
+							<td>{convertCmToInches(MFObj["FDEP"])}</td>
 						</tr>)
 				}
 

@@ -7,7 +7,7 @@ import {
 	roundResults,
 	calculateDayDifference,
 	addDays,
-	getKeycloakHeader, convertKgPerHaToLbPerAcre,
+	getKeycloakHeader, convertKgPerHaToLbPerAcre, convertCelsiusToFahrenheit,
 } from "../public/utils";
 import config from "../app.config";
 import Spinner from "./Spinner";
@@ -188,10 +188,54 @@ class DashboardResults extends Component {
 			// Get Decomposition Results
 			if(nextProps["weatherDatasetId"]) {
 				this.getDecompositionResults(ccDataArray, harvestDate, nextProps["weatherDatasetId"]);
+				this.getGddResults(plantingDate, nextProps["weatherDatasetId"]);
 			}
 
 			this.setState({runStatus: "RECEIVED"});
 		}
+	}
+
+	getGddResults(startDate, wthDatasetId) {
+		this.setState({runStatus: "FETCH_GDD"});
+		if(startDate == null){
+			startDate = this.state.plantingDate;
+		}
+
+		startDate = format(startDate, "yyyy-MM-dd");
+
+		const gddApi = config.CLUapi + "/growing-degree-days?start_date=" + startDate +
+				"&weather_dataset_id=" + wthDatasetId;
+
+		let gdd = [];
+
+		let that = this;
+		fetch(gddApi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			if (response.status === 200) {
+				return response.json();
+			}
+		}).then(gddJson => {
+			if(gddJson) {
+				gddJson.forEach(function(element) {
+					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
+				});
+				that.setState({
+					gdd: gdd
+				});
+			}
+			else {
+				that.setState({gdd: null});
+			}
+		}).catch(function (e) {
+			console.log("Get GDD endpoint failed: " + e);
+		});
+		this.setState({runStatus: "RECEIVED"});
+
 	}
 
 	getDecompositionResults(ccDataArray, harvestDate, wthDatasetId){
@@ -211,7 +255,7 @@ class DashboardResults extends Component {
 				this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA";
 
 		const decompApi = config.CLUapi + "/decomposition?termination_date=" + terminationDt +
-				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&dw_dataset_id=" + wthDatasetId;
+				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&weather_dataset_id=" + wthDatasetId;
 
 		let dates = [];
 		let percentWithTillageData = [];
@@ -239,7 +283,7 @@ class DashboardResults extends Component {
 					percentWoTillageData.push(element.percent_no_till);
 					rateWithTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_till));
 					rateWoTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_no_till));
-					gdd.push({x: new Date(element.date + " 00:00:00"), y: element.GDD});
+					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
 				});
 				that.setState({
 					decompositionGraphInfo: {
@@ -248,12 +292,11 @@ class DashboardResults extends Component {
 						"percentWoTillageData": percentWoTillageData,
 						"rateWithTillageData": rateWithTillageData,
 						"rateWoTillageData": rateWoTillageData,
-					},
-					gdd: gdd
+					}
 				});
 			}
 			else {
-				that.setState({decompositionGraphInfo: null, gdd: null});
+				that.setState({decompositionGraphInfo: null});
 			}
 		}).catch(function (e) {
 			console.log("Get Decomposition endpoint failed: " + e);
@@ -272,7 +315,6 @@ class DashboardResults extends Component {
 	}
 
 	getYfromArray(arr, x){
-		console.log(arr, x);
 		let ret = "NA";
 		arr.map(function(item){
 			if(item.x.getTime() === x.getTime()){
@@ -779,7 +821,7 @@ class DashboardResults extends Component {
 					<span className="dashboardTableHeaderSpan">Growing Degree Days
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGddGraphsOpen} />
 					</span>
-						<span style={{fontWeight: "light", fontStyle: "italic"}}>(°C)</span>
+						<span style={{fontWeight: "light", fontStyle: "italic"}}>(Cumulative °F)</span>
 					</TableCell>
 					<TableCell> {(this.state.gdd !== null) ?
 							this.getYfromArray(this.state.gdd, harvestDate): "NA"
@@ -894,7 +936,7 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div style={{ width: "700px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd}/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd} cashCropPlantingDate={this.state.selHarvestDate}/>
 						</div>
 
 					</div>
@@ -971,8 +1013,9 @@ class DashboardResults extends Component {
 									<sup>*</sup> Termination of CR with a C:N ratio ranging >20 has the potential to result in soil N immobilization. <br/>
 									<sup>*</sup> N immobilization happens above the yellow region in the graph. <br/>
 									<sup>*</sup> Cereal Rye referred to as CR <br/>
-									<sup>*</sup> Rapid Decomposition Period is defined as 21 days. The decomposition data is intended for informational
-									purpose since it is still being validated with field data.
+									<sup>*</sup> Rapid Decomposition Period is defined as 21 days after cover crop termination.
+									This cover crop residue decomposition demonstration is generated from field research and will
+									continue to be validated through ongoing research efforts and collaborations.
 								</div>
 
 							</TableCell>
