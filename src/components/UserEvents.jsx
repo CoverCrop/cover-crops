@@ -13,7 +13,7 @@ import {
 	groupBy,
 	getOutputFileJson,
 	sortByDateInDescendingOrder,
-	getKeycloakHeader,
+	getKeycloakHeader, getMyFieldList,
 } from "../public/utils";
 import {setSelectedUserEventStatus} from "../actions/user";
 import EventCard from "./EventCard";
@@ -29,7 +29,8 @@ class UserEvents extends Component {
 			selectevent: null,
 			pagenumber:1,
 			totalpage:0,
-			runStatus: "INIT"
+			runStatus: "INIT",
+			clus: []
 		};
 	}
 
@@ -93,6 +94,15 @@ class UserEvents extends Component {
 				this.props.setSelectedUserEventStatus("noRuns");
 			}
 			this.setState({runStatus: "LOADED_EVENTS"});
+
+			let that = this;
+			getMyFieldList(this.props.email).then(function(clus){
+				let farmNames = [];
+				clus.forEach(item => {
+					farmNames.push({name: item.cluname, lat: item.lat, lon: item.lon});
+				});
+				that.setState({clus: farmNames});
+			});
 		}.bind(this));
 
 	}
@@ -152,7 +162,7 @@ class UserEvents extends Component {
 
 		let {pagenumber, totalpage} = this.state;
         let eventsList =  this.state.events.slice((pagenumber-1) * eventPageSize, pagenumber*eventPageSize).map( event =>
-			<EventCard event={event} selectevent={this.state.selectevent} viewResult={this.viewResult}/>
+			<EventCard event={event} selectevent={this.state.selectevent} viewResult={this.viewResult} clus={this.state.clus}/>
 		);
 
         //pageArray has max 5 element.
@@ -191,24 +201,7 @@ class UserEvents extends Component {
 			<div>
 				{spinner}
 				<div className="event-list-header" key="event-list-header">
-					{/*<Button className="bold-text"*/}
-					{/*	onClick={() => {*/}
-					{/*	this.setState({sortopen: true})*/}
-					{/*}}>Sort By</Button>*/}
-					{/*<MenuAnchor>*/}
-					{/*	<Menu*/}
-					{/*		open={this.state.sortopen}*/}
-					{/*		onClose={()=>{this.setState({sortopen:false})}}*/}
-					{/*	>*/}
-					{/*		<MenuItem>*/}
-					{/*			Runtime*/}
-					{/*		</MenuItem>*/}
-					{/*		<MenuItem>*/}
-					{/*			Runtime2*/}
-					{/*		</MenuItem>*/}
-					{/*	</Menu>*/}
-					{/*</MenuAnchor>*/}
-					{/*<Button className="event-more-options">More Options</Button>*/}
+					Farm Results
 				</div>
 				<div className="event-list-parent" key="event-list-parent">
 					{eventsList}

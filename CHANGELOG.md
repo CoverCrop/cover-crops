@@ -8,6 +8,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - `None` option in crop history. [CCROP-320](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-320)
 
+### Changed
+- Run Cards of Dashboard will show farm name instead of farm coordinates [CCROP-220](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-220)
+
 ## [1.1.0] - 2020-12-15
 ### Added
 - Display warning message when user tries to add a field without soil data as well as in the summary page for such a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
