@@ -4,8 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - 2020-12-15
+## [Unreleased]
+### Added
+- `None` option in crop history. [CCROP-320](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-320)
 
+## [1.1.0] - 2020-12-15
 ### Added
 - Display warning message when user tries to add a field without soil data as well as in the summary page for such a field. [CCROP-317](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-317)
 - Validation on cover crop and cash crop planting dates when running a job [CCROP-316](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-316)
@@ -21,7 +24,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fertilizer value changes are not being displaying after saving, a manual refresh was needed to see the correct values. [CCROP-324](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-324)
 
 ## [1.0.0] - 2020-09-30
-
 ### Added
 - Tooltip to show conversion of 1 lb cereal rye to seed count [CCROP-303](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-303)
 - Popup when adding a new field to let users know that we are populating defaults from cropland datalayer [CCROP-300](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-300)
@@ -55,7 +57,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Fix some npm package vulnerabilities. Also, updated "openlayers" to "ol" and all its reference methods [CCROP-312](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-312)
 
 ## [0.6.0] - 2020-05-29
-
 ### Added
 - Graphs showing individual cover crop parameter results (N Loss, N Uptake etc.) [CCROP-233](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-233)
 - Feature to use Cropland Data Layer for gathering crop rotation history. [CCROP-210](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-210)
@@ -76,7 +77,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Headers of all APIs to use keycloak token for authentication [CCROP-254](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-254)
 
 ## [0.5.0] - 2020-03-05
-
 ### Added
 - Slider selection on dashboard to pick the cover crop harvest date. [CCROP-240](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-240)
 - Added loading spinners on Dashboard and "Runs" selection event [CCROP-242](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-242)
@@ -90,7 +90,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Flexible dates check box from analysis page, related handler methods, and relevant code. [CCROP-246](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-246)
 
 ## [0.4.0] - 2019-11-22
-
 ### Added
 - Dashboard page that displays results of C:N and Biomass in time series. Other results on the harvest date are shown in a table. [CCROP-209](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-209)
 
@@ -103,9 +102,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Show planting and harvest dates on job cards used in dashboard [CROP-219](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-219)
 
 ## [0.3.0] - 2019-03-06
-
 ### Added
-
 - User can view and modify tillage on MyFarm crop history page [CCROP-180](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-180)
 - User can add new fertilizer entry on MyFarm crop history page and modify planting, harvest, etc [CCROP-156](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-156)
 - Populate default farm data when user adds a CLU [CCROP-134](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-134)
@@ -119,7 +116,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Run simulation button not responding to button press [CCROP-165](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-165)
 
 ## [0.2.0] - 2018-10-12
-
 ### Added
 - User can run any field with default template data
 - Display farm data on MyFarm page [CCROP-102](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-102)
@@ -127,16 +123,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Added Cover crop selection to simulation page [CCROP-114](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-114)
 
 ### Changed
-
 - Map is now responsive to user's defined fields [CCROP-107](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-107)
 - History page uses pagination [CCROP-110](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-110)
 - User is warned if they have already defined a field [CCROP-96](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-96)
 - Updated to use shared resources [CCROP-101](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-101)
 - Updated dependencies [CCROP-127](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-127)
 
-
-### Fixed
-
 ## [0.1.0] - 2018-03-09
-
 Initial release of Cover Crop.
