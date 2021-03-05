@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Changed
 - Run Cards of Dashboard will show farm name instead of farm coordinates [CCROP-220](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-220)
 
+## [1.1.1] - 2020-12-18
+
+### Added
+- Flag to conditionally show/hide Nitrogen Loss Reduction. Production will be configured to hide them until the results are validated [CCROP-330](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-330)
+
 ## [1.1.0] - 2020-12-15
 
 ### Added

@@ -783,37 +783,63 @@ class DashboardResults extends Component {
 				</TableCell>
 			</TableRow>
 		);
-		rowElems.push(
-			<TableRow key="4">
-				<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleLossGraphsOpen} />
-					</span>
-					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
-				</TableCell>
-				<TableCell>
-					{(() => {
-						if((this.state.ccDataArray !== null && this.state.ccDataArray["NLTD"].chartData.datasets[0] != null &&
-								this.state.noccDataArray !== null && this.state.noccDataArray["NLTD"].chartData.datasets[0] != null)){
-							let diff = this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)
-									- this.getYfromArray(this.state.ccDataArray["NLTD"].chartData.datasets[0].data, harvestDate);
-							let percent = diff/this.getYfromArray(this.state.noccDataArray["NLTD"].chartData.datasets[0].data, harvestDate)*100;
-							if(percent) {
-								return "-" + roundResults(diff, 2) + " (" +
-										roundResults(percent, 2) + "%)";
-							}
-							else {
-								return "NA";
-							}
-						}
-						else{
-							return "NA";
-						}
-					})()}
 
-				</TableCell>
-			</TableRow>
-		);
+		if(config.hideDashboardSections){
+			rowElems.push(
+					<TableRow key="4">
+						<TableCell className="dashboardTableHeader">
+					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
+					</span>
+						</TableCell>
+						<TableCell>
+							In Review
+						</TableCell>
+					</TableRow>
+			);
+		}else {
+			rowElems.push(
+					<TableRow key="4">
+						<TableCell className="dashboardTableHeader">
+					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
+						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleLossGraphsOpen}/>
+					</span>
+							<span style={{
+								fontWeight: "light",
+								fontStyle: "italic"
+							}}>(lb/acre)</span>
+						</TableCell>
+						<TableCell>
+							{(() => {
+								if ((this.state.ccDataArray !== null &&
+										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
+										null &&
+										this.state.noccDataArray !== null &&
+										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
+										null)) {
+									let diff = this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate)
+											- this.getYfromArray(
+													this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+													harvestDate);
+									let percent = diff / this.getYfromArray(
+											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+											harvestDate) * 100;
+									if (percent) {
+										return "-" + roundResults(diff, 2) + " (" +
+												roundResults(percent, 2) + "%)";
+									} else {
+										return "NA";
+									}
+								} else {
+									return "NA";
+								}
+							})()}
+
+						</TableCell>
+					</TableRow>
+			);
+		}
 
 		rowElems.push(
 				<TableRow key="5">
