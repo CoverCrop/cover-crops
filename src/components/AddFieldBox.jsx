@@ -83,7 +83,7 @@ class AddFieldBox extends Component {
 			body: bodyjson
 		}).then(response => {
 			const postJSONapi = config.CLUapi + "/users/"+ localStorage.getItem("kcEmail") + "/CLUs/" + clu
-				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer + "?tile_drainage=" + this.state.tileDrainage;
+				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer + "&tile_drainage=" + this.state.tileDrainage;
 			fetch(postJSONapi,{
 				method: "POST",
 				headers: headers,

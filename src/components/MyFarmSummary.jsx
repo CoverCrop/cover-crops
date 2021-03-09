@@ -76,6 +76,7 @@ class MyFarmSummary extends Component {
 
 		let {cropobj, fieldobj} = this.props;
 		let {soilobj} = this.state;
+		let naValue = config.dssatNaValue;
 
 		// cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
@@ -145,8 +146,8 @@ class MyFarmSummary extends Component {
 
 		let fieldComponent = fieldobj && (<tr>
 			<td>{drainage_type[fieldobj["FLDT"]]}</td>
-			<td>{convertCmToInches(fieldobj["FLDD"])}</td>
-			<td>{convertMetersToFeet(fieldobj["FLDS"])}</td>
+			<td>{fieldobj["FLDD"] !== naValue ? convertCmToInches(fieldobj["FLDD"]): "NA"}</td>
+			<td>{fieldobj["FLDS"] !== naValue ? convertMetersToFeet(fieldobj["FLDS"]): "NA"}</td>
 		</tr>);
 
 		return (
