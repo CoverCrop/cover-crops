@@ -8,7 +8,7 @@ import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
 import {existCLUNote} from "../app.messages.js";
-import {getKeycloakHeader} from "../public/utils";
+import {dictToOptions, getKeycloakHeader} from "../public/utils";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -16,6 +16,9 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {croplandUrl, privacyUrl} from "../public/config";
 import {soilDataUnavailableMessage} from "../app.messages";
+import {drainage_type} from "../experimentFile";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import {TextField} from "@material-ui/core";
 
 class AddFieldBox extends Component {
 
@@ -24,9 +27,11 @@ class AddFieldBox extends Component {
 
 		this.state = {
 			popupOpen: false,
-			cluname: ""
+			cluname: "",
+			tileDrainage: "DR000"
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
+		this.onTileDrainageChange = this.onTileDrainageChange.bind(this);
 	}
 
 	componentDidMount(){
@@ -54,6 +59,13 @@ class AddFieldBox extends Component {
 		this.handleAddCLU();
 	}
 
+
+	onTileDrainageChange = (event, option) => {
+		this.setState({
+			tileDrainage: option.value
+		});
+	}
+
 	handleAddCLU() {
 		const CLUapi = config.CLUapi + "/userfield";
 		const {clu, latitude, longitude} = this.props;
@@ -71,7 +83,7 @@ class AddFieldBox extends Component {
 			body: bodyjson
 		}).then(response => {
 			const postJSONapi = config.CLUapi + "/users/"+ localStorage.getItem("kcEmail") + "/CLUs/" + clu
-				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer;
+				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer + "?tile_drainage=" + this.state.tileDrainage;
 			fetch(postJSONapi,{
 				method: "POST",
 				headers: headers,
@@ -84,6 +96,8 @@ class AddFieldBox extends Component {
 	}
 
 	render() {
+		let options = dictToOptions(drainage_type);
+
 		return(
 			<div className="add-field-div">
 
@@ -146,7 +160,7 @@ class AddFieldBox extends Component {
 							</div>
 						)}
 					</div>
-					<Grid className="no-padding-grid">
+					<Grid style={{height: "100px", padding: "0px"}}>
 						<Cell col={6}>
 							<CoordinateFieldCC
 								helptext="Latitude value must between -90 and 90"
@@ -170,19 +184,32 @@ class AddFieldBox extends Component {
 								floatingLabel="Longitude"/>
 						</Cell>
 					</Grid>
-					<Textfield
-						required
-						floatingLabel="CLU name"
-						onChange={({target : {value : cluname}}) => {
-							this.setState({ cluname });
-						}}
-					/>
 
+
+						<Textfield
+								required
+								style={{width: "250px"}}
+								floatingLabel="CLU name"
+								onChange={({target : {value : cluname}}) => {
+									this.setState({ cluname });
+								}}
+						/>
+
+						<Autocomplete options={options}
+													disableClearable={true}
+													getOptionLabel={(option) => option.label}
+													style={{width: "250px", marginTop: "30px"}}
+													defaultValue={options[0]}
+													onChange={this.onTileDrainageChange}
+													renderInput={(params) =>
+															<TextField {...params} label="Tile Drainage" required={true} variant="outlined" InputLabelProps={{shrink: true}}/>
+													}
+						/>
 				</div>
 				<div className="add-field-bottom">
 					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
 					<button type="submit" className="blue-button add-button"
-							disabled={this.state.cluname ==="" || this.props.clu ===0}
+							disabled={this.state.cluname === "" || this.props.clu ===0 || this.state.tileDrainage.trim() === ""}
 							onClick={this.handlePopupOpen}
 					>ADD FIELD</button>
 				</div>
