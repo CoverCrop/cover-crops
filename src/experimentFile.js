@@ -4,10 +4,10 @@ export const START_YEAR = 2015;
 export const CULTIVARS = {"WH": "IB0488 NEWTON", "MZ": "DEKALB 591", "SB": "M GROUP 2", "FA": "FALLOW"};
 
 export const drainage_type = {
-	"DR000": "No drainage",
-	"DR001": "Ditches",
 	"DR002": "Sub-surface tiles",
-	"DR003": "Surface furrows"
+	"DR000": "No drainage",
+	// "DR001": "Ditches",
+	// "DR003": "Surface furrows"
 };
 
 //Fertilizer material code

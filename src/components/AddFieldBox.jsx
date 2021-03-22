@@ -28,7 +28,7 @@ class AddFieldBox extends Component {
 		this.state = {
 			popupOpen: false,
 			cluname: "",
-			tileDrainage: "DR000"
+			tileDrainage: "DR002"
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
 		this.onTileDrainageChange = this.onTileDrainageChange.bind(this);
