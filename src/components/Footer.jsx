@@ -1,17 +1,37 @@
 import React, {Component} from "react";
-import {Cell, Grid} from "react-mdc-web";
+import {Toolbar, ToolbarRow, ToolbarSection} from "react-mdc-web";
+import NCSALogo from "../images/ncsa-logo.png";
+import NRECLogo from "../images/nrec-logo.png";
 
 class Footer extends Component {
 
 	render() {
 		return (
-			<Grid>
-				<Cell col={12}>
-					<hr/>
-					<Grid/>
-					<hr/>
-				</Cell>
-			</Grid>
+				<div>
+					<Toolbar>
+						<ToolbarRow align="center" className={"footer"}>
+							<ToolbarSection align ="start" className="footerCorners" >
+								v1.1.1
+							</ToolbarSection>
+							<ToolbarSection className="footerLogos" >
+								<a href="http://www.ncsa.illinois.edu" target="_blank" className={"footerlogo"}>
+									<img src={NCSALogo} alt="NCSA" title="National Center for Supercomputing Applications"
+										style={{width: "160px"}} />
+								</a>
+
+								<a href="https://www.illinoisnrec.org/" target="_blank" className={"footerlogo"}>
+									<img src={NRECLogo} alt="NREC" title="Illinois Nutrient Research & Education Council "
+										style={{width: "120px"}} />
+								</a>
+
+							</ToolbarSection>
+
+							<ToolbarSection align ="end" className="footerCorners" />
+
+						</ToolbarRow>
+					</Toolbar>
+				</div>
+
 		);
 	}
 }

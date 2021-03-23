@@ -5,6 +5,7 @@ import styles2 from "../styles/home-page.css";
 import {Cell, Grid} from "react-mdc-web";
 import {privacyUrl, faqUrl, nrecUrl} from "../public/config";
 import {loginMessage, usageMessage} from "../app.messages";
+import Footer from "./Footer";
 
 class HomePage extends Component {
 
@@ -93,6 +94,8 @@ class HomePage extends Component {
 							</Cell>
 						</Grid>
 				</div>
+
+				<Footer/>
 			</div>
 		);
 	}

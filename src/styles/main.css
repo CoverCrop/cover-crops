@@ -293,3 +293,34 @@ h1, h2, h3, h5, h6, p, ul {
 	font-weight: 700;
 	text-decoration: underline;
 }
+
+.footer {
+	background-color: #455A64;
+	min-height: 72px !important;
+}
+
+.footerCorners {
+	padding: 15px;
+}
+
+.footerLogos {
+	max-width: 500px;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.footerlogo {
+	vertical-align: middle;
+	margin-top: auto;
+	margin-bottom: auto;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.footerlogo img {
+	width: 50px;
+	height: 50px;
+	margin-left: 28px;
+	margin-right: 14px;
+	display:block;
+}
