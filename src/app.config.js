@@ -19,6 +19,7 @@ const devConfig = {
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: true,
+	dssatNaValue: "-99"
 };
 
 const prodConfig = {
@@ -37,6 +38,7 @@ const prodConfig = {
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: true,
+	dssatNaValue: "-99"
 };
 
 const config = getConfig();

@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Added
 - Add footer with partner logos to landing page [CCROP-338](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-338)
+- Option to select Tile Drainage type when adding a new field [CCROP-335](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-335)
 
 ### Changed
 - Run Cards of Dashboard will show farm name instead of farm coordinates [CCROP-220](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-220)
