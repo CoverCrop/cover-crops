@@ -24,16 +24,16 @@ class Dashboard extends Component {
 		}
 		else if (this.props.isSelectedEventSuccessful === "error"){
 			dashboardOutput = (
-					<div style={{display: "flex", justifyContent: "center"}}>
-						<p className="error-message">
+				<div style={{display: "flex", justifyContent: "center"}}>
+					<p className="error-message">
 						The selected job did not complete successfully. The most common cause is overlapping
 						dates between the cash crop and the cover crop. Please check the field in 'My Farm' to
 						verify that the cover crop planting date does not overlap the cash crop harvest date and
 						the cover crop termination date does not overlap the next cash crop planting date.
 						For additional help, please see
-						the <a href={faqUrl} target="_blank" className="cc-link">FAQ</a> section.
-						</p>
-					</div>
+						the <a href={faqUrl} target="_blank" className="cc-link" rel="noreferrer">FAQ</a> section.
+					</p>
+				</div>
 			);
 		}
 		else if (this.props.isSelectedEventSuccessful === "noRuns"){

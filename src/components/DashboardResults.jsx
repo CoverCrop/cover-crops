@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 
 import {
 	convertDateToUSFormat,
@@ -30,7 +30,7 @@ import Modal from "@material-ui/core/Modal";
 
 import Divider from "@material-ui/core/Divider";
 
-import { withStyles } from "@material-ui/core/styles";
+import {withStyles} from "@material-ui/core/styles";
 
 import {
 	Table,
@@ -46,7 +46,7 @@ import DecompositionGraph from "./DecompositionGraph";
 // const Plot = createPlotlyComponent(Plotly);
 
 const windowDurationDays = 28; // must be even. Can be moved to config
-const harvestDay = windowDurationDays/2; // 0 indexed middle day of the harvest duration
+const harvestDay = windowDurationDays / 2; // 0 indexed middle day of the harvest duration
 const day = 60 * 60 * 24 * 1000; //day in millisecs
 
 const styles = theme => ({
@@ -138,6 +138,32 @@ class DashboardResults extends Component {
 		this.getYfromArray = this.getYfromArray.bind(this);
 	}
 
+	handleMuiChange = name => (event, value) => {
+		this.setState({[name]: value});
+		let selHarvestDate = this.getHarvestDateFromId(this.state.harvestDates, value);
+		this.setState({selHarvestDate: selHarvestDate});
+
+		this.getDecompositionResults(this.state.ccDataArray, selHarvestDate, this.props["weatherDatasetId"]);
+	};
+	handleLossGraphsOpen = () => {
+		this.setState({graphType: "lossReduction"});
+		this.setState({openGraphs: true});
+	};
+	handleUptakeGraphsOpen = () => {
+		this.setState({graphType: "uptake"});
+		this.setState({openGraphs: true});
+	};
+	handleGddGraphsOpen = () => {
+		this.setState({graphType: "gdd"});
+		this.setState({openGraphs: true});
+	};
+	handleDecompGraphOpen = () => {
+		this.setState({openDecompGraph: true});
+	};
+	handleGraphsClose = () => {
+		this.setState({openGraphs: false});
+		this.setState({openDecompGraph: false});
+	};
 	componentWillReceiveProps(nextProps, nextContext) {
 
 		let plantingDate = new Date();
@@ -151,8 +177,8 @@ class DashboardResults extends Component {
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
-			let harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
-			let harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
+			let harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays / 2));
+			let harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays / 2));
 
 			this.setState({plantingDate: plantingDate});
 			this.setState({harvestDate: harvestDate});
@@ -164,10 +190,10 @@ class DashboardResults extends Component {
 			let incrementMark = 7;
 			let stepDate = harvestDateMin;
 			let val = 0;
-			while(stepDate <= harvestDateMax){
+			while (stepDate <= harvestDateMax){
 
 				sliderSteps.push({
-					label: (val%incrementMark === 0) ? convertDateToUSFormatShort(stepDate): "",
+					label: (val % incrementMark === 0) ? convertDateToUSFormatShort(stepDate) : "",
 					value: val,
 					date: stepDate
 				});
@@ -178,15 +204,15 @@ class DashboardResults extends Component {
 
 			this.setState({harvestDates: sliderSteps});
 
-			let ccDataArray = this.getDashboardDataArray(nextProps,"withCoverCropChartDataArray", plantingDate, harvestDate);
-			let noccDataArray = this.getDashboardDataArray(nextProps,"withoutCoverCropChartDataArray", plantingDate, harvestDate);
+			let ccDataArray = this.getDashboardDataArray(nextProps, "withCoverCropChartDataArray", plantingDate, harvestDate);
+			let noccDataArray = this.getDashboardDataArray(nextProps, "withoutCoverCropChartDataArray", plantingDate, harvestDate);
 
 			this.setState({ccDataArray: ccDataArray});
 			this.setState({noccDataArray: noccDataArray});
 			this.setState({selHarvestDateId: harvestDay});
 
 			// Get Decomposition Results
-			if(nextProps["weatherDatasetId"]) {
+			if (nextProps["weatherDatasetId"]) {
 				this.getDecompositionResults(ccDataArray, harvestDate, nextProps["weatherDatasetId"]);
 				this.getGddResults(plantingDate, nextProps["weatherDatasetId"]);
 			}
@@ -194,17 +220,18 @@ class DashboardResults extends Component {
 			this.setState({runStatus: "RECEIVED"});
 		}
 	}
-
+	
+	
 	getGddResults(startDate, wthDatasetId) {
 		this.setState({runStatus: "FETCH_GDD"});
-		if(startDate == null){
+		if (startDate == null){
 			startDate = this.state.plantingDate;
 		}
 
 		startDate = format(startDate, "yyyy-MM-dd");
 
-		const gddApi = config.CLUapi + "/growing-degree-days?start_date=" + startDate +
-				"&weather_dataset_id=" + wthDatasetId;
+		const gddApi = `${config.CLUapi }/growing-degree-days?start_date=${ startDate 
+		}&weather_dataset_id=${ wthDatasetId}`;
 
 		let gdd = [];
 
@@ -220,9 +247,9 @@ class DashboardResults extends Component {
 				return response.json();
 			}
 		}).then(gddJson => {
-			if(gddJson) {
+			if (gddJson) {
 				gddJson.forEach(function(element) {
-					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
+					gdd.push({x: new Date(`${element.date } 00:00:00`), y: convertCelsiusToFahrenheit(element.GDD)});
 				});
 				that.setState({
 					gdd: gdd
@@ -232,15 +259,16 @@ class DashboardResults extends Component {
 				that.setState({gdd: null});
 			}
 		}).catch(function (e) {
-			console.log("Get GDD endpoint failed: " + e);
+			console.log(`Get GDD endpoint failed: ${ e}`);
 		});
 		this.setState({runStatus: "RECEIVED"});
 
 	}
-
+	
+	
 	getDecompositionResults(ccDataArray, harvestDate, wthDatasetId){
 		this.setState({runStatus: "FETCH_DECOMP"});
-		if(harvestDate == null){
+		if (harvestDate == null){
 			harvestDate = this.state.harvestDate;
 		}
 
@@ -249,13 +277,13 @@ class DashboardResults extends Component {
 		let cnRatio = 0;
 
 		biomass = (ccDataArray !== null && ccDataArray["TWAD"].chartData.datasets[0] != null) ?
-				this.getYfromArray(ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA";
+			this.getYfromArray(ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate) : "NA";
 
 		cnRatio = (ccDataArray !== null && ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
-				this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA";
+			this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate) : "NA";
 
-		const decompApi = config.CLUapi + "/decomposition?termination_date=" + terminationDt +
-				"&biomass=" + biomass + "&cn_ratio=" + cnRatio + "&weather_dataset_id=" + wthDatasetId;
+		const decompApi = `${config.CLUapi }/decomposition?termination_date=${ terminationDt 
+		}&biomass=${ biomass }&cn_ratio=${ cnRatio }&weather_dataset_id=${ wthDatasetId}`;
 
 		let dates = [];
 		let percentWithTillageData = [];
@@ -276,14 +304,14 @@ class DashboardResults extends Component {
 				return response.json();
 			}
 		}).then(decompJson => {
-			if(decompJson) {
+			if (decompJson) {
 				decompJson.forEach(function(element) {
 					dates.push(element.date);
 					percentWithTillageData.push(element.percent_till);
 					percentWoTillageData.push(element.percent_no_till);
 					rateWithTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_till));
 					rateWoTillageData.push(convertKgPerHaToLbPerAcre(element.smoothed_rate_no_till));
-					gdd.push({x: new Date(element.date + " 00:00:00"), y: convertCelsiusToFahrenheit(element.GDD)});
+					gdd.push({x: new Date(`${element.date } 00:00:00`), y: convertCelsiusToFahrenheit(element.GDD)});
 				});
 				that.setState({
 					decompositionGraphInfo: {
@@ -299,44 +327,40 @@ class DashboardResults extends Component {
 				that.setState({decompositionGraphInfo: null});
 			}
 		}).catch(function (e) {
-			console.log("Get Decomposition endpoint failed: " + e);
+			console.log(`Get Decomposition endpoint failed: ${ e}`);
 		});
 		this.setState({runStatus: "RECEIVED"});
 	}
-
+	
+	
 	getHarvestDateFromId(harvestDates, id){
 		let retVal = harvestDay;
 		harvestDates.forEach(e => {
-			if(e.value === id){
-				retVal =  e.date;
+			if (e.value === id){
+				retVal = e.date;
 			}
 		});
 		return retVal;
 	}
-
+	
+	
 	getYfromArray(arr, x){
 		let ret = "NA";
 		arr.map(function(item){
-			if(item.x.getTime() === x.getTime()){
+			if (item.x.getTime() === x.getTime()){
 				ret = item.y;
 			}
 		});
 
 		if (ret !== "NA") {
 			return roundResults(ret, 2);
-		} else {
+		}
+		else {
 			return ret;
 		}
 	}
-
-	handleMuiChange = name => (event, value) => {
-		this.setState({[name]:  value });
-		let selHarvestDate = this.getHarvestDateFromId(this.state.harvestDates, value);
-		this.setState({selHarvestDate: selHarvestDate});
-
-		this.getDecompositionResults(this.state.ccDataArray, selHarvestDate, this.props["weatherDatasetId"]);
-	};
-
+	
+	
 	// Generates charts array object containing individual charts and datasets
 	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
 
@@ -347,9 +371,9 @@ class DashboardResults extends Component {
 		let chartOptions = {};
 
 		if (properties.hasOwnProperty(chartArrayTypeName) && properties[chartArrayTypeName] !== null) {
-			if(properties[chartArrayTypeName].hasOwnProperty("charts")){
+			if (properties[chartArrayTypeName].hasOwnProperty("charts")){
 				// Iterate over each chart
-				let charts =  properties[chartArrayTypeName].charts;
+				let charts = properties[chartArrayTypeName].charts;
 				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
 					let chartRawData = charts[dataIndex];
 					let rawDatasets = chartRawData.datasets;
@@ -397,6 +421,7 @@ class DashboardResults extends Component {
 		return chartDataArray;
 	}
 
+	
 	// Generate and return charts HTML content
 	generateChartsHTML() {
 
@@ -425,22 +450,22 @@ class DashboardResults extends Component {
 			plantingDate = new Date(plantingYear, 0, plantingDOY);
 			harvestDate = new Date(harvestYear, 0, harvestDOY);
 
-			harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays/2));
-			harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays/2));
+			harvestDateMin = new Date(harvestYear, 0, harvestDOY - (windowDurationDays / 2));
+			harvestDateMax = new Date(harvestYear, 0, harvestDOY + (windowDurationDays / 2));
 			rangeSelectorMin = new Date(plantingYear, 0, plantingDOY - 1);
 			rangeSelectorMax = new Date(harvestYear, 0, harvestDOY + windowDurationDays);
 		}
 
 		ccChartDataArray = this.state.ccDataArray;// generate charts for with cover crop case
 		for (let key in ccChartDataArray) {
-			if(key.toString() === "C:N ratio"){
-				if(ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
+			if (key.toString() === "C:N ratio"){
+				if (ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
 					cnRows = ccChartDataArray[key].chartData.datasets[0].data;
 				}
 			}
 
-			if(key.toString() === "TWAD"){
-				if(ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
+			if (key.toString() === "TWAD"){
+				if (ccChartDataArray[key].chartData !== undefined && ccChartDataArray[key].chartData.datasets.length) {
 					biomassRows = ccChartDataArray[key].chartData.datasets[0].data;
 				}
 			}
@@ -452,9 +477,9 @@ class DashboardResults extends Component {
 			let dt = element.x;
 
 			// Adds 0s for missing date to make graph cleaner
-			if(prevCnDate != null){
+			if (prevCnDate != null){
 				let dayDiff = calculateDayDifference(prevCnDate, dt);
-				while(dayDiff > 1){
+				while (dayDiff > 1){
 					let newDate = addDays(prevCnDate, 1);
 					cnDates.push(newDate);
 					cnValues.push(null);
@@ -469,7 +494,7 @@ class DashboardResults extends Component {
 		});
 
 		cnMax = Math.max(...cnValues);
-		if(cnMax < 21){
+		if (cnMax < 21){
 			cnMax = 26;
 		}
 
@@ -478,9 +503,9 @@ class DashboardResults extends Component {
 			let dt = element.x;
 
 			// Adds 0s for missing date to make graph cleaner
-			if(prevBiomassDate != null){
+			if (prevBiomassDate != null){
 				let dayDiff = calculateDayDifference(prevBiomassDate, dt);
-				while(dayDiff > 1){
+				while (dayDiff > 1){
 					let newDate = addDays(prevBiomassDate, 1);
 					biomassDates.push(newDate);
 					biomassValues.push(null);
@@ -522,14 +547,14 @@ class DashboardResults extends Component {
 			// 	label: "1y"
 			// },
 				{
-				step: "all",
-				label: "show all"
-			}],
+					step: "all",
+					label: "show all"
+				}],
 
 		};
 
 		let biomass = {
-			x: biomassDates,  //["2019-01-01", "2019-03-01", "2019-06-01", "2019-09-03"],
+			x: biomassDates, //["2019-01-01", "2019-03-01", "2019-06-01", "2019-09-03"],
 			y: biomassValues, //[0, 15, 19, 21],
 			name: "Plant Biomass",
 			type: "scatter",
@@ -555,7 +580,7 @@ class DashboardResults extends Component {
 			{
 				type: "rect",
 				xref: "x",
-				yref:"paper",
+				yref: "paper",
 				x0: harvestDateMin,
 				y0: 0,
 				x1: harvestDateMax,
@@ -568,7 +593,7 @@ class DashboardResults extends Component {
 			{
 				type: "line",
 				xref: "x",
-				yref:"paper",
+				yref: "paper",
 				x0: plantingDate,
 				y0: 0,
 				x1: plantingDate,
@@ -578,7 +603,7 @@ class DashboardResults extends Component {
 			{
 				type: "line",
 				xref: "x",
-				yref:"paper",
+				yref: "paper",
 				x0: harvestDate,
 				y0: 0,
 				x1: harvestDate,
@@ -588,7 +613,7 @@ class DashboardResults extends Component {
 			{
 				type: "rect",
 				xref: "paper",
-				yref:"y2",
+				yref: "y2",
 				x0: 0,
 				y0: 0,
 				x1: 1,
@@ -601,7 +626,7 @@ class DashboardResults extends Component {
 			{
 				type: "rect",
 				xref: "paper",
-				yref:"y2",
+				yref: "y2",
 				x0: 0,
 				y0: 20,
 				x1: 1,
@@ -716,31 +741,32 @@ class DashboardResults extends Component {
 			},
 			shapes: highlightShapes,
 			annotations: annotations,
-			legend: {x:0.88, y: 1.40, borderwidth: 0.5}
+			legend: {x: 0.88, y: 1.40, borderwidth: 0.5}
 		};
 
 
 		resultHtml.push(
-					<div >
-						<Plot
+			<div >
+				<Plot
 							data={data}
 							layout={layout}
 							config={{
 								"displayModeBar": false
 							}}
 
-						/>
-					</div>);
+				/>
+			</div>);
 
 		return resultHtml;
 	}
 
+	
 	// Generate and return charts HTML content
 	generateTableHTML(harvestDate) {
 		let html = [];
 		let rowElems = [];
 
-		if(harvestDate == null){
+		if (harvestDate == null){
 			harvestDate = this.state.harvestDate;
 		}
 
@@ -751,7 +777,7 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["TWAD"].chartData.datasets[0] != null) ?
-						this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["TWAD"].chartData.datasets[0].data, harvestDate) : "NA"
 				}
 				</TableCell>
 
@@ -764,7 +790,7 @@ class DashboardResults extends Component {
 				</TableCell>
 
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate) : "NA"
 				}
 				</TableCell>
 			</TableRow>
@@ -778,82 +804,85 @@ class DashboardResults extends Component {
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
 				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NUAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, harvestDate): "NA"
+					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, harvestDate) : "NA"
 				}
 				</TableCell>
 			</TableRow>
 		);
 
-		if(config.hideDashboardSections){
+		if (config.hideDashboardSections){
 			rowElems.push(
-					<TableRow key="4">
-						<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
-					</span>
-						</TableCell>
-						<TableCell>
+				<TableRow key="4">
+					<TableCell className="dashboardTableHeader">
+						<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
+						</span>
+					</TableCell>
+					<TableCell>
 							In Review
-						</TableCell>
-					</TableRow>
+					</TableCell>
+				</TableRow>
 			);
-		}else {
+		}
+		else {
 			rowElems.push(
-					<TableRow key="4">
-						<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
-						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleLossGraphsOpen}/>
-					</span>
-							<span style={{
-								fontWeight: "light",
-								fontStyle: "italic"
-							}}>(lb/acre)</span>
-						</TableCell>
-						<TableCell>
-							{(() => {
-								if ((this.state.ccDataArray !== null &&
+				<TableRow key="4">
+					<TableCell className="dashboardTableHeader">
+						<span className="dashboardTableHeaderSpan">Nitrogen Loss Reduction
+							<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleLossGraphsOpen}/>
+						</span>
+						<span style={{
+							fontWeight: "light",
+							fontStyle: "italic"
+						}}>(lb/acre)</span>
+					</TableCell>
+					<TableCell>
+						{(() => {
+							if ((this.state.ccDataArray !== null &&
 										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
 										null &&
 										this.state.noccDataArray !== null &&
 										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
 										null)) {
-									let diff = this.getYfromArray(
-											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
-											harvestDate)
+								let diff = this.getYfromArray(
+									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+									harvestDate)
 											- this.getYfromArray(
-													this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
-													harvestDate);
-									let percent = diff / this.getYfromArray(
-											this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
-											harvestDate) * 100;
-									if (percent) {
-										return "-" + roundResults(diff, 2) + " (" +
-												roundResults(percent, 2) + "%)";
-									} else {
-										return "NA";
-									}
-								} else {
+												this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+												harvestDate);
+								let percent = diff / this.getYfromArray(
+									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+									harvestDate) * 100;
+								if (percent) {
+									return `-${ roundResults(diff, 2) } (${ 
+										roundResults(percent, 2) }%)`;
+								}
+								else {
 									return "NA";
 								}
-							})()}
+							}
+							else {
+								return "NA";
+							}
+						})()}
 
-						</TableCell>
-					</TableRow>
+					</TableCell>
+				</TableRow>
 			);
 		}
 
 		rowElems.push(
-				<TableRow key="5">
-					<TableCell className="dashboardTableHeader">
+			<TableRow key="5">
+				<TableCell className="dashboardTableHeader">
 					<span className="dashboardTableHeaderSpan">Growing Degree Days
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleGddGraphsOpen} />
 					</span>
-						<span style={{fontWeight: "light", fontStyle: "italic"}}>(Cumulative °F)</span>
-					</TableCell>
-					<TableCell> {(this.state.gdd !== null) ?
-							this.getYfromArray(this.state.gdd, harvestDate): "NA"
-					}
-					</TableCell>
-				</TableRow>
+					<span style={{fontWeight: "light", fontStyle: "italic"}}>(Cumulative °F)</span>
+				</TableCell>
+				<TableCell> {(this.state.gdd !== null) ?
+					this.getYfromArray(this.state.gdd, harvestDate) : "NA"
+				}
+				</TableCell>
+			</TableRow>
 		);
 
 		// This will always be 100% at the start if termination. Doesn't make sense
@@ -907,7 +936,7 @@ class DashboardResults extends Component {
 
 				<TableHead>
 					<TableRow style={{height: "64px"}}>
-						<TableCell style={{textAlign: "center", fontWeight:700}} colSpan={2}>Results with Cover Crop</TableCell>
+						<TableCell style={{textAlign: "center", fontWeight: 700}} colSpan={2}>Results with Cover Crop</TableCell>
 					</TableRow>
 				</TableHead>
 
@@ -918,35 +947,11 @@ class DashboardResults extends Component {
 		return html;
 	}
 
-	handleLossGraphsOpen = () => {
-		this.setState({graphType: "lossReduction"});
-		this.setState({openGraphs: true});
-	};
-
-	handleUptakeGraphsOpen = () => {
-		this.setState({graphType: "uptake"});
-		this.setState({openGraphs: true});
-	};
-
-	handleGddGraphsOpen = () => {
-		this.setState({graphType: "gdd"});
-		this.setState({openGraphs: true});
-	};
-
-	handleDecompGraphOpen = () => {
-		this.setState({openDecompGraph: true});
-	};
-
-	handleGraphsClose = () => {
-		this.setState({openGraphs: false});
-		this.setState({openDecompGraph: false});
-	};
-
 
 	render() {
 		const {classes} = this.props;
 		let spinner;
-		if(this.state.runStatus !== "RECEIVED"){
+		if (this.state.runStatus !== "RECEIVED"){
 			spinner = <Spinner/>;
 		}
 
@@ -961,7 +966,7 @@ class DashboardResults extends Component {
 						</IconButton>
 						<br/>
 						<br/>
-						<div style={{ width: "700px"}}>
+						<div style={{width: "700px"}}>
 							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd} cashCropPlantingDate={this.state.selHarvestDate}/>
 						</div>
 
@@ -970,24 +975,24 @@ class DashboardResults extends Component {
 
 
 				{ !config.hideDecompOutputs ?
-						<Modal open={this.state.openDecompGraph} onClose={this.handleGraphsClose}>
-							<div style={getModalStyle()}>
-								<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
-									<CloseIcon />
-								</IconButton>
-								<br/>
-								<br/>
-								<div>
-									<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
-								</div>
-
+					<Modal open={this.state.openDecompGraph} onClose={this.handleGraphsClose}>
+						<div style={getModalStyle()}>
+							<IconButton className="distributionCloseImg" onClick={this.handleGraphsClose}>
+								<CloseIcon />
+							</IconButton>
+							<br/>
+							<br/>
+							<div>
+								<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
 							</div>
-						</Modal>
-						:
-						null
+
+						</div>
+					</Modal>
+					:
+					null
 				}
 
-				<Table style={{ borderStyle: "solid",
+				<Table style={{borderStyle: "solid",
 					borderColor: "rgb(224,224,224)", borderWidth: 1}}>
 
 					<TableHead>
@@ -998,7 +1003,7 @@ class DashboardResults extends Component {
 							</TableCell>
 						</TableRow>
 						<TableRow style={{verticalAlign: "top"}}>
-							<TableCell  style={{width: "100%", padding: 0, margin: 0}}>
+							<TableCell style={{width: "100%", padding: 0, margin: 0}}>
 								<div style={{textAlign: "center"}}>
 									{this.generateChartsHTML()}
 									<div style={{fontSize: "1.125em"}}>
@@ -1017,12 +1022,12 @@ class DashboardResults extends Component {
 									/>
 
 									{!config.hideDecompOutputs ?
-											<div>
-												<Divider/>
-												<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
-											</div>
-											:
-											null
+										<div>
+											<Divider/>
+											<DecompositionGraph graphInfo={this.state.decompositionGraphInfo}/>
+										</div>
+										:
+										null
 									}
 
 								</div>

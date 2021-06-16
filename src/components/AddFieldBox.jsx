@@ -34,71 +34,65 @@ class AddFieldBox extends Component {
 		this.onTileDrainageChange = this.onTileDrainageChange.bind(this);
 	}
 
-	componentDidMount(){
-		this.props.handleLatFieldChange("");
-		this.props.handleLongFieldChange("");
-	}
-
 	handleLatFieldChange = (e) => {
 		this.props.handleLatFieldChange(e.target.value);
 	};
-
-	handleLongFieldChange = (e) =>  {
+	handleLongFieldChange = (e) => {
 		this.props.handleLongFieldChange(e.target.value);
 	};
-
 	handlePopupOpen = () => {
 		this.setState({popupOpen: true});
 	};
-
 	handlePopupClose = () => {
 		this.setState({popupOpen: false});
 	};
-
 	handleContinue = () => {
 		this.handleAddCLU();
 	}
-
-
 	onTileDrainageChange = (event, option) => {
 		this.setState({
 			tileDrainage: option.value
 		});
 	}
+	componentDidMount(){
+		this.props.handleLatFieldChange("");
+		this.props.handleLongFieldChange("");
+	}
+	
 
 	handleAddCLU() {
-		const CLUapi = config.CLUapi + "/userfield";
+		const CLUapi = `${config.CLUapi }/userfield`;
 		const {clu, latitude, longitude} = this.props;
 		let headers = {
 			"Content-Type": "application/json",
 			"Authorization": getKeycloakHeader(),
 			"Cache-Control": "no-cache"
 		};
-		let bodyjson = "{\"userid\":\""+ localStorage.getItem("kcEmail") +"\", \"clu\":" + clu
-			+ ", \"cluname\":\"" + this.state.cluname + "\", \"lat\":"+ latitude + ", \"lon\":" + longitude
-			+ ", \"expfile\": \"\"}";
-		fetch(CLUapi,{
+		let bodyjson = `{"userid":"${ localStorage.getItem("kcEmail") }", "clu":${ clu
+			 }, "cluname":"${ this.state.cluname }", "lat":${ latitude }, "lon":${ longitude
+			 }, "expfile": ""}`;
+		fetch(CLUapi, {
 			method: "POST",
 			headers: headers,
 			body: bodyjson
 		}).then(response => {
-			const postJSONapi = config.CLUapi + "/users/"+ localStorage.getItem("kcEmail") + "/CLUs/" + clu
-				+ "/experiment_file_json" + "?use_cropland_data=" + config.useCroplandDataLayer + "&tile_drainage=" + this.state.tileDrainage;
-			fetch(postJSONapi,{
+			const postJSONapi = `${config.CLUapi }/users/${ localStorage.getItem("kcEmail") }/CLUs/${ clu
+				 }/experiment_file_json` + `?use_cropland_data=${ config.useCroplandDataLayer }&tile_drainage=${ this.state.tileDrainage}`;
+			fetch(postJSONapi, {
 				method: "POST",
 				headers: headers,
 			}).then(response => {
 				window.location = "/profile";
 			});
 		}).catch(function(e) {
-			console.log("Add CLU failed: " + e );
+			console.log(`Add CLU failed: ${ e}` );
 		});
 	}
 
 	render() {
 		let options = dictToOptions(drainage_type);
 
-		return(
+		return (
 			<div className="add-field-div">
 
 				<Dialog
@@ -111,7 +105,7 @@ class AddFieldBox extends Component {
 						<DialogContentText id="alert-dialog-description">
 							<p>
 								We will be creating a new field with crop rotation details populated from USDA&nbsp;
-								<a className="cc-link" href={croplandUrl} target="_blank">
+								<a className="cc-link" href={croplandUrl} target="_blank" rel="noreferrer">
 									Cropland Data Layer
 								</a>
 								&nbsp;and other default management data for this region.
@@ -122,7 +116,7 @@ class AddFieldBox extends Component {
 
 							<p>
 								Read about our&nbsp;
-								<a className="cc-link" href={privacyUrl} target="_blank">
+								<a className="cc-link" href={privacyUrl} target="_blank" rel="noreferrer">
 									Privacy Policy
 								</a>
 							</p>
@@ -147,7 +141,7 @@ class AddFieldBox extends Component {
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
 					<div className="warning-div">
-						{this.props.exist_clu  && (
+						{this.props.exist_clu && (
 							<div className="warning-message-div">
 								<Icon className="warning-message" name="warning"/>
 								<p className="exist-message">{existCLUNote}</p>
@@ -186,30 +180,30 @@ class AddFieldBox extends Component {
 					</Grid>
 
 
-						<Textfield
+					<Textfield
 								required
 								style={{width: "250px"}}
 								floatingLabel="CLU name"
-								onChange={({target : {value : cluname}}) => {
-									this.setState({ cluname });
+								onChange={({target: {value: cluname}}) => {
+									this.setState({cluname});
 								}}
-						/>
+					/>
 
-						<Autocomplete options={options}
+					<Autocomplete options={options}
 													disableClearable={true}
 													getOptionLabel={(option) => option.label}
 													style={{width: "250px", marginTop: "30px"}}
 													defaultValue={options[0]}
 													onChange={this.onTileDrainageChange}
 													renderInput={(params) =>
-															<TextField {...params} label="Tile Drainage" required={true} variant="outlined" InputLabelProps={{shrink: true}}/>
+														<TextField {...params} label="Tile Drainage" required={true} variant="outlined" InputLabelProps={{shrink: true}}/>
 													}
-						/>
+					/>
 				</div>
 				<div className="add-field-bottom">
 					<Link type="submit" className="cancel-button" to="/profile">Cancel</Link>
 					<button type="submit" className="blue-button add-button"
-							disabled={this.state.cluname === "" || this.props.clu ===0 || this.state.tileDrainage.trim() === ""}
+							disabled={this.state.cluname === "" || this.props.clu === 0 || this.state.tileDrainage.trim() === ""}
 							onClick={this.handlePopupOpen}
 					>ADD FIELD</button>
 				</div>

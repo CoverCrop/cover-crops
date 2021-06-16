@@ -14,21 +14,43 @@ class Fertilizer extends Component {
 	constructor(props) {
 		super(props);
 		// set to null not "none", for not showing this component if user has not select a year
-		this.state ={FMCD: null};
+		this.state = {FMCD: null};
 	}
 
+	handler = (field_name, field_value) => {
+		this.setState({[field_name]: field_value});
+		// add fertilizer
+		if (field_name === "FMCD" && field_value !== "None" && !this.state.FDATE){
+			let pureyear = this.props.year.split(" ")[0];
+			let newFertilizer = Object.assign({}, defaultFertilizer);
+			newFertilizer["FMCD"] = field_value;
+			// set default date as 04-02
+			newFertilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
+			newFertilizer["FERNAME"] = this.props.year;
+			if (this.state.addnew){
+				this.props.addFertilizer(newFertilizer);
+			}
+			this.setState(newFertilizer);
+			this.setState({addnew: false});
+
+		}
+		// delete fertilizer
+		if (field_name === "FMCD" && field_value === "None"){
+			this.setState({FDATE: undefined});
+		}
+	}
 	componentDidMount() {
 		this.props.onRef(this);
 		this.setState({FMCD: "None"});
 		this.setState(this.props.crop);
 		let fdate = this.props.crop["FDATE"];
-		this.setState({"FDATE":convertFullDate(fdate)});
-		if(this.props.crop["FAMN"]){
-			this.setState({"FAMN" :
+		this.setState({"FDATE": convertFullDate(fdate)});
+		if (this.props.crop["FAMN"]){
+			this.setState({"FAMN":
 						convertKgPerHaToLbPerAcre(this.props.crop["FAMN"]).toString()});
 		}
-		if(this.props.crop["FDEP"]){
-			this.setState({"FDEP" : convertCmToInches(this.props.crop["FDEP"]).toString()});
+		if (this.props.crop["FDEP"]){
+			this.setState({"FDEP": convertCmToInches(this.props.crop["FDEP"]).toString()});
 		}
 	}
 
@@ -41,64 +63,42 @@ class Fertilizer extends Component {
 		this.setState(nextProps.crop);
 		let fdate = nextProps.crop["FDATE"];
 		this.setState({"FDATE": convertFullDate(fdate)});
-		this.setState({"FAMN" : convertKgPerHaToLbPerAcre(nextProps.crop["FAMN"]).toString()});
-		this.setState({"FDEP" : convertCmToInches(nextProps.crop["FDEP"]).toString()});
+		this.setState({"FAMN": convertKgPerHaToLbPerAcre(nextProps.crop["FAMN"]).toString()});
+		this.setState({"FDEP": convertCmToInches(nextProps.crop["FDEP"]).toString()});
 	}
 
 	getBodyJson(){
 		let jsonBody = Object.assign({}, this.state);
 
-		if(jsonBody["FMCD"] !== "None"){
+		if (jsonBody["FMCD"] !== "None"){
 			jsonBody["FDATE"] = jsonBody["FDATE"].replace(/-/g, "").substring(0, 8);
 		}
 
-		if(jsonBody["FAMN"] !== undefined && jsonBody["FAMN"]){
+		if (jsonBody["FAMN"] !== undefined && jsonBody["FAMN"]){
 			jsonBody["FAMN"] = convertLbPerAcreToKgPerHa(jsonBody["FAMN"]).toString();
 		}
 
-		if(jsonBody["FDEP"] !== undefined && jsonBody["FDEP"]){
+		if (jsonBody["FDEP"] !== undefined && jsonBody["FDEP"]){
 			jsonBody["FDEP"] = convertInchesToCm(jsonBody["FDEP"]).toString();
 		}
 
 		return jsonBody;
 	}
-
-	handler = (field_name, field_value) => {
-		this.setState({[field_name] : field_value});
-		// add fertilizer
-		if(field_name === "FMCD" && field_value !=="None" && !this.state.FDATE){
-			let pureyear = this.props.year.split(" ")[0];
-			let newFertilizer = Object.assign({}, defaultFertilizer);
-			newFertilizer["FMCD"] = field_value;
-			// set default date as 04-02
-			newFertilizer["FDATE"] = new Date(pureyear, 3, 2).toISOString();
-			newFertilizer["FERNAME"] = this.props.year;
-			if(this.state.addnew){
-				this.props.addFertilizer(newFertilizer);
-			}
-			this.setState(newFertilizer);
-			this.setState({addnew:false});
-
-		}
-		// delete fertilizer
-		if(field_name === "FMCD" && field_value ==="None"){
-			this.setState({FDATE:undefined});
-		}
-	}
+	
 
 	render() {
 		return (
 			(this.state.FMCD) ?
-			<div className="fertilizer-box-left">
-				<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
+				<div className="fertilizer-box-left">
+					<MyFarmUpdate elementType="select" title="MATERIAL" cropyear={this.state.year}
 											firstField="MF" secondField="FMCD" options={FMCD}
 											defaultValue={this.state.FMCD} handler = {this.handler}
-				/>
-				{this.state.FDATE? <div>
-					<MyFarmUpdate elementType="select" title="APPLICATION" cropyear={this.state.year}
+					/>
+					{this.state.FDATE ? <div>
+						<MyFarmUpdate elementType="select" title="APPLICATION" cropyear={this.state.year}
 												firstField="MF" secondField="FACD" options={FACD}
 												defaultValue={this.state.FACD} handler={this.handler}
-					/>
+						/>
 
 						< MyFarmUpdate elementType="inputLbs" title="AMOUNT, lb/acre" cropyear={this.state.year}
 												firstField="MF" secondField="FAMN"
@@ -109,13 +109,13 @@ class Fertilizer extends Component {
 													defaultValue={this.state.FDEP} handler = {this.handler}
 						/>
 
-					<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
+						<MyFarmUpdate elementType="date" title="DATE APPLIED" cropyear={this.state.year}
 												firstField="MF" secondField="FDATE"
 												defaultValue={this.state.FDATE} handler = {this.handler}
-					/>
+						/>
 
-				</div>: null}
-			</div>:<div />
+					</div> : null}
+				</div> : <div />
 		);
 	}
 }

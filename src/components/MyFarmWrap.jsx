@@ -12,12 +12,12 @@ class MyFarmWrap extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activeTab:1
+			activeTab: 1
 		};
 	}
 
 	renderContent(activeTab) {
-		switch(activeTab) {
+		switch (activeTab) {
 			case 1:
 				return <UploadFieldSummary {...this.props} />;
 			case 2: return <CropHistory {...this.props} />;
@@ -31,33 +31,41 @@ class MyFarmWrap extends Component {
 	render() {
 		const {activeTab} = this.state;
 		// Cannot use Link within Tab
-		return(
+		return (
 			<div>
 
-				<div  className="myfarm-tab">
+				<div className="myfarm-tab">
 					<Tabbar>
 						<Tab
-							active={activeTab===1}
-							onClick={() => {this.setState({activeTab:1});}}
+							active={activeTab === 1}
+							onClick={() => {
+								this.setState({activeTab: 1});
+							}}
 						>
 							Field Profile
 						</Tab>
 						<Tab
-							active={activeTab===2}
-							onClick={() => {this.setState({activeTab:2});}}
+							active={activeTab === 2}
+							onClick={() => {
+								this.setState({activeTab: 2});
+							}}
 						>
 							Crop History
 
 						</Tab>
 						<Tab
-							active={activeTab===3}
-							onClick={() => {this.setState({activeTab:3});}}
+							active={activeTab === 3}
+							onClick={() => {
+								this.setState({activeTab: 3});
+							}}
 						>
 							CoverCrop History
 						</Tab>
 						<Tab
-							active={activeTab===4}
-							onClick={() => {this.setState({activeTab:4});}}
+							active={activeTab === 4}
+							onClick={() => {
+								this.setState({activeTab: 4});
+							}}
 						>
 							Summary
 						</Tab>

@@ -23,6 +23,7 @@
     "mocha": true
   },
   "rules": {
+	"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
 	"eqeqeq": ["error", "smart"],
 	"no-eval": "warn",
     "quotes": ["error", "double"],
@@ -66,7 +67,8 @@
     "react/react-in-jsx-scope": 1,
     "react/self-closing-comp": 1,
     "react/sort-comp": 1,
-    "react/jsx-wrap-multilines": 1
+    "react/jsx-wrap-multilines": 1,
+	"no-prototype-builtins": "warn"
   },
   "globals": {
   }

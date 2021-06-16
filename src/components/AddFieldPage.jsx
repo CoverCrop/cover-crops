@@ -22,7 +22,7 @@ class AddFieldPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			clus:[],
+			clus: [],
 			exist_clu: false,
 			soil_data_unavailable: false,
 			markercoordinate: [],
@@ -33,6 +33,76 @@ class AddFieldPage extends Component {
 		};
 	}
 
+	handleClick = (e) => {
+		this.setState({markercoordinate: e.coordinate});
+		let lonLatCoordinates = olTransform(e.coordinate, "EPSG:3857", "EPSG:4326");
+
+		// Format number to a string with 6 digits after decimal point
+		lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
+		lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
+		this.props.handleLatFieldChange(lonLatCoordinates[1]);
+		this.props.handleLongFieldChange(lonLatCoordinates[0]);
+
+
+		const CLUapi = `${config.CLUapi }/CLUs?lat=${ lonLatCoordinates[1] }&lon=${ lonLatCoordinates[0] }&soil=false`;
+		const soilApi = `${config.CLUapi }/soils?lat=${ lonLatCoordinates[1] }&lon=${ lonLatCoordinates[0]}`;
+
+		// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
+		let that = this;
+		fetch(CLUapi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			return response.json();
+		}).then(geojson => {
+
+			let features = (new GeoJSON()).readFeatures(geojson, {
+				dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
+			});
+
+			that.setState({areafeatures: features});
+			// console.log(geojson)
+			let clu_id = geojson.features[0].properties["clu_id"];
+			that.props.handleUserCLUChange(clu_id, "");
+			// TODO, remove this API and save the clus in redux.
+			getMyFieldList(this.props.email).then(function(clus){
+				// console.log(clus.filter(userclu => userclu.clu === clu_id));
+				that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length > 0)});
+
+			});
+
+
+		}).catch(function (e) {
+			console.log(`Get CLU failed: ${ e}`);
+			that.setState({areafeatures: [
+				new OlFeature({})
+			]});
+			that.props.handleUserCLUChange(0, "");
+		});
+
+		// Call to check if soil data is available.
+		fetch(soilApi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			return response.json();
+		}).then(soilJson => {
+			if (soilJson.length === 0) {
+				//Soil data unavailable
+				that.setState({soil_data_unavailable: true});
+			}
+			else {
+				//Soil data available
+				that.setState({soil_data_unavailable: false});
+			}
+		});
+	};
 	componentDidMount() {
 
 		let currentExtent = getExtentOfFieldsForUser(this.props.email);
@@ -42,86 +112,14 @@ class AddFieldPage extends Component {
 		this.setState({extent: currentExtent});
 	}
 
-	handleClick = (e) => {
-            this.setState({markercoordinate: e.coordinate});
-			let lonLatCoordinates = olTransform(e.coordinate, "EPSG:3857", "EPSG:4326");
-
-			// Format number to a string with 6 digits after decimal point
-			lonLatCoordinates[0] = lonLatCoordinates[0].toFixed(6);
-			lonLatCoordinates[1] = lonLatCoordinates[1].toFixed(6);
-			this.props.handleLatFieldChange(lonLatCoordinates[1]);
-			this.props.handleLongFieldChange(lonLatCoordinates[0]);
-
-
-
-			const CLUapi = config.CLUapi + "/CLUs?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0] + "&soil=false";
-			const soilApi = config.CLUapi + "/soils?lat=" + lonLatCoordinates[1] + "&lon=" + lonLatCoordinates[0];
-
-			// let areaPolygonSource = this.state.areaPolygonLayer.getSource();
-			let that = this;
-			fetch(CLUapi, {
-				method: "GET",
-				headers: {
-					"Authorization": getKeycloakHeader(),
-					"Cache-Control": "no-cache"
-				}
-			}).then(response => {
-				return response.json();
-			}).then(geojson => {
-
-				let features = (new GeoJSON()).readFeatures(geojson, {
-					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
-				});
-
-				that.setState({areafeatures:features});
-				// console.log(geojson)
-				let clu_id = geojson.features[0].properties["clu_id"];
-				that.props.handleUserCLUChange(clu_id, "");
-				// TODO, remove this API and save the clus in redux.
-				getMyFieldList(this.props.email).then(function(clus){
-					// console.log(clus.filter(userclu => userclu.clu === clu_id));
-					that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length >0) });
-
-				});
-
-
-			}).catch(function (e) {
-				console.log("Get CLU failed: " + e);
-				that.setState({areafeatures:[
-						new OlFeature({})
-					]});
-				that.props.handleUserCLUChange(0, "");
-			});
-
-			// Call to check if soil data is available.
-			fetch(soilApi, {
-				method: "GET",
-				headers: {
-					"Authorization": getKeycloakHeader(),
-					"Cache-Control": "no-cache"
-				}
-			}).then(response => {
-				return response.json();
-			}).then(soilJson => {
-				if(soilJson.length === 0) {
-					//Soil data unavailable
-					that.setState({soil_data_unavailable: true});
-				}
-				else {
-					//Soil data available
-					that.setState({soil_data_unavailable: false});
-				}
-			});
-	};
-
 
 	render() {
 		let {markercoordinate, areafeatures, exist_clu, soil_data_unavailable} = this.state;
 		return (
 			<AuthorizedWrap>
-			<div>
-				<Header />
-				<AnalyzerWrap activeTab={3}/>
+				<div>
+					<Header />
+					<AnalyzerWrap activeTab={3}/>
 
 					<div className="choose-clu-div">
 						<MapCC mapId="choose-clu" markercoordinate={markercoordinate} areafeatures={areafeatures}
@@ -130,7 +128,7 @@ class AddFieldPage extends Component {
 						<AddFieldBox exist_clu={exist_clu} soil_data_unavailable={soil_data_unavailable}/>
 					</div>
 
-			</div>
+				</div>
 			</AuthorizedWrap>
 		);
 	}

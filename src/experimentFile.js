@@ -40,10 +40,10 @@ export const defaultFertilizer = {
 // All planting defaults should be in Imperial format
 export const defaultCashcropPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"32000",
-	"PPOE":"32000",
-	"PLME":"S",
-	"PLDS":"R",
+	"PPOP": "32000",
+	"PPOE": "32000",
+	"PLME": "S",
+	"PLDS": "R",
 	"PLRS": "29.92",
 	"PLRD": "0",
 	"PLDP": "1.57"
@@ -51,17 +51,17 @@ export const defaultCashcropPlanting = {
 
 export const defaultCovercropPlanting = {
 	// "PDATE":"0513",
-	"PPOP":"900000",
-	"PPOE":"900000",
-	"PLME":"S",
-	"PLDS":"R",
+	"PPOP": "900000",
+	"PPOE": "900000",
+	"PLME": "S",
+	"PLDS": "R",
 	"PLRS": "7.50",
 	"PLRD": "0",
 	"PLDP": "1.50"
 };
 
 export const defaultHarvest = {
-	"HDATE" : "0928"
+	"HDATE": "0928"
 };
 
 export const PLDS = {"R": "Row", "B": "Broadcast"};
@@ -81,7 +81,7 @@ export const coverCrops = ["Rye"];
 export const cashCropOptions = cashCrops.concat([]);
 export const coverCropOptions = coverCrops.concat(["None"]);
 export const defaultCropYears = ["2015", "2016", "2017", "2018", "2019", "2020"];
-export const cultivars = {"Corn": "DEKALB 591", "Soybean":"M GROUP 2", "Rye": "IB0488 NEWTON", "None":"None"};
+export const cultivars = {"Corn": "DEKALB 591", "Soybean": "M GROUP 2", "Rye": "IB0488 NEWTON", "None": "None"};
 
 // actual inch limit should have been 393, but 385 is the max value where rounding error does not occur
 export const INCH_LIMIT = 385;

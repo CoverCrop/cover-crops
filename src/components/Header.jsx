@@ -16,6 +16,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import {browserWarning} from "../app.messages";
 import DialogActions from "@material-ui/core/DialogActions";
+import logo from "../images/logo.png";
 
 const keycloak = config.keycloak;
 
@@ -33,7 +34,13 @@ class Header extends Component {
 		this.handleRegister = this.handleRegister.bind(this);
 	}
 
-	componentDidMount(): void {
+	handleIEPopupOpen = () => {
+		this.setState({IEPopup: true});
+	};
+	handleIEPopupClose = () => {
+		this.setState({IEPopup: false});
+	};
+	componentDidMount() {
 		if (sessionStorage.getItem("firstVisit") === "true"){
 			if (sessionStorage.getItem("isIE") === "true") {
 				this.handleIEPopupOpen();
@@ -63,14 +70,7 @@ class Header extends Component {
 			}
 		}
 	}
-
-	handleIEPopupOpen = () => {
-		this.setState({IEPopup: true});
-	};
-
-	handleIEPopupClose = () => {
-		this.setState({IEPopup: false});
-	};
+	
 
 	handleLogin(){
 		browserHistory.push("/login");
@@ -91,7 +91,7 @@ class Header extends Component {
 	}
 
 	render() {
-		return(
+		return (
 			<div>
 
 				<Dialog
@@ -119,7 +119,7 @@ class Header extends Component {
 					<ToolbarRow className="banner">
 						<ToolbarSection className="cover-crop" align="start">
 							<Link to="/">
-								<img src={require("../images/logo.png")}/>
+								<img src={logo}/>
 								CoverCrop
 							</Link>
 						</ToolbarSection>
@@ -127,7 +127,7 @@ class Header extends Component {
 							<span className="email-address">{this.props.email}</span>
 
 							{this.props.isAuthenticated === false ? <span> <Button onClick={this.handleLogin}>Login</Button>
-									<Button onClick={this.handleRegister} style={{height: "40px"}}>Register</Button> </span> :
+								<Button onClick={this.handleRegister} style={{height: "40px"}}>Register</Button> </span> :
 								<Button onClick={this.handleLogout}>Logout</Button>}
 
 						</ToolbarSection>
@@ -141,14 +141,14 @@ class Header extends Component {
 
 					{this.props.selected === "home" && <div className="triangle-bottomright" /> }
 					{this.props.selected === "home" ? <div className="rectangle-3-onselect">
-							<Link to="/" className="about-the-project-onselect">About the Project</Link>
-						</div> :
+						<Link to="/" className="about-the-project-onselect">About the Project</Link>
+					</div> :
 						<Link to="/" className="about-the-project">About the Project</Link>
 
 					}
 				</div>
 			</div>
-			);
+		);
 	}
 }
 

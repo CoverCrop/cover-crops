@@ -7,7 +7,6 @@ import {
 	convertDateToUSFormatWithMins,
 	getOutputFileJson, updateTimezoneInDateStr, getFieldNameFromLatLon,
 } from "../public/utils";
-import {connect} from "react-redux";
 import Grid from "@material-ui/core/Grid";
 import config from "../app.config";
 
@@ -54,17 +53,17 @@ class EventCard extends Component {
 			cluName = getFieldNameFromLatLon(this.props.clus, event[0].parameters[latId], event[0].parameters[lonId]);
 			// When the clu for the run has been deleted, just show lat,lon instead of name
 			if (cluName === ""){
-				cluName = +event[0].parameters[latId] + " " +event[0].parameters[lonId];
+				cluName = `${+event[0].parameters[latId] } ${ event[0].parameters[lonId]}`;
 			}
 		}
 
 		return (
 			<Card
-				className={(event.id === this.props.selectevent? "choose-card":"") + " event-list " +(event.status)}
+				className={`${event.id === this.props.selectevent ? "choose-card" : "" } event-list ${ event.status}`}
 				key={event[0].id}
 				onClick={() => this.props.viewResult(event.id, event.status, event[0].datasets[resultDatasetId],
-						event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
-						event[0].datasets[weatherDatasetId])}
+					event[1].datasets[resultDatasetId], event[0].datasets[userInputJSONDatasetID],
+					event[0].datasets[weatherDatasetId])}
 			>
 				<CardText >
 

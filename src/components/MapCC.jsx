@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import config from "../app.config.js";
-require("ol/ol.css");
 import {
 	View as OlView,
 	Feature as OlFeature,
@@ -24,6 +23,9 @@ import {
 	BingMaps,
 	TileWMS
 } from "ol/source";
+
+
+require("ol/ol.css");
 
 class MapCC extends Component {
 
@@ -118,7 +120,7 @@ class MapCC extends Component {
 		this.marker.setZIndex(100);
 
 		this.state.map.setTarget(this.props.mapId); // Set target for map
-		if(handleClick){
+		if (handleClick){
 			this.state.map.on("click", handleClick); // Set on click event handler
 		}
 		this.dropMarker(this.defaultCenter); // Drop default marker
@@ -127,7 +129,7 @@ class MapCC extends Component {
 		// wait until the map is loaded and update the size.
 		let that = this;
 		new Promise(resolve => setTimeout(resolve, 500)).then(function (){
-			console.log("map extent: " + that.props.extent);
+			console.log(`map extent: ${ that.props.extent}`);
 			if (that.props.extent !== undefined && that.props.extent !== null && that.props.extent[0] !== Infinity) {
 				// console.log("Inside");
 				that.state.map.getView().fit(that.props.extent, that.state.map.getSize());
@@ -139,26 +141,27 @@ class MapCC extends Component {
 	componentDidUpdate() {
 
 		//keep this console for testing infinite loop.
-		console.log("drop marker at: " + this.props.markercoordinate);
+		console.log(`drop marker at: ${ this.props.markercoordinate}`);
 		this.dropMarker(this.props.markercoordinate);
-        // not used currently
+		// not used currently
 		// if(this.props.zoomlevel){
 		// 	this.state.map.getView().setZoom(this.props.zoomlevel);
 		// }
 		let areaPolygonSource = this.state.areaPolygonLayer.getSource();
 		areaPolygonSource.clear();
 		areaPolygonSource.addFeatures(this.props.areafeatures);
-		if(this.props.recenter ){
+		if (this.props.recenter ){
 			this.state.map.getView().setCenter(this.props.markercoordinate);
-		} else if(this.props.fitmap && isFinite(areaPolygonSource.getExtent()[1])) {
+		}
+		else if (this.props.fitmap && isFinite(areaPolygonSource.getExtent()[1])) {
 			// console.log(areaPolygonSource.getExtent());
 			this.state.map.getView().fit(areaPolygonSource.getExtent(), this.state.map.getSize());
 		}
 	}
 
 	render(){
-		return(
-				<div id={this.props.mapId} className="fullmap"/>
+		return (
+			<div id={this.props.mapId} className="fullmap"/>
 		);
 	}
 }

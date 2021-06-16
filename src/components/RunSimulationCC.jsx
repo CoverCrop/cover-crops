@@ -1,9 +1,8 @@
 import React, {Component} from "react";
-import { connect } from "react-redux";
-import {Button, Subheading2, Title,  Card,  CardTitle, CardText} from "react-mdc-web";
+import {connect} from "react-redux";
+import {Button, Subheading2, Title, Card, CardTitle, CardText} from "react-mdc-web";
 import "react-datepicker/dist/react-datepicker.css";
 import "react-select/dist/react-select.css";
-import "babel-polyfill";
 import DatePicker from "react-datepicker";
 import {
 	datawolfURL,
@@ -56,7 +55,7 @@ class RunSimulationCC extends Component {
 		};
 
 		let id = ID();
-		let { latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
+		let {latitude, longitude, weatherPattern, startDate, endDate, expfile} = this.props;
 
 		// Calculate cover crop termination date based on the cash crop planting date
 		endDate.setDate(endDate.getDate() + config.coverCropTerminationOffsetDays);
@@ -70,13 +69,13 @@ class RunSimulationCC extends Component {
 		let withCoverCropExecutionRequest = getWithCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withCoverCropDatasetId);
 		let withoutCoverCropExecutionRequest = getWithoutCoverCropExecutionRequest(id, latitude, longitude, personId, weatherPattern, expfile, withoutCoverCropDatasetId);
 
-		let withCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
+		let withCoverCropCreateExecutionResponse = await fetch(`${datawolfURL }/executions`, {
 			method: "POST",
 			headers: headers,
 			body: JSON.stringify(withCoverCropExecutionRequest)
 		});
 
-		let withoutCoverCropCreateExecutionResponse = await fetch(datawolfURL + "/executions", {
+		let withoutCoverCropCreateExecutionResponse = await fetch(`${datawolfURL }/executions`, {
 			method: "POST",
 			headers: headers,
 			body: JSON.stringify(withoutCoverCropExecutionRequest)
@@ -85,27 +84,27 @@ class RunSimulationCC extends Component {
 		const withCoverCropExecutionGUID = await withCoverCropCreateExecutionResponse.text();
 		const withoutCoverCropExecutionGUID = await withoutCoverCropCreateExecutionResponse.text();
 
-		console.log("With cover crop execution id = " + withCoverCropExecutionGUID);
-		console.log("Without cover crop execution id = " + withoutCoverCropExecutionGUID);
+		console.log(`With cover crop execution id = ${ withCoverCropExecutionGUID}`);
+		console.log(`Without cover crop execution id = ${ withoutCoverCropExecutionGUID}`);
 
 		let withStatus = "";
 		let withoutStatus = "";
 		let withCoverCropAnalysisResult, withoutCoverCropAnalysisResult;
 		// check the status until two progresses are finished
-		while( withStatus === "" || withStatus === "WAITING" || withStatus === "RUNNING" || withStatus === "QUEUED"
+		while ( withStatus === "" || withStatus === "WAITING" || withStatus === "RUNNING" || withStatus === "QUEUED"
 		|| withoutStatus === "" || withoutStatus === "WAITING" || withoutStatus === "RUNNING" || withoutStatus === "QUEUED"){
 			await wait(300);
 			// Get Execution Result
-			const withCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withCoverCropExecutionGUID, {
+			const withCoverCropExecutionResponse = await fetch(`${datawolfURL }/executions/${ withCoverCropExecutionGUID}`, {
 				method: "GET",
 				headers: headers
 			});
 
-			const withoutCoverCropExecutionResponse = await fetch(datawolfURL + "/executions/" + withoutCoverCropExecutionGUID, {
+			const withoutCoverCropExecutionResponse = await fetch(`${datawolfURL }/executions/${ withoutCoverCropExecutionGUID}`, {
 				method: "GET",
 				headers: headers
 			});
-			if(withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
+			if (withCoverCropExecutionResponse instanceof Response && withoutCoverCropExecutionResponse instanceof Response){
 				withCoverCropAnalysisResult = await withCoverCropExecutionResponse.json();
 				withoutCoverCropAnalysisResult = await withoutCoverCropExecutionResponse.json();
 				withStatus = withCoverCropAnalysisResult.stepState[steps.Output_Parser];
@@ -120,8 +119,8 @@ class RunSimulationCC extends Component {
 		const withCoverCropUserInputJSONDatasetId = withCoverCropAnalysisResult.datasets[userInputJSONDatasetID];
 		const outputFilename = "output.json";
 
-		console.log("With cover crop result dataset = " + withCoverCropDatasetResultGUID);
-		console.log("Without cover crop result dataset = " + withoutCoverCropDatasetResultGUID);
+		console.log(`With cover crop result dataset = ${ withCoverCropDatasetResultGUID}`);
+		console.log(`Without cover crop result dataset = ${ withoutCoverCropDatasetResultGUID}`);
 
 		if ((withCoverCropDatasetResultGUID !== "ERROR" && withCoverCropDatasetResultGUID !== undefined) &&
 			(withoutCoverCropDatasetResultGUID !== "ERROR" && withoutCoverCropDatasetResultGUID !== undefined)) {
@@ -146,7 +145,8 @@ class RunSimulationCC extends Component {
 								userInputJson
 							);
 							window.location = "/dashboard";
-						} else {
+						}
+						else {
 							console.log("Execution ID wasn't generated.");
 						}
 					});
@@ -191,7 +191,7 @@ class RunSimulationCC extends Component {
 		// Set selectedFutureWeatherEndDate to true if selected termination date if greater than the latest date for
 		// which we have weather data
 		this.setState({selectedFutureWeatherEndDate: date > new Date(
-				config.latestWeatherDate + " 00:00:00")});
+			`${config.latestWeatherDate } 00:00:00`)});
 
 		this.props.handleEndDateChange(date);
 	}
@@ -206,19 +206,21 @@ class RunSimulationCC extends Component {
 		this.props.handleCoverCropChange(coverCrop);
 	}
 
-	toggleDropdown(e) {
-		this.setState({ open: !this.state.open });
+	toggleDropdown() {
+		this.setState({open: !this.state.open});
 	}
 
 	render(){
 		let isButtonDisabled = this.state.runSimulationButtonDisabled ? "disabled" : "";
 		let weatherbuttons = weatherPatterns.map(w =>
-			<Button dense raised={this.props.weatherPattern === w}
-					onClick={()=>{ this.props.handleWeatherPatternChange(w); }}
+			(<Button dense raised={this.props.weatherPattern === w}
+					onClick={() => {
+						this.props.handleWeatherPatternChange(w); 
+					}}
 					key={w}
-			>{w}</Button>);
+			>{w}</Button>));
 
-		return(
+		return (
 			<div className="run-simulate">
 				<div className="black-bottom">
 					<Title>Field</Title>
@@ -260,9 +262,9 @@ class RunSimulationCC extends Component {
 									startDate={
 										this.props.startDate ?
 											(this.props.startDate.getMonth() === 7 ?
-													addMonths(this.props.startDate, 7):
-													addMonths(this.props.startDate, 6)
-											):
+												addMonths(this.props.startDate, 7) :
+												addMonths(this.props.startDate, 6)
+											) :
 											null}
 									filterDate={this.isCashcropPlantingDate}
 									onChange={this.handleEndDateChange}/>

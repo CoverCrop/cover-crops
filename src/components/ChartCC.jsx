@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {Line} from "react-chartjs-2";
 
 class ChartCC extends Component {
@@ -13,18 +13,6 @@ class ChartCC extends Component {
 		this.colorsWithoutAlpha = [];
 
 		this.generateColors();
-	}
-
-	generateColors() {
-
-		const colorPalette = require("nice-color-palettes");
-		const hexToRgba = require("hex-to-rgba");
-		const colorPaletteIndex = 42; // Specific palette to choose
-
-		for (let colorIndex = 0; colorIndex < colorPalette[colorPaletteIndex]["length"]; colorIndex++) {
-			this.colorsWithAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 0.4));
-			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString()));
-		}
 	}
 
 	// Based on crop name obtained from the dataset label, return the color index from the current palette
@@ -48,7 +36,6 @@ class ChartCC extends Component {
 		}
 
 	}
-
 	// Based on crop type obtained from the dataset label, return the color index from the current palette
 	static chooseColorIndexByCropType(datasetLabel) {
 
@@ -65,6 +52,17 @@ class ChartCC extends Component {
 			return 0;
 		}
 	}
+	generateColors() {
+
+		const colorPalette = require("nice-color-palettes");
+		const hexToRgba = require("hex-to-rgba");
+		const colorPaletteIndex = 42; // Specific palette to choose
+
+		for (let colorIndex = 0; colorIndex < colorPalette[colorPaletteIndex]["length"]; colorIndex++) {
+			this.colorsWithAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString(), 0.4));
+			this.colorsWithoutAlpha.push(hexToRgba(colorPalette[colorPaletteIndex][colorIndex].toString()));
+		}
+	}
 
 
 	// Generates charts array object containing individual charts and datasets
@@ -74,9 +72,9 @@ class ChartCC extends Component {
 		let maxTime = harvestDate.getTime();
 
 		if (this.props.hasOwnProperty(chartArrayTypeName) && this.props[chartArrayTypeName] !== null) {
-			if(this.props[chartArrayTypeName].hasOwnProperty("charts")){
+			if (this.props[chartArrayTypeName].hasOwnProperty("charts")){
 				// Iterate over each chart
-				let charts =  this.props[chartArrayTypeName].charts;
+				let charts = this.props[chartArrayTypeName].charts;
 				for (let dataIndex = 0; dataIndex < charts.length; dataIndex++) {
 					let chartRawData = charts[dataIndex];
 
@@ -111,7 +109,7 @@ class ChartCC extends Component {
 							yAxes: [{
 								scaleLabel: {
 									display: true,
-									labelString: chartRawData.yAxis + " (" + chartRawData.yAxisUnit + ")"
+									labelString: `${chartRawData.yAxis } (${ chartRawData.yAxisUnit })`
 								}
 							}],
 						}
@@ -217,8 +215,8 @@ class ChartCC extends Component {
 				let chartOptions = chartDataArray[key].chartOptions;
 
 				resultHtml.push(
-					<div key={"div-" + chartIndex} className="line-chart-div">
-						<Line key={"line-" + chartIndex} data={chartData} options={chartOptions}/>
+					<div key={`div-${ chartIndex}`} className="line-chart-div">
+						<Line key={`line-${ chartIndex}`} data={chartData} options={chartOptions}/>
 					</div>);
 
 				chartIndex++;
@@ -230,7 +228,7 @@ class ChartCC extends Component {
 
 	render() {
 		return (
-				<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
+			<div className="line-chart-parent-div">{this.generateChartsHTML()}</div>
 		);
 	}
 }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Button, Title} from "react-mdc-web";
+import {Title} from "react-mdc-web";
 import {
 	convertFullDate,
 	convertPerSqMeterToPerAcre,
@@ -16,6 +16,9 @@ class Planting extends Component {
 		this.state = {};
 	}
 
+	handler = (field_name, field_value) => {
+		this.setState({[field_name]: field_value});
+	}
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;
@@ -34,7 +37,7 @@ class Planting extends Component {
 	setInitialState(nextProps, year) {
 		if (year) {
 			// Display current planting and harvest dates only for cash or cover crops.
-			if(nextProps.cropobj[year] && year.includes("Fallow") === false){
+			if (nextProps.cropobj[year] && year.includes("Fallow") === false){
 				let selectcrop = nextProps.cropobj[year]["MP"] ;
 				this.setState(selectcrop);
 				let pdate = selectcrop["PDATE"];
@@ -43,7 +46,8 @@ class Planting extends Component {
 				this.setState({"PPOP": convertPerSqMeterToPerAcre(selectcrop["PPOP"]).toString()});
 				this.setState({"PLRS": convertCmToInches(selectcrop["PLRS"]).toString()});
 				this.setState({"PLDP": convertCmToInches(selectcrop["PLDP"]).toString()});
-			} else{
+			}
+			else {
 				this.setDefault();
 			}
 
@@ -51,10 +55,10 @@ class Planting extends Component {
 	}
 
 	getBodyJson(){
-		let jsonBody= {};
+		let jsonBody = {};
 		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
-		let {email, clu, year } =  this.props;
-		if(jsonBody["CONTENT"][0]["PDATE"]) {
+		let {year} = this.props;
+		if (jsonBody["CONTENT"][0]["PDATE"]) {
 
 			jsonBody["PLNAME"] = year;
 			jsonBody["CONTENT"][0]["PPOP"] = convertPerAcreToPerSqMeter(jsonBody["CONTENT"][0]["PPOP"]);
@@ -67,11 +71,12 @@ class Planting extends Component {
 			jsonBody["EVENT"] = "planting";
 			return jsonBody;
 
-		} else {
+		}
+		else {
 			return {
-				"EVENT":"planting",
-				"HNAME":year,
-				"CONTENT":[]
+				"EVENT": "planting",
+				"HNAME": year,
+				"CONTENT": []
 			};
 		}
 
@@ -86,7 +91,8 @@ class Planting extends Component {
 			// set default date as 04-22
 			newPlanting["PDATE"] = new Date(pureyear, 3, 22).toISOString();
 			this.setState({helpText: ""});
-		} else { //covercrop
+		}
+		else { //covercrop
 			newPlanting = Object.assign({}, defaultCovercropPlanting);
 			// set default date as 09-22
 			newPlanting["PDATE"] = new Date(pureyear, 8, 22).toISOString();
@@ -94,10 +100,7 @@ class Planting extends Component {
 		}
 		this.setState(newPlanting);
 	}
-
-	handler = (field_name, field_value) => {
-		this.setState({[field_name] : field_value});
-	}
+	
 
 	render() {
 		return (
@@ -111,27 +114,27 @@ class Planting extends Component {
 					/>
 
 					<div className="update-box-div">
-					<MyFarmUpdate isLeft elementType="inputInch" title="ROW SPACING, inch" cropyear={this.state.year}
+						<MyFarmUpdate isLeft elementType="inputInch" title="ROW SPACING, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLRS"
 												defaultValue={this.state.PLRS} handler = {this.handler}
-					/>
-					<MyFarmUpdate isLeft elementType="inputInch" title="DEPTH, inch" cropyear={this.state.year}
+						/>
+						<MyFarmUpdate isLeft elementType="inputInch" title="DEPTH, inch" cropyear={this.state.year}
 												firstField="MP" secondField="PLDP"
 												defaultValue={this.state.PLDP} handler = {this.handler}
-					/>
-					<MyFarmUpdate isLeft elementType="inputSeeds" title="POP, seeds/acre" cropyear={this.state.year}
+						/>
+						<MyFarmUpdate isLeft elementType="inputSeeds" title="POP, seeds/acre" cropyear={this.state.year}
 												firstField="MP" secondField="PPOP" helpText={this.state.helpText} helpTextPersistence={true}
 												defaultValue={this.state.PPOP} handler = {this.handler}
-					/>
+						/>
 					</div>
 					<div>
-					<MyFarmUpdate elementType="date" title="DATE PLANTED" cropyear={this.state.year}
+						<MyFarmUpdate elementType="date" title="DATE PLANTED" cropyear={this.state.year}
 												firstField="MP" secondField="PDATE"
 												defaultValue={this.state.PDATE} handler = {this.handler}
-					/>
+						/>
 					</div>
 
-				</div>:<div />
+				</div> : <div />
 
 		);
 	}

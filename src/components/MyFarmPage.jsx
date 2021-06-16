@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import {Link} from "react-router";
 import Header from "./Header";
-import Footer from "./Footer";
-import {Card, CardText, CardTitle, Button, Fab, Icon, Title, Body1, Body2, Checkbox, FormField, Grid, Cell} from "react-mdc-web";
+import {Card, CardText, CardTitle, Fab, Icon, Title} from "react-mdc-web";
 import styles from "../styles/main.css";
 import styles2 from "../styles/main.css";
 import AuthorizedWrap from "./AuthorizedWrap";
@@ -35,6 +34,39 @@ class MyFarmPage extends Component {
 		};
 	}
 
+	handleCLUChange = (cluIndex) => {
+		this.props.handleExptxtGet("");
+		this.setState({openclu: cluIndex});
+		let {clus} = this.state;
+		const CLUapi = `${config.CLUapi }/CLUs?lat=${ clus[cluIndex].lat }&lon=${ clus[cluIndex].lon }&soil=false`;
+		let that = this;
+		fetch(CLUapi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			let geojson = response.json();
+			return geojson;
+		}).then(geojson => {
+
+			let features = (new GeoJSON()).readFeatures(geojson, {
+				dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
+			});
+			that.setState({areafeatures: features});
+		}).catch(function (e) {
+			console.log(`Get CLU failed: ${ e}`);
+			that.setState({areafeatures: [
+				new OlFeature({})
+			]});
+		});
+		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
+		getExperimentSQX(this.props.email, clus[cluIndex].clu).then(exptxt => {
+			this.props.handleExptxtGet(exptxt);
+		});
+
+	}
 	componentWillMount() {
 		let that = this;
 
@@ -48,54 +80,22 @@ class MyFarmPage extends Component {
 			that.setState({fetchError: true});
 		});
 	}
-
-	handleCLUChange = (cluIndex) =>{
-		this.props.handleExptxtGet("");
-		this.setState({openclu: cluIndex});
-		let {clus} = this.state;
-		const CLUapi = config.CLUapi + "/CLUs?lat=" + clus[cluIndex].lat + "&lon=" + clus[cluIndex].lon + "&soil=false";
-		let that = this;
-			fetch(CLUapi, {
-				method: "GET",
-				headers: {
-					"Authorization": getKeycloakHeader(),
-					"Cache-Control": "no-cache"
-				}
-			}).then(response => {
-				let geojson = response.json();
-				return geojson;
-			}).then(geojson => {
-
-				let features = (new GeoJSON()).readFeatures(geojson, {
-					dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
-				});
-				that.setState({areafeatures:features});
-			}).catch(function (e) {
-				console.log("Get CLU failed: " + e);
-				that.setState({areafeatures:[
-						new OlFeature({})
-					]});
-			});
-		this.props.handleUserCLUChange(clus[cluIndex].clu, clus[cluIndex].cluname);
-		getExperimentSQX(this.props.email, clus[cluIndex].clu).then(exptxt => {
-			this.props.handleExptxtGet(exptxt);
-		});
-
-	}
+	
 
 	render() {
-		const {openclu, clus, fetchError} = this.state;
-		const that = this;
+		const {openclu, clus} = this.state;
 		let selectCLU = clus[0];
 
 		let cluList = clus.map((c, i) => {
 			if (openclu === i){
 				selectCLU = c;
 				return (<div className="select-my-field" key={c.clu}>
-					<Card onClick={() => {this.handleCLUChange(i);}}>
+					<Card onClick={() => {
+						this.handleCLUChange(i);
+					}}>
 						<CardText>
 							<CardTitle>{c.cluname}</CardTitle>
-							{c.lat + " " + c.lon}
+							{`${c.lat } ${ c.lon}`}
 						</CardText>
 					</Card>
 					<div className="minimap">
@@ -106,19 +106,22 @@ class MyFarmPage extends Component {
 				</div>);
 
 
-			} else {
+			}
+			else {
 				return (<div className="unselect-my-field" key={c.clu}>
-					<Card onClick={() => {this.handleCLUChange(i);}}>
+					<Card onClick={() => {
+						this.handleCLUChange(i);
+					}}>
 						<CardText>
 							<CardTitle>{c.cluname}</CardTitle>
-							{c.lat + " " + c.lon}
+							{`${c.lat } ${ c.lon}`}
 						</CardText>
 					</Card>
 				</div>);
 			}
 		}
-	);
-		let addField = 	(<div  className="add-field-title">
+		);
+		let addField = 	(<div className="add-field-title">
 			<Link to="/addfield" >
 				<Fab >
 					<Icon name="add" />
@@ -140,30 +143,30 @@ class MyFarmPage extends Component {
 									<p>{addFieldHelper}</p>
 									<br />
 									{addField}
-								</div>:
+								</div> :
 								<div>
 									{addField}
-							<div className="myfield-list">
-								<Title>My Fields</Title>
+									<div className="myfield-list">
+										<Title>My Fields</Title>
 
-								{this.state.fetchError?
-									<div>
-										<p className="error-message">Failed to get your farm list.</p>
-									</div> : cluList}
-							</div>
+										{this.state.fetchError ?
+											<div>
+												<p className="error-message">Failed to get your farm list.</p>
+											</div> : cluList}
+									</div>
 								</div>}
-					</div>
-					<div className="myfarm-right">
+						</div>
+						<div className="myfarm-right">
 							{clus.length > 0 ?
-							<MyFarmWrap
+								<MyFarmWrap
 								selectedCLU={selectCLU}
-								selectedCLUName={selectCLU? selectCLU.cluname: ""}
+								selectedCLUName={selectCLU ? selectCLU.cluname : ""}
 								lat={selectCLU.lat}
 								lon={selectCLU.lon}
-							/>:
+								/> :
 								<img src={require("../images/my-farm-blur.png")}/>
 							}
-					</div>
+						</div>
 					</div>
 				</div>
 			</AuthorizedWrap>
@@ -179,7 +182,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		handleUserCLUChange: (clu, cluname) =>{
+		handleUserCLUChange: (clu, cluname) => {
 			dispatch(handleUserCLUChange(clu, cluname));
 		},
 		handleExptxtGet: (exptxt) => {

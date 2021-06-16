@@ -15,14 +15,14 @@ import Dashboard from "./Dashboard";
 import Login from "./Login";
 import {isIE} from "react-device-detect";
 
-global.__base = __dirname + "/";
+global.__base = `${__dirname }/`;
 const theme = createMuiTheme();
 
 class App extends Component {
 
 	componentWillMount() {
 		this.props.handleUserLogin(localStorage.getItem("kcEmail"),
-				localStorage.getItem("dwPersonId"), localStorage.getItem("kcEmail") !== null);
+			localStorage.getItem("dwPersonId"), localStorage.getItem("kcEmail") !== null);
 	}
 
 	render() {

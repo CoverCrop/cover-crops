@@ -7,30 +7,30 @@ class Footer extends Component {
 
 	render() {
 		return (
-				<div>
-					<Toolbar>
-						<ToolbarRow align="center" className={"footer"}>
-							<ToolbarSection align ="start" className="footerCorners" >
+			<div>
+				<Toolbar>
+					<ToolbarRow align="center" className={"footer"}>
+						<ToolbarSection align ="start" className="footerCorners" >
 								v1.2.0
-							</ToolbarSection>
-							<ToolbarSection className="footerLogos" >
-								<a href="http://www.ncsa.illinois.edu" target="_blank" className={"footerlogo"}>
-									<img src={NCSALogo} alt="NCSA" title="National Center for Supercomputing Applications"
+						</ToolbarSection>
+						<ToolbarSection className="footerLogos" >
+							<a href="http://www.ncsa.illinois.edu" target="_blank" className={"footerlogo"} rel="noreferrer">
+								<img src={NCSALogo} alt="NCSA" title="National Center for Supercomputing Applications"
 										style={{width: "160px"}} />
-								</a>
+							</a>
 
-								<a href="https://www.illinoisnrec.org/" target="_blank" className={"footerlogo"}>
-									<img src={NRECLogo} alt="NREC" title="Illinois Nutrient Research & Education Council "
+							<a href="https://www.illinoisnrec.org/" target="_blank" className={"footerlogo"} rel="noreferrer">
+								<img src={NRECLogo} alt="NREC" title="Illinois Nutrient Research & Education Council "
 										style={{width: "120px"}} />
-								</a>
+							</a>
 
-							</ToolbarSection>
+						</ToolbarSection>
 
-							<ToolbarSection align ="end" className="footerCorners" />
+						<ToolbarSection align ="end" className="footerCorners" />
 
-						</ToolbarRow>
-					</Toolbar>
-				</div>
+					</ToolbarRow>
+				</Toolbar>
+			</div>
 
 		);
 	}

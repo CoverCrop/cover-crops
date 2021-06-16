@@ -80,7 +80,7 @@ class DecompositionGraph extends Component {
 			{
 				type: "rect",
 				xref: "x",
-				yref:"paper",
+				yref: "paper",
 				x0: startDate,
 				y0: 0,
 				x1: breakDate,
@@ -93,7 +93,7 @@ class DecompositionGraph extends Component {
 			{
 				type: "rect",
 				xref: "x",
-				yref:"paper",
+				yref: "paper",
 				x0: breakDate,
 				y0: 0,
 				x1: endDate,
@@ -164,7 +164,7 @@ class DecompositionGraph extends Component {
 				showline: true,
 				linecolor: "LightGray",
 				ticks: "outside",
-				range: [0,100],
+				range: [0, 100],
 				rangemode: "tozero"
 			},
 			yaxis2: {
@@ -184,19 +184,19 @@ class DecompositionGraph extends Component {
 			},
 			shapes: highlightShapes,
 			annotations: annotations,
-			legend: {x:0.88, y: 1.40, borderwidth: 0.5}
+			legend: {x: 0.88, y: 1.40, borderwidth: 0.5}
 		};
 
 		return (
-				<div >
-					<Plot
+			<div >
+				<Plot
 							data={data}
 							layout={layout}
 							config={{
 								"displayModeBar": false
 							}}
-					/>
-				</div>
+				/>
+			</div>
 		);
 	}
 }

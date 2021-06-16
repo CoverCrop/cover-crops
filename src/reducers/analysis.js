@@ -1,4 +1,4 @@
-import {weatherPatterns, coverCrops}  from "../datawolf.config";
+import {weatherPatterns, coverCrops} from "../datawolf.config";
 const initCards = [
 	{
 		cardId: "selectField",
@@ -23,7 +23,7 @@ const defaultState = {
 	longitude: "",
 	clu: 0,
 	cluname: "",
-	expfile:"",
+	expfile: "",
 	startDate: null,
 	endDate: null,
 	weatherPattern: weatherPatterns[0],
@@ -37,7 +37,7 @@ const defaultState = {
 };
 
 const analysis = (state = defaultState, action) => {
-	switch(action.type) {
+	switch (action.type) {
 		case "SWITCH_CARD":
 			return Object.assign({}, state, {
 				activeCardIndex: action.selectedCardIndex
@@ -86,7 +86,8 @@ const analysis = (state = defaultState, action) => {
 						cardTitle: action.oldCardData.cardTitle,
 						cardSubtitle: action.oldCardData.cardSubtitle,
 					};
-				} else{
+				}
+				else {
 					return card;
 				}
 			});

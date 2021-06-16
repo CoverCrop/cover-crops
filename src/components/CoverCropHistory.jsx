@@ -19,35 +19,27 @@ class CoverCropHistory extends Component {
 			isOpen: false,
 			covercropSel: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 			yearCrop: this.props.cropobj ? undefined :
-					this.props.cropobj.keys()[0].substr(0, 4) + " " +
-					this.props.cropobj.keys()[0].substr(5),
+				`${this.props.cropobj.keys()[0].substr(0, 4) } ${ 
+					this.props.cropobj.keys()[0].substr(5)}`,
 			covercropSaved: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 
 		};
 	}
 
-	componentDidUpdate(prevProps) {
-		if (this.props.clu !== prevProps.clu) {
-			this.setState({year: undefined});
-		}
-	}
-
 	handleSelectYear = (year) => {
 		this.setState({year: year});
 		let ccrop = getCoverCropForYear(this.props.cropobj, year);
-		if(ccrop === null){
+		if (ccrop === null){
 			ccrop = "None";
 		}
 		this.setState({covercropSaved: ccrop});
 		this.setState({covercropSel: ccrop});
-		this.setState({yearCrop: year + " " + ccrop});
+		this.setState({yearCrop: `${year } ${ ccrop}`});
 	};
-
 	handleSelectCoverCrop = (covercropSel) => {
 		this.setState({covercropSel});
-		this.setState({yearCrop: this.state.year + " " + covercropSel});
+		this.setState({yearCrop: `${this.state.year } ${ covercropSel}`});
 	};
-
 	handleClick = () => {
 
 		let jsonBody;
@@ -56,12 +48,12 @@ class CoverCropHistory extends Component {
 			jsonBody = [
 				{
 					"EVENT": "planting",
-					"PLNAME": this.state.year + " " + this.state.covercropSaved,
+					"PLNAME": `${this.state.year } ${ this.state.covercropSaved}`,
 					"CONTENT": []
 				},
 				{
 					"EVENT": "harvest",
-					"HNAME": this.state.year + " " + this.state.covercropSaved,
+					"HNAME": `${this.state.year } ${ this.state.covercropSaved}`,
 					"CONTENT": []
 				}
 			];
@@ -72,7 +64,7 @@ class CoverCropHistory extends Component {
 			let harvestJson = this.harvest.getBodyJson();
 			jsonBody = [plantingJson, harvestJson];
 		}
-		fetch(config.CLUapi + "/users/" + email + "/CLUs/" + clu + "/experiment_file_json", {
+		fetch(`${config.CLUapi }/users/${ email }/CLUs/${ clu }/experiment_file_json`, {
 			method: "PATCH",
 			body: JSON.stringify(jsonBody),
 			headers: {
@@ -91,6 +83,12 @@ class CoverCropHistory extends Component {
 			}
 		}).catch(error => console.error("Error:", error));
 	};
+	componentDidUpdate(prevProps) {
+		if (this.props.clu !== prevProps.clu) {
+			this.setState({year: undefined});
+		}
+	}
+	
 
 	render() {
 
@@ -140,16 +138,20 @@ class CoverCropHistory extends Component {
 				</div>
 				<Dialog
 					open={this.state.isOpen}
-					onClose={() => {this.setState({isOpen:false});}}
+					onClose={() => {
+						this.setState({isOpen: false});
+					}}
 					className="unlogin"
 				>
 					<DialogBody>
-						<Icon  name="done"/>
+						<Icon name="done"/>
 						<br />
 						<p className="bold-text" key="keyword">Experiment file update success.</p>
 					</DialogBody>
 					<DialogFooter>
-						<Button compact onClick={()=> { this.setState({isOpen: false}); }}>Close</Button>
+						<Button compact onClick={() => {
+							this.setState({isOpen: false}); 
+						}}>Close</Button>
 					</DialogFooter>
 				</Dialog>
 			</div>

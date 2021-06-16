@@ -11,7 +11,7 @@ class CoordinateFieldCC extends Component {
 					{...this.props}
 					required
 					helptextValidation
-					/>
+				/>
 			</div>
 		);
 	}

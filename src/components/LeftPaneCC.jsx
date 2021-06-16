@@ -49,7 +49,7 @@ class LeftPaneCC extends Component {
 	render(){
 
 		let cardRows = [];
-		for (let i=0; i < this.props.cards.length; i++) {
+		for (let i = 0; i < this.props.cards.length; i++) {
 			cardRows.push(
 				<div key={i}>
 					{this.renderCard(i)}
@@ -58,7 +58,7 @@ class LeftPaneCC extends Component {
 				</div>);
 		}
 
-		return(
+		return (
 			<div>
 				{cardRows}
 			</div>

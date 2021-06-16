@@ -10,21 +10,20 @@ import {
 } from "ol/extent";
 
 import {
-	CULTIVARS,
 	cashCrops,
 	coverCrops,
 	SEEDS_ROUND_TO,
 } from "../experimentFile";
 
 const SQUARE_METER_TO_ACRE = 0.000247105;
-const QTY_PER_SQUARE_METER_TO_ACRE = 1/SQUARE_METER_TO_ACRE; // ~ 4046.8626697
+const QTY_PER_SQUARE_METER_TO_ACRE = 1 / SQUARE_METER_TO_ACRE; // ~ 4046.8626697
 const CM_TO_INCH = 0.393701;
-const INCH_TO_CM = 1/CM_TO_INCH;
+const INCH_TO_CM = 1 / CM_TO_INCH;
 const METER_TO_FT = 3.28084167;
 const KG_TO_LB = 2.20462;
 const HA_TO_ACRE = 2.47105;
-const KGPERHA_TO_LBPERACRE = KG_TO_LB/HA_TO_ACRE; // ~ 0.893
-const LBPERACRE_TO_KGPERHA = HA_TO_ACRE/KG_TO_LB; // ~ 1.12
+const KGPERHA_TO_LBPERACRE = KG_TO_LB / HA_TO_ACRE; // ~ 0.893
+const LBPERACRE_TO_KGPERHA = HA_TO_ACRE / KG_TO_LB; // ~ 1.12
 
 export function groupBy(list, keyGetter) {
 	const map = new Map();
@@ -33,7 +32,8 @@ export function groupBy(list, keyGetter) {
 		const collection = map.get(key);
 		if (!collection) {
 			map.set(key, [item]);
-		} else {
+		}
+		else {
 			collection.push(item);
 		}
 	});
@@ -50,14 +50,14 @@ export function sortByDateInDescendingOrder(a, b) {
 // https://tc39.es/ecma262/#sec-date-time-string-format
 // Without this, the date parsing fails in Safari
 export function updateTimezoneInDateStr(dateStr){
-	return dateStr.trim().substring(0,22) + ":" + dateStr.trim().substring(22,24);
+	return `${dateStr.trim().substring(0, 22) }:${ dateStr.trim().substring(22, 24)}`;
 }
 
 export const ID = function () {
 	// Math.random should be unique because of its seeding algorithm.
 	// Convert it to base 36 (numbers + letters), and grab the first 9 characters
 	// after the decimal.
-	return "_" + Math.random().toString(36).substr(2, 9);
+	return `_${ Math.random().toString(36).substr(2, 9)}`;
 };
 
 // check if withCoverCropDatasetResultGUID & withoutCoverCropDatasetResultGUID is validate is outside of this
@@ -79,10 +79,10 @@ async function getOutputFile(datasetId, outputFileName = null, filetype) {
 
 	// Get - Result Dataset
 	const datasetResponse = await
-		fetch(datawolfURL + "/datasets/" + datasetId, {
-			method: "GET",
-			headers: headers
-		});
+	fetch(`${datawolfURL }/datasets/${ datasetId}`, {
+		method: "GET",
+		headers: headers
+	});
 
 	const resultDataset = await datasetResponse.json();
 	let fileId = -1;
@@ -106,7 +106,7 @@ async function getOutputFile(datasetId, outputFileName = null, filetype) {
 
 	if (fileId !== -1) {
 		// Get - Result File Download
-		const fileDownloadResponse = await fetch(datawolfURL + "/datasets/" + datasetId + "/" + fileId + "/file",
+		const fileDownloadResponse = await fetch(`${datawolfURL }/datasets/${ datasetId }/${ fileId }/file`,
 			{
 				method: "GET",
 				headers: headers
@@ -142,7 +142,7 @@ export function ConvertDDToDMS(dd) {
 	let min = (frac * 60) | 0; // multiply fraction by 60 and truncate
 	let sec = frac * 3600 - min * 60;
 	sec = sec.toFixed(2);
-	return deg + "d " + min + "' " + sec + "\"";
+	return `${deg }d ${ min }' ${ sec }"`;
 }
 
 export function convertDate(dayString) {
@@ -150,7 +150,8 @@ export function convertDate(dayString) {
 		if (dayString.length === 5) {
 
 			return convertFullDate(dayString).substring(5, 10);
-		} else {
+		}
+		else {
 			return dayString;
 		}
 	}
@@ -166,8 +167,8 @@ export function convertFullDate(dayString) {
 			let date = new Date(year, 0, yearcount);
 			return date.toISOString();
 		}
-		else if(dayString.length === 8){
-			return [dayString.slice(0, 4), dayString.slice(4, 6) , dayString.slice(6, 8)].join("-") + " 00:00:00";
+		else if (dayString.length === 8){
+			return `${[dayString.slice(0, 4), dayString.slice(4, 6), dayString.slice(6, 8)].join("-") } 00:00:00`;
 		}
 		else {
 			return dayString;
@@ -178,49 +179,49 @@ export function convertFullDate(dayString) {
 export function calculateDayDifference(from, to){
 	let diffTime = to.getTime() - from.getTime();
 
-// To calculate the no. of days between two dates
+	// To calculate the no. of days between two dates
 	return (diffTime / (1000 * 3600 * 24));
 }
 
 export function convertDateToUSFormat(date){
 
-	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0") + "/" +  date.getFullYear();
+	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/${ date.getFullYear()}`;
 }
 
 export function convertDateToUSFormatShort(date){
 
-	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0");
+	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0")}`;
 }
 
 export function convertDateToUSFormatWithMins(date){
 
-	return (date.getMonth() + 1).toString().padStart(2, "0") + "/" + date.getDate().toString().padStart(2, "0") + "/" +  date.getFullYear()+ " " +
-		date.getHours().toString().padStart(2, "0") + ":" + date.getMinutes().toString().padStart(2, "0");
+	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/${ date.getFullYear() } ${ 
+		date.getHours().toString().padStart(2, "0") }:${ date.getMinutes().toString().padStart(2, "0")}`;
 }
 
 //eg. moment to 17096
 export function convertDayString(moment) {
 	if (moment.dayOfYear() < 99) {
-		return (moment.get("year") - 2000).toString() + "0" + moment.dayOfYear().toString();
+		return `${(moment.get("year") - 2000).toString() }0${ moment.dayOfYear().toString()}`;
 	}
 	return (moment.get("year") - 2000).toString() + moment.dayOfYear().toString();
 }
 
 export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest, isWithCoverCrop) {
 	let userInputFile = new Blob([
-				"{\"with_cover_crop\": " + isWithCoverCrop + "," +
-				"\"year_planting\": " + yearPlanting + "," +
-				"\"doy_planting\": " + doyPlanting + "," +
-				"\"doy_harvest\": " + doyHarvest +
-				"}"],
-			{type: "text/plain;charset=utf-8", lastModified: Date.now()});
+		`{"with_cover_crop": ${ isWithCoverCrop },` +
+				`"year_planting": ${ yearPlanting },` +
+				`"doy_planting": ${ doyPlanting },` +
+				`"doy_harvest": ${ doyHarvest 
+				}}`],
+	{type: "text/plain;charset=utf-8", lastModified: Date.now()});
 
 	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
 }
 
 // Pass file name when filedata is a Blob, if the file needs to be named on the server.
 // Not need for file uploads that are done on My Farm page.
-export async function uploadDatasetToDataWolf(filedata, fileName=null) {
+export async function uploadDatasetToDataWolf(filedata, fileName = null) {
 	let headers = {
 		"Authorization": getKeycloakHeader(),
 		"Cache-Control": "no-cache"
@@ -230,12 +231,13 @@ export async function uploadDatasetToDataWolf(filedata, fileName=null) {
 	data.append("useremail", localStorage.getItem("kcEmail"));
 	if (fileName) {
 		data.append("uploadedFile", filedata, fileName);
-	} else {
+	}
+	else {
 		data.append("uploadedFile", filedata);
 	}
 
 	let uploadDatasetResponse = await fetch(
-		datawolfURL + "/datasets",
+		`${datawolfURL }/datasets`,
 		{
 			method: "POST",
 			headers: headers,
@@ -250,7 +252,7 @@ export async function uploadDatasetToDataWolf(filedata, fileName=null) {
 }
 
 export async function getExperimentSQX(email, CLU_id) {
-	let experiment_URL = config.CLUapi + "/users/" + email + "/CLUs/" + CLU_id + "/experiment_file_sqx";
+	let experiment_URL = `${config.CLUapi }/users/${ email }/CLUs/${ CLU_id }/experiment_file_sqx`;
 	const Response = await fetch(experiment_URL, {
 		method: "GET",
 		headers: {
@@ -263,7 +265,8 @@ export async function getExperimentSQX(email, CLU_id) {
 	return Response.text().then(function (expTxt) {
 		if (expTxt.includes("EXP.DETAILS")) {
 			return expTxt;
-		} else {
+		}
+		else {
 			return " ";
 		}
 	});
@@ -271,7 +274,7 @@ export async function getExperimentSQX(email, CLU_id) {
 }
 
 export async function getMyFieldList(email) {
-	const CLUapi = config.CLUapi + "/userfield?userid=" + email;
+	const CLUapi = `${config.CLUapi }/userfield?userid=${ email}`;
 	let headers = {
 		"Content-Type": "application/json",
 		"Authorization": getKeycloakHeader(),
@@ -288,7 +291,7 @@ export async function getMyFieldList(email) {
  */
 export async function getCLUGeoJSON(cluId) {
 
-	const response = await fetch(config.CLUapi + "/CLUs/" + cluId, {
+	const response = await fetch(`${config.CLUapi }/CLUs/${ cluId}`, {
 		method: "GET",
 		headers: {
 			"Content-Type": "application/json",
@@ -351,8 +354,9 @@ export async function wait(ms) {
 
 export function findFirstSubstring(textArray, s) {
 	for (let i = 0; i < textArray.length; i++) {
-		if (textArray[i].indexOf(s) !== -1)
+		if (textArray[i].indexOf(s) !== -1) {
 			return i;
+		}
 	}
 	return -1;
 }
@@ -394,7 +398,9 @@ export function readDuplicateTable(textlines, table_title) {
 			for (let i = 1; i < table_header.length; i++) {
 				colunmobj[table_header[i]] = table_body[i];
 			}
-			if (!tableobj[table_body[0]]) tableobj[table_body[0]] = [];
+			if (!tableobj[table_body[0]]) {
+				tableobj[table_body[0]] = [];
+			}
 			tableobj[table_body[0]].push(colunmobj);
 			linenumber = linenumber + 1;
 			table_body = textlines[table_line_index + linenumber].split(" ").filter(word => word !== "");
@@ -418,12 +424,13 @@ export function getCropObj(text) {
 
 	if (textlines.length < 10) {
 		return cropobj;
-	} else {
+	}
+	else {
 		let treaments_line_number = findFirstSubstring(textlines, "TREATMENTS");
 
 		let tmptext = textlines[treaments_line_number + 1].replace("TNAME....................", "YEAR CROP");
 		let b = tmptext.split(" ");
-        // fertilizer is an array, others are single object
+		// fertilizer is an array, others are single object
 		let FERTILIZER = readDuplicateTable(textlines, "FERTILIZERS");
 		let PLANTING = readTable(textlines, "PLANTING");
 		let HARVEST = readTable(textlines, "HARVEST");
@@ -444,7 +451,7 @@ export function getCropObj(text) {
 				obj[b[i]] = exp[b[i]] ? exp[b[i]][crop[i]] : crop[i];
 			}
 
-			let objkey = obj["YEAR"] + " " + obj["CROP"];
+			let objkey = `${obj["YEAR"] } ${ obj["CROP"]}`;
 			cropobj[objkey] = obj;
 			linenumber = linenumber + 1;
 
@@ -468,7 +475,7 @@ export function getCoverCropForYear(cropObj, year){
 		let crop = null;
 		if (key.includes(year)){
 			crop = key.substr(5);
-			if(coverCrops.includes(crop)){
+			if (coverCrops.includes(crop)){
 				return crop;
 			}
 		}
@@ -495,7 +502,7 @@ export function cropObjToExptxt(text, cropobj) {
 
 			if (lineNumber > 0) {
 				let modify_line_number = table_line_index + 1 + lineNumber;
-				let newline = " " + lineNumber + " " + table_header.map(header => thisobj[header]).join(" ");
+				let newline = ` ${ lineNumber } ${ table_header.map(header => thisobj[header]).join(" ")}`;
 				textlines[modify_line_number] = newline;
 			}
 		}
@@ -535,7 +542,7 @@ export function convertMetersToFeet(meters){
 
 export function convertPerSqMeterToPerAcre(per_sq_meters){
 	return roundResults(Math.round((per_sq_meters *
-			QTY_PER_SQUARE_METER_TO_ACRE)/SEEDS_ROUND_TO) * SEEDS_ROUND_TO, 0);
+			QTY_PER_SQUARE_METER_TO_ACRE) / SEEDS_ROUND_TO) * SEEDS_ROUND_TO, 0);
 }
 
 export function convertPerAcreToPerSqMeter(per_acres){
@@ -633,7 +640,7 @@ export function subtractDays(date, days) {
 // 1 10 1 0 2018 Fallow                1  1  0  1 10  0  0  0  0  0  0 10 10
 export function reformatTreatmentLine(treatmentLine){
 	if (treatmentLine.charAt(1) !== " "){
-		treatmentLine = treatmentLine.substring(0, 1) + " " + treatmentLine.substring(1);
+		treatmentLine = `${treatmentLine.substring(0, 1) } ${ treatmentLine.substring(1)}`;
 	}
 	return treatmentLine;
 }
@@ -643,13 +650,13 @@ export function isNumeric(n) {
 }
 
 export function convertCelsiusToFahrenheit(c){
-	return (c * 9/5) + 32;
+	return (c * 9 / 5) + 32;
 }
 
 export function getFieldNameFromLatLon(clus, lat, lon){
 	let cluName = "";
 	clus.every(item => {
-		if(item.lat === parseFloat(lat) && item.lon === parseFloat(lon)){
+		if (item.lat === parseFloat(lat) && item.lon === parseFloat(lon)){
 			cluName = item.name;
 			return false;
 		}

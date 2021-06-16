@@ -14,33 +14,33 @@ class AnalyzerWrap extends Component {
 		const {activeTab} = this.props;
 		// Cannot use Link within Tab
 		// click tabs will jump to a new page
-		return(
+		return (
 			<div>
 				<span className="analyzer-line" />
 				<div className="analyzer-tab" >
 					<Tabbar style={{textTransform: "initial"}}>
 						<Tab
-							active={activeTab===1}
+							active={activeTab === 1}
 							component={Link} to="/analysis"
 						>
 							Start a Job
 						</Tab>
 						<Tab
-							active={activeTab===2}
+							active={activeTab === 2}
 							component={Link} to="/dashboard"
 						>
 							Dashboard
 						</Tab>
 
 						<Tab
-							active={activeTab===3}
+							active={activeTab === 3}
 							component={Link} to="/profile"
 						>
 							My Farm
 						</Tab>
 						<Tab
 							style={{display: "none"}}
-							active={activeTab===4}
+							active={activeTab === 4}
 							component={Link} to="/history"
 						>
 							Job History

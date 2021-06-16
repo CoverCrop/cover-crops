@@ -11,6 +11,9 @@ class Harvest extends Component {
 		this.state = {};
 	}
 
+	handler = (field_name, field_value) => {
+		this.setState({[field_name]: field_value});
+	};
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;
@@ -28,13 +31,14 @@ class Harvest extends Component {
 
 	setInitialState(nextProps, year) {
 		if (year) {
-			if(nextProps.cropobj[year]){
-				let selectcrop =  nextProps.cropobj[year]["MH"];
+			if (nextProps.cropobj[year]){
+				let selectcrop = nextProps.cropobj[year]["MH"];
 				this.setState(selectcrop);
 				let pdate = selectcrop["HDATE"];
 				// console.log(convertFullDate(pdate));
 				this.setState({"HDATE": convertFullDate(pdate)});
-			} else{
+			}
+			else {
 				this.setDefault();
 			}
 
@@ -42,11 +46,10 @@ class Harvest extends Component {
 	}
 
 	getBodyJson(){
-		let jsonBody= {};
+		let jsonBody = {};
 		jsonBody["CONTENT"]	= [Object.assign({}, this.state)];
-		let {email, clu, year } =  this.props;
-		let requestStatus = false;
-		if(jsonBody["CONTENT"][0]["HDATE"]) {
+		let {year} = this.props;
+		if (jsonBody["CONTENT"][0]["HDATE"]) {
 
 			jsonBody["HNAME"] = year;
 			jsonBody["CONTENT"][0]["HPC"] = "100";
@@ -55,11 +58,12 @@ class Harvest extends Component {
 			jsonBody["EVENT"] = "harvest";
 			return jsonBody;
 
-		} else {
+		}
+		else {
 			return {
-				"EVENT":"harvest",
-				"HNAME":year,
-				"CONTENT":[]
+				"EVENT": "harvest",
+				"HNAME": year,
+				"CONTENT": []
 			};
 		}
 
@@ -72,17 +76,15 @@ class Harvest extends Component {
 		if ( this.props.type === "cashcrop"){
 			// set default date as 09-21
 			newHarvest["HDATE"] = new Date(pureyear, 8, 21).toISOString();
-		} else {
+		}
+		else {
 			// for cover crop, set default date as 04-21 of next year
-			newHarvest["HDATE"] = new Date(parseInt(pureyear)+1, 3, 21).toISOString();
+			newHarvest["HDATE"] = new Date(parseInt(pureyear) + 1, 3, 21).toISOString();
 		}
 
 		this.setState(newHarvest);
 	}
-
-	handler = (field_name, field_value) => {
-		this.setState({[field_name] : field_value});
-	};
+	
 
 	render() {
 		return (

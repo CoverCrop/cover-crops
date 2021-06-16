@@ -8,7 +8,7 @@ const defaultState = {
 	//cluname is not used current
 	cluname: "",
 	// could be removed if not necessary.
-	exptxt:"",
+	exptxt: "",
 	cropobj: {},
 	fieldobj: {},
 	isSelectedEventSuccessful: "error",

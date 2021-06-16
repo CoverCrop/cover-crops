@@ -25,16 +25,16 @@ class CCGraph extends Component {
 			let gdd = [];
 
 			graphInfo.forEach(function(e){
-				if(isNumeric(e["with-cc"])) {
+				if (isNumeric(e["with-cc"])) {
 					withcc.push(roundResults(e["with-cc"], 2));
 				}
-				if(isNumeric(e["no-cc"])) {
+				if (isNumeric(e["no-cc"])) {
 					nocc.push(roundResults(e["no-cc"], 2));
 				}
-				if(isNumeric(e["gdd"])) {
-					let curDate = new Date(e["date"] + " 00:00:00");
+				if (isNumeric(e["gdd"])) {
+					let curDate = new Date(`${e["date"] } 00:00:00`);
 					// Only show dates till cash crop planting
-					if(curDate <= cashCropPlantingDate) {
+					if (curDate <= cashCropPlantingDate) {
 						gdd.push(roundResults(e["gdd"], 1));
 						dates.push(e["date"]);
 					}
@@ -46,7 +46,7 @@ class CCGraph extends Component {
 
 			let datasets = [];
 
-			if(withcc.length > 0 ){
+			if (withcc.length > 0 ){
 				datasets.push({
 					label: "w/ Cover Crop",
 					data: withcc,
@@ -59,7 +59,7 @@ class CCGraph extends Component {
 				});
 			}
 
-			if(nocc.length > 0){
+			if (nocc.length > 0){
 				datasets.push({
 					label: "w/o Cover Crop",
 					data: nocc,
@@ -72,7 +72,7 @@ class CCGraph extends Component {
 				});
 			}
 
-			if(gdd.length > 0){
+			if (gdd.length > 0){
 				datasets.push({
 					label: "GDD",
 					data: gdd,
@@ -113,10 +113,11 @@ class CCGraph extends Component {
 						label: function(item, data) {
 							let datasetLabel = data.datasets[item.datasetIndex].label || "";
 							let dataPoint = item.yLabel;
-							if(ylabel !== "Fahrenheit") {
+							if (ylabel !== "Fahrenheit") {
 								return `${datasetLabel}: ${roundResults(dataPoint,
-										1)} ${ylabel}`;
-							} else {
+									1)} ${ylabel}`;
+							}
+							else {
 								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °F)`;
 							}
 						}
@@ -158,24 +159,24 @@ class CCGraph extends Component {
 			};
 
 			return (
-					<div style={{textAlign: "center", margin: "0 auto"}}>
-						<div style={{margin: "0 auto", padding: "15px"}}>
-							<Line data={graphData} options={graphOptions}/>
-						</div>
-						{
-							(ylabel === "Fahrenheit")?
-									<div style={{fontSize: "14px"}}>
-										<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates.
-									</div>
-									: null
-						}
-
+				<div style={{textAlign: "center", margin: "0 auto"}}>
+					<div style={{margin: "0 auto", padding: "15px"}}>
+						<Line data={graphData} options={graphOptions}/>
 					</div>
+					{
+						(ylabel === "Fahrenheit") ?
+							<div style={{fontSize: "14px"}}>
+								<b>Growing Degree Days (GDD)</b> are a measure of heat accumulation used to predict plant development rates.
+							</div>
+							: null
+					}
+
+				</div>
 			);
 		}
 		else {
 			return (
-					<div />
+				<div />
 			);
 		}
 	}

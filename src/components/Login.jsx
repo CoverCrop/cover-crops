@@ -90,9 +90,9 @@ class Login extends Component {
 
 	render() {
 		return (
-				<div>
+			<div>
 					Redirecting to keycloak...
-				</div>
+			</div>
 		);
 	}
 }

@@ -59,7 +59,6 @@
 }
 
 .banner{
-	height: 60px; /*not working*/
 	background-color: #455A64;
 	padding-right: 38px;
 }
@@ -170,7 +169,7 @@
 
 .analyzer-tab {
 	margin-left: 24px;
-	align-content: left;
+	align-content: start;
 	width:100px;
 }
 

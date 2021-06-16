@@ -16,6 +16,23 @@ class Tillage extends Component {
 		this.state = {TIMPL: null};
 	}
 
+	handler = (field_name, field_value) => {
+		this.setState({[field_name]: field_value});
+		// add tillage
+		if (field_name === "TIMPL" && field_value !== "None" && !this.state.TDATE) {
+			let pureyear = this.props.year.split(" ")[0];
+			let newTillage = Object.assign({}, defaultTillage);
+			newTillage["TIMPL"] = field_value;
+			// set default date as 09-22
+			newTillage["TDATE"] = new Date(pureyear, 8, 22).toISOString();
+			newTillage["TNAME"] = this.props.year;
+			this.setState(newTillage);
+		}
+		// delete tillage
+		if (field_name === "TIMPL" && field_value === "None") {
+			this.setState({TDATE: undefined});
+		}
+	}
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;
@@ -48,8 +65,7 @@ class Tillage extends Component {
 	getBodyJson() {
 		let jsonBody = {};
 		jsonBody["CONTENT"] = [Object.assign({}, this.state)];
-		let {email, clu, year} = this.props;
-		let requestStatus = false;
+		let {year} = this.props;
 		if (jsonBody["CONTENT"][0]["TDATE"]) {
 
 			jsonBody["TNAME"] = year;
@@ -58,7 +74,8 @@ class Tillage extends Component {
 			jsonBody["EVENT"] = "tillage";
 			return jsonBody;
 
-		} else {
+		}
+		else {
 			return {
 				"EVENT": "tillage",
 				"TNAME": year,
@@ -67,24 +84,7 @@ class Tillage extends Component {
 		}
 
 	}
-
-	handler = (field_name, field_value) => {
-		this.setState({[field_name]: field_value});
-		// add tillage
-		if (field_name === "TIMPL" && field_value !== "None" && !this.state.TDATE) {
-			let pureyear = this.props.year.split(" ")[0];
-			let newTillage = Object.assign({}, defaultTillage);
-			newTillage["TIMPL"] = field_value;
-			// set default date as 09-22
-			newTillage["TDATE"] = new Date(pureyear, 8, 22).toISOString();
-			newTillage["TNAME"] = this.props.year;
-			this.setState(newTillage);
-		}
-		// delete tillage
-		if (field_name === "TIMPL" && field_value === "None") {
-			this.setState({TDATE: undefined});
-		}
-	}
+	
 
 	render() {
 		return (

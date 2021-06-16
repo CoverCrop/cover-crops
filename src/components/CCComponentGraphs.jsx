@@ -67,28 +67,28 @@ class CCComponentGraphs extends Component {
 
 		return (
 
-				<div>
-						<div style={{display: (popupSrc === "lossReduction")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Loss to Tile Drain" graphInfo={nLoss}/>
-						</div>
-
-						<div style={{display: (popupSrc === "lossReduction")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrate Leached" graphInfo={nLeached}/>
-						</div>
-
-						<div style={{display: (popupSrc === "uptake")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Uptake" graphInfo={nUptake}/>
-						</div>
-
-						<div style={{display: (popupSrc === "uptake")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
-						</div>
-
-						<div style={{display: (popupSrc === "gdd")? "block": "none"}}>
-							<CCGraph xlabel="date" ylabel="Fahrenheit" title="Growing Degree Days During Cover Crop Growth" graphInfo={gddData} cashCropPlantingDate={this.props.cashCropPlantingDate}/>
-						</div>
-
+			<div>
+				<div style={{display: (popupSrc === "lossReduction") ? "block" : "none"}}>
+					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Loss to Tile Drain" graphInfo={nLoss}/>
 				</div>
+
+				<div style={{display: (popupSrc === "lossReduction") ? "block" : "none"}}>
+					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrate Leached" graphInfo={nLeached}/>
+				</div>
+
+				<div style={{display: (popupSrc === "uptake") ? "block" : "none"}}>
+					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Uptake" graphInfo={nUptake}/>
+				</div>
+
+				<div style={{display: (popupSrc === "uptake") ? "block" : "none"}}>
+					<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
+				</div>
+
+				<div style={{display: (popupSrc === "gdd") ? "block" : "none"}}>
+					<CCGraph xlabel="date" ylabel="Fahrenheit" title="Growing Degree Days During Cover Crop Growth" graphInfo={gddData} cashCropPlantingDate={this.props.cashCropPlantingDate}/>
+				</div>
+
+			</div>
 
 		);
 	}

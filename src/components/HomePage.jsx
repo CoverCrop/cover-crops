@@ -6,6 +6,7 @@ import {Cell, Grid} from "react-mdc-web";
 import {privacyUrl, faqUrl, nrecUrl} from "../public/config";
 import {loginMessage, usageMessage} from "../app.messages";
 import Footer from "./Footer";
+import repImg from "../images/cover-crop-rep-image.png";
 
 class HomePage extends Component {
 
@@ -13,11 +14,11 @@ class HomePage extends Component {
 		let notificationDiv = null;
 		notificationDiv = (<div className="notification_div">
 			<span className="isa_warning">
-				{(localStorage.getItem("isAuthenticated") === "true")? usageMessage: loginMessage}
+				{(localStorage.getItem("isAuthenticated") === "true") ? usageMessage : loginMessage}
 			</span>
 		</div>);
 
-        let welcome = (<div>
+		let welcome = (<div>
 			<h1 className="secondary-color">Welcome to the Cover Crop Project</h1>
 			<br/>
 			<p className="paras">
@@ -49,7 +50,7 @@ class HomePage extends Component {
 
 			<p className="paras">
 				Funding for this project has been provided primarily by the Illinois Nutrient Research & Education
-				Council (<a href={nrecUrl} target="_blank" className="cc-link">NREC</a>).
+				Council (<a href={nrecUrl} target="_blank" className="cc-link" rel="noreferrer">NREC</a>).
 				The project team greatly appreciates the financial, technical and other support from
 				NREC and Illinois farmers. The latest release adds to the dashboard, providing the user with
 				information about the decomposition of the terminated cover crop. This first-of-its-kind
@@ -59,22 +60,22 @@ class HomePage extends Component {
 
 			<br/>
 			<p>
-				<a href={privacyUrl} target="_blank" className="cc-link"> Privacy Policy </a>
+				<a href={privacyUrl} target="_blank" className="cc-link" rel="noreferrer"> Privacy Policy </a>
 			</p>
-					<br/>
+			<br/>
 			<p>
 				Need Help? Check out our&nbsp;
-				<a href={faqUrl} target="_blank" className="cc-link">FAQ</a> section
+				<a href={faqUrl} target="_blank" className="cc-link" rel="noreferrer">FAQ</a> section
 			</p>
 
-			</div>);
+		</div>);
 
 
 		let howwork = (<div>
-				<h1 className="secondary-color">How does the simulation work?</h1>
-				<br/>
-				<img src={require("../images/cover-crop-rep-image.png")} width="100%" />
-			</div>);
+			<h1 className="secondary-color">How does the simulation work?</h1>
+			<br/>
+			<img src={repImg} width="100%" />
+		</div>);
 
 		return (
 			<div >
@@ -85,14 +86,14 @@ class HomePage extends Component {
 
 				<div className="home-content"
 							style={{backgroundSize: "cover", backgroundPosition: "center"}}>
-						<Grid>
-							<Cell col={6}>
-								{welcome}
-							</Cell>
-							<Cell col={6}>
-								{howwork}
-							</Cell>
-						</Grid>
+					<Grid>
+						<Cell col={6}>
+							{welcome}
+						</Cell>
+						<Cell col={6}>
+							{howwork}
+						</Cell>
+					</Grid>
 				</div>
 
 				<Footer/>
