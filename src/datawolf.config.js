@@ -1,4 +1,6 @@
-export const datawolfURL = "https://fd-api.ncsa.illinois.edu/datawolf";
+import config from "./app.config";
+
+export const datawolfURL = config.datawolfUrl;
 
 export const steps = {
 	Weather_Converter: "456edbfe-74ee-4a56-ba31-3b2750c8e5fe",
