@@ -8,6 +8,80 @@ import config from "../app.config";
 import {connect} from "react-redux";
 import IconButton from "@material-ui/core/IconButton";
 import {soilDataUnavailableMessage} from "../app.messages";
+import {
+	Table,
+	TableHead,
+	TableRow,
+	TableCell,
+	TableBody,
+		TableContainer
+} from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = () => ({
+	table: {
+		minWidth: 650
+	},
+	tableDrainage: {
+		maxWidth: 400
+	},
+	tableSoil: {
+		maxWidth: 1000
+	},
+	tableCover: {
+		maxWidth: 800
+	},
+	tableMainHeadCell: {
+		fontWeight: 600,
+		maxWidth: 200,
+		fontSize: "0.95rem",
+		textAlign: "left",
+		textTransform: "uppercase",
+		padding: "0px 10px",
+		border: "none"
+	},
+	tableHeadCell: {
+		fontWeight: 600,
+		maxWidth: "120px",
+		fontSize: "0.8rem",
+		textAlign: "center",
+		padding: "2px 4px"
+	},
+	tableSubHeadCropCell: {
+		fontWeight: 600,
+		maxWidth: "120px",
+		fontSize: "0.8rem",
+		textAlign: "center",
+		padding: "2px 4px",
+		borderRightWidth: 1,
+		borderColor: "rgba(224, 224, 224, 1)",
+		// borderRightStyle: "solid"
+	},
+	tableHeadCropCell: {
+		fontWeight: 600,
+		maxWidth: "120px",
+		fontSize: "0.8rem",
+		textTransform: "uppercase",
+		textAlign: "center",
+		padding: "2px 4px",
+		borderRightWidth: 1,
+		borderColor: "rgba(224, 224, 224, 1)",
+		borderRightStyle: "solid"
+	},
+	tableCell: {
+		maxWidth: "120px !important",
+		textAlign: "center",
+		fontSize: "0.8rem",
+		padding: "2px 4px"
+	},
+	tableCellYear: {
+		maxWidth: "120px !important",
+		textAlign: "center",
+		fontSize: "0.8rem",
+		padding: "2px 4px",
+		fontWeight: 600
+	}
+});
 
 class MyFarmSummary extends Component {
 
@@ -19,7 +93,7 @@ class MyFarmSummary extends Component {
 	}
 
 	downloadExpFile = () => {
-		let expFileUrl = `${config.CLUapi }/users/${ this.props.selectedCLU.userid 
+		let expFileUrl = `${config.CLUapi }/users/${ this.props.selectedCLU.userid
 		}/CLUs/${ this.props.selectedCLU.clu }/experiment_file_sqx?download=true`;
 
 		fetch(expFileUrl, {
@@ -70,9 +144,11 @@ class MyFarmSummary extends Component {
 	componentWillReceiveProps() {
 		this.getInfo();
 	}
-	
+
 
 	render() {
+
+		const { classes } = this.props;
 
 		let {cropobj, fieldobj} = this.props;
 		let {soilobj} = this.state;
@@ -81,74 +157,72 @@ class MyFarmSummary extends Component {
 		// cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
 			.filter(obj => isCashCrop(obj)).map(obj =>
-				(<tbody>
-					<tr key={obj["YEAR"]}>
-						<td rowSpan={obj["MF"].length}>{obj["YEAR"]}</td>
-						<td rowSpan={obj["MF"].length}>{obj["CROP"]}</td>
-						<td rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</td>
-						<td rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</td>
-						<td rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</td>
-						<td rowSpan={obj["MF"].length}>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
-						<td rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLRS"])}</td>
-						<td rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLDP"])}</td>
-						<td rowSpan={obj["MF"].length}>{convertDate(obj["MH"]["HDATE"])}</td>
-						<td>{obj["MF"].length > 0 && FMCD[obj["MF"][0]["FMCD"]]}</td>
-						<td>{obj["MF"].length > 0 && FACD[obj["MF"][0]["FACD"]]}</td>
-						<td>{obj["MF"].length > 0 && convertDate(obj["MF"][0]["FDATE"])}</td>
-						<td>{obj["MF"].length > 0 && convertKgPerHaToLbPerAcre(obj["MF"][0]["FAMN"])}</td>
-						<td>{obj["MF"].length > 0 && convertCmToInches(obj["MF"][0]["FDEP"])}</td>
-						<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && obj["MT"]["TIMPL"]}</td>
-						<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertDate(obj["MT"]["TDATE"])}</td>
-						<td rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertCmToInches(obj["MT"]["TDEP"])}</td>
-					</tr>
+				(<TableBody>
+					<TableRow key={obj["YEAR"]}>
+						<TableCell className={classes.tableCellYear} rowSpan={obj["MF"].length}>{obj["YEAR"]}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{obj["CROP"]}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{PLDS[obj["MP"]["PLDS"]]}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLRS"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{convertCmToInches(obj["MP"]["PLDP"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{convertDate(obj["MP"]["PDATE"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{convertDate(obj["MH"]["HDATE"])}</TableCell>
+						<TableCell className={classes.tableCell}>{obj["MF"].length > 0 && FMCD[obj["MF"][0]["FMCD"]]}</TableCell>
+						<TableCell className={classes.tableCell}>{obj["MF"].length > 0 && FACD[obj["MF"][0]["FACD"]]}</TableCell>
+						<TableCell className={classes.tableCell}>{obj["MF"].length > 0 && convertDate(obj["MF"][0]["FDATE"])}</TableCell>
+						<TableCell className={classes.tableCell}>{obj["MF"].length > 0 && convertKgPerHaToLbPerAcre(obj["MF"][0]["FAMN"])}</TableCell>
+						<TableCell className={classes.tableCell}>{obj["MF"].length > 0 && convertCmToInches(obj["MF"][0]["FDEP"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && obj["MT"]["TIMPL"]}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertDate(obj["MT"]["TDATE"])}</TableCell>
+						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{obj["MT"] != null && Object.keys(obj["MT"]).length > 0 && convertCmToInches(obj["MT"]["TDEP"])}</TableCell>
+					</TableRow>
 					{
 						obj["MF"].slice(1).map(MFObj =>
-							(<tr key={`${obj["YEAR"] }-${ MFObj["FDATE"]}`}>
-								<td>{FMCD[MFObj["FMCD"]]}</td>
-								<td>{FACD[MFObj["FACD"]]}</td>
-								<td>{convertDate(MFObj["FDATE"])}</td>
-								<td>{convertKgPerHaToLbPerAcre(MFObj["FAMN"])}</td>
-								<td>{convertCmToInches(MFObj["FDEP"])}</td>
-							</tr>))
+							(<TableRow key={`${obj["YEAR"] }-${ MFObj["FDATE"]}`}>
+								<TableCell className={classes.tableCell}>{FMCD[MFObj["FMCD"]]}</TableCell>
+								<TableCell className={classes.tableCell}>{FACD[MFObj["FACD"]]}</TableCell>
+								<TableCell className={classes.tableCell}>{convertDate(MFObj["FDATE"])}</TableCell>
+								<TableCell className={classes.tableCell}>{convertKgPerHaToLbPerAcre(MFObj["FAMN"])}</TableCell>
+								<TableCell className={classes.tableCell}>{convertCmToInches(MFObj["FDEP"])}</TableCell>
+							</TableRow>))
 					}
-
-				</tbody>)
-
-
+				</TableBody>)
 			);
+
 		// TODO: combine with cropComponent
 		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map(obj =>
-			(<tr key={obj["YEAR"]}>
-				<td>{obj["YEAR"]}</td>
-				<td>{obj["CROP"]}</td>
-				<td>{CULTIVARS[obj["CU"]["CR"]]}</td>
-				<td>{PLDS[obj["MP"]["PLDS"]]}</td>
-				<td>{convertDate(obj["MP"]["PDATE"])}</td>
-				<td>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</td>
-				<td>{convertCmToInches(obj["MP"]["PLDP"])}</td>
-				<td>{convertDate(obj["MH"]["HDATE"])}</td>
-			</tr>)
+			(<TableRow key={obj["YEAR"]}>
+				<TableCell className={classes.tableCellYear}>{obj["YEAR"]}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["CROP"]}</TableCell>
+				<TableCell className={classes.tableCell}>{CULTIVARS[obj["CU"]["CR"]]}</TableCell>
+				<TableCell className={classes.tableCell}>{PLDS[obj["MP"]["PLDS"]]}</TableCell>
+				<TableCell className={classes.tableCell}>{convertPerSqMeterToPerAcre(obj["MP"]["PPOP"])}</TableCell>
+				<TableCell className={classes.tableCell}>{convertCmToInches(obj["MP"]["PLDP"])}</TableCell>
+				<TableCell className={classes.tableCell}>{convertDate(obj["MP"]["PDATE"])}</TableCell>
+				<TableCell className={classes.tableCell}>{convertDate(obj["MH"]["HDATE"])}</TableCell>
+			</TableRow>)
 		);
 
 		let soilComponent = soilobj && soilobj.map( obj =>
-			(<tr key={obj["depth_bottom"]}>
-				<td>{convertCmToInches(obj["depth_bottom"])}</td>
-				<td>{obj["claytotal_r"]}</td>
-				<td>{obj["silttotal_r"]}</td>
-				<td>{obj["sandtotal_r"]}</td>
-				<td>{(obj["om_r"] * 0.58).toFixed(2)}</td>
-				<td>{obj["ph1to1h2o_r"]}</td>
-				<td>{obj["cec7_r"]}</td>
-				<td> -- </td>
+			(<TableRow key={obj["depth_bottom"]}>
+				<TableCell className={classes.tableCell}>{convertCmToInches(obj["depth_bottom"])}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["claytotal_r"]}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["silttotal_r"]}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["sandtotal_r"]}</TableCell>
+				<TableCell className={classes.tableCell}>{(obj["om_r"] * 0.58).toFixed(2)}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["ph1to1h2o_r"]}</TableCell>
+				<TableCell className={classes.tableCell}>{obj["cec7_r"]}</TableCell>
+				<TableCell className={classes.tableCell}> -- </TableCell>
 
-			</tr>)
+			</TableRow>)
 		);
 
-		let fieldComponent = fieldobj && (<tr>
-			<td>{drainage_type[fieldobj["FLDT"]]}</td>
-			<td>{fieldobj["FLDD"] !== naValue ? convertCmToInches(fieldobj["FLDD"]) : "NA"}</td>
-			<td>{fieldobj["FLDS"] !== naValue ? convertMetersToFeet(fieldobj["FLDS"]) : "NA"}</td>
-		</tr>);
+		let fieldComponent = fieldobj && (<TableRow>
+			<TableCell className={classes.tableCell}>{drainage_type[fieldobj["FLDT"]]}</TableCell>
+			<TableCell className={classes.tableCell}>{fieldobj["FLDD"] !== naValue ? convertCmToInches(fieldobj["FLDD"]) : "NA"}</TableCell>
+			<TableCell className={classes.tableCell}>{fieldobj["FLDS"] !== naValue ? convertMetersToFeet(fieldobj["FLDS"]) : "NA"}</TableCell>
+		</TableRow>);
 
 		return (
 
@@ -167,56 +241,50 @@ class MyFarmSummary extends Component {
 					<div className="table-header">
 						FIELD PROFILE
 					</div>
-					<div className="summary-table">
-						<table>
-
-							<thead>
-								<tr>
-									<th>DRAINAGE</th>
-									<th />
-									<th />
-
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>TYPE</td>
-									<td>DEPTH, in</td>
-									<td>SPACING, ft</td>
-								</tr>
+					<div>
+						<Table className={classes.tableDrainage}>
+							<TableHead>
+								<TableRow>
+									<TableCell colSpan={8} className={classes.tableMainHeadCell}>
+										Drainage
+									</TableCell>
+								</TableRow>
+								<TableRow>
+									<TableCell className={classes.tableHeadCell}>TYPE, in</TableCell>
+									<TableCell className={classes.tableHeadCell}>DEPTH, %</TableCell>
+									<TableCell className={classes.tableHeadCell}>SPACING, %</TableCell>
+								</TableRow>
+							</TableHead>
+							<TableBody>
 								{fieldComponent}
-							</tbody>
-						</table>
+							</TableBody>
+						</Table>
 						<hr className="dotted-hr"/>
-						<table>
+						<TableContainer>
+							<Table className={classes.tableSoil}>
+								<TableHead>
+									<TableRow>
+										<TableCell colSpan={8} className={classes.tableMainHeadCell}>
+											Soil
+										</TableCell>
+									</TableRow>
+									<TableRow>
+											<TableCell className={classes.tableHeadCell}>DEPTH, in</TableCell>
+											<TableCell className={classes.tableHeadCell}>CLAY, %</TableCell>
+											<TableCell className={classes.tableHeadCell}>SILT, %</TableCell>
+											<TableCell className={classes.tableHeadCell}>SAND, %</TableCell>
+											<TableCell className={classes.tableHeadCell}>ORGANIC CARBON, %</TableCell>
+											<TableCell className={classes.tableHeadCell}>pH in WATER</TableCell>
+											<TableCell className={classes.tableHeadCell}>CATION EXCHANGE CAPACITY, cmol/kg</TableCell>
+											<TableCell className={classes.tableHeadCell}>TOTAL NITROGEN, %</TableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{soilComponent}
+								</TableBody>
+							</Table>
+						</TableContainer>
 
-							<thead>
-								<tr>
-									<th>SOIL</th>
-									<th />
-									<th />
-									<th />
-									<th />
-									<th />
-									<th />
-									<th />
-
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>DEPTH, in</td>
-									<td>CLAY, %</td>
-									<td>SILT, %</td>
-									<td>SAND, %</td>
-									<td>ORGANIC CARBON, %</td>
-									<td>pH in WATER</td>
-									<td>CATION EXCHANGE CAPACITY, cmol/kg</td>
-									<td>TOTAL NITROGEN, %</td>
-								</tr>
-								{soilComponent}
-							</tbody>
-						</table>
 						{this.state.soilobj.length === 0 && (
 							<div className="soil-unavailable-message-div">
 								<Icon className="warning-message" name="warning"/>
@@ -229,88 +297,74 @@ class MyFarmSummary extends Component {
 					<div className="table-header">
 						CROP HISTORY
 					</div>
-					<div className="summary-table">
-						<table>
-							<thead>
+					<div>
 
-								<tr>
-									<th />
-									<th>Cultivar</th>
-									<th />
-									<th>Planting</th>
-									<th />
-									<th />
-									<th />
-									<th />
-									<th>Harvest</th>
-									<th>Fertilizer</th>
-									<th />
-									<th />
-									<th />
-									<th />
-									<th>Tillage</th>
-									<th />
-									<th />
-								</tr>
+						<Table className={classes.table}>
+							<TableHead>
+								<TableRow >
+									<TableCell className={classes.tableHeadCropCell}>YEAR</TableCell>
+									<TableCell colSpan={2} className={classes.tableHeadCropCell}>Cultivar</TableCell>
+									<TableCell colSpan={5} className={classes.tableHeadCropCell}>Planting</TableCell>
+									<TableCell className={classes.tableHeadCropCell}>Harvest</TableCell>
+									<TableCell colSpan={5} className={classes.tableHeadCropCell}>Fertilizer</TableCell>
+									<TableCell colSpan={3} className={classes.tableHeadCropCell} style={{borderRightStyle: "none"}}>Tillage</TableCell>
+								</TableRow>
 
-								<tr>
-									<td>YEAR</td>
-									<td>CROP</td>
-									<td>CULTIVAR</td>
-									<td>Distribution</td>
-									<td>Date</td>
-									<td>POP, seeds/acre</td>
-									<td>ROW SPACING, in</td>
-									<td>Depth, in</td>
-									<td>Date</td>
-									<td>Material</td>
-									<td>Application</td>
-									<td>Date</td>
-									<td>Amount, lb/acre</td>
-									<td>Depth, in</td>
-									<td>Implement</td>
-									<td>Date</td>
-									<td>Depth, in</td>
-								</tr>
+								<TableRow>
+									<TableCell className={classes.tableSubHeadCropCell}/>
+									<TableCell className={classes.tableHeadCell}>Crop</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>CULTIVAR</TableCell>
+									<TableCell className={classes.tableHeadCell}>Distribution</TableCell>
+									<TableCell className={classes.tableHeadCell}>POP, seeds/acre</TableCell>
+									<TableCell className={classes.tableHeadCell}>Row Spacing, in</TableCell>
+									<TableCell className={classes.tableHeadCell}>Depth, in</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>Date</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>Date</TableCell>
+									<TableCell className={classes.tableHeadCell}>Material</TableCell>
+									<TableCell className={classes.tableHeadCell}>Application</TableCell>
+									<TableCell className={classes.tableHeadCell}>Date</TableCell>
+									<TableCell className={classes.tableHeadCell}>Amount, lb/acre</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>Depth, in</TableCell>
+									<TableCell className={classes.tableHeadCell}>Implement</TableCell>
+									<TableCell className={classes.tableHeadCell}>Date</TableCell>
+									<TableCell className={classes.tableHeadCell}>Depth, in</TableCell>
+								</TableRow>
 
-							</thead>
+							</TableHead>
 							{cropComponent}
-						</table>
+						</Table>
 					</div>
 
 					<div className="table-header">
 						COVER CROP HISTORY
 					</div>
-					<div className="summary-table">
-						<table>
-							<thead>
-								<tr>
-									<th />
-									<th>Cultivar</th>
-									<th />
-									<th>Establishment</th>
-									<th />
-									<th />
-									<th />
-									<th>Termination</th>
+					<div>
+						<Table className={classes.tableCover}>
+							<TableHead>
+								<TableRow>
+									<TableCell className={classes.tableHeadCropCell}>YEAR</TableCell>
+									<TableCell colSpan={2} className={classes.tableHeadCropCell}>Cultivar</TableCell>
+									<TableCell colSpan={4} className={classes.tableHeadCropCell}>Planting</TableCell>
+									<TableCell className={classes.tableHeadCropCell} style={{borderRightStyle: "none"}}>Termination</TableCell>
 
-								</tr>
-								<tr>
-									<td>YEAR</td>
-									<td>CROP</td>
-									<td>CULTIVAR</td>
-									<td>Distribution</td>
-									<td>Date</td>
-									<td>POP, seeds/acre</td>
-									<td>Depth, in</td>
-									<td>Date</td>
-								</tr>
-							</thead>
-							<tbody>
+								</TableRow>
+								<TableRow>
+									<TableCell className={classes.tableSubHeadCropCell}/>
+									<TableCell className={classes.tableHeadCell}>Crop</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>CULTIVAR</TableCell>
+									<TableCell className={classes.tableHeadCell}>Distribution</TableCell>
+									<TableCell className={classes.tableHeadCell}>POP, seeds/acre</TableCell>
+									<TableCell className={classes.tableHeadCell}>Depth, in</TableCell>
+									<TableCell className={classes.tableSubHeadCropCell}>Date </TableCell>
+									<TableCell className={classes.tableHeadCell}>Date</TableCell>
+
+								</TableRow>
+							</TableHead>
+							<TableBody>
 								{covercropComponent}
-							</tbody>
+							</TableBody>
 
-						</table>
+						</Table>
 					</div>
 				</div>
 			</div>
@@ -326,4 +380,5 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, null)(MyFarmSummary);
+export default connect(mapStateToProps, null)(withStyles(styles)(MyFarmSummary));
+
