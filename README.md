@@ -60,8 +60,13 @@ Copy the build folder to a web server to run the app
 
 ## Docker Build
 
-To be added
+###  `sh docker.sh`
+
+REACT_APP_ENV can be localhost, development or production
+
 
 ## Docker Run
 
-To be added
+### `docker run -p 3000:80 farmdoc/covercrop-frontend`
+
+This should run the application on `http://localhost:3000/`
