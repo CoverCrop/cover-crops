@@ -16,7 +16,7 @@ BRANCH=${BRANCH:-"$(git rev-parse --abbrev-ref HEAD)"}
 # Use package version as tag for master & develop
 if [ "$BRANCH" = "master" ]; then
 	echo "Detected version ${PKG_VERSION}"
-	VERSIONS=""
+	VERSIONS="latest"
 	OLDVERSION=""
 	TMPVERSION=$PKG_VERSION
 	while [ "$OLDVERSION" != "$TMPVERSION" ]; do
