@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 ### Changed
 - Use react-scripts for package management and build creation [CCROP-259](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-259)
+- Farm Summary layout so there is clear separation between headers and rows [CCROP-238](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-238)
 
 ## [1.2.0] - 2021-03-26
 
