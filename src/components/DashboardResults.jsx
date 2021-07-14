@@ -220,8 +220,8 @@ class DashboardResults extends Component {
 			this.setState({runStatus: "RECEIVED"});
 		}
 	}
-	
-	
+
+
 	getGddResults(startDate, wthDatasetId) {
 		this.setState({runStatus: "FETCH_GDD"});
 		if (startDate == null){
@@ -230,7 +230,7 @@ class DashboardResults extends Component {
 
 		startDate = format(startDate, "yyyy-MM-dd");
 
-		const gddApi = `${config.CLUapi }/growing-degree-days?start_date=${ startDate 
+		const gddApi = `${config.CLUapi }/growing-degree-days?start_date=${ startDate
 		}&weather_dataset_id=${ wthDatasetId}`;
 
 		let gdd = [];
@@ -264,8 +264,8 @@ class DashboardResults extends Component {
 		this.setState({runStatus: "RECEIVED"});
 
 	}
-	
-	
+
+
 	getDecompositionResults(ccDataArray, harvestDate, wthDatasetId){
 		this.setState({runStatus: "FETCH_DECOMP"});
 		if (harvestDate == null){
@@ -282,7 +282,10 @@ class DashboardResults extends Component {
 		cnRatio = (ccDataArray !== null && ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
 			this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate) : "NA";
 
-		const decompApi = `${config.CLUapi }/decomposition?termination_date=${ terminationDt 
+		// Hack so the decomposition model doesn't fail and give negative numbers.
+		if (cnRatio > 33) cnRatio = 33;
+
+		const decompApi = `${config.CLUapi }/decomposition?termination_date=${ terminationDt
 		}&biomass=${ biomass }&cn_ratio=${ cnRatio }&weather_dataset_id=${ wthDatasetId}`;
 
 		let dates = [];
@@ -331,8 +334,8 @@ class DashboardResults extends Component {
 		});
 		this.setState({runStatus: "RECEIVED"});
 	}
-	
-	
+
+
 	getHarvestDateFromId(harvestDates, id){
 		let retVal = harvestDay;
 		harvestDates.forEach(e => {
@@ -342,8 +345,8 @@ class DashboardResults extends Component {
 		});
 		return retVal;
 	}
-	
-	
+
+
 	getYfromArray(arr, x){
 		let ret = "NA";
 		arr.map(function(item){
@@ -359,8 +362,8 @@ class DashboardResults extends Component {
 			return ret;
 		}
 	}
-	
-	
+
+
 	// Generates charts array object containing individual charts and datasets
 	getDashboardDataArray(properties, chartArrayTypeName, plantingDate, harvestDate) {
 
@@ -421,7 +424,7 @@ class DashboardResults extends Component {
 		return chartDataArray;
 	}
 
-	
+
 	// Generate and return charts HTML content
 	generateChartsHTML() {
 
@@ -760,7 +763,7 @@ class DashboardResults extends Component {
 		return resultHtml;
 	}
 
-	
+
 	// Generate and return charts HTML content
 	generateTableHTML(harvestDate) {
 		let html = [];
@@ -853,7 +856,7 @@ class DashboardResults extends Component {
 									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
 									harvestDate) * 100;
 								if (percent) {
-									return `-${ roundResults(diff, 2) } (${ 
+									return `-${ roundResults(diff, 2) } (${
 										roundResults(percent, 2) }%)`;
 								}
 								else {
