@@ -282,7 +282,7 @@ class DashboardResults extends Component {
 		cnRatio = (ccDataArray !== null && ccDataArray["C:N ratio"].chartData.datasets[0] != null) ?
 			this.getYfromArray(ccDataArray["C:N ratio"].chartData.datasets[0].data, harvestDate) : "NA";
 
-		// Hack so the decomposition model doesn't fail and give negative numbers.
+		// Cap provided by researchers for decomposition model so the decomposition model doesn't fail and give negative numbers
 		if (cnRatio > 33) cnRatio = 33;
 
 		const decompApi = `${config.CLUapi }/decomposition?termination_date=${ terminationDt
