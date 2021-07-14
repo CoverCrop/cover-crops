@@ -199,7 +199,7 @@ class CropHistory extends Component {
 			}
 		}
 	}
-	
+
 
 	render() {
 		let years = [];
@@ -209,7 +209,7 @@ class CropHistory extends Component {
 			}
 		}
 
-		let options = defaultCropYears.map(function(key){
+		let options = defaultCropYears.sort().reverse().map(function(key){
 			let yearName = years.find(s => s.includes(key) && (s.includes("Corn") || s.includes("Soybean")));
 			if (yearName){
 				return {value: yearName, label: key};
@@ -219,7 +219,7 @@ class CropHistory extends Component {
 			}
 		});
 
-		let cropOptions = cashCropOptions.map(function (key) {
+		let cropOptions = cashCropOptions.sort().reverse().map(function (key) {
 			return {value: key, label: key};
 		});
 
@@ -288,7 +288,7 @@ class CropHistory extends Component {
 					</DialogBody>
 					<DialogFooter>
 						<Button compact onClick={() => {
-							this.setState({isOpen: false}); 
+							this.setState({isOpen: false});
 						}}>Close</Button>
 					</DialogFooter>
 				</Dialog>

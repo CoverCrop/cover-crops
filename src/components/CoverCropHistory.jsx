@@ -19,7 +19,7 @@ class CoverCropHistory extends Component {
 			isOpen: false,
 			covercropSel: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 			yearCrop: this.props.cropobj ? undefined :
-				`${this.props.cropobj.keys()[0].substr(0, 4) } ${ 
+				`${this.props.cropobj.keys()[0].substr(0, 4) } ${
 					this.props.cropobj.keys()[0].substr(5)}`,
 			covercropSaved: this.props.cropobj ? undefined : this.props.cropobj.keys()[0].substr(5),
 
@@ -88,15 +88,15 @@ class CoverCropHistory extends Component {
 			this.setState({year: undefined});
 		}
 	}
-	
+
 
 	render() {
 
-		let options = defaultCropYears.map(function(key){
+		let options = defaultCropYears.sort().reverse().map(function(key){
 			return {value: key, label: key};
 		});
 
-		let ccOptions = coverCropOptions.map(function (key) {
+		let ccOptions = coverCropOptions.sort().reverse().map(function (key) {
 			return {value: key, label: key};
 		});
 
@@ -150,7 +150,7 @@ class CoverCropHistory extends Component {
 					</DialogBody>
 					<DialogFooter>
 						<Button compact onClick={() => {
-							this.setState({isOpen: false}); 
+							this.setState({isOpen: false});
 						}}>Close</Button>
 					</DialogFooter>
 				</Dialog>
