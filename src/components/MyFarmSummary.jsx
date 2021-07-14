@@ -153,12 +153,13 @@ class MyFarmSummary extends Component {
 		let {cropobj, fieldobj} = this.props;
 		let {soilobj} = this.state;
 		let naValue = config.dssatNaValue;
+		let oddRowColor = "#F5F5F5";
 
 		// cropComponent will get a warning about div but has no choice.
 		let cropComponent = cropobj && Object.values(cropobj)
-			.filter(obj => isCashCrop(obj)).map(obj =>
+			.filter(obj => isCashCrop(obj)).map((obj, idx) =>
 				(<TableBody>
-					<TableRow key={obj["YEAR"]}>
+					<TableRow key={obj["YEAR"]} style={idx%2 === 1 ? {backgroundColor: oddRowColor} : {}}>
 						<TableCell className={classes.tableCellYear} rowSpan={obj["MF"].length}>{obj["YEAR"]}</TableCell>
 						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{obj["CROP"]}</TableCell>
 						<TableCell className={classes.tableCell} rowSpan={obj["MF"].length}>{CULTIVARS[obj["CU"]["CR"]]}</TableCell>
@@ -179,7 +180,8 @@ class MyFarmSummary extends Component {
 					</TableRow>
 					{
 						obj["MF"].slice(1).map(MFObj =>
-							(<TableRow key={`${obj["YEAR"] }-${ MFObj["FDATE"]}`}>
+							(<TableRow key={`${obj["YEAR"] }-${ MFObj["FDATE"]}`}
+												 style={idx%2 === 1 ? {backgroundColor: oddRowColor} : {}} >
 								<TableCell className={classes.tableCell}>{FMCD[MFObj["FMCD"]]}</TableCell>
 								<TableCell className={classes.tableCell}>{FACD[MFObj["FACD"]]}</TableCell>
 								<TableCell className={classes.tableCell}>{convertDate(MFObj["FDATE"])}</TableCell>
@@ -191,8 +193,8 @@ class MyFarmSummary extends Component {
 			);
 
 		// TODO: combine with cropComponent
-		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map(obj =>
-			(<TableRow key={obj["YEAR"]}>
+		let covercropComponent = cropobj && Object.values(cropobj).filter(obj => isCoverCrop(obj)).map((obj, idx) =>
+			(<TableRow key={obj["YEAR"]} style={idx%2 === 1 ? {backgroundColor: oddRowColor} : {}}>
 				<TableCell className={classes.tableCellYear}>{obj["YEAR"]}</TableCell>
 				<TableCell className={classes.tableCell}>{obj["CROP"]}</TableCell>
 				<TableCell className={classes.tableCell}>{CULTIVARS[obj["CU"]["CR"]]}</TableCell>
@@ -204,8 +206,8 @@ class MyFarmSummary extends Component {
 			</TableRow>)
 		);
 
-		let soilComponent = soilobj && soilobj.map( obj =>
-			(<TableRow key={obj["depth_bottom"]}>
+		let soilComponent = soilobj && soilobj.map( (obj, idx) =>
+			(<TableRow key={obj["depth_bottom"]} style={idx%2 === 1 ? {backgroundColor: oddRowColor} : {}}>
 				<TableCell className={classes.tableCell}>{convertCmToInches(obj["depth_bottom"])}</TableCell>
 				<TableCell className={classes.tableCell}>{obj["claytotal_r"]}</TableCell>
 				<TableCell className={classes.tableCell}>{obj["silttotal_r"]}</TableCell>
