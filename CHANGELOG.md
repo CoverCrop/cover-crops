@@ -5,9 +5,16 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+### Added
+- Year 2021 to cash crop year selection. Enabled "N Loss Reduction" graph.
+
 ### Changed
 - Use react-scripts for package management and build creation [CCROP-259](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-259)
 - Farm Summary layout is updated so there is clear separation between headers and rows [CCROP-238](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-238)
+
+### Fixed
+- On dashboard, display the component graphs' main title and axes titles. Bug caused due to ChartJS v3 upgrade. [CCROP-355](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-355)
 
 ## [1.2.0] - 2021-03-26
 
