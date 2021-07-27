@@ -13,7 +13,7 @@ import {
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
 import Tillage from "./Tillage";
-import {cashCropOptions, cultivars, defaultCropYears} from "../experimentFile";
+import {cashCropOptions, cultivars, defaultCashCropYears} from "../experimentFile";
 
 class CropHistory extends Component {
 
@@ -209,7 +209,7 @@ class CropHistory extends Component {
 			}
 		}
 
-		let options = defaultCropYears.sort().reverse().map(function(key){
+		let options = defaultCashCropYears.sort().reverse().map(function(key){
 			let yearName = years.find(s => s.includes(key) && (s.includes("Corn") || s.includes("Soybean")));
 			if (yearName){
 				return {value: yearName, label: key};

@@ -6,7 +6,7 @@ import Planting from "./Planting";
 import {getKeycloakHeader, isCoverCrop, getCoverCropForYear} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import Harvest from "./Harvest";
-import {coverCropOptions, cultivars, defaultCropYears} from "../experimentFile";
+import {coverCropOptions, cultivars, defaultCoverCropYears} from "../experimentFile";
 import config from "../app.config";
 import {getExperimentSQX} from "../public/utils";
 
@@ -92,7 +92,7 @@ class CoverCropHistory extends Component {
 
 	render() {
 
-		let options = defaultCropYears.sort().reverse().map(function(key){
+		let options = defaultCoverCropYears.sort().reverse().map(function(key){
 			return {value: key, label: key};
 		});
 
