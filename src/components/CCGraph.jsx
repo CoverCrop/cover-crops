@@ -91,38 +91,46 @@ class CCGraph extends Component {
 			};
 
 			let graphOptions = {
-				title: {
-					display: true,
-					text: title,
-					// fontColor: "DarkBlue",
-					fontSize: 16
-				},
-				layout: {
-					padding: {
-						// left: 50,
-					}
-				},
-				tooltips: {
-					mode: "index",
-					intersect: false,
-					position: "average",
-					callbacks: {
-						title: function(tooltipItems, data) {
-							return `Date: ${ tooltipItems[0].xLabel}`;
-						},
-						label: function(item, data) {
-							let datasetLabel = data.datasets[item.datasetIndex].label || "";
-							let dataPoint = item.yLabel;
-							if (ylabel !== "Fahrenheit") {
-								return `${datasetLabel}: ${roundResults(dataPoint,
-									1)} ${ylabel}`;
-							}
-							else {
-								return `${datasetLabel}: ${roundResults(dataPoint, 1)} °F)`;
+				plugins: {
+					title: {
+						display: true,
+						text: title,
+						font: {
+							size: 16
+						}
+					},
+					tooltip: {
+						mode: "index",
+						intersect: false,
+						position: "average",
+						callbacks: {
+							title: function(tooltipItems) {
+								if (tooltipItems[0].label !== null) {
+									return "Date: " + tooltipItems[0].label;
+								} else {
+									return "Date: "+ " n/a";
+								}
+							},
+							label: function(context) {
+								let label = context.dataset.label || "";
+
+								if (label) {
+									label += ": ";
+								}
+								if (context.parsed.y !== null) {
+									if (ylabel !== "Fahrenheit") {
+										label += roundResults(context.parsed.y, 1) + " " + ylabel;
+									}
+									else {
+										label += roundResults(context.parsed.y, 1) + " " + "°F";
+									}
+								}
+								return label;
 							}
 						}
-					}
+					},
 				},
+
 				hover: {
 					mode: "index",
 					intersect: false
@@ -136,32 +144,30 @@ class CCGraph extends Component {
 					}
 				},
 				scales: {
-					yAxes: [{
-						ticks: {
-							// min: 0,
-							// max: 100,
-							// callback: function(value) {
-							// 	return `${value }%`;
-							// }
+					x: {
+						title: {
+							text: xlabel,
+							display: true
 						},
-						scaleLabel: {
-							display: true,
-							labelString: ylabel === "Fahrenheit" ? "Cumulative °F" : ylabel
+						ticks: {
+							maxTicksLimit: 16
 						}
-					}],
-					xAxes: [{
-						scaleLabel: {
+					},
+					y: {
+						title: {
+							text: ylabel === "Fahrenheit" ? "Cumulative °F" : ylabel,
 							display: true,
-							labelString: xlabel
-						}
-					}]
+						},
+						suggestedMin: 0
+					},
+
 				}
 			};
 
 			return (
 				<div style={{textAlign: "center", margin: "0 auto"}}>
 					<div style={{margin: "0 auto", padding: "15px"}}>
-						<Line data={graphData} options={graphOptions}/>
+						<Line data={graphData} options={graphOptions} type="line"/>
 					</div>
 					{
 						(ylabel === "Fahrenheit") ?
