@@ -17,7 +17,7 @@ const localConfig = {
 	keycloak: Keycloak("keycloak.json"),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
-	hideDashboardSections: true,
+	hideDashboardSections: false,
 	dssatNaValue: "-99"
 };
 
@@ -37,7 +37,7 @@ const devConfig = {
 	keycloak: Keycloak("keycloak.json"),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
-	hideDashboardSections: true,
+	hideDashboardSections: false,
 	dssatNaValue: "-99"
 };
 
@@ -58,7 +58,7 @@ const prodConfig = {
 	keycloak: Keycloak("keycloak.json"),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
-	hideDashboardSections: true,
+	hideDashboardSections: false,
 	dssatNaValue: "-99"
 };
 
