@@ -65,32 +65,30 @@ class CCComponentGraphs extends Component {
 			});
 		});
 
-		return (
+		switch(popupSrc){
+			case "lossReduction":
+				return (
+						<div>
+							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Loss to Tile Drain" graphInfo={nLoss}/>
+							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrate Leached" graphInfo={nLeached}/>
+						</div>
+				);
+			case "uptake":
+				return (
+						<div>
+							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Uptake" graphInfo={nUptake}/>
+							<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
+						</div>
+				);
+			case "gdd":
+				return(
+						<CCGraph xlabel="date" ylabel="Fahrenheit" title="Growing Degree Days During Cover Crop Growth"
+										 graphInfo={gddData} cashCropPlantingDate={this.props.cashCropPlantingDate}/>
+				);
+			default:
+				return(<div/>);
+		}
 
-			<div>
-				<div style={{display: (popupSrc === "lossReduction") ? "block" : "none"}}>
-					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Loss to Tile Drain" graphInfo={nLoss}/>
-				</div>
-
-				<div style={{display: (popupSrc === "lossReduction") ? "block" : "none"}}>
-					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrate Leached" graphInfo={nLeached}/>
-				</div>
-
-				<div style={{display: (popupSrc === "uptake") ? "block" : "none"}}>
-					<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Uptake" graphInfo={nUptake}/>
-				</div>
-
-				<div style={{display: (popupSrc === "uptake") ? "block" : "none"}}>
-					<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
-				</div>
-
-				<div style={{display: (popupSrc === "gdd") ? "block" : "none"}}>
-					<CCGraph xlabel="date" ylabel="Fahrenheit" title="Growing Degree Days During Cover Crop Growth" graphInfo={gddData} cashCropPlantingDate={this.props.cashCropPlantingDate}/>
-				</div>
-
-			</div>
-
-		);
 	}
 }
 

@@ -91,6 +91,7 @@ class CCGraph extends Component {
 			};
 
 			let graphOptions = {
+				animation: false,
 				plugins: {
 					title: {
 						display: true,
