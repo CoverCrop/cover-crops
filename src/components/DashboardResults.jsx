@@ -970,7 +970,12 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div style={{width: "700px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd} cashCropPlantingDate={this.state.selHarvestDate}/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray}
+																 source={this.state.graphType} gdd={this.state.gdd}
+																 coverCropPlantingDate={this.state.plantingDate}
+																 cashCropPlantingDate={this.state.selHarvestDate}
+
+							/>
 						</div>
 
 					</div>
