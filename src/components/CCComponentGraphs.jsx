@@ -7,12 +7,12 @@ class CCComponentGraphs extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			showOnlyCCDuration: true
+			showAllYears: false
 		};
 	}
 
 	handleCheckboxChange = (event) => {
-		this.setState({showOnlyCCDuration: event.target.checked});
+		this.setState({showAllYears: event.target.checked});
 	}
 
 	render() {
@@ -33,30 +33,29 @@ class CCComponentGraphs extends Component {
 		let noccNitrogenSoil = noccData["NIAD"].chartData.datasets[0].data;
 
 		ccNitrogenLossData = ccNitrogenLossData.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 		noccNitrogenLossData = noccNitrogenLossData.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 
 		ccNitrogenUptakeData = ccNitrogenUptakeData.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 
 		ccNitrogenLeached = ccNitrogenLeached.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 		noccNitrogenLeached = noccNitrogenLeached.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 
 		ccNitrogenSoil = ccNitrogenSoil.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
 		noccNitrogenSoil = noccNitrogenSoil.filter((e) => {
-			return (this.state.showOnlyCCDuration) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
+			return (!this.state.showAllYears) ? (e["x"] >= coverPlanting && e["x"] <= cashPlanting) : true;
 		});
-
 
 		let nLoss = [];
 		let nUptake = [];
@@ -114,11 +113,11 @@ class CCComponentGraphs extends Component {
 				return (
 						<div>
 							<div style={{textAlign: "right"}}>
-								<Tooltip title={this.state.showOnlyCCDuration? "Uncheck to see all years' data": ""}
+								<Tooltip title={this.state.showAllYears? "Uncheck to see all years' data": ""}
 												 placement="bottom">
 									<FormControlLabel style={{ marginRight: "-16px"}}
-											control={<Checkbox checked={this.state.showOnlyCCDuration} onChange={this.handleCheckboxChange} />}
-											label="Show only cover crop duration" color="Primary"
+											control={<Checkbox checked={this.state.showAllYears} onChange={this.handleCheckboxChange} />}
+											label="Show all years" color="Primary"
 									/>
 								</Tooltip>
 							</div>
@@ -132,11 +131,11 @@ class CCComponentGraphs extends Component {
 				return (
 						<div>
 							<div style={{textAlign: "right"}}>
-								<Tooltip title={this.state.showOnlyCCDuration? "Uncheck to see all years' data": ""}
+								<Tooltip title={this.state.showAllYears? "Uncheck to see all years' data": ""}
 												 placement="bottom">
 								<FormControlLabel style={{ marginRight: "-16px"}}
-										control={<Checkbox checked={this.state.showOnlyCCDuration} onChange={this.handleCheckboxChange} />}
-										label="Show only cover crop duration" color="Primary"
+										control={<Checkbox checked={this.state.showAllYears} onChange={this.handleCheckboxChange} />}
+										label="Show all years" color="Primary"
 								/>
 								</Tooltip>
 							</div>

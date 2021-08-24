@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 ### Added
-- Checkbox on the dashboard component graphs to switch between "only cover crop duration" and "all years". Defaults to former. [CCROP-360](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-360)
+- Checkbox on the dashboard component graphs to switch between "only cover crop duration" and "all years". Defaults to latter. [CCROP-360](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-360)
 
 ## [1.3.0] - 2021-07-28
 
