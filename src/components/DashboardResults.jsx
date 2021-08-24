@@ -801,7 +801,8 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="3">
 				<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Nitrogen Uptake
+					<span className="dashboardTableHeaderSpan">
+						<span style={{paddingRight: "16px"}}>Nitrogen Uptake</span>
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleUptakeGraphsOpen} />
 					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
