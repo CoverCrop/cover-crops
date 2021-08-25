@@ -113,7 +113,7 @@ class CCComponentGraphs extends Component {
 				return (
 						<div>
 							<div style={{textAlign: "right"}}>
-								<Tooltip title={this.state.showAllYears? "Uncheck to see all years' data": ""}
+								<Tooltip title={!this.state.showAllYears ? "Select to see all years' data": ""}
 												 placement="bottom">
 									<FormControlLabel style={{ marginRight: "-16px"}}
 											control={<Checkbox checked={this.state.showAllYears} onChange={this.handleCheckboxChange} />}
@@ -131,7 +131,7 @@ class CCComponentGraphs extends Component {
 				return (
 						<div>
 							<div style={{textAlign: "right"}}>
-								<Tooltip title={this.state.showAllYears? "Uncheck to see all years' data": ""}
+								<Tooltip title={!this.state.showAllYears ? "Select to see all years' data": ""}
 												 placement="bottom">
 								<FormControlLabel style={{ marginRight: "-16px"}}
 										control={<Checkbox checked={this.state.showAllYears} onChange={this.handleCheckboxChange} />}
