@@ -21,6 +21,7 @@ import {GeoJSON} from "ol/format";
 
 import MyFarmWrap from "./MyFarmWrap";
 import {handleExptxtGet, handleUserCLUChange} from "../actions/user";
+import farmBlurImg from "../images/my-farm-blur.png";
 
 class MyFarmPage extends Component {
 
@@ -74,13 +75,15 @@ class MyFarmPage extends Component {
 			// console.log(clus)
 			// list the latest updated on the top.
 			that.setState({clus: clus.reverse(), fetchError: false});
-			that.handleCLUChange(0);
+			if(clus.length > 0) {
+				that.handleCLUChange(0);
+			}
 		}, function(err) {
 			console.log(err);
 			that.setState({fetchError: true});
 		});
 	}
-	
+
 
 	render() {
 		const {openclu, clus} = this.state;
@@ -164,7 +167,7 @@ class MyFarmPage extends Component {
 								lat={selectCLU.lat}
 								lon={selectCLU.lon}
 								/> :
-								<img src={require("../images/my-farm-blur.png")}/>
+								<img src={farmBlurImg} alt="farm image"/>
 							}
 						</div>
 					</div>
