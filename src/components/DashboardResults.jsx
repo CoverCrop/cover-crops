@@ -801,7 +801,8 @@ class DashboardResults extends Component {
 		rowElems.push(
 			<TableRow key="3">
 				<TableCell className="dashboardTableHeader">
-					<span className="dashboardTableHeaderSpan">Nitrogen Uptake
+					<span className="dashboardTableHeaderSpan">
+						<span style={{paddingRight: "16px"}}>Nitrogen Uptake</span>
 						<InsertChartIcon style={{cursor: "pointer"}} onClick={this.handleUptakeGraphsOpen} />
 					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
@@ -856,7 +857,7 @@ class DashboardResults extends Component {
 									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
 									harvestDate) * 100;
 								if (percent) {
-									return `-${ roundResults(diff, 2) } (${
+									return `${ roundResults(diff, 2) } (${
 										roundResults(percent, 2) }%)`;
 								}
 								else {
@@ -970,7 +971,12 @@ class DashboardResults extends Component {
 						<br/>
 						<br/>
 						<div style={{width: "700px"}}>
-							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray} source={this.state.graphType} gdd={this.state.gdd} cashCropPlantingDate={this.state.selHarvestDate}/>
+							<CCComponentGraphs ccData={this.state.ccDataArray} noCCData={this.state.noccDataArray}
+																 source={this.state.graphType} gdd={this.state.gdd}
+																 coverCropPlantingDate={this.state.plantingDate}
+																 cashCropPlantingDate={this.state.selHarvestDate}
+
+							/>
 						</div>
 
 					</div>
