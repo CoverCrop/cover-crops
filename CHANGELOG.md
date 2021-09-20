@@ -10,8 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - Checkbox on the dashboard component graphs to switch between "only cover crop duration" and "all years". Defaults to latter. [CCROP-360](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-360)
 
 ### Fixed
-- Errors on "My Farm" page when no fields are defined [CCROP-362](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-364)
-
+- Errors on "My Farm" page when no fields are defined [CCROP-362](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-362)
+- Creating fields when entering latitude and longitude manually. It was picking up a previous field's CLU [CCROP-263](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-263)
 
 ## [1.3.0] - 2021-07-28
 
