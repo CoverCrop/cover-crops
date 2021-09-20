@@ -19,10 +19,7 @@ import {soilDataUnavailableMessage} from "../app.messages";
 import {drainage_type} from "../experimentFile";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from "@material-ui/core";
-// import {transform as olTransform} from "ol/proj";
-// import {GeoJSON} from "ol/format";
-// import {Feature as OlFeature} from "ol";
-import {handleUserCLUChange} from "../actions/user";
+import {handleUserCLUChange, handleUserExistCLU, handleUserSoilUnavailableChange} from "../actions/user";
 
 class AddFieldBox extends Component {
 
@@ -32,9 +29,7 @@ class AddFieldBox extends Component {
 		this.state = {
 			popupOpen: false,
 			cluname: "",
-			tileDrainage: "DR002",
-			exist_clu: false,
-			soil_data_unavailable: false
+			tileDrainage: "DR002"
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
 		this.onTileDrainageChange = this.onTileDrainageChange.bind(this);
@@ -58,9 +53,6 @@ class AddFieldBox extends Component {
 		if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
 			return;
 		}
-
-		this.setState({exist_clu: false});
-		this.setState({soil_data_unavailable: false});
 
 		// Format number to a string with 6 digits after decimal point
 		latitude = Number(latitude).toFixed(6);
@@ -92,7 +84,7 @@ class AddFieldBox extends Component {
 			let clu_id = geojson.features[0].properties["clu_id"];
 			that.props.handleUserCLUChange(clu_id, "");
 			getMyFieldList(this.props.email).then(function(clus){
-				that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length > 0)});
+				that.props.handleUserExistCLU(clus.filter(userclu => userclu.clu === clu_id).length > 0);
 			});
 		}).catch(function (e) {
 			console.log(`Get CLU failed: ${ e}`);
@@ -114,11 +106,12 @@ class AddFieldBox extends Component {
 		}).then(soilJson => {
 			if (soilJson.length === 0) {
 				//Soil data unavailable
-				that.setState({soil_data_unavailable: true});
+				this.props.handleUserSoilUnavailableChange(true);
+
 			}
 			else {
 				//Soil data available
-				that.setState({soil_data_unavailable: false});
+				this.props.handleUserSoilUnavailableChange(false);
 			}
 		});
 	};
@@ -140,6 +133,8 @@ class AddFieldBox extends Component {
 	componentDidMount(){
 		this.props.handleLatFieldChange("");
 		this.props.handleLongFieldChange("");
+		this.props.handleUserSoilUnavailableChange(false);
+		this.props.handleUserExistCLU(false);
 	}
 
 
@@ -174,8 +169,6 @@ class AddFieldBox extends Component {
 
 	render() {
 		let options = dictToOptions(drainage_type);
-		let exist_clu = this.props.exist_clu || this.state.exist_clu;
-		let soil_data_unavailable = this.props.soil_data_unavailable || this.state.soil_data_unavailable;
 
 		return (
 			<div className="add-field-div">
@@ -226,13 +219,13 @@ class AddFieldBox extends Component {
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
 					<div className="warning-div">
-						{exist_clu && (
+						{this.props.exist_clu && (
 							<div className="warning-message-div">
 								<Icon className="warning-message" name="warning"/>
 								<p className="exist-message">{existCLUNote}</p>
 							</div>
 						)}
-						{soil_data_unavailable && (
+						{this.props.soil_data_unavailable && (
 							<div className="warning-message-div">
 								<Icon className="warning-message" name="warning"/>
 								<p className="exist-message">{soilDataUnavailableMessage}</p>
@@ -308,7 +301,9 @@ const mapStateToProps = (state) => {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
 		clu: state.user.clu,
-		email: state.user.email
+		email: state.user.email,
+		soil_data_unavailable: state.user.soilUnavailable,
+		exist_clu: state.user.exist_clu
 	};
 };
 
@@ -325,6 +320,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleUserCLUChange: (clu, cluname) => {
 			dispatch(handleUserCLUChange(clu, cluname));
+		},
+		handleUserSoilUnavailableChange: (soilAvailable) => {
+			dispatch(handleUserSoilUnavailableChange(soilAvailable));
+		},
+		handleUserExistCLU: (exist_clu) => {
+			dispatch(handleUserExistCLU(exist_clu));
 		}
 	};
 };

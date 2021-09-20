@@ -12,7 +12,9 @@ const defaultState = {
 	cropobj: {},
 	fieldobj: {},
 	isSelectedEventSuccessful: "error",
-	isExperimentUpdate: false
+	isExperimentUpdate: false,
+	soilUnavailable: false,
+	exist_clu: false
 };
 
 const user = (state = defaultState, action) => {
@@ -21,6 +23,14 @@ const user = (state = defaultState, action) => {
 			return Object.assign({}, state, {
 				clu: action.clu,
 				cluname: action.cluname
+			});
+		case "CHANGE_SOIL_UNAVAILABLE":
+			return Object.assign({}, state, {
+				soilUnavailable: action.soilUnavailable
+			});
+		case "CHANGE_EXIST_CLU":
+			return Object.assign({}, state, {
+				exist_clu: action.exist_clu
 			});
 		case "LOGIN":
 			return Object.assign({}, state, {

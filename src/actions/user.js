@@ -22,6 +22,16 @@ export const handleUserCLUChange = (clu, cluname) => ({
 	cluname
 });
 
+export const handleUserSoilUnavailableChange = (soilUnavailable) => ({
+	type: "CHANGE_SOIL_UNAVAILABLE",
+	soilUnavailable
+});
+
+export const handleUserExistCLU = (exist_clu) => ({
+	type: "CHANGE_EXIST_CLU",
+	exist_clu
+});
+
 export const handleExptxtGet = (exptxt) => ({
 	type: "GET_EXPERIMENT_TXT",
 	exptxt,

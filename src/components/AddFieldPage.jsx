@@ -12,7 +12,7 @@ import {
 	getMyFieldList,
 } from "../public/utils";
 import {handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
-import {handleUserCLUChange} from "../actions/user";
+import {handleUserCLUChange, handleUserExistCLU, handleUserSoilUnavailableChange} from "../actions/user";
 import {transform as olTransform} from "ol/proj";
 import {Feature as OlFeature} from "ol";
 import {GeoJSON} from "ol/format";
@@ -69,9 +69,7 @@ class AddFieldPage extends Component {
 			that.props.handleUserCLUChange(clu_id, "");
 			// TODO, remove this API and save the clus in redux.
 			getMyFieldList(this.props.email).then(function(clus){
-				// console.log(clus.filter(userclu => userclu.clu === clu_id));
-				that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length > 0)});
-
+				that.props.handleUserExistCLU(clus.filter(userclu => userclu.clu === clu_id).length > 0);
 			});
 
 
@@ -95,11 +93,12 @@ class AddFieldPage extends Component {
 		}).then(soilJson => {
 			if (soilJson.length === 0) {
 				//Soil data unavailable
-				that.setState({soil_data_unavailable: true});
+				this.props.handleUserSoilUnavailableChange(true);
 			}
 			else {
 				//Soil data available
-				that.setState({soil_data_unavailable: false});
+				this.props.handleUserSoilUnavailableChange(false);
+
 			}
 		});
 	};
@@ -114,7 +113,7 @@ class AddFieldPage extends Component {
 
 
 	render() {
-		let {markercoordinate, areafeatures, exist_clu, soil_data_unavailable} = this.state;
+		let {markercoordinate, areafeatures} = this.state;
 		return (
 			<AuthorizedWrap>
 				<div>
@@ -125,7 +124,7 @@ class AddFieldPage extends Component {
 						<MapCC mapId="choose-clu" markercoordinate={markercoordinate} areafeatures={areafeatures}
 										handleClick={this.handleClick} extent={this.state.extent}
 						/>
-						<AddFieldBox exist_clu={exist_clu} soil_data_unavailable={soil_data_unavailable}/>
+						<AddFieldBox/>
 					</div>
 
 				</div>
@@ -152,6 +151,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleUserCLUChange: (clu, cluname) => {
 			dispatch(handleUserCLUChange(clu, cluname));
+		},
+		handleUserSoilUnavailableChange: (soilAvailable) => {
+			dispatch(handleUserSoilUnavailableChange(soilAvailable));
+		},
+		handleUserExistCLU: (exist_clu) => {
+			dispatch(handleUserExistCLU(exist_clu));
 		}
 	};
 };
