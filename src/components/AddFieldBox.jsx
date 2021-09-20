@@ -50,9 +50,17 @@ class AddFieldBox extends Component {
 
 	handleCoordinatesBlur = () => {
 		let {latitude, longitude} = this.props;
+
+		if(latitude === "" || longitude === ""){
+			return;
+		}
+
 		if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
 			return;
 		}
+
+		this.setState({exist_clu: false});
+		this.setState({soil_data_unavailable: false});
 
 		// Format number to a string with 6 digits after decimal point
 		latitude = Number(latitude).toFixed(6);
@@ -235,6 +243,8 @@ class AddFieldBox extends Component {
 						<Cell col={6}>
 							<CoordinateFieldCC
 								helptext="Latitude value must between -90 and 90"
+								useInvalidProp
+								invalid={this.props.latitude !== "" && (this.props.latitude > 90 || this.props.latitude < -90)}
 								min="-90"
 								max="90"
 								type="number"
@@ -247,6 +257,8 @@ class AddFieldBox extends Component {
 						<Cell col={6}>
 							<CoordinateFieldCC
 								helptext="Longitude value must between -180 and 180"
+								useInvalidProp
+								invalid={this.props.longitude !== "" && (this.props.longitude > 180 || this.props.longitude < -180)}
 								min="-180"
 								max="180"
 								type="number"
