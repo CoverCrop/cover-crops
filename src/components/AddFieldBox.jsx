@@ -8,7 +8,7 @@ import CoordinateFieldCC from "./CoordinateFieldCC";
 import {handleCardChange, handleLatFieldChange, handleLongFieldChange} from "../actions/analysis";
 import config from "../app.config";
 import {existCLUNote} from "../app.messages.js";
-import {dictToOptions, getKeycloakHeader} from "../public/utils";
+import {dictToOptions, getKeycloakHeader, getMyFieldList} from "../public/utils";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -19,6 +19,10 @@ import {soilDataUnavailableMessage} from "../app.messages";
 import {drainage_type} from "../experimentFile";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import {TextField} from "@material-ui/core";
+// import {transform as olTransform} from "ol/proj";
+// import {GeoJSON} from "ol/format";
+// import {Feature as OlFeature} from "ol";
+import {handleUserCLUChange} from "../actions/user";
 
 class AddFieldBox extends Component {
 
@@ -28,7 +32,9 @@ class AddFieldBox extends Component {
 		this.state = {
 			popupOpen: false,
 			cluname: "",
-			tileDrainage: "DR002"
+			tileDrainage: "DR002",
+			exist_clu: false,
+			soil_data_unavailable: false
 		};
 		this.handleAddCLU = this.handleAddCLU.bind(this);
 		this.onTileDrainageChange = this.onTileDrainageChange.bind(this);
@@ -37,9 +43,78 @@ class AddFieldBox extends Component {
 	handleLatFieldChange = (e) => {
 		this.props.handleLatFieldChange(e.target.value);
 	};
+
 	handleLongFieldChange = (e) => {
 		this.props.handleLongFieldChange(e.target.value);
 	};
+
+	handleCoordinatesBlur = () => {
+		let {latitude, longitude} = this.props;
+		if (!(latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180)) {
+			return;
+		}
+
+		// Format number to a string with 6 digits after decimal point
+		latitude = Number(latitude).toFixed(6);
+		longitude = Number(longitude).toFixed(6);
+		this.props.handleLatFieldChange(latitude);
+		this.props.handleLongFieldChange(longitude);
+
+		const CLUapi = `${config.CLUapi }/CLUs?lat=${latitude}&lon=${longitude}&soil=false`;
+		const soilApi = `${config.CLUapi }/soils?lat=${latitude}&lon=${longitude}`;
+
+		let that = this;
+		fetch(CLUapi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			return response.json();
+		}).then(geojson => {
+
+			// TODO: Try to set this and zoom to the clu on map?.
+			// let features = (new GeoJSON()).readFeatures(geojson, {
+			// 	dataProjection: "EPSG:4326", featureProjection: "EPSG:3857"
+			// });
+
+			// that.setState({areafeatures: features});
+
+			let clu_id = geojson.features[0].properties["clu_id"];
+			that.props.handleUserCLUChange(clu_id, "");
+			getMyFieldList(this.props.email).then(function(clus){
+				that.setState({exist_clu: (clus.filter(userclu => userclu.clu === clu_id).length > 0)});
+			});
+		}).catch(function (e) {
+			console.log(`Get CLU failed: ${ e}`);
+			// that.setState({areafeatures: [
+			// 		new OlFeature({})
+			// 	]});
+			that.props.handleUserCLUChange(0, "");
+		});
+
+		// Call to check if soil data is available.
+		fetch(soilApi, {
+			method: "GET",
+			headers: {
+				"Authorization": getKeycloakHeader(),
+				"Cache-Control": "no-cache"
+			}
+		}).then(response => {
+			return response.json();
+		}).then(soilJson => {
+			if (soilJson.length === 0) {
+				//Soil data unavailable
+				that.setState({soil_data_unavailable: true});
+			}
+			else {
+				//Soil data available
+				that.setState({soil_data_unavailable: false});
+			}
+		});
+	};
+
 	handlePopupOpen = () => {
 		this.setState({popupOpen: true});
 	};
@@ -58,7 +133,7 @@ class AddFieldBox extends Component {
 		this.props.handleLatFieldChange("");
 		this.props.handleLongFieldChange("");
 	}
-	
+
 
 	handleAddCLU() {
 		const CLUapi = `${config.CLUapi }/userfield`;
@@ -91,6 +166,8 @@ class AddFieldBox extends Component {
 
 	render() {
 		let options = dictToOptions(drainage_type);
+		let exist_clu = this.props.exist_clu || this.state.exist_clu;
+		let soil_data_unavailable = this.props.soil_data_unavailable || this.state.soil_data_unavailable;
 
 		return (
 			<div className="add-field-div">
@@ -141,13 +218,13 @@ class AddFieldBox extends Component {
 					<Title>Add a Field</Title>
 					<p>Locate the field by typing an address or click on the map</p>
 					<div className="warning-div">
-						{this.props.exist_clu && (
+						{exist_clu && (
 							<div className="warning-message-div">
 								<Icon className="warning-message" name="warning"/>
 								<p className="exist-message">{existCLUNote}</p>
 							</div>
 						)}
-						{this.props.soil_data_unavailable && (
+						{soil_data_unavailable && (
 							<div className="warning-message-div">
 								<Icon className="warning-message" name="warning"/>
 								<p className="exist-message">{soilDataUnavailableMessage}</p>
@@ -164,6 +241,7 @@ class AddFieldBox extends Component {
 								step="0.000001"
 								value={this.props.latitude}
 								onChange={this.handleLatFieldChange}
+								onBlur={this.handleCoordinatesBlur}
 								floatingLabel="Latitude"/>
 						</Cell>
 						<Cell col={6}>
@@ -175,6 +253,7 @@ class AddFieldBox extends Component {
 								step="0.000001"
 								value={this.props.longitude}
 								onChange={this.handleLongFieldChange}
+								onBlur={this.handleCoordinatesBlur}
 								floatingLabel="Longitude"/>
 						</Cell>
 					</Grid>
@@ -216,7 +295,8 @@ const mapStateToProps = (state) => {
 	return {
 		longitude: state.analysis.longitude,
 		latitude: state.analysis.latitude,
-		clu: state.user.clu
+		clu: state.user.clu,
+		email: state.user.email
 	};
 };
 
@@ -230,6 +310,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		handleCardChange: (oldCardIndex, newCardIndex, oldCardData) => {
 			dispatch(handleCardChange(oldCardIndex, newCardIndex, oldCardData));
+		},
+		handleUserCLUChange: (clu, cluname) => {
+			dispatch(handleUserCLUChange(clu, cluname));
 		}
 	};
 };
