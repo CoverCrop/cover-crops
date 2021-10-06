@@ -75,7 +75,7 @@ class UserEvents extends Component {
 			selectEvent[0].datasets[weatherDatasetId]);
 	};
 	async getEvents() {
-		let url = `${datawolfURL }/workflows/${workflowId}/executions?email=${this.props.email}&page=-1`;
+		let url = `${datawolfURL }/workflows/${workflowId}/executions?email=${this.props.email}&page=0&size=500`;
 		let eventRequest = await fetch(url, {
 			method: "GET",
 			headers: {
