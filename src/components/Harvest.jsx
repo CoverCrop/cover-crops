@@ -26,7 +26,9 @@ class Harvest extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
-		this.setInitialState(nextProps, year);
+		if(nextProps.year !== this.props.year) {
+			this.setInitialState(nextProps, year);
+		}
 	}
 
 	setInitialState(nextProps, year) {
@@ -84,7 +86,7 @@ class Harvest extends Component {
 
 		this.setState(newHarvest);
 	}
-	
+
 
 	render() {
 		return (

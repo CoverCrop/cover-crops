@@ -45,7 +45,9 @@ class Tillage extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
-		this.setInitialState(nextProps, year);
+		if(nextProps.year !== this.props.year) {
+			this.setInitialState(nextProps, year);
+		}
 	}
 
 	setInitialState(nextProps, year) {
@@ -84,7 +86,7 @@ class Tillage extends Component {
 		}
 
 	}
-	
+
 
 	render() {
 		return (
