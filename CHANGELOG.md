@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Fixed
 - Errors on "My Farm" page when no fields are defined [CCROP-362](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-362)
 - Output dashboard parsing to use the new DSSAT variables. [CCROP-373](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-373)
+- Bug on "Crop History" page that was reverting changes made to Planting, Harvest and Tillage when adding a new fertilizer. [CCROP-361](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-361)
 
 ## [1.3.0] - 2021-07-28
 
