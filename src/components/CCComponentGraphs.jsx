@@ -23,12 +23,12 @@ class CCComponentGraphs extends Component {
 		let coverPlanting = this.props.coverCropPlantingDate;
 		let cashPlanting = this.props.cashCropPlantingDate;
 
-		let ccNitrogenLossData = ccData["NLTD"].chartData.datasets[0].data;
-		let ccNitrogenUptakeData = ccData["NUAD"].chartData.datasets[0].data;
+		let ccNitrogenLossData = "NLTD" in ccData ? ccData["NLTD"].chartData.datasets[0].data : ccData["TDNC"].chartData.datasets[0].data;
+		let ccNitrogenUptakeData = "NUAD" in ccData ? ccData["NUAD"].chartData.datasets[0].data : ccData["NUAC"].chartData.datasets[0].data;
 		let ccNitrogenLeached = ccData["NLCC"].chartData.datasets[0].data;
 		let ccNitrogenSoil = ccData["NIAD"].chartData.datasets[0].data;
 
-		let noccNitrogenLossData = noccData["NLTD"].chartData.datasets[0].data;
+		let noccNitrogenLossData = "NLTD" in noccData ? noccData["NLTD"].chartData.datasets[0].data : noccData["TDNC"].chartData.datasets[0].data;
 		let noccNitrogenLeached = noccData["NLCC"].chartData.datasets[0].data;
 		let noccNitrogenSoil = noccData["NIAD"].chartData.datasets[0].data;
 

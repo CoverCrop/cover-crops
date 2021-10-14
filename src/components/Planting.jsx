@@ -31,7 +31,9 @@ class Planting extends Component {
 
 	componentWillReceiveProps(nextProps) {
 		let year = nextProps.year;
-		this.setInitialState(nextProps, year);
+		if(nextProps.year !== this.props.year) {
+			this.setInitialState(nextProps, year);
+		}
 	}
 
 	setInitialState(nextProps, year) {
@@ -100,7 +102,7 @@ class Planting extends Component {
 		}
 		this.setState(newPlanting);
 	}
-	
+
 
 	render() {
 		return (

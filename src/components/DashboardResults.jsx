@@ -768,6 +768,12 @@ class DashboardResults extends Component {
 	generateTableHTML(harvestDate) {
 		let html = [];
 		let rowElems = [];
+		let coverCropDataArrayNitrogenLoss = this.state.ccDataArray !== null ?
+			("NLTD" in this.state.ccDataArray ? this.state.ccDataArray["NLTD"] : this.state.ccDataArray["TDNC"]) : null;
+		let coverCropDataArrayNitrogenUptake = this.state.ccDataArray !== null ?
+			("NUAD" in this.state.ccDataArray ? this.state.ccDataArray["NUAD"] : this.state.ccDataArray["NUAC"]) : null;
+		let noCoverCropDataArrayNitrogenLoss = this.state.noccDataArray !== null ?
+			("NLTD" in this.state.noccDataArray ? this.state.noccDataArray["NLTD"] : this.state.noccDataArray["TDNC"]) : null;
 
 		if (harvestDate == null){
 			harvestDate = this.state.harvestDate;
@@ -807,8 +813,8 @@ class DashboardResults extends Component {
 					</span>
 					<span style={{fontWeight: "light", fontStyle: "italic"}}>(lb/acre)</span>
 				</TableCell>
-				<TableCell> {(this.state.ccDataArray !== null && this.state.ccDataArray["NUAD"].chartData.datasets[0] != null) ?
-					this.getYfromArray(this.state.ccDataArray["NUAD"].chartData.datasets[0].data, harvestDate) : "NA"
+				<TableCell> {(coverCropDataArrayNitrogenUptake !== null && coverCropDataArrayNitrogenUptake.chartData.datasets[0] != null) ?
+					this.getYfromArray(coverCropDataArrayNitrogenUptake.chartData.datasets[0].data, harvestDate) : "NA"
 				}
 				</TableCell>
 			</TableRow>
@@ -841,20 +847,16 @@ class DashboardResults extends Component {
 					</TableCell>
 					<TableCell>
 						{(() => {
-							if ((this.state.ccDataArray !== null &&
-										this.state.ccDataArray["NLTD"].chartData.datasets[0] !=
-										null &&
-										this.state.noccDataArray !== null &&
-										this.state.noccDataArray["NLTD"].chartData.datasets[0] !=
-										null)) {
+							if ((coverCropDataArrayNitrogenLoss !== null && coverCropDataArrayNitrogenLoss.chartData.datasets[0] != null &&
+								noCoverCropDataArrayNitrogenLoss !== null && noCoverCropDataArrayNitrogenLoss.chartData.datasets[0] != null)) {
 								let diff = this.getYfromArray(
-									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+									noCoverCropDataArrayNitrogenLoss.chartData.datasets[0].data,
 									harvestDate)
 											- this.getYfromArray(
-												this.state.ccDataArray["NLTD"].chartData.datasets[0].data,
+												coverCropDataArrayNitrogenLoss.chartData.datasets[0].data,
 												harvestDate);
 								let percent = diff / this.getYfromArray(
-									this.state.noccDataArray["NLTD"].chartData.datasets[0].data,
+									noCoverCropDataArrayNitrogenLoss.chartData.datasets[0].data,
 									harvestDate) * 100;
 								if (percent) {
 									return `${ roundResults(diff, 2) } (${
