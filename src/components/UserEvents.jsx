@@ -75,7 +75,8 @@ class UserEvents extends Component {
 			selectEvent[0].datasets[weatherDatasetId]);
 	};
 	async getEvents() {
-		let eventRequest = await fetch(`${datawolfURL }/executions?email=${ this.props.email}`, {
+		let url = `${datawolfURL }/workflows/${workflowId}/executions?email=${this.props.email}&page=0&size=500`;
+		let eventRequest = await fetch(url, {
 			method: "GET",
 			headers: {
 				"Content-Type": "application/json",
@@ -109,7 +110,7 @@ class UserEvents extends Component {
 		this.setState({events: eventfilteredGroup, totalpage: Math.ceil(eventfilteredGroup.length / eventPageSize)});
 	}
 
-	
+
 	componentWillMount(){
 		// avoid displaying selectedEventNotSuccessful while the history page is loading
 		this.props.setSelectedUserEventStatus(null);

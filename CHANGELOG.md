@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ### Added
 - Checkbox on the dashboard component graphs to switch between "only cover crop duration" and "all years". Defaults to latter. [CCROP-360](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-360)
 
+### Changed
+- Fetch job runs on dashboard by using a paginated workflow specific datawolf api. Improves dashboard load time. [CCROP-350](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-350)
+
 ### Fixed
 - Errors on "My Farm" page when no fields are defined [CCROP-362](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-362)
 - Output dashboard parsing to use the new DSSAT variables. [CCROP-373](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-373)
