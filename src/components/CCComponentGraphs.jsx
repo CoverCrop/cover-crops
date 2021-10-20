@@ -147,6 +147,10 @@ class CCComponentGraphs extends Component {
 
 							<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Uptake" graphInfo={nUptake}/>
 							<CCGraph xlabel="date" ylabel="lb/acre" title="Total Soil Inorganic Nitrogen" graphInfo={nSoil}/>
+
+							<div style={{fontSize: "14px", textAlign: "center"}}>
+								<b> NOTE: </b> The results are only for cover crop season
+							</div>
 						</div>
 				);
 			case "gdd":
