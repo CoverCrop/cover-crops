@@ -21,6 +21,9 @@ import {handleStartDateChange, handleEndDateChange, handleResults,
 	handleWeatherPatternChange, handleCoverCropChange} from "../actions/analysis";
 import {getDayOfYear, addMonths} from "date-fns";
 import {CURR_YEAR, START_YEAR} from "../experimentFile";
+import {Tooltip} from "@material-ui/core";
+import IconButton from "@material-ui/core/IconButton";
+import {HelpOutline} from "@material-ui/icons";
 
 class RunSimulationCC extends Component {
 
@@ -215,7 +218,7 @@ class RunSimulationCC extends Component {
 		let weatherbuttons = weatherPatterns.map(w =>
 			(<Button dense raised={this.props.weatherPattern === w}
 					onClick={() => {
-						this.props.handleWeatherPatternChange(w); 
+						this.props.handleWeatherPatternChange(w);
 					}}
 					key={w}
 			>{w}</Button>));
@@ -271,7 +274,18 @@ class RunSimulationCC extends Component {
 					</div>
 				</div>
 				{this.state.selectedFutureWeatherEndDate === false ? null : <div className="black-bottom weather-pattern-div">
-					<Title> Weather Pattern</Title>
+					<div >
+						<span className="mdc-typography--title">
+							Weather Pattern
+						</span>
+
+						<Tooltip title="Weather pattern text goes here ........." placement="top">
+							<IconButton style={{marginTop: 10, marginBottom: 10, padding: "0px 8px 4px 8px"}}>
+								<HelpOutline />
+							</IconButton>
+						</Tooltip>
+					</div>
+
 
 					{weatherbuttons}
 				</div>}
