@@ -42,6 +42,7 @@ import {
 } from "@material-ui/core";
 import CCComponentGraphs from "./CCComponentGraphs";
 import DecompositionGraph from "./DecompositionGraph";
+import {dssatUrl} from "../public/config";
 
 // const Plot = createPlotlyComponent(Plotly);
 
@@ -1059,6 +1060,13 @@ class DashboardResults extends Component {
 									This cover crop residue decomposition demonstration is generated from field research and will
 									continue to be validated through ongoing research efforts and collaborations.
 								</div>
+
+								<div style={{margin: "20px 10px"}}>
+									Data the product of simulation by <a href={dssatUrl} target="_blank" className="cc-link" rel="noreferrer">DSSAT</a>.<br/>
+									Soils data from USDA SSURGO.<br/>
+									Weather data from <b>[TO BE ADDED]</b> <br/>
+								</div>
+
 
 							</TableCell>
 						</TableRow>

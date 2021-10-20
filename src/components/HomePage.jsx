@@ -3,7 +3,7 @@ import Header from "./Header";
 import styles from "../styles/main.css";
 import styles2 from "../styles/home-page.css";
 import {Cell, Grid} from "react-mdc-web";
-import {privacyUrl, faqUrl, nrecUrl} from "../public/config";
+import {privacyUrl, faqUrl, nrecUrl, dssatUrl} from "../public/config";
 import {loginMessage, usageMessage} from "../app.messages";
 import Footer from "./Footer";
 import repImg from "../images/cover-crop-rep-image.png";
@@ -56,6 +56,17 @@ class HomePage extends Component {
 				information about the decomposition of the terminated cover crop. This first-of-its-kind
 				functionality was generously funded by the Walton Family Foundation. Finally, initial seed funding
 				for the project was also provided by the McKnight Foundation and the University of Illinois.
+			</p>
+
+			<p className="paras">
+				The cover crop tool uses the Decision Support System for Agrotechnology Transfer
+				(<a href={dssatUrl} target="_blank" className="cc-link" rel="noreferrer">DSSAT</a>),
+				which is an open source modeling program for dynamic crop growth simulation for over 42 crops.
+				DSSAT simulates crop growth using a range of models and data inputs for soil, plant and weather dynamics.
+				It has been adapted for using in simulating cereal rye cover crops and incorporates commercial cropping
+				practices, USDA soils data for the selected field and weather data. <b>[Weather text to be added]</b>.
+				From the DSSAT model simulation, estimates for cover crop biomass, carbon-ton-nitrogen ration and nitrogen data
+				(uptake, loss and loss reduction) are visualized.
 			</p>
 
 			<br/>

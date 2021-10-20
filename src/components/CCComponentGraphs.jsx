@@ -125,6 +125,11 @@ class CCComponentGraphs extends Component {
 								<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrogen Loss to Tile Drain" graphInfo={nLoss}/>
 								<CCGraph xlabel="date" ylabel="lb/acre" title="Nitrate Leached" graphInfo={nLeached}/>
 							</div>
+
+							<div style={{fontSize: "14px", textAlign: "center"}}>
+								<b> NOTE: </b> The results are only for cover crop season
+							</div>
+
 						</div>
 				);
 			case "uptake":
