@@ -42,7 +42,7 @@ import {
 } from "@material-ui/core";
 import CCComponentGraphs from "./CCComponentGraphs";
 import DecompositionGraph from "./DecompositionGraph";
-import {dssatUrl} from "../public/config";
+import {dssatUrl, subxUrl} from "../public/config";
 
 // const Plot = createPlotlyComponent(Plotly);
 
@@ -1062,9 +1062,11 @@ class DashboardResults extends Component {
 								</div>
 
 								<div style={{margin: "20px 10px"}}>
-									Data the product of simulation by <a href={dssatUrl} target="_blank" className="cc-link" rel="noreferrer">DSSAT</a>.<br/>
+									Data the product of simulation by&nbsp;
+									<a href={dssatUrl} target="_blank" className="cc-link" rel="noreferrer">DSSAT</a>.<br/>
 									Soils data from USDA SSURGO.<br/>
-									Weather data from <b>[TO BE ADDED]</b> <br/>
+									Weather data from Illinois State Water Survey and Subseasonal Experiment
+									(<a href={subxUrl} target="_blank" className="cc-link" rel="noreferrer">SubX</a>) <br/>
 								</div>
 
 
