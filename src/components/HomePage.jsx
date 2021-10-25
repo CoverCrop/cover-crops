@@ -3,7 +3,7 @@ import Header from "./Header";
 import styles from "../styles/main.css";
 import styles2 from "../styles/home-page.css";
 import {Cell, Grid} from "react-mdc-web";
-import {privacyUrl, faqUrl, nrecUrl, dssatUrl} from "../public/config";
+import {privacyUrl, faqUrl, nrecUrl, dssatUrl, subxUrl} from "../public/config";
 import {loginMessage, usageMessage} from "../app.messages";
 import Footer from "./Footer";
 import repImg from "../images/cover-crop-rep-image.png";
@@ -64,7 +64,10 @@ class HomePage extends Component {
 				which is an open source modeling program for dynamic crop growth simulation for over 42 crops.
 				DSSAT simulates crop growth using a range of models and data inputs for soil, plant and weather dynamics.
 				It has been adapted for using in simulating cereal rye cover crops and incorporates commercial cropping
-				practices, USDA soils data for the selected field and weather data. <b>[Weather text to be added]</b>.
+				practices, USDA soils data for the selected field and weather data. We use 30-day forecasts of air temperature,
+				precipitation, wind speed, humidity, and solar radiation from state-of-the-art climate forecast models as part
+				of the Subseasonal Experiment (<a href={subxUrl} target="_blank" className="cc-link" rel="noreferrer">SubX</a>).
+				The forecasts provide realistic representations of weather conditions used for forward-looking DSSAT simulations
 				From the DSSAT model simulation, estimates for cover crop biomass, carbon-ton-nitrogen ration and nitrogen data
 				(uptake, loss and loss reduction) are visualized.
 			</p>

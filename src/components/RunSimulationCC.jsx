@@ -279,7 +279,14 @@ class RunSimulationCC extends Component {
 							Weather Pattern
 						</span>
 
-						<Tooltip title="Weather pattern text goes here ........." placement="top">
+						<Tooltip
+								title="Historical weather data is provide by Illinois State Water Survey. The weather pattern option
+								fills in future data using weather data for the last 10 years (e.g. hottest season in last 10 years).
+								The tool then uses medium-range weather forecasts for improved cover
+								crop decision outlooks. Forecasts from state-of-the-art climate models as part of the Subseasonal
+								Experiment (SubX) are used with DSSAT to generate outlooks of weather conditions 20 to 30 days into the
+								future, resulting in more precise information for cover crop decision making."
+										 placement="top">
 							<IconButton style={{marginTop: 10, marginBottom: 10, padding: "0px 8px 4px 8px"}}>
 								<HelpOutline />
 							</IconButton>
