@@ -68,7 +68,7 @@ class HomePage extends Component {
 				precipitation, wind speed, humidity, and solar radiation from state-of-the-art climate forecast models as part
 				of the Subseasonal Experiment (<a href={subxUrl} target="_blank" className="cc-link" rel="noreferrer">SubX</a>).
 				The forecasts provide realistic representations of weather conditions used for forward-looking DSSAT simulations
-				From the DSSAT model simulation, estimates for cover crop biomass, carbon-ton-nitrogen ration and nitrogen data
+				From the DSSAT model simulation, estimates for cover crop biomass, carbon-to-nitrogen ratio and nitrogen data
 				(uptake, loss and loss reduction) are visualized.
 			</p>
 
