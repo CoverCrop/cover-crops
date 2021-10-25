@@ -11,7 +11,7 @@ class Footer extends Component {
 				<Toolbar>
 					<ToolbarRow align="center" className={"footer"}>
 						<ToolbarSection align ="start" className="footerCorners" >
-								v1.3.0
+								v1.4.0
 						</ToolbarSection>
 						<ToolbarSection className="footerLogos" >
 							<a href="http://www.ncsa.illinois.edu" target="_blank" className={"footerlogo"} rel="noreferrer">
