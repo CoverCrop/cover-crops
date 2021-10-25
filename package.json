@@ -1,6 +1,6 @@
 {
   "name": "cover-crops",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "A Web Based Decision Support Tool for Cover Crop Management.",
   "license": "BSD-3-Clause",
   "private": true,
