@@ -69,9 +69,9 @@ class HomePage extends Component {
 				of the Subseasonal Experiment (<a href={subxUrl} target="_blank" className="cc-link" rel="noreferrer">SubX</a>)
 				and historical weather data from Illinois State Water Survey
 				(<a href={iswsUrl} target="_blank" className="cc-link" rel="noreferrer">ISWS</a>).
-				The forecasts provide realistic representations of weather conditions used for forward-looking DSSAT simulations
-				From the DSSAT model simulation, estimates for cover crop biomass, carbon-to-nitrogen ratio and nitrogen data
-				(uptake, loss and loss reduction) are visualized.
+				The forecasts provide realistic representations of weather conditions used for forward-looking DSSAT
+				simulations. From the DSSAT model simulation, estimates for cover crop biomass, carbon-to-nitrogen ratio
+				and nitrogen data (uptake, loss and loss reduction) are visualized.
 			</p>
 
 			<br/>
