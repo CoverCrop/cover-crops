@@ -4,3 +4,4 @@ export const croplandUrl = "https://nass.usda.gov/Research_and_Science/Cropland/
 export const nrecUrl = "https://www.illinoisnrec.org";
 export const dssatUrl = "https://dssat.net/";
 export const subxUrl = "http://cola.gmu.edu/subx/";
+export const iswsUrl = "https://www.isws.illinois.edu/";
