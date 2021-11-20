@@ -40,9 +40,9 @@ class Dashboard extends Component {
 			dashboardOutput = <p className="error-message">{noJobsFound}</p>;
 		}
 		return (
-			<AuthorizedWrap>
+			<AuthorizedWrap history={this.props.history}>
 				<div>
-					<Header selected="user"/>
+					<Header selected="user" history={this.props.history}/>
 					<AnalyzerWrap activeTab={2}/>
 
 					<div className="position-relative border-top" style={{marginLeft: 10}}>

@@ -115,9 +115,9 @@ class AddFieldPage extends Component {
 	render() {
 		let {markercoordinate, areafeatures} = this.state;
 		return (
-			<AuthorizedWrap>
+			<AuthorizedWrap history={this.props.history}>
 				<div>
-					<Header />
+					<Header history={this.props.history}/>
 					<AnalyzerWrap activeTab={3}/>
 
 					<div className="choose-clu-div">

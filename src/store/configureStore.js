@@ -3,6 +3,10 @@ import reduxImmutableStateInvariant from "redux-immutable-state-invariant";
 import thunk from "redux-thunk";
 import rootReducer from "../reducers";
 import createLogger from "redux-logger";
+import {createBrowserHistory} from "history";
+import {routerMiddleware} from "react-router-redux";
+
+export const history = createBrowserHistory();
 
 function configureStoreProd(initialState) {
 	const middlewares = [
@@ -13,8 +17,8 @@ function configureStoreProd(initialState) {
 		thunk,
 	];
 
-	return createStore(rootReducer, initialState, compose(
-		applyMiddleware(...middlewares)
+	return createStore(rootReducer(history), initialState, compose(
+		applyMiddleware(routerMiddleware(history), ...middlewares)
 	)
 	);
 }
@@ -33,8 +37,8 @@ function configureStoreDev(initialState) {
 
 	// adds support for Redux dev tools
 	const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-	const store = createStore(rootReducer, initialState, composeEnhancers(
-		applyMiddleware(...middlewares, createLogger())
+	const store = createStore(rootReducer(history), initialState, composeEnhancers(
+		applyMiddleware(routerMiddleware(history),...middlewares, createLogger())
 	)
 	);
 

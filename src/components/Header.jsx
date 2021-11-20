@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {browserHistory, Link} from "react-router";
+import {Link} from "react-router-dom";
 import styles from "../styles/header.css";
 import styles2 from "../styles/main.css";
 import {Button, Toolbar, ToolbarRow, ToolbarSection} from "react-mdc-web";
@@ -55,11 +55,12 @@ class Header extends Component {
 				window.location.reload();
 			}
 			else { // If token is not expired, set the timer to check for expiry
+				let that = this;
 				let interval = setInterval( function(){
 					if (localStorage.getItem("isAuthenticated") === "true") {
 						if (checkForTokenExpiry()) {
 							clearKeycloakStorage();
-							browserHistory.push("/");
+							that.props.history.push("/");
 						}
 					}
 					else { // clear timer once isAuthenticated is set to false in storage
@@ -70,10 +71,10 @@ class Header extends Component {
 			}
 		}
 	}
-	
+
 
 	handleLogin(){
-		browserHistory.push("/login");
+		this.props.history.push("/login");
 	}
 
 	handleRegister(){
@@ -85,8 +86,9 @@ class Header extends Component {
 	handleLogout(){
 		clearKeycloakStorage();
 		this.props.handleUserLogout();
+		let that = this;
 		keycloak.init().success(function(){
-			keycloak.logout({redirectUri: browserHistory.push("/")});
+			keycloak.logout({redirectUri: that.props.history.push("/")});
 		});
 	}
 

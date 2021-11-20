@@ -11,9 +11,9 @@ class AnalysisPage extends Component {
 
 	render() {
 		return (
-			<AuthorizedWrap>
+			<AuthorizedWrap history={this.props.history}>
 				<div>
-					<Header selected="analysis"/>
+					<Header selected="analysis" history={this.props.history}/>
 					<AnalyzerWrap activeTab={1}/>
 					<RightPaneCC/>
 				</div>

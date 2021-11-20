@@ -8,7 +8,7 @@ class AboutPage extends Component {
 	render() {
 		return (
 			<div>
-				<Header selected="about"/>
+				<Header selected="about" history={this.props.history}/>
 				<div className="contentcenter">
 					<p>This is a prototype of Cover Crops using React,
 						Redux, and react-mdc-web.

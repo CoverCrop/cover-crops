@@ -3,13 +3,13 @@ import "../styles/main.css";
 import "../styles/home-page.css";
 import {connect} from "react-redux";
 import {handleUserLogin} from "../actions/user";
-import {browserHistory} from "react-router";
 import config from "../app.config";
 import {checkIfDatawolfUserExists, createDatawolfUser} from "../public/utils";
 
 const keycloak = config.keycloak;
 
 class Login extends Component {
+
 
 	constructor(props) {
 		super(props);
@@ -79,7 +79,7 @@ class Login extends Component {
 				});
 
 				that.props.handleUserLogin(profile["username"], profile["username"], true);
-				browserHistory.push("/analysis");
+				that.props.history.push("/analysis");
 
 			}).error(function() {
 				console.log("Failed to load user profile");

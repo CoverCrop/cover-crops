@@ -24,7 +24,7 @@ class UserPage extends Component {
 
 	render() {
 		return (
-			<AuthorizedWrap>
+			<AuthorizedWrap history={this.props.history}>
 				<div>
 					<Header selected="user"/>
 					<AnalyzerWrap activeTab={4}/>

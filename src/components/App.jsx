@@ -1,5 +1,6 @@
 import React, {Component} from "react";
-import {Router, Route, browserHistory} from "react-router";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {createBrowserHistory} from "history";
 import AnalysisPage from "./AnalysisPage";
 import AddFieldPage from "./AddFieldPage";
 import HomePage from "./HomePage";
@@ -14,6 +15,9 @@ import {connect} from "react-redux";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
 import {isIE} from "react-device-detect";
+import configureStore, {history} from "../store/configureStore";
+import { ConnectedRouter } from "connected-react-router";
+
 
 global.__base = `${__dirname }/`;
 const theme = createMuiTheme();
@@ -33,17 +37,21 @@ class App extends Component {
 
 		return (
 			<MuiThemeProvider theme={theme}>
-				<Router history={browserHistory}>
-					<Route path="/" component={HomePage}/>
-					<Route path="/login" component={Login}/>
-					<Route path="/analysis" component={AnalysisPage}/>
-					<Route path="/addfield" component={AddFieldPage}/>
-					<Route path="/profile" component={MyFarmPage}/>
-					<Route path="/about" component={AboutPage}/>
-					<Route path="/history" component={UserPage}/>
-					<Route path="/dashboard" component={Dashboard}/>
-					<Route path="*" component={RouteMismatch}/>
-				</Router>
+				<ConnectedRouter history={history}>
+				 	<Router>
+					  <Switch>
+						  <Route exact path="/" component={HomePage}/>
+						  <Route exact path="/login" component={Login}/>
+						  <Route exact path="/analysis" component={AnalysisPage}/>
+						  <Route exact path="/addfield" component={AddFieldPage}/>
+						  <Route exact path="/profile" component={MyFarmPage}/>
+						  <Route exact path="/about" component={AboutPage}/>
+						  <Route exact path="/history" component={UserPage}/>
+						  <Route exact path="/dashboard" component={Dashboard}/>
+						  <Route path="*" component={RouteMismatch}/>
+					  </Switch>
+				  </Router>
+				</ConnectedRouter>
 			</MuiThemeProvider>
 		);
 	}

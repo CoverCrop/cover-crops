@@ -1,12 +1,12 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {browserHistory} from "react-router";
+
 
 class AuthorizedWrap extends Component {
 	render() {
 		return (
 			<div>
-				{ localStorage.getItem("isAuthenticated") === "true" ? this.props.children : browserHistory.push("/login")}
+				{ localStorage.getItem("isAuthenticated") === "true" ? this.props.children : this.props.history.push("/login")}
 			</div>
 		);
 	}

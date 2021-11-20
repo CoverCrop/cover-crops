@@ -7,7 +7,7 @@ class RouteMismatch extends Component {
 	render() {
 		return (
 			<div>
-				<Header />
+				<Header history={this.props.history}/>
 				<div className="contentcenter">
 					<h3>404 Not Found.</h3>
 				</div>

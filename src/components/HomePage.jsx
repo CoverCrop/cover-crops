@@ -95,7 +95,7 @@ class HomePage extends Component {
 
 		return (
 			<div >
-				<Header selected="home"/>
+				<Header selected="home" history={this.props.history}/>
 				<span className="home-line" />
 
 				{notificationDiv}

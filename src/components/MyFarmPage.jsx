@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Link} from "react-router";
+import {Link} from "react-router-dom";
 import Header from "./Header";
 import {Card, CardText, CardTitle, Fab, Icon, Title} from "react-mdc-web";
 import styles from "../styles/main.css";
@@ -134,7 +134,7 @@ class MyFarmPage extends Component {
 		</div>);
 
 		return (
-			<AuthorizedWrap>
+			<AuthorizedWrap history={this.props.history}>
 				<div>
 					<Header />
 					<AnalyzerWrap activeTab={3}/>

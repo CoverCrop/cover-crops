@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {Tabbar, Tab} from "react-mdc-web";
 import {connect} from "react-redux";
 import {handleUserLogout} from "../actions/user";
-import {Link} from "react-router";
+import {Link} from "react-router-dom";
 
 class AnalyzerWrap extends Component {
 
