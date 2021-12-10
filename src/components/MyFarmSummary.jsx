@@ -252,9 +252,9 @@ class MyFarmSummary extends Component {
 									</TableCell>
 								</TableRow>
 								<TableRow>
-									<TableCell className={classes.tableHeadCell}>TYPE, in</TableCell>
-									<TableCell className={classes.tableHeadCell}>DEPTH, %</TableCell>
-									<TableCell className={classes.tableHeadCell}>SPACING, %</TableCell>
+									<TableCell className={classes.tableHeadCell}>TYPE</TableCell>
+									<TableCell className={classes.tableHeadCell}>DEPTH, in</TableCell>
+									<TableCell className={classes.tableHeadCell}>SPACING, ft</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>

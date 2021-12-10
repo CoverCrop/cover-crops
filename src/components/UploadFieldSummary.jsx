@@ -3,14 +3,16 @@ import {
 	Button,
 	Dialog,
 	DialogBody,
-	DialogFooter,
-	Textfield
+	DialogFooter
 } from "react-mdc-web";
 import config from "../app.config";
 import {deletefail, expfail, expsuccess} from "../app.messages";
 import {uploadDatasetToDataWolf, getKeycloakHeader} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import {connect} from "react-redux";
+import TileDrainage from "./TileDrainage";
+import {Divider, TextField} from "@material-ui/core";
+import FormControl from "@material-ui/core/FormControl";
 
 class UploadFieldSummary extends Component {
 	constructor(props) {
@@ -101,7 +103,7 @@ class UploadFieldSummary extends Component {
 	render() {
 		return (
 			<div className="border-top summary-div">
-				<div className="black-bottom-crop">
+				<div style={{padding: "12px"}}>
 					<form onSubmit={this.onFormSubmit}>
 						<h1>Upload Experiment File JSON for {this.props.selectedCLUName}</h1>
 						<br />
@@ -121,33 +123,38 @@ class UploadFieldSummary extends Component {
 						</DialogBody>
 						<DialogFooter>
 							<Button compact onClick={() => {
-								this.setState({isOpen: false}); 
+								this.setState({isOpen: false});
 							}}>Close</Button>
 						</DialogFooter>
 					</Dialog>
 				</div>
-				<div className="myfarm-input summary-div">
-					<h2>Name and Location</h2>
-					<div className="update-box-div">
-						<div className="update-box update-box-left">
-
-							<p className="input">FIELD NAME</p>
-							<Textfield
-								disabled
-								value={this.props.selectedCLUName}
-							/>
-						</div>
-						<div className="update-box update-box-left">
-							<p className="input">LOCATION</p>
-							<Textfield
-								disabled
+				<Divider/>
+				<div className="myfarm-input summary-div-upload">
+					<h2 style={{marginBottom: 16}}>Name and Location</h2>
+					<div style={{display: "flex", alignItems: "center"}}>
+							<FormControl  style={{minWidth: "240px", marginRight: 24}}>
+								<TextField
+										variant="outlined" InputLabelProps={{ shrink: true }}
+										id="outlined-number" label="Field Name" value={this.props.selectedCLUName}
+										disabled
+								/>
+							</FormControl>
+						<FormControl style={{minWidth: "140px"}}>
+						<TextField
+								variant="outlined" InputLabelProps={{ shrink: true }}
+								id="outlined-number" label="Location"
 								value={`${this.props.lat.toFixed(2)}N ${ this.props.lon.toFixed(2) }E`}
-							/>
-						</div>
-						<div className="update-box-left delete-field">
+								disabled
+						/>
+					</FormControl>
+						<FormControl style={{verticalAlign: "center", height: "100%", marginLeft: 16}}>
 							<Button onClick={this.handleDelete}>DELETE FIELD</Button>
-						</div>
+						</FormControl>
 					</div>
+				</div>
+				<Divider/>
+				<div>
+					<TileDrainage selectedCLU={this.props.selectedCLU} email={this.props.email}/>
 				</div>
 			</div>
 		);

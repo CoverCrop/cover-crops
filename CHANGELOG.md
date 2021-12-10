@@ -6,8 +6,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Ability to update tile drainage from "Field Profile" tab. [CCROP-292](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-292)
+
 ### Changed
 - Upgraded react-router and connected react-router packages. Fixed some vulnerabilities [CCROP-379](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-379)
+
+### Fixed
+- Wrong units for tile drainage parameters on Summary page. [CCROP-380](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-380)
 
 ## [1.4.0] - 2021-10-26
 

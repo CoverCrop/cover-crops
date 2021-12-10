@@ -204,6 +204,10 @@
 	padding: 10px 30px 40px 20px;
 }
 
+.summary-div-upload{
+	padding: 10px 30px 10px 20px;
+}
+
 
 .myfarm-tab {
 	margin: 10px 0 0 24px;
@@ -326,4 +330,8 @@ need this to show the option dropdown of Select */
 
 .delete-field{
 	padding-top: 20px;
+}
+
+.update-drainage-div{
+	position: relative;
 }

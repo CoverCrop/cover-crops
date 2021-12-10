@@ -10,6 +10,14 @@ export const drainage_type = {
 	// "DR003": "Surface furrows"
 };
 
+
+export const drainage_type_defaults = {
+	"DR002": {"depth": 39.37, "spacing": 98.43},
+	"DR000": {"depth": "", "spacing": ""},
+	// "DR001": {"depth": 39.37, "spacing": 98.43},
+	// "DR003": {"depth": "", "spacing": 98.43},
+};
+
 //Fertilizer material code
 export const FMCD = {
 	"None": "None",
