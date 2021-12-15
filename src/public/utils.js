@@ -251,6 +251,30 @@ export async function uploadDatasetToDataWolf(filedata, fileName = null) {
 	});
 }
 
+export async function uploadExperimentFileSQX(fileData, email, CLU_id) {
+	let headers = {
+		"Authorization": getKeycloakHeader(),
+		"Cache-Control": "no-cache"
+	};
+
+	let data = new FormData();
+	data.append("file", fileData);
+
+	let uploadDatasetResponse = await fetch(
+		`${config.CLUapi}/users/${ email }/CLUs/${ CLU_id }/experiment_file_sqx`,
+		{
+			method: "POST",
+			headers: headers,
+			body: data,
+			contentType: false,
+			processData: false
+		});
+
+	return uploadDatasetResponse.json().then(function (data) {
+		return data["dataset_id"];
+	});
+}
+
 export async function getExperimentSQX(email, CLU_id) {
 	let experiment_URL = `${config.CLUapi }/users/${ email }/CLUs/${ CLU_id }/experiment_file_sqx`;
 	const Response = await fetch(experiment_URL, {
