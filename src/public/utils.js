@@ -195,8 +195,8 @@ export function convertDateToUSFormatShort(date){
 
 export function convertDateToUSFormatWithMins(date){
 
-	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/${ date.getFullYear() } ${ 
-		date.getHours().toString().padStart(2, "0") }:${ date.getMinutes().toString().padStart(2, "0")}`;
+	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/
+	${ date.getFullYear() } ${date.getHours().toString().padStart(2, "0") }:${ date.getMinutes().toString().padStart(2, "0")}`;
 }
 
 //eg. moment to 17096
@@ -212,8 +212,7 @@ export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest,
 		`{"with_cover_crop": ${ isWithCoverCrop },` +
 				`"year_planting": ${ yearPlanting },` +
 				`"doy_planting": ${ doyPlanting },` +
-				`"doy_harvest": ${ doyHarvest 
-				}}`],
+				`"doy_harvest": ${ doyHarvest }}`],
 	{type: "text/plain;charset=utf-8", lastModified: Date.now()});
 
 	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
