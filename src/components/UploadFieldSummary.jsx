@@ -7,7 +7,7 @@ import {
 } from "react-mdc-web";
 import config from "../app.config";
 import {deletefail, expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf, getKeycloakHeader} from "../public/utils";
+import {uploadDatasetToDataWolf, getKeycloakHeader, uploadExperimentFileSQX} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import {connect} from "react-redux";
 import TileDrainage from "./TileDrainage";
@@ -29,7 +29,7 @@ class UploadFieldSummary extends Component {
 
 	async onFormSubmit(e){
 		e.preventDefault();
-		let id = await uploadDatasetToDataWolf(this.state.file);
+		let id = await uploadExperimentFileSQX(this.state.file, this.props.email, this.props.selectedCLU.clu);
 		console.log(`Uploaded File Changed:${ id}`);
 
 		let updatedUserCLU = Object.assign({}, this.props.selectedCLU);
@@ -105,7 +105,7 @@ class UploadFieldSummary extends Component {
 			<div className="border-top summary-div">
 				<div style={{padding: "12px"}}>
 					<form onSubmit={this.onFormSubmit}>
-						<h1>Upload Experiment File JSON for {this.props.selectedCLUName}</h1>
+						<h1>Upload DSSAT Experiment File (SQX) for {this.props.selectedCLUName}</h1>
 						<br />
 						<input ref={ref => this.fileInput = ref} type="file"
 										onChange={this.onChange} />
