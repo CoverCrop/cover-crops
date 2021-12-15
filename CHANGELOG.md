@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Upgraded react-router and connected react-router packages. Fixed some vulnerabilities [CCROP-379](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-379)
+- Field profile experiment file upload to use SQX file. [CCROP-293](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-293)
 
 ### Fixed
 - Wrong units for tile drainage parameters on Summary page. [CCROP-380](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-380)
