@@ -7,7 +7,7 @@ import {drainage_type as DRAINAGE_TYPES, drainage_type_defaults} from "../experi
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import config from "../app.config";
 import {
-	convertCmToInches,
+	convertCmToInches, convertFeetToMeters, convertInchesToCm,
 	convertMetersToFeet,
 	getCropObj,
 	getExperimentSQX, getFieldObj,
@@ -67,7 +67,11 @@ const TileDrainage = ({selectedCLU, email}) => {
 			method: "PATCH",
 			body: JSON.stringify([{
 				"EVENT": "drainage",
-				"FLDT": drainageType
+				"FLDT": drainageType,
+				"CONTENT": [{
+					"FLDRS": spacing !== "" ? convertFeetToMeters(spacing): "-99",
+					"FLDRD": depth !== "" ? convertInchesToCm(depth): "-99"
+				}]
 			}]),
 			headers: {
 				"Content-Type": "application/json",
@@ -123,7 +127,7 @@ const TileDrainage = ({selectedCLU, email}) => {
 								variant="outlined" InputLabelProps={{ shrink: true }}
 								id="outlined-number" label="Depth, inch" type="number" value={depth}
 								onChange={handleDepthChange}
-								disabled
+								disabled={drainageType === "DR000"}
 						/>
 					</FormControl>
 
@@ -132,7 +136,7 @@ const TileDrainage = ({selectedCLU, email}) => {
 								variant="outlined" InputLabelProps={{ shrink: true }}
 								id="outlined-number" label="Spacing, ft" type="number" value={spacing}
 								onChange={handleSpacingChange}
-								disabled
+								disabled={drainageType === "DR000"}
 						/>
 					</FormControl>
 
