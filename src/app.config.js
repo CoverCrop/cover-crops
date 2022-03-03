@@ -1,5 +1,7 @@
 import Keycloak from "keycloak-js";
 
+const KEYCLOAK_REALM = "farmdoc";
+const KEYCLOAK_CLIENT = "covercrop";
 
 const localConfig = {
 	basePath: "/",
@@ -14,7 +16,11 @@ const localConfig = {
 	defaultZoom: 14,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
-	keycloak: Keycloak("keycloak.json"),
+	keycloak: Keycloak({
+		realm: KEYCLOAK_REALM,
+		clientId: KEYCLOAK_CLIENT,
+		url: "https://fd-auth-dev.ncsa.illinois.edu/auth"
+	}),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: false,
@@ -34,7 +40,11 @@ const devConfig = {
 	defaultZoom: 14,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
-	keycloak: Keycloak("keycloak.json"),
+	keycloak: Keycloak({
+		realm: KEYCLOAK_REALM,
+		clientId: KEYCLOAK_CLIENT,
+		url: "https://fd-auth-dev.ncsa.illinois.edu/auth"
+	}),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: false,
@@ -55,7 +65,11 @@ const prodConfig = {
 	defaultZoom: 14,
 	coverCropTerminationOffsetDays: 14, // Cover crop termination = Cash crop planting + 14 days
 	useCroplandDataLayer: true, // Use Cropland data layer to get crop rotation history
-	keycloak: Keycloak("keycloak.json"),
+	keycloak: Keycloak({
+		realm: KEYCLOAK_REALM,
+		clientId: KEYCLOAK_CLIENT,
+		url: "https://fd-auth.ncsa.illinois.edu/auth"
+	}),
 	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: false,
