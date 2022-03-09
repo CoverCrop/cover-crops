@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+### Changed
+- Field profile experiment file upload to use SQX file. [CCROP-293](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-293)
+
 ## [1.5.0] - 2021-12-16
 
 ### Added
@@ -11,7 +16,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### Changed
 - Upgraded react-router and connected react-router packages. Fixed some vulnerabilities [CCROP-379](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-379)
-- Field profile experiment file upload to use SQX file. [CCROP-293](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-293)
 
 ### Fixed
 - Wrong units for tile drainage parameters on Summary page. [CCROP-380](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-380)
