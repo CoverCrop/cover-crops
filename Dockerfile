@@ -29,6 +29,5 @@ FROM nginx:1.19.1-alpine
 
 COPY --from=builder /usr/src/app/build/ /usr/share/nginx/html/
 COPY public /usr/share/nginx/html/public/
-COPY public/keycloak.json /usr/share/nginx/html/
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
