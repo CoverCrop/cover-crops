@@ -7,7 +7,7 @@ import {
 } from "react-mdc-web";
 import config from "../app.config";
 import {deletefail, expfail, expsuccess} from "../app.messages";
-import {uploadDatasetToDataWolf, getKeycloakHeader, uploadExperimentFileSQX} from "../public/utils";
+import {uploadDatasetToDataWolf, getKeycloakHeader, uploadExperimentFileSQX, getExperimentSQX} from "../public/utils";
 import {handleExptxtGet} from "../actions/user";
 import {connect} from "react-redux";
 import TileDrainage from "./TileDrainage";
@@ -53,7 +53,10 @@ class UploadFieldSummary extends Component {
 					console.log(`set experiment file failed: ${ responseJson.message}`);
 				}
 				else {
-					this.setState({file: null, isOpen: true, message: expsuccess});
+					getExperimentSQX(this.props.email, this.props.selectedCLU.clu).then(expFileText => {
+						this.props.handleExptxtGet(expFileText);
+						this.setState({file: null, isOpen: true, message: expsuccess});
+					});
 				}
 				this.fileInput.value = "";
 			}).catch(function(e) {
