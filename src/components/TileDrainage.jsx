@@ -7,7 +7,7 @@ import {drainage_type as DRAINAGE_TYPES, drainage_type_defaults} from "../experi
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import config from "../app.config";
 import {
-	convertCmToInches,
+	convertCmToInches, convertFeetToMeters, convertInchesToCm,
 	convertMetersToFeet,
 	getCropObj,
 	getExperimentSQX, getFieldObj,
@@ -67,7 +67,11 @@ const TileDrainage = ({selectedCLU, email}) => {
 			method: "PATCH",
 			body: JSON.stringify([{
 				"EVENT": "drainage",
-				"FLDT": drainageType
+				"FLDT": drainageType,
+				"CONTENT": [{
+					"FLDRS": spacing !== "" ? convertFeetToMeters(spacing): "-99",
+					"FLDRD": depth !== "" ? convertInchesToCm(depth): "-99"
+				}]
 			}]),
 			headers: {
 				"Content-Type": "application/json",
@@ -96,7 +100,7 @@ const TileDrainage = ({selectedCLU, email}) => {
 
 	return(
 		<div>
-			<h2 style={{marginLeft: "14px", marginTop: "14px", color: "#455A64"}}> Drainage Type </h2>
+			<h2 style={{marginLeft: "14px", marginTop: "14px", color: "#455A64"}}> Drainage </h2>
 			<br/>
 			<div className="update-box-div">
 				<div className="update-box update-box-left" style={{display: "flex"}}>
@@ -118,21 +122,20 @@ const TileDrainage = ({selectedCLU, email}) => {
 							}
 						</Select>
 					</FormControl>
-					<FormControl  style={{minWidth: "140px", paddingRight: "16px"}}>
+					<FormControl  style={{minWidth: "140px", paddingRight: "16px",
+						display: (drainageType === "DR000")? "none": "block"}}>
 						<TextField
 								variant="outlined" InputLabelProps={{ shrink: true }}
 								id="outlined-number" label="Depth, inch" type="number" value={depth}
 								onChange={handleDepthChange}
-								disabled
 						/>
 					</FormControl>
 
-					<FormControl  style={{minWidth: "140px"}}>
+					<FormControl  style={{minWidth: "140px", display: (drainageType === "DR000")? "none": "block"}}>
 						<TextField
 								variant="outlined" InputLabelProps={{ shrink: true }}
 								id="outlined-number" label="Spacing, ft" type="number" value={spacing}
 								onChange={handleSpacingChange}
-								disabled
 						/>
 					</FormControl>
 

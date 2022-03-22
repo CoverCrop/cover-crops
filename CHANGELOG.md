@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## [Unreleased]
+
+### Added
+- Ability to update tile drainage row spacing and depth from "My Farm" [CCROP-388](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-388)
 
 ### Changed
 - Field profile experiment file upload to use SQX file. [CCROP-293](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-293)

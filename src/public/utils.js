@@ -20,6 +20,7 @@ const QTY_PER_SQUARE_METER_TO_ACRE = 1 / SQUARE_METER_TO_ACRE; // ~ 4046.8626697
 const CM_TO_INCH = 0.393701;
 const INCH_TO_CM = 1 / CM_TO_INCH;
 const METER_TO_FT = 3.28084167;
+const FT_TO_METER = 1/METER_TO_FT;
 const KG_TO_LB = 2.20462;
 const HA_TO_ACRE = 2.47105;
 const KGPERHA_TO_LBPERACRE = KG_TO_LB / HA_TO_ACRE; // ~ 0.893
@@ -195,8 +196,8 @@ export function convertDateToUSFormatShort(date){
 
 export function convertDateToUSFormatWithMins(date){
 
-	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/
-	${ date.getFullYear() } ${date.getHours().toString().padStart(2, "0") }:${ date.getMinutes().toString().padStart(2, "0")}`;
+	return `${(date.getMonth() + 1).toString().padStart(2, "0") }/${ date.getDate().toString().padStart(2, "0") }/${ date.getFullYear() } ${
+		date.getHours().toString().padStart(2, "0") }:${ date.getMinutes().toString().padStart(2, "0")}`;
 }
 
 //eg. moment to 17096
@@ -212,7 +213,8 @@ export async function uploadUserInputFile(yearPlanting, doyPlanting, doyHarvest,
 		`{"with_cover_crop": ${ isWithCoverCrop },` +
 				`"year_planting": ${ yearPlanting },` +
 				`"doy_planting": ${ doyPlanting },` +
-				`"doy_harvest": ${ doyHarvest }}`],
+				`"doy_harvest": ${ doyHarvest
+				}}`],
 	{type: "text/plain;charset=utf-8", lastModified: Date.now()});
 
 	return uploadDatasetToDataWolf(userInputFile, "user_input.json");
@@ -561,6 +563,10 @@ export function convertInchesToCm(inches){
 
 export function convertMetersToFeet(meters){
 	return roundResults(meters * METER_TO_FT, 2);
+}
+
+export function convertFeetToMeters(feet){
+	return roundResults(feet * FT_TO_METER, 2);
 }
 
 export function convertPerSqMeterToPerAcre(per_sq_meters){
