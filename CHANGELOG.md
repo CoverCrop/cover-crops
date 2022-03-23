@@ -6,7 +6,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+- Ability to update tile drainage row spacing and depth from "My Farm" [CCROP-388](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-388)
+
 ### Changed
+- Field profile experiment file upload to use SQX file. [CCROP-293](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-293)
 - Load keycloak configuration based on environment. Removed the static config file [CCROP-358](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-358)
 
 ## [1.5.0] - 2021-12-16

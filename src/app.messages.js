@@ -1,8 +1,8 @@
 // List of messages
 export const selectedEventNotSuccessful = "The selected job did not complete successfully and hence results are not available for displaying.";
 export const noJobsFound = "No jobs were found. Please run a job to see the results on dashboard";
-export const expsuccess = "Experiment template file added/updated successfully.";
-export const expfail = "Experiment template file added/updated failed. Please try again.";
+export const expsuccess = "Experiment file updated successfully.";
+export const expfail = "Experiment file update failed. Please try again.";
 export const tdsuccess = "Successfully updated field drainage.";
 export const tdfail = "Could not update field drainage. Please try again.";
 export const deletefail = "Deleting the user field failed. Please try again.";
