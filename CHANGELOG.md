@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+- Add new years to the list of default cash crop and cover crop years. [CCROP-400](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-400)
+
 ## [1.6.0] - 2022-04-05
 
 ### Added
