@@ -88,8 +88,8 @@ export const coverCrops = ["Rye"];
 // TODO: Re-introduce "None" option below after fixing gap filling.
 export const cashCropOptions = cashCrops.concat([]);
 export const coverCropOptions = coverCrops.concat(["None"]);
-export const defaultCashCropYears = ["2015", "2016", "2017", "2018", "2019", "2020", "2021"];
-export const defaultCoverCropYears = ["2015", "2016", "2017", "2018", "2019", "2020"];
+export const defaultCashCropYears = ["2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022"];
+export const defaultCoverCropYears = ["2015", "2016", "2017", "2018", "2019", "2020", "2021"];
 export const cultivars = {"Corn": "DEKALB 591", "Soybean": "M GROUP 2", "Rye": "IB0488 NEWTON", "None": "None"};
 
 // actual inch limit should have been 393, but 385 is the max value where rounding error does not occur
