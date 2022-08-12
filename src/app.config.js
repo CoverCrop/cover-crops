@@ -21,7 +21,7 @@ const localConfig = {
 		clientId: KEYCLOAK_CLIENT,
 		url: "https://fd-auth-dev.ncsa.illinois.edu/auth"
 	}),
-	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
+	geoServer: "https://fd-geoserver-dev.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: false,
 	dssatNaValue: "-99"
@@ -45,7 +45,7 @@ const devConfig = {
 		clientId: KEYCLOAK_CLIENT,
 		url: "https://fd-auth-dev.ncsa.illinois.edu/auth"
 	}),
-	geoServer: "https://fd-geoserver.ncsa.illinois.edu/geoserver/wms",
+	geoServer: "https://fd-geoserver-dev.ncsa.illinois.edu/geoserver/wms",
 	hideDecompOutputs: false,
 	hideDashboardSections: false,
 	dssatNaValue: "-99"
