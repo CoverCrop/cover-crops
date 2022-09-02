@@ -67,7 +67,7 @@ class MyFarmPage extends Component {
 			this.props.handleExptxtGet(exptxt);
 		});
 
-	}
+	};
 	componentWillMount() {
 		let that = this;
 

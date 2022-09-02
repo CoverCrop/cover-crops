@@ -124,12 +124,12 @@ class AddFieldBox extends Component {
 	};
 	handleContinue = () => {
 		this.handleAddCLU();
-	}
+	};
 	onTileDrainageChange = (event, option) => {
 		this.setState({
 			tileDrainage: option.value
 		});
-	}
+	};
 	componentDidMount(){
 		this.props.handleLatFieldChange("");
 		this.props.handleLongFieldChange("");

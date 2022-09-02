@@ -38,7 +38,7 @@ class Fertilizer extends Component {
 		if (field_name === "FMCD" && field_value === "None"){
 			this.setState({FDATE: undefined});
 		}
-	}
+	};
 	componentDidMount() {
 		this.props.onRef(this);
 		this.setState({FMCD: "None"});
@@ -84,7 +84,7 @@ class Fertilizer extends Component {
 
 		return jsonBody;
 	}
-	
+
 
 	render() {
 		return (

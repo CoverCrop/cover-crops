@@ -18,7 +18,7 @@ class Planting extends Component {
 
 	handler = (field_name, field_value) => {
 		this.setState({[field_name]: field_value});
-	}
+	};
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;

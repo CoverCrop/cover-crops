@@ -48,14 +48,14 @@ class CropHistory extends Component {
 			});
 		}
 
-	}
+	};
 	handleSelectCrop = (crop) => {
 		if (this.state.crop === "None"){
 			// this.planting.setDefault();
 			// this.harvest.setDefault();
 		}
 		this.setState({crop: crop});
-	}
+	};
 	handleClick = () => {
 
 		let jsonBody = [];
@@ -172,14 +172,14 @@ class CropHistory extends Component {
 				});
 			}
 		}).catch(error => console.error("Error:", error));
-	}
+	};
 	addFertilizer = (newFertilizer) => {
 		let newObj = {FMCD: "None", addnew: true};
 		let that = this;
 		this.setState((state) => ({flist:
 				that.fertilizer.filter(f => f).map(f => f.getBodyJson()).slice(0, -1).concat([newFertilizer, newObj])}));
 
-	}
+	};
 	componentDidUpdate(prevProps) {
 		//change to a new CLU
 		if (this.props.clu !== prevProps.clu) {

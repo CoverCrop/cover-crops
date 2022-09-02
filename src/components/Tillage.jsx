@@ -32,7 +32,7 @@ class Tillage extends Component {
 		if (field_name === "TIMPL" && field_value === "None") {
 			this.setState({TDATE: undefined});
 		}
-	}
+	};
 	componentDidMount() {
 		this.props.onRef(this);
 		let year = this.props.year;

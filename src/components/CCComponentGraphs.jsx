@@ -13,7 +13,7 @@ class CCComponentGraphs extends Component {
 
 	handleCheckboxChange = (event) => {
 		this.setState({showAllYears: event.target.checked});
-	}
+	};
 
 	render() {
 		let ccData = this.props.ccData;
