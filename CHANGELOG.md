@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## [1.8.0] - 2022-09-29
+## [Unreleased]
 
 ### Changed
+- Development congfiguration to use development geoserver [CCROP-406](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-406)
 - Update react-scripts version and the configurations of .babelrc and .eslintrc. The webpack version is 5.74.0 now. [CCROP-408](https://opensource.ncsa.illinois.edu/jira/browse/CCROP-408)
 
 ## [1.7.0] - 2022-05-24
