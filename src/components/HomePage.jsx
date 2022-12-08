@@ -49,13 +49,15 @@ class HomePage extends Component {
 			</p>
 
 			<p className="paras">
-				Funding for this project has been provided primarily by the Illinois Nutrient Research & Education
-				Council (<a href={nrecUrl} target="_blank" className="cc-link" rel="noreferrer">NREC</a>).
-				The project team greatly appreciates the financial, technical and other support from
-				NREC and Illinois farmers. The latest release adds to the dashboard, providing the user with
-				information about the decomposition of the terminated cover crop. This first-of-its-kind
-				functionality was generously funded by the Walton Family Foundation. Finally, initial seed funding
-				for the project was also provided by the McKnight Foundation and the University of Illinois.
+				The initial funding for this project has come from multiple sources and the project team greatly
+				appreciates all contributions. The Illinois Nutrient Research & Education
+				Council (<a href={nrecUrl} target="_blank" className="cc-link" rel="noreferrer">NREC</a>) has provided
+				multiple years of funding, as well as technical and other support, including feedback from Illinois
+				farmers. The first-of-its-kind functionality providing the user with information about the decomposition
+				of the terminated cover crop was generously funded by the Walton Family Foundation and initial seed
+				funding for the project was also provided by the McKnight Foundation and the University of Illinois.
+				Funding to initiate the expansion of the tool to Indiana was provided by the
+				Midwest Cover Crop Council (MCCC).
 			</p>
 
 			<p className="paras">
