@@ -20,7 +20,7 @@ import {
 } from "ol/layer";
 import {
 	Vector as VectorSource,
-	BingMaps,
+	OSM,
 	TileWMS
 } from "ol/source";
 
@@ -57,10 +57,11 @@ class MapCC extends Component {
 			map: new OlMap({
 				layers: [
 					new LayerTile({
-						source: new BingMaps({
-							key: "Ahkpb-yLsjXtJQVJmVQ1RT2V4Yt-mmAmxyfYAbDyUY20cNWB2XNJjLVPqxtW3l9Y",
-							imagerySet: "AerialWithLabels"
-						})
+						source: new OSM()
+						// source: new BingMaps({
+						// 	key: "Ahkpb-yLsjXtJQVJmVQ1RT2V4Yt-mmAmxyfYAbDyUY20cNWB2XNJjLVPqxtW3l9Y",
+						// 	imagerySet: "AerialWithLabels"
+						// })
 					}),
 					new LayerTile({
 						source: new TileWMS({
